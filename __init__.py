@@ -103,8 +103,4 @@ from .tutorials.functions.multivariate_functions_benchmark import \
 import os
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '1'
 
-
-print('tensap (tensor approximation package) imported. This is a work ' +
-      'in progress.\n')
-
 __pdoc__ = {"tutorials": False}
