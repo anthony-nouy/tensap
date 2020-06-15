@@ -2,3 +2,5 @@
 
 **Cite as**: 
 Anthony Nouy, & Erwan Grelier. (2020, June 15). anthony-nouy/tensap. Zenodo. [http://doi.org/10.5281/zenodo.3894378](http://doi.org/10.5281/zenodo.3894378)
+
+A Matlab toolbox with similar features is available at [https://anthony-nouy.github.io/ApproximationToolbox/](https://anthony-nouy.github.io/ApproximationToolbox/)
