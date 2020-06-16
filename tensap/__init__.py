@@ -57,6 +57,10 @@ from .functions.functional_tensor import FunctionalTensor
 from .functions.user_defined_function import UserDefinedFunction
 from .functions.tensorizer import Tensorizer
 from .functions.tensorized_function import TensorizedFunction
+from .functions.compositional_model_function import \
+    CompositionalModelFunction
+from .functions.multivariate_functions_benchmark import \
+    multivariate_functions_benchmark
 
 from .approximation.tools.model_selection import ModelSelection
 from .approximation.bases.functional_basis_array import FunctionalBasisArray
@@ -92,12 +96,6 @@ from .approximation.tensor_approximation.principal_component_analysis.\
 from .approximation.tensor_approximation.principal_component_analysis.\
     functional_tensor_principal_component_analysis import \
         FunctionalTensorPrincipalComponentAnalysis
-
-from .tutorials.functions.compositional_model_function import \
-    CompositionalModelFunction
-from .tutorials.functions.multivariate_functions_benchmark import \
-    multivariate_functions_benchmark
-
 
 # Disable tensorflow's warning messages
 import os

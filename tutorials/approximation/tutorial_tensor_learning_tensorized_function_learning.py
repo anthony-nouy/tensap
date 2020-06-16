@@ -21,11 +21,9 @@ along with tensap.  If not, see <https://www.gnu.org/licenses/>.
 
 '''
 
-import sys
 from time import time
 import numpy as np
 import matplotlib.pyplot as plt
-sys.path.insert(0, './../../../')
 import tensap
 
 # %% Function to approximate: identification of a function f(x) with a function

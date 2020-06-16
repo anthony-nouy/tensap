@@ -19,9 +19,7 @@ along with tensap.  If not, see <https://www.gnu.org/licenses/>.
 
 '''
 
-import sys
 import numpy as np
-sys.path.insert(0, './../../../')
 import tensap
 
 # %% Identification of a function f(x) with a function g(i1, ...,id , y)

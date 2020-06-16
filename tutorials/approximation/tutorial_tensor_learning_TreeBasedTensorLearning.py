@@ -19,10 +19,8 @@ along with tensap.  If not, see <https://www.gnu.org/licenses/>.
 
 '''
 
-import sys
 from time import time
 import numpy as np
-sys.path.insert(0, './../../../')
 import tensap
 
 # %% Function to approximate

@@ -19,9 +19,7 @@ along with tensap.  If not, see <https://www.gnu.org/licenses/>.
 
 '''
 
-import sys
 import numpy as np
-sys.path.insert(0, './../../../')
 import tensap
 
 # %% Linear dimension tree

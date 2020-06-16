@@ -1,0 +1,6 @@
+include CONTRIBUTORS
+include COPYING
+include COPYING.LESSER
+include LICENSE
+include README.md
+recursive-include tutorials *

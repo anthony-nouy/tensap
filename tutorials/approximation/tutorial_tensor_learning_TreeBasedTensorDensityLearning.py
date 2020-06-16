@@ -20,11 +20,9 @@ along with tensap.  If not, see <https://www.gnu.org/licenses/>.
 
 '''
 
-import sys
 from time import time
 import numpy as np
 from scipy.stats import multivariate_normal
-sys.path.insert(0, './../../../')
 import tensap
 
 # %% Function to approximate: multivariate gaussian distribution

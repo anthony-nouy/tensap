@@ -19,10 +19,8 @@ along with tensap.  If not, see <https://www.gnu.org/licenses/>.
 
 '''
 
-import sys
 import matplotlib.pyplot as plt
 import numpy as np
-sys.path.insert(0, './../../../')
 import tensap
 
 # %% Scalar-valued UserDefinedFunction

@@ -19,10 +19,8 @@ along with tensap.  If not, see <https://www.gnu.org/licenses/>.
 
 '''
 
-import sys
 import numpy as np
 import matplotlib.pyplot as plt
-sys.path.insert(0, './../../../')
 import tensap
 
 # %% Magic points associated with a Functional Basis (1D)

@@ -19,8 +19,6 @@ along with tensap.  If not, see <https://www.gnu.org/licenses/>.
 
 '''
 
-import sys
-sys.path.insert(0, './../../../')
 import tensap
 
 # %% Function to approximate

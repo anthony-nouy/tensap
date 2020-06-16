@@ -19,14 +19,12 @@ along with tensap.  If not, see <https://www.gnu.org/licenses/>.
 
 '''
 
-import sys
 from sklearn import datasets, metrics
 import random
 import numpy as np
 import tensorflow as tf
 import time
 import matplotlib.pyplot as plt
-sys.path.insert(0, './../../../')
 import tensap
 
 # %% Data import and preparation
