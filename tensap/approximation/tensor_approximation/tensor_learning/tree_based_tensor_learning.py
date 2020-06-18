@@ -418,7 +418,7 @@ class TreeBasedTensorLearning(tensap.TensorLearning):
             path_alpha = self.bases_adaptation_path[
                 np.nonzero(tree.dim2ind == alpha)[0][0]].astype(bool)
             ranks = ranks[alpha-1]
-            path = np.expand_dims(path_alpha, [0, 2])
+            path = path_alpha[np.newaxis, :, np.newaxis, :]
             path = np.tile(path, [1, 1, ranks, 2])
             path = np.reshape(path, [path.shape[1]*ranks, -1], order='F')
         else:
@@ -620,7 +620,8 @@ class TreeBasedTensorLearning(tensap.TensorLearning):
                 'model_selection_type' not in self.rank_adaptation_options:
             self.rank_adaptation_options['model_selection_type'] = 'cv_error'
 
-        self.display = self.alternating_minimization_parameters['display']
+        if self.display:
+            self.alternating_minimization_parameters['display'] = True
 
         output = {'flag': 0}
 

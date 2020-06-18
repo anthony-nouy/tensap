@@ -39,6 +39,21 @@ class SparseTensorProductFunctionalBasis(tensap.FunctionalBasis):
     '''
 
     def __init__(self, bases, indices):
+        '''
+        Constructor for the class SparseTensorProductFunctionalBasis.
+
+        Parameters
+        ----------
+        bases : list or tensap.FunctionalBases
+            The bases associated with the object.
+        indices : tensap.MultiIndices
+            The indices of the basis functions (the indices start at 0).
+
+        Returns
+        -------
+        None.
+
+        '''
         tensap.FunctionalBasis.__init__(self)
 
         assert isinstance(bases, tensap.FunctionalBases), \

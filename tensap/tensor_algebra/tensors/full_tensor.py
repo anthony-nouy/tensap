@@ -21,7 +21,6 @@ along with tensap.  If not, see <https://www.gnu.org/licenses/>.
 
 # from string import ascii_lowercase
 import numpy as np
-from tensorflow.python.ops.gen_linalg_ops import qr
 import tensap
 
 
@@ -76,10 +75,11 @@ class FullTensor:
         if shape is not None:
             self.data = np.reshape(self.data, shape, order='F')
 
-        if order is not None and np.ndim(self.data) != order:
-            self.data = np.expand_dims(self.data,
-                                       list(np.arange(np.ndim(self.data),
-                                                      order)))
+        ndim = np.ndim(self.data)
+        if order is not None and ndim != order:
+            for d in np.arange(ndim, order):
+                self.data = np.expand_dims(self.data, d)
+
         self.is_orth = False
         self.orth_dim = None
 
@@ -699,10 +699,12 @@ class FullTensor:
         shape0 = np.array(tensor.shape)
         tensor = tensor.reshape([np.prod(shape0[:-1]), shape0[-1]])
 
-        # tensor.data, r_matrix = np.linalg.qr(tensor.data)
-
-        q_tf, r_tf = qr(tensor.data, full_matrices=False)
-        tensor.data, r_matrix = q_tf.numpy(), r_tf.numpy()
+        try:
+            from tensorflow.python.ops.gen_linalg_ops import qr
+            q_tf, r_tf = qr(tensor.data, full_matrices=False)
+            tensor.data, r_matrix = q_tf.numpy(), r_tf.numpy()
+        except ImportError:
+            tensor.data, r_matrix = np.linalg.qr(tensor.data)
 
         shape0[-1] = r_matrix.shape[0]
         tensor = tensor.reshape(shape0)

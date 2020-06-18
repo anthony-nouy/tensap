@@ -36,6 +36,19 @@ class FullTensorProductFunctionalBasis(tensap.FunctionalBasis):
     '''
 
     def __init__(self, bases):
+        '''
+        Constructor for the class FullTensorProductFunctionalBasis.
+
+        Parameters
+        ----------
+        bases : list or tensap.FunctionalBases
+            The bases associated with the object.
+
+        Returns
+        -------
+        None.
+
+        '''
         tensap.FunctionalBasis.__init__(self)
 
         if isinstance(bases, list):

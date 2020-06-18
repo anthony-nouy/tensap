@@ -75,6 +75,7 @@ LOSS = tensap.CustomLossFunction(
         lambda y_true, y_pred: tf.nn.sigmoid_cross_entropy_with_logits(
             logits=y_pred, labels=y_true))
 
+
 def error_function(y_pred, sample):
     '''
     Return the error associated with a set of predictions using a sample, equal
@@ -100,6 +101,8 @@ def error_function(y_pred, sample):
         pass
     return np.count_nonzero(np.argmax(y_pred, 1) - np.argmax(sample[1], 1)) / \
         sample[1].numpy().shape[0]
+
+
 LOSS.error_function = error_function
 
 # %% Learning in tree-based tensor format

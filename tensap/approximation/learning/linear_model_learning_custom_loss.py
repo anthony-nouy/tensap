@@ -21,10 +21,12 @@ along with tensap.  If not, see <https://www.gnu.org/licenses/>.
 
 from numpy import arange, finfo
 import numpy as np
-import tensorflow as tf
 import tensap
-
-DTYPE = tf.float64
+try:
+    import tensorflow as tf
+    cond = True
+except ImportError:
+    cond = False
 
 
 class LinearModelLearningCustomLoss(tensap.LinearModelLearning):
@@ -62,6 +64,9 @@ class LinearModelLearningCustomLoss(tensap.LinearModelLearning):
         None.
 
         '''
+        if not cond:
+            raise ImportError('Package tensorflow must be installed to ' +
+                              'use LinearModelLearningCustomLoss.')
         super().__init__(custom_loss)
         self.optimizer = tf.keras.optimizers.Adam()
         self.initial_guess = None
@@ -84,10 +89,10 @@ class LinearModelLearningCustomLoss(tensap.LinearModelLearning):
 
         if self.initial_guess is None:
             self.initial_guess = tf.random.normal([self.basis_eval.shape[1]],
-                                                  dtype=DTYPE)
+                                                  dtype=tf.float64)
         else:
             self.initial_guess = tf.convert_to_tensor(self.initial_guess,
-                                                      dtype=DTYPE)
+                                                      dtype=tf.float64)
 
         basis_eval = self.basis_eval
         training_data = self.training_data
@@ -98,7 +103,7 @@ class LinearModelLearningCustomLoss(tensap.LinearModelLearning):
                                                      training_data)
             return out
 
-        var = tf.Variable(self.initial_guess, dtype=DTYPE)
+        var = tf.Variable(self.initial_guess, dtype=tf.float64)
         for it in arange(self.options['max_iterations']):
             var0 = var.numpy()
             self.optimizer.minimize(risk, var_list=[var])

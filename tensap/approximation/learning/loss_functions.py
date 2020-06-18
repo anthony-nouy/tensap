@@ -20,7 +20,6 @@ along with tensap.  If not, see <https://www.gnu.org/licenses/>.
 '''
 
 from abc import ABC, abstractmethod
-from tensorflow import reduce_mean
 import numpy as np
 
 
@@ -270,6 +269,10 @@ class CustomLossFunction(LossFunction):
         self.error_type = 'absolute'
 
     def risk_estimation(self, fun, sample, *args, nargout=1):
+        try:
+            from tensorflow import reduce_mean
+        except ImportError:
+            reduce_mean = np.mean
         loss, loss_ref = self.eval(fun, sample, *args, nargout=2)
         risk = reduce_mean(loss)
         if nargout == 1:

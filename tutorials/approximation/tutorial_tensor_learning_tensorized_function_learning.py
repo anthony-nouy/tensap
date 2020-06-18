@@ -57,7 +57,7 @@ H = tensap.PolynomialFunctionalBasis(Y.orthonormal_polynomials(),
 BASES = T.tensorized_function_functional_bases(H)
 
 # %% Training and test samples
-NUM_TRAIN = 1000
+NUM_TRAIN = 200
 X_TRAIN = X.random(NUM_TRAIN)
 Y_TRAIN = FUN(X_TRAIN)
 X_TRAIN = T.map(X_TRAIN)  # Identification of X_TRAIN with (i_1,...,i_d,y)

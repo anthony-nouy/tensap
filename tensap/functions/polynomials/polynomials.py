@@ -182,15 +182,15 @@ class UnivariatePolynomials(ABC):
 
     def moment(self, ind, measure=None):
         '''
-        Return the moments of the family of polynomials p_i(X) = X^i, i in I,
+        Return the moments of the family of polynomials p_i(X), i in ind,
         of a random variable X, using a gauss integration rule.
 
-        #################### Assuming ind is a numpy.ndarray:
-        #     - if ind.ndim == 1, return the float
-        #         m = E(p_ind[0](X)...p_ind[-1](X)),
-        #     - else if ind.ndim == 2, return the vector
-        #         m = (E(p_ind[j, 0](X)...p_ind[j, -1](X)) :
-        #               j = 1, ..., ind.shape[0]).
+        Assuming ind is a numpy.ndarray:
+            - if ind.ndim == 1, return the float
+                m = E(p_ind[0](X)...p_ind[-1](X)),
+            - else if ind.ndim == 2, return the vector
+                m = (E(p_ind[j, 0](X)...p_ind[j, -1](X)) :
+                    j = 1, ..., ind.shape[0]).
 
         Parameters
         ----------

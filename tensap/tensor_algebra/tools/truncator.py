@@ -20,7 +20,6 @@ along with tensap.  If not, see <https://www.gnu.org/licenses/>.
 '''
 
 import warnings
-from tensorflow import Tensor as tf_Tensor
 import numpy as np
 import tensap
 
@@ -94,7 +93,7 @@ class Truncator:
 
         '''
 
-        if isinstance(tensor, (tf_Tensor, np.ndarray)):
+        if not hasattr(tensor, 'order'):
             tensor = tensap.FullTensor(tensor)
 
         if tensor.order == 2:
@@ -191,7 +190,7 @@ class Truncator:
 
         if isinstance(tensor, np.ndarray):
             out = self.trunc_svd(tensor)
-        elif isinstance(tensor, (tf_Tensor, tensap.FullTensor)):
+        elif hasattr(tensor, 'numpy'):
             out = self.trunc_svd(tensor.numpy())
         elif isinstance(tensor, tensap.TreeBasedTensor):
             out = self.hsvd(tensor)
