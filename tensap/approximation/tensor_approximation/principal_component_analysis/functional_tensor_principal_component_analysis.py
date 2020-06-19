@@ -27,8 +27,8 @@ import tensap
 class FunctionalTensorPrincipalComponentAnalysis:
     '''
     Class FunctionalTensorPrincipalComponentAnalysis: principal component
-    nalysis of multivariate functions based on TensorPrincipalComponentAnalysis
-    for algebraic tensors.
+    analysis of multivariate functions based on
+    TensorPrincipalComponentAnalysis for algebraic tensors.
 
     Attributes
     ----------
@@ -40,8 +40,8 @@ class FunctionalTensorPrincipalComponentAnalysis:
     max_rank : int or list or numpy.ndarray
         An array containing the maximum alpha-ranks (the length depends on the
         format).
-        If len(maxRank)==1, use the same value for all alpha.
-        Set maxRank = np.inf to prescribe the precision.
+        If len(max_rank)==1, use the same value for all alpha.
+        Set max_rank = np.inf to prescribe the precision.
     bases : tensap.FunctionalBases
         The functional bases used for the projection of the function.
     grid : tensap.FullTensorGrid
@@ -82,8 +82,8 @@ class FunctionalTensorPrincipalComponentAnalysis:
 
     def hopca(self, fun):
         '''
-        Return the set of alpha-principal components of an algebraic tensor,
-        for all alpha in {0,1,...,d-1}.
+        Return the set of alpha-principal components of a tensor, for all alpha
+        in {0,1,...,d-1}.
 
         For prescribed precision, set FPCA.max_rank = np.inf and FPCA.tol to
         the desired precision (possibly an array of length d).

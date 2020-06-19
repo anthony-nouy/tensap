@@ -129,7 +129,7 @@ SOLVER.alternating_minimization_parameters['stagnation'] = 1e-10
 # Options dedicated to the LinearModelCustomLoss object
 SOLVER.linear_model_learning.options['max_iterations'] = 10
 SOLVER.linear_model_learning.options['stagnation'] = 1e-10
-SOLVER.linear_model_learning.optimizer.learning_rate = 1e2
+SOLVER.linear_model_learning.optimizer.learning_rate = 1e3
 
 SOLVER.rank_adaptation_options['early_stopping'] = True
 SOLVER.rank_adaptation_options['early_stopping_factor'] = 10

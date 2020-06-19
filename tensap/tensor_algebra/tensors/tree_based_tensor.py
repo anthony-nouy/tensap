@@ -52,7 +52,7 @@ class TreeBasedTensor:
         Order of the tensor.
     shape : numpy.ndarray
         Shape of the tensor.
-    tree : tensap.FullTensor
+    tree : tensap.DimensionTree
         Dimension tree.
     is_orth : bool
         True if the representation of the tensor is orthogonal.
@@ -76,7 +76,7 @@ class TreeBasedTensor:
         cores : TreeBasedTensor or list
             TreeBasedTensor to be copied or list of tensors (parameters
             associated with the nodes of the tree).
-        tree : tensap.FullTensor, optional
+        tree : tensap.DimensionTree, optional
             Dimension tree of the tree-based tensor. The default is None.
 
         Raises
@@ -1529,7 +1529,7 @@ class TreeBasedTensor:
         Orthogonalize the representation with respect to a given node.
 
         All core tensors except the one of node nod represents orthonormal
-        bases of principal subspaces the core tensor of node nod is such that
+        bases of principal subspaces. The core tensor of node nod is such that
         the tensor x(i_alpha,i_alpha^c) = sum_k u_k(i_alpha) w_k(i_alpha^c),
         where w_k is a set of orthonormal vectors.
 

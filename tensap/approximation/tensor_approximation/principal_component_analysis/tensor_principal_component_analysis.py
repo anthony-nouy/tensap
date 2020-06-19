@@ -49,8 +49,8 @@ class TensorPrincipalComponentAnalysis:
     max_rank : int or list or numpy.ndarray
         An array containing the maximum alpha-ranks (the length depends on the
         format).
-        If len(maxRank)==1, use the same value for all alpha.
-        Set maxRank = np.inf to prescribe the precision.
+        If len(max_rank)==1, use the same value for all alpha.
+        Set max_rank = np.inf to prescribe the precision.
 
     '''
 
