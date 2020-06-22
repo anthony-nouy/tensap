@@ -1,0 +1,1510 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+<meta name="generator" content="pdoc 0.8.1" />
+<title>tensap.functions.function API documentation</title>
+<meta name="description" content="Module function …" />
+<link href='https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.min.css' rel='stylesheet'>
+<link href='https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/8.0.0/sanitize.min.css' rel='stylesheet'>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css" rel="stylesheet">
+<style>.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}.admonition{padding:.1em .5em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>tensap.functions.function</code></h1>
+</header>
+<section id="section-intro">
+<p>Module function.</p>
+<p>Copyright (c) 2020, Anthony Nouy, Erwan Grelier
+This file is part of tensap (tensor approximation package).</p>
+<p>tensap is free software: you can redistribute it and/or modify
+it under the terms of the GNU Lesser General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.</p>
+<p>tensap is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+See the
+GNU Lesser General Public License for more details.</p>
+<p>You should have received a copy of the GNU Lesser General Public License
+along with tensap.
+If not, see <a href="https://www.gnu.org/licenses/">https://www.gnu.org/licenses/</a>.</p>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">&#39;&#39;&#39;
+Module function.
+
+Copyright (c) 2020, Anthony Nouy, Erwan Grelier
+This file is part of tensap (tensor approximation package).
+
+tensap is free software: you can redistribute it and/or modify
+it under the terms of the GNU Lesser General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+tensap is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU Lesser General Public License for more details.
+
+You should have received a copy of the GNU Lesser General Public License
+along with tensap.  If not, see &lt;https://www.gnu.org/licenses/&gt;.
+
+&#39;&#39;&#39;
+
+from abc import abstractmethod
+import numpy as np
+import tensap
+
+
+class Function:
+    &#39;&#39;&#39;
+    Class Function.
+
+    Attributes
+    ----------
+    dim : int
+        The dimension of the input of the function.
+    measure : tensap.Measure
+        The measure associated with the function.
+    output_shape : int or list or numpy.ndarray
+        The shape of the output of the function.
+    evaluation_at_multiple_points : bool
+        Indicates if the function can be evaluated at multiple points at once.
+    store : bool
+        Indicates if the Function object should store the evaluations of the
+        function.
+
+    &#39;&#39;&#39;
+
+    def __init__(self):
+        &#39;&#39;&#39;
+        Constructor for the class Function.
+
+        Returns
+        -------
+        None.
+
+        &#39;&#39;&#39;
+        self.dim = []
+        self.measure = None
+        self.output_shape = 1
+        self.evaluation_at_multiple_points = True
+        self.store = False
+        self._x_stored = []
+        self._y_stored = []
+
+    def __call__(self, x, return_f=False):
+        if np.ndim(x) == 1:
+            x = np.expand_dims(x, 1)
+
+        if self.store:
+            y = self.store_eval(x)
+            if np.ndim(y) == 2 and np.shape(y)[1] == 1:
+                y = np.squeeze(y, axis=1)
+            return y
+        else:
+            y = self.eval(x)
+            if np.ndim(y) == 2 and np.shape(y)[1] == 1:
+                y = np.squeeze(y, axis=1)
+            f = self
+            if return_f:
+                return y, f
+            return y
+
+    def store_eval(self, x):
+        &#39;&#39;&#39;
+        Evaluate the function, reuising previous evaluations if possible, and
+        storing the new evaluations in self.
+
+        Parameters
+        ----------
+        x : numpy.ndarray
+            The input points.
+
+        Returns
+        -------
+        y : numpy.ndarray
+            The evaluations of the Function.
+        tensap.Function
+            The Function with stored evaluations, for future reuse.
+
+        &#39;&#39;&#39;
+        if np.ndim(x) &lt; 2:
+            x = np.reshape(x, [np.size(x), 1])
+
+        if self.store and np.size(self._y_stored) != 0:
+            ind_2, ind_1 = np.nonzero(np.all(x == self._x_stored[:,
+                                                                 np.newaxis],
+                                             axis=2))
+
+            if np.prod(self.output_shape) != 1:
+                self._y_stored = np.reshape(self._y_stored,
+                                            (self._y_stored.shape[0], -1),
+                                            order=&#39;F&#39;)
+
+            y = np.zeros((x.shape[0], self._y_stored.shape[1]))
+            y[ind_1, :] = self._y_stored[ind_2, :]
+
+            x_new = x[np.setdiff1d(range(x.shape[0]), ind_1), :]
+            if x_new.size != 0:
+                y_new = self.eval(x_new)
+                y[np.setdiff1d(range(x.shape[0]), ind_1), :] = \
+                    np.reshape(y_new, (y_new.shape[0], -1))
+                self._x_stored = np.vstack((self._x_stored, x_new))
+                self._y_stored = np.vstack((self._y_stored,
+                                            np.reshape(y_new,
+                                                       (y_new.shape[0], -1))))
+            y = np.reshape(y, np.concatenate(([y.shape[0]],
+                                              np.atleast_1d(
+                                                  self.output_shape))),
+                           order=&#39;F&#39;)
+            if np.prod(self.output_shape) != 1:
+                self._y_stored = np.reshape(self._y_stored, np.concatenate(([
+                    self._y_stored.shape[0]], np.atleast_1d(
+                        self.output_shape))), order=&#39;F&#39;)
+        else:
+            y = self.eval(x)
+            if np.ndim(y) &lt; 2:
+                y = np.reshape(y, [np.size(y), 1])
+
+            self.store = True
+            self._x_stored = x
+            self._y_stored = y
+
+        return np.squeeze(y), self
+
+    def fplot(self, support=None, n_points=100, *args, **kwargs):
+        &#39;&#39;&#39;
+        Plot the function on a support using a given number of points.
+
+        Parameters
+        ----------
+        support : list or numpy.ndarray, optional
+            The support of the plot. The default is None, indicating to use
+            the truncated_support of self.measure.
+        n_points : int, optional
+            The number of points used for the plot. The default is 100.
+        *args : tuple
+            Additional parameters used by the function matplotlib.pyplot.plot.
+
+        Returns
+        -------
+        None.
+
+        &#39;&#39;&#39;
+        import matplotlib.pyplot as plt
+        if support is None:
+            support = self.measure.truncated_support()
+
+        x = np.linspace(support[0], support[1], int(n_points))
+        plt.plot(x, self.eval(x), *args, **kwargs)
+        plt.show()
+
+    def surf(self, n=None, *args):
+        &#39;&#39;&#39;
+        Surface plot of the bivariate function.
+
+        Parameters
+        ----------
+        n : list or numpy.ndarray, optional
+            The number of points used for the surface plot in each dimension.
+            The default is [1000, 1000].
+        *args : tuple
+            Additional parameters used by matplotlib.pyplot&#39;s plot_surface
+            function.
+
+        Returns
+        -------
+        ax : matplotlib.axes._subplots.AxesSubplot
+            The surface plot as a matplotlib.axes._subplots.AxesSubplot object.
+
+        &#39;&#39;&#39;
+        assert self.measure is not None, &#39;Attribute measure is empty.&#39;
+        assert self.dim == 2, \
+            (&#39;The function should be a bivariate function, use the partial &#39; +
+             &#39;evaluation for higher-dimensional function.&#39;)
+
+        from mpl_toolkits.mplot3d import Axes3D
+        import matplotlib.pyplot as plt
+
+        if n is None:
+            n = [1000, 1000]
+
+        sup = self.measure.truncated_support()
+
+        if np.size(n) == 1:
+            n = np.tile(n, 2)
+
+        grids = [np.linspace(sup[0][0], sup[0][1], n[0]),
+                 np.linspace(sup[1][0], sup[1][1], n[1])]
+        grids[0] = grids[0][1:-1]
+        grids[1] = grids[1][1:-1]
+        grids = [np.reshape(x, (x.size, -1)) for x in grids]
+
+        grid = tensap.FullTensorGrid(grids)
+        fg = self.eval_on_tensor_grid(grid)
+
+        fig = plt.figure()
+        ax = fig.add_subplot(111, projection=&#39;3d&#39;)
+        x, y = np.meshgrid(grids[0], grids[1])
+        ax.plot_surface(x, y, fg.data, *args)
+        plt.show()
+
+        return ax
+
+    def partial_evaluation(self, not_alpha, x_not_alpha):
+        &#39;&#39;&#39;
+        Return the partial evaluation of a function
+        f(x) = f(x_alpha,x_not_alpha), a function
+        f_alpha(.) = f(., x_not_alpha) for fixed values x_not_alpha of the
+        variables with indices not_alpha.
+
+        Parameters
+        ----------
+        not_alpha : list or numpy.ndarray
+            The indices of the fixed variables.
+        x_not_alpha : numpy.ndarray
+            The points at which the function is evaluated in the dimensions
+            not_alpha.
+
+        Raises
+        ------
+        ValueError
+            If the Function has an empty attribute dim.
+
+        Returns
+        -------
+        f_alpha : tensap.UserDefinedFunction
+            The partial evaluation of the Function.
+
+        &#39;&#39;&#39;
+        if self.dim is None or np.size(self.dim) == 0:
+            raise ValueError(&#39;The Function has an empty attribute dim.&#39;)
+
+        alpha = np.setdiff1d(range(self.dim), not_alpha)
+        ind = [np.nonzero(np.concatenate((alpha, not_alpha)) == x)[0][0] for
+               x in range(self.dim)]
+
+        def fun(x_alpha):
+            grid = tensap.FullTensorGrid([x_alpha, x_not_alpha])
+            return self.eval(grid.array()[:, ind])
+
+        f_alpha = tensap.UserDefinedFunction(fun, alpha.size)
+        f_alpha.store = self.store
+        f_alpha.evaluation_at_multiple_points = \
+            self.evaluation_at_multiple_points
+        f_alpha.measure = self.measure.marginal(alpha)
+
+        return f_alpha
+
+    def random(self, n=1, measure=None):
+        &#39;&#39;&#39;
+        Evaluates the function at n points x drawn randomly according to the
+        ProbabilityMeasure in measure if provided, or in self.measure.
+
+        Parameters
+        ----------
+        n : int, optional
+            The number of random evaluations. The default is 1.
+        measure : tensap.ProbabilityMeasure, optional
+            The probability measure according to which the points x are drawn.
+            The default is None, indicating to use self.measure.
+
+        Raises
+        ------
+        ValueError
+            If the provided measure is not a tensap.ProbabilityMeasure.
+
+        Returns
+        -------
+        numpy.ndarray
+            The evaluations of the function at the points x.
+        x : numpy.ndarray
+            The points at which the function is to be evaluated.
+
+        &#39;&#39;&#39;
+        if measure is None:
+            if isinstance(self.measure, tensap.ProbabilityMeasure):
+                measure = self.measure
+            else:
+                raise ValueError(&#39;Must provide a ProbabilityMeasure.&#39;)
+        elif not isinstance(self.measure, tensap.ProbabilityMeasure):
+            raise ValueError(&#39;Must provide a ProbabilityMeasure.&#39;)
+
+        x = measure.random(n)
+        return self.eval(x), x
+
+    def eval_on_tensor_grid(self, x):
+        &#39;&#39;&#39;
+        Evaluate the Function on a grid x.
+
+        Parameters
+        ----------
+        x : tensap.TensorGrid
+            The tensap.ensorGrid used for the evaluation..
+
+        Raises
+        ------
+        NotImplementedError
+            If the method is not implemented.
+        ValueError
+            If x is not a tensap.TensorGrid object.
+
+        Returns
+        -------
+        fx : numpy.ndarray
+            The evaluation of the Function on the grid.
+
+        &#39;&#39;&#39;
+        x_a = x.array()
+        fx = self.eval(x_a)
+
+        if isinstance(x, tensap.SparseTensorGrid):
+            if np.all(self.output_shape == 1):
+                fx = tensap.SparseTensor(fx, x.indices, x.shape)
+            else:
+                raise NotImplementedError(&#39;Method not implemented.&#39;)
+        elif isinstance(x, tensap.FullTensorGrid):
+            if np.all(self.output_shape == 1):
+                shape = x.shape
+                if self.dim &gt; 1:
+                    fx = np.reshape(fx, shape, order=&#39;F&#39;)
+            else:
+                shape = np.concatenate((np.atleast_1d(x.shape),
+                                        np.atleast_1d(self.output_shape)))
+                fx = np.reshape(fx, shape, order=&#39;F&#39;)
+            fx = tensap.FullTensor(fx, np.size(shape), shape)
+        else:
+            raise ValueError(&#39;A TensorGrid object must be provided.&#39;)
+
+        return fx
+
+    def test_error(self, g, n=1000, measure=None):
+        &#39;&#39;&#39;
+        Compute the test error associated with the function, using a function g
+        or some of its evaluations as a reference. A measure can be provided
+        to randomly draw the test input data.
+
+        Parameters
+        ----------
+        g : tensap.Function or numpy.ndarray
+            The reference function or evaluations of it.
+        n : int or numpy.ndarray, optional
+            The test sample size, or the test input data. The default is 1000
+            test input points.
+        measure : tap.ProbabilityMeasure, optional
+            A probability measure used to draw the test input data. The default
+            is None, indicating to either use self.measure, g.measure or the
+            provided input points.
+
+        Returns
+        -------
+        err_l2 : float
+            The L2 error.
+        err_linf : float
+            The L-infinity error.
+
+        &#39;&#39;&#39;
+        if measure is not None:
+            x_test = measure.random(n)
+            g_x_test = g.eval(x_test)
+            err_l2, err_linf = self.test_error(g_x_test, x_test)
+        else:
+            if isinstance(g, tensap.Function) and np.size(n) == 1:
+                if self.measure is not None:
+                    measure = self.measure
+                else:
+                    measure = g.measure
+                err_l2, err_linf = self.test_error(g, n, measure)
+            elif np.size(n) != 1:
+                x_test = n
+                n = np.shape(x_test)[0]
+                f_x_test = self.eval(x_test)
+                if isinstance(g, tensap.Function):
+                    g_x_test = g.eval(x_test)
+                else:
+                    assert np.shape(g)[0] == n, \
+                        (&#39;The number of evaluations does not match the &#39; +
+                         &#39;number of points.&#39;)
+                    g_x_test = np.array(g)
+
+                f_x_test = np.reshape(f_x_test, (n, -1), order=&#39;F&#39;)
+                g_x_test = np.reshape(g_x_test, (n, -1), order=&#39;F&#39;)
+                err_l2 = np.linalg.norm(f_x_test - g_x_test) / \
+                    np.linalg.norm(g_x_test)
+                err_linf = np.linalg.norm(np.sqrt(np.sum((f_x_test -
+                                                          g_x_test)**2, 1)),
+                                          np.inf) / \
+                    np.linalg.norm(np.sqrt(np.sum(g_x_test**2, 1)), np.inf)
+
+        return err_l2, err_linf
+
+    @abstractmethod
+    def eval(self, x):
+        &#39;&#39;&#39;
+        Evaluate the function at the points x.
+
+        Parameters
+        ----------
+        x : list or numpy.ndarray
+            The points at which the function is to be evaluated.
+
+        Returns
+        -------
+        numpy.ndarray
+            The evaluations of the function at the points x.
+
+        &#39;&#39;&#39;</code></pre>
+</details>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-classes">Classes</h2>
+<dl>
+<dt id="tensap.functions.function.Function"><code class="flex name class">
+<span>class <span class="ident">Function</span></span>
+</code></dt>
+<dd>
+<div class="desc"><p>Class Function.</p>
+<h2 id="attributes">Attributes</h2>
+<dl>
+<dt><strong><code>dim</code></strong> :&ensp;<code>int</code></dt>
+<dd>The dimension of the input of the function.</dd>
+<dt><strong><code>measure</code></strong> :&ensp;<code>tensap.Measure</code></dt>
+<dd>The measure associated with the function.</dd>
+<dt><strong><code>output_shape</code></strong> :&ensp;<code>int</code> or <code>list</code> or <code>numpy.ndarray</code></dt>
+<dd>The shape of the output of the function.</dd>
+<dt><strong><code>evaluation_at_multiple_points</code></strong> :&ensp;<code>bool</code></dt>
+<dd>Indicates if the function can be evaluated at multiple points at once.</dd>
+<dt><strong><code>store</code></strong> :&ensp;<code>bool</code></dt>
+<dd>Indicates if the Function object should store the evaluations of the
+function.</dd>
+</dl>
+<p>Constructor for the class Function.</p>
+<h2 id="returns">Returns</h2>
+<p>None.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class Function:
+    &#39;&#39;&#39;
+    Class Function.
+
+    Attributes
+    ----------
+    dim : int
+        The dimension of the input of the function.
+    measure : tensap.Measure
+        The measure associated with the function.
+    output_shape : int or list or numpy.ndarray
+        The shape of the output of the function.
+    evaluation_at_multiple_points : bool
+        Indicates if the function can be evaluated at multiple points at once.
+    store : bool
+        Indicates if the Function object should store the evaluations of the
+        function.
+
+    &#39;&#39;&#39;
+
+    def __init__(self):
+        &#39;&#39;&#39;
+        Constructor for the class Function.
+
+        Returns
+        -------
+        None.
+
+        &#39;&#39;&#39;
+        self.dim = []
+        self.measure = None
+        self.output_shape = 1
+        self.evaluation_at_multiple_points = True
+        self.store = False
+        self._x_stored = []
+        self._y_stored = []
+
+    def __call__(self, x, return_f=False):
+        if np.ndim(x) == 1:
+            x = np.expand_dims(x, 1)
+
+        if self.store:
+            y = self.store_eval(x)
+            if np.ndim(y) == 2 and np.shape(y)[1] == 1:
+                y = np.squeeze(y, axis=1)
+            return y
+        else:
+            y = self.eval(x)
+            if np.ndim(y) == 2 and np.shape(y)[1] == 1:
+                y = np.squeeze(y, axis=1)
+            f = self
+            if return_f:
+                return y, f
+            return y
+
+    def store_eval(self, x):
+        &#39;&#39;&#39;
+        Evaluate the function, reuising previous evaluations if possible, and
+        storing the new evaluations in self.
+
+        Parameters
+        ----------
+        x : numpy.ndarray
+            The input points.
+
+        Returns
+        -------
+        y : numpy.ndarray
+            The evaluations of the Function.
+        tensap.Function
+            The Function with stored evaluations, for future reuse.
+
+        &#39;&#39;&#39;
+        if np.ndim(x) &lt; 2:
+            x = np.reshape(x, [np.size(x), 1])
+
+        if self.store and np.size(self._y_stored) != 0:
+            ind_2, ind_1 = np.nonzero(np.all(x == self._x_stored[:,
+                                                                 np.newaxis],
+                                             axis=2))
+
+            if np.prod(self.output_shape) != 1:
+                self._y_stored = np.reshape(self._y_stored,
+                                            (self._y_stored.shape[0], -1),
+                                            order=&#39;F&#39;)
+
+            y = np.zeros((x.shape[0], self._y_stored.shape[1]))
+            y[ind_1, :] = self._y_stored[ind_2, :]
+
+            x_new = x[np.setdiff1d(range(x.shape[0]), ind_1), :]
+            if x_new.size != 0:
+                y_new = self.eval(x_new)
+                y[np.setdiff1d(range(x.shape[0]), ind_1), :] = \
+                    np.reshape(y_new, (y_new.shape[0], -1))
+                self._x_stored = np.vstack((self._x_stored, x_new))
+                self._y_stored = np.vstack((self._y_stored,
+                                            np.reshape(y_new,
+                                                       (y_new.shape[0], -1))))
+            y = np.reshape(y, np.concatenate(([y.shape[0]],
+                                              np.atleast_1d(
+                                                  self.output_shape))),
+                           order=&#39;F&#39;)
+            if np.prod(self.output_shape) != 1:
+                self._y_stored = np.reshape(self._y_stored, np.concatenate(([
+                    self._y_stored.shape[0]], np.atleast_1d(
+                        self.output_shape))), order=&#39;F&#39;)
+        else:
+            y = self.eval(x)
+            if np.ndim(y) &lt; 2:
+                y = np.reshape(y, [np.size(y), 1])
+
+            self.store = True
+            self._x_stored = x
+            self._y_stored = y
+
+        return np.squeeze(y), self
+
+    def fplot(self, support=None, n_points=100, *args, **kwargs):
+        &#39;&#39;&#39;
+        Plot the function on a support using a given number of points.
+
+        Parameters
+        ----------
+        support : list or numpy.ndarray, optional
+            The support of the plot. The default is None, indicating to use
+            the truncated_support of self.measure.
+        n_points : int, optional
+            The number of points used for the plot. The default is 100.
+        *args : tuple
+            Additional parameters used by the function matplotlib.pyplot.plot.
+
+        Returns
+        -------
+        None.
+
+        &#39;&#39;&#39;
+        import matplotlib.pyplot as plt
+        if support is None:
+            support = self.measure.truncated_support()
+
+        x = np.linspace(support[0], support[1], int(n_points))
+        plt.plot(x, self.eval(x), *args, **kwargs)
+        plt.show()
+
+    def surf(self, n=None, *args):
+        &#39;&#39;&#39;
+        Surface plot of the bivariate function.
+
+        Parameters
+        ----------
+        n : list or numpy.ndarray, optional
+            The number of points used for the surface plot in each dimension.
+            The default is [1000, 1000].
+        *args : tuple
+            Additional parameters used by matplotlib.pyplot&#39;s plot_surface
+            function.
+
+        Returns
+        -------
+        ax : matplotlib.axes._subplots.AxesSubplot
+            The surface plot as a matplotlib.axes._subplots.AxesSubplot object.
+
+        &#39;&#39;&#39;
+        assert self.measure is not None, &#39;Attribute measure is empty.&#39;
+        assert self.dim == 2, \
+            (&#39;The function should be a bivariate function, use the partial &#39; +
+             &#39;evaluation for higher-dimensional function.&#39;)
+
+        from mpl_toolkits.mplot3d import Axes3D
+        import matplotlib.pyplot as plt
+
+        if n is None:
+            n = [1000, 1000]
+
+        sup = self.measure.truncated_support()
+
+        if np.size(n) == 1:
+            n = np.tile(n, 2)
+
+        grids = [np.linspace(sup[0][0], sup[0][1], n[0]),
+                 np.linspace(sup[1][0], sup[1][1], n[1])]
+        grids[0] = grids[0][1:-1]
+        grids[1] = grids[1][1:-1]
+        grids = [np.reshape(x, (x.size, -1)) for x in grids]
+
+        grid = tensap.FullTensorGrid(grids)
+        fg = self.eval_on_tensor_grid(grid)
+
+        fig = plt.figure()
+        ax = fig.add_subplot(111, projection=&#39;3d&#39;)
+        x, y = np.meshgrid(grids[0], grids[1])
+        ax.plot_surface(x, y, fg.data, *args)
+        plt.show()
+
+        return ax
+
+    def partial_evaluation(self, not_alpha, x_not_alpha):
+        &#39;&#39;&#39;
+        Return the partial evaluation of a function
+        f(x) = f(x_alpha,x_not_alpha), a function
+        f_alpha(.) = f(., x_not_alpha) for fixed values x_not_alpha of the
+        variables with indices not_alpha.
+
+        Parameters
+        ----------
+        not_alpha : list or numpy.ndarray
+            The indices of the fixed variables.
+        x_not_alpha : numpy.ndarray
+            The points at which the function is evaluated in the dimensions
+            not_alpha.
+
+        Raises
+        ------
+        ValueError
+            If the Function has an empty attribute dim.
+
+        Returns
+        -------
+        f_alpha : tensap.UserDefinedFunction
+            The partial evaluation of the Function.
+
+        &#39;&#39;&#39;
+        if self.dim is None or np.size(self.dim) == 0:
+            raise ValueError(&#39;The Function has an empty attribute dim.&#39;)
+
+        alpha = np.setdiff1d(range(self.dim), not_alpha)
+        ind = [np.nonzero(np.concatenate((alpha, not_alpha)) == x)[0][0] for
+               x in range(self.dim)]
+
+        def fun(x_alpha):
+            grid = tensap.FullTensorGrid([x_alpha, x_not_alpha])
+            return self.eval(grid.array()[:, ind])
+
+        f_alpha = tensap.UserDefinedFunction(fun, alpha.size)
+        f_alpha.store = self.store
+        f_alpha.evaluation_at_multiple_points = \
+            self.evaluation_at_multiple_points
+        f_alpha.measure = self.measure.marginal(alpha)
+
+        return f_alpha
+
+    def random(self, n=1, measure=None):
+        &#39;&#39;&#39;
+        Evaluates the function at n points x drawn randomly according to the
+        ProbabilityMeasure in measure if provided, or in self.measure.
+
+        Parameters
+        ----------
+        n : int, optional
+            The number of random evaluations. The default is 1.
+        measure : tensap.ProbabilityMeasure, optional
+            The probability measure according to which the points x are drawn.
+            The default is None, indicating to use self.measure.
+
+        Raises
+        ------
+        ValueError
+            If the provided measure is not a tensap.ProbabilityMeasure.
+
+        Returns
+        -------
+        numpy.ndarray
+            The evaluations of the function at the points x.
+        x : numpy.ndarray
+            The points at which the function is to be evaluated.
+
+        &#39;&#39;&#39;
+        if measure is None:
+            if isinstance(self.measure, tensap.ProbabilityMeasure):
+                measure = self.measure
+            else:
+                raise ValueError(&#39;Must provide a ProbabilityMeasure.&#39;)
+        elif not isinstance(self.measure, tensap.ProbabilityMeasure):
+            raise ValueError(&#39;Must provide a ProbabilityMeasure.&#39;)
+
+        x = measure.random(n)
+        return self.eval(x), x
+
+    def eval_on_tensor_grid(self, x):
+        &#39;&#39;&#39;
+        Evaluate the Function on a grid x.
+
+        Parameters
+        ----------
+        x : tensap.TensorGrid
+            The tensap.ensorGrid used for the evaluation..
+
+        Raises
+        ------
+        NotImplementedError
+            If the method is not implemented.
+        ValueError
+            If x is not a tensap.TensorGrid object.
+
+        Returns
+        -------
+        fx : numpy.ndarray
+            The evaluation of the Function on the grid.
+
+        &#39;&#39;&#39;
+        x_a = x.array()
+        fx = self.eval(x_a)
+
+        if isinstance(x, tensap.SparseTensorGrid):
+            if np.all(self.output_shape == 1):
+                fx = tensap.SparseTensor(fx, x.indices, x.shape)
+            else:
+                raise NotImplementedError(&#39;Method not implemented.&#39;)
+        elif isinstance(x, tensap.FullTensorGrid):
+            if np.all(self.output_shape == 1):
+                shape = x.shape
+                if self.dim &gt; 1:
+                    fx = np.reshape(fx, shape, order=&#39;F&#39;)
+            else:
+                shape = np.concatenate((np.atleast_1d(x.shape),
+                                        np.atleast_1d(self.output_shape)))
+                fx = np.reshape(fx, shape, order=&#39;F&#39;)
+            fx = tensap.FullTensor(fx, np.size(shape), shape)
+        else:
+            raise ValueError(&#39;A TensorGrid object must be provided.&#39;)
+
+        return fx
+
+    def test_error(self, g, n=1000, measure=None):
+        &#39;&#39;&#39;
+        Compute the test error associated with the function, using a function g
+        or some of its evaluations as a reference. A measure can be provided
+        to randomly draw the test input data.
+
+        Parameters
+        ----------
+        g : tensap.Function or numpy.ndarray
+            The reference function or evaluations of it.
+        n : int or numpy.ndarray, optional
+            The test sample size, or the test input data. The default is 1000
+            test input points.
+        measure : tap.ProbabilityMeasure, optional
+            A probability measure used to draw the test input data. The default
+            is None, indicating to either use self.measure, g.measure or the
+            provided input points.
+
+        Returns
+        -------
+        err_l2 : float
+            The L2 error.
+        err_linf : float
+            The L-infinity error.
+
+        &#39;&#39;&#39;
+        if measure is not None:
+            x_test = measure.random(n)
+            g_x_test = g.eval(x_test)
+            err_l2, err_linf = self.test_error(g_x_test, x_test)
+        else:
+            if isinstance(g, tensap.Function) and np.size(n) == 1:
+                if self.measure is not None:
+                    measure = self.measure
+                else:
+                    measure = g.measure
+                err_l2, err_linf = self.test_error(g, n, measure)
+            elif np.size(n) != 1:
+                x_test = n
+                n = np.shape(x_test)[0]
+                f_x_test = self.eval(x_test)
+                if isinstance(g, tensap.Function):
+                    g_x_test = g.eval(x_test)
+                else:
+                    assert np.shape(g)[0] == n, \
+                        (&#39;The number of evaluations does not match the &#39; +
+                         &#39;number of points.&#39;)
+                    g_x_test = np.array(g)
+
+                f_x_test = np.reshape(f_x_test, (n, -1), order=&#39;F&#39;)
+                g_x_test = np.reshape(g_x_test, (n, -1), order=&#39;F&#39;)
+                err_l2 = np.linalg.norm(f_x_test - g_x_test) / \
+                    np.linalg.norm(g_x_test)
+                err_linf = np.linalg.norm(np.sqrt(np.sum((f_x_test -
+                                                          g_x_test)**2, 1)),
+                                          np.inf) / \
+                    np.linalg.norm(np.sqrt(np.sum(g_x_test**2, 1)), np.inf)
+
+        return err_l2, err_linf
+
+    @abstractmethod
+    def eval(self, x):
+        &#39;&#39;&#39;
+        Evaluate the function at the points x.
+
+        Parameters
+        ----------
+        x : list or numpy.ndarray
+            The points at which the function is to be evaluated.
+
+        Returns
+        -------
+        numpy.ndarray
+            The evaluations of the function at the points x.
+
+        &#39;&#39;&#39;</code></pre>
+</details>
+<h3>Subclasses</h3>
+<ul class="hlist">
+<li><a title="tensap.approximation.bases.functional_basis_array.FunctionalBasisArray" href="../approximation/bases/functional_basis_array.html#tensap.approximation.bases.functional_basis_array.FunctionalBasisArray">FunctionalBasisArray</a></li>
+<li><a title="tensap.functions.compositional_model_function.CompositionalModelFunction" href="compositional_model_function.html#tensap.functions.compositional_model_function.CompositionalModelFunction">CompositionalModelFunction</a></li>
+<li><a title="tensap.functions.functional_tensor.FunctionalTensor" href="functional_tensor.html#tensap.functions.functional_tensor.FunctionalTensor">FunctionalTensor</a></li>
+<li><a title="tensap.functions.tensorized_function.TensorizedFunction" href="tensorized_function.html#tensap.functions.tensorized_function.TensorizedFunction">TensorizedFunction</a></li>
+<li><a title="tensap.functions.user_defined_function.UserDefinedFunction" href="user_defined_function.html#tensap.functions.user_defined_function.UserDefinedFunction">UserDefinedFunction</a></li>
+</ul>
+<h3>Methods</h3>
+<dl>
+<dt id="tensap.functions.function.Function.eval"><code class="name flex">
+<span>def <span class="ident">eval</span></span>(<span>self, x)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Evaluate the function at the points x.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>x</code></strong> :&ensp;<code>list</code> or <code>numpy.ndarray</code></dt>
+<dd>The points at which the function is to be evaluated.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>numpy.ndarray</code></dt>
+<dd>The evaluations of the function at the points x.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@abstractmethod
+def eval(self, x):
+    &#39;&#39;&#39;
+    Evaluate the function at the points x.
+
+    Parameters
+    ----------
+    x : list or numpy.ndarray
+        The points at which the function is to be evaluated.
+
+    Returns
+    -------
+    numpy.ndarray
+        The evaluations of the function at the points x.
+
+    &#39;&#39;&#39;</code></pre>
+</details>
+</dd>
+<dt id="tensap.functions.function.Function.eval_on_tensor_grid"><code class="name flex">
+<span>def <span class="ident">eval_on_tensor_grid</span></span>(<span>self, x)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Evaluate the Function on a grid x.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>x</code></strong> :&ensp;<code>tensap.TensorGrid</code></dt>
+<dd>The tensap.ensorGrid used for the evaluation..</dd>
+</dl>
+<h2 id="raises">Raises</h2>
+<dl>
+<dt><code>NotImplementedError</code></dt>
+<dd>If the method is not implemented.</dd>
+<dt><code>ValueError</code></dt>
+<dd>If x is not a tensap.TensorGrid object.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><strong><code>fx</code></strong> :&ensp;<code>numpy.ndarray</code></dt>
+<dd>The evaluation of the Function on the grid.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def eval_on_tensor_grid(self, x):
+    &#39;&#39;&#39;
+    Evaluate the Function on a grid x.
+
+    Parameters
+    ----------
+    x : tensap.TensorGrid
+        The tensap.ensorGrid used for the evaluation..
+
+    Raises
+    ------
+    NotImplementedError
+        If the method is not implemented.
+    ValueError
+        If x is not a tensap.TensorGrid object.
+
+    Returns
+    -------
+    fx : numpy.ndarray
+        The evaluation of the Function on the grid.
+
+    &#39;&#39;&#39;
+    x_a = x.array()
+    fx = self.eval(x_a)
+
+    if isinstance(x, tensap.SparseTensorGrid):
+        if np.all(self.output_shape == 1):
+            fx = tensap.SparseTensor(fx, x.indices, x.shape)
+        else:
+            raise NotImplementedError(&#39;Method not implemented.&#39;)
+    elif isinstance(x, tensap.FullTensorGrid):
+        if np.all(self.output_shape == 1):
+            shape = x.shape
+            if self.dim &gt; 1:
+                fx = np.reshape(fx, shape, order=&#39;F&#39;)
+        else:
+            shape = np.concatenate((np.atleast_1d(x.shape),
+                                    np.atleast_1d(self.output_shape)))
+            fx = np.reshape(fx, shape, order=&#39;F&#39;)
+        fx = tensap.FullTensor(fx, np.size(shape), shape)
+    else:
+        raise ValueError(&#39;A TensorGrid object must be provided.&#39;)
+
+    return fx</code></pre>
+</details>
+</dd>
+<dt id="tensap.functions.function.Function.fplot"><code class="name flex">
+<span>def <span class="ident">fplot</span></span>(<span>self, support=None, n_points=100, *args, **kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Plot the function on a support using a given number of points.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>support</code></strong> :&ensp;<code>list</code> or <code>numpy.ndarray</code>, optional</dt>
+<dd>The support of the plot. The default is None, indicating to use
+the truncated_support of self.measure.</dd>
+<dt><strong><code>n_points</code></strong> :&ensp;<code>int</code>, optional</dt>
+<dd>The number of points used for the plot. The default is 100.</dd>
+<dt><strong><code>*args</code></strong> :&ensp;<code>tuple</code></dt>
+<dd>Additional parameters used by the function matplotlib.pyplot.plot.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<p>None.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def fplot(self, support=None, n_points=100, *args, **kwargs):
+    &#39;&#39;&#39;
+    Plot the function on a support using a given number of points.
+
+    Parameters
+    ----------
+    support : list or numpy.ndarray, optional
+        The support of the plot. The default is None, indicating to use
+        the truncated_support of self.measure.
+    n_points : int, optional
+        The number of points used for the plot. The default is 100.
+    *args : tuple
+        Additional parameters used by the function matplotlib.pyplot.plot.
+
+    Returns
+    -------
+    None.
+
+    &#39;&#39;&#39;
+    import matplotlib.pyplot as plt
+    if support is None:
+        support = self.measure.truncated_support()
+
+    x = np.linspace(support[0], support[1], int(n_points))
+    plt.plot(x, self.eval(x), *args, **kwargs)
+    plt.show()</code></pre>
+</details>
+</dd>
+<dt id="tensap.functions.function.Function.partial_evaluation"><code class="name flex">
+<span>def <span class="ident">partial_evaluation</span></span>(<span>self, not_alpha, x_not_alpha)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Return the partial evaluation of a function
+f(x) = f(x_alpha,x_not_alpha), a function
+f_alpha(.) = f(., x_not_alpha) for fixed values x_not_alpha of the
+variables with indices not_alpha.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>not_alpha</code></strong> :&ensp;<code>list</code> or <code>numpy.ndarray</code></dt>
+<dd>The indices of the fixed variables.</dd>
+<dt><strong><code>x_not_alpha</code></strong> :&ensp;<code>numpy.ndarray</code></dt>
+<dd>The points at which the function is evaluated in the dimensions
+not_alpha.</dd>
+</dl>
+<h2 id="raises">Raises</h2>
+<dl>
+<dt><code>ValueError</code></dt>
+<dd>If the Function has an empty attribute dim.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><strong><code>f_alpha</code></strong> :&ensp;<code>tensap.UserDefinedFunction</code></dt>
+<dd>The partial evaluation of the Function.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def partial_evaluation(self, not_alpha, x_not_alpha):
+    &#39;&#39;&#39;
+    Return the partial evaluation of a function
+    f(x) = f(x_alpha,x_not_alpha), a function
+    f_alpha(.) = f(., x_not_alpha) for fixed values x_not_alpha of the
+    variables with indices not_alpha.
+
+    Parameters
+    ----------
+    not_alpha : list or numpy.ndarray
+        The indices of the fixed variables.
+    x_not_alpha : numpy.ndarray
+        The points at which the function is evaluated in the dimensions
+        not_alpha.
+
+    Raises
+    ------
+    ValueError
+        If the Function has an empty attribute dim.
+
+    Returns
+    -------
+    f_alpha : tensap.UserDefinedFunction
+        The partial evaluation of the Function.
+
+    &#39;&#39;&#39;
+    if self.dim is None or np.size(self.dim) == 0:
+        raise ValueError(&#39;The Function has an empty attribute dim.&#39;)
+
+    alpha = np.setdiff1d(range(self.dim), not_alpha)
+    ind = [np.nonzero(np.concatenate((alpha, not_alpha)) == x)[0][0] for
+           x in range(self.dim)]
+
+    def fun(x_alpha):
+        grid = tensap.FullTensorGrid([x_alpha, x_not_alpha])
+        return self.eval(grid.array()[:, ind])
+
+    f_alpha = tensap.UserDefinedFunction(fun, alpha.size)
+    f_alpha.store = self.store
+    f_alpha.evaluation_at_multiple_points = \
+        self.evaluation_at_multiple_points
+    f_alpha.measure = self.measure.marginal(alpha)
+
+    return f_alpha</code></pre>
+</details>
+</dd>
+<dt id="tensap.functions.function.Function.random"><code class="name flex">
+<span>def <span class="ident">random</span></span>(<span>self, n=1, measure=None)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Evaluates the function at n points x drawn randomly according to the
+ProbabilityMeasure in measure if provided, or in self.measure.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>n</code></strong> :&ensp;<code>int</code>, optional</dt>
+<dd>The number of random evaluations. The default is 1.</dd>
+<dt><strong><code>measure</code></strong> :&ensp;<code>tensap.ProbabilityMeasure</code>, optional</dt>
+<dd>The probability measure according to which the points x are drawn.
+The default is None, indicating to use self.measure.</dd>
+</dl>
+<h2 id="raises">Raises</h2>
+<dl>
+<dt><code>ValueError</code></dt>
+<dd>If the provided measure is not a tensap.ProbabilityMeasure.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>numpy.ndarray</code></dt>
+<dd>The evaluations of the function at the points x.</dd>
+<dt><strong><code>x</code></strong> :&ensp;<code>numpy.ndarray</code></dt>
+<dd>The points at which the function is to be evaluated.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def random(self, n=1, measure=None):
+    &#39;&#39;&#39;
+    Evaluates the function at n points x drawn randomly according to the
+    ProbabilityMeasure in measure if provided, or in self.measure.
+
+    Parameters
+    ----------
+    n : int, optional
+        The number of random evaluations. The default is 1.
+    measure : tensap.ProbabilityMeasure, optional
+        The probability measure according to which the points x are drawn.
+        The default is None, indicating to use self.measure.
+
+    Raises
+    ------
+    ValueError
+        If the provided measure is not a tensap.ProbabilityMeasure.
+
+    Returns
+    -------
+    numpy.ndarray
+        The evaluations of the function at the points x.
+    x : numpy.ndarray
+        The points at which the function is to be evaluated.
+
+    &#39;&#39;&#39;
+    if measure is None:
+        if isinstance(self.measure, tensap.ProbabilityMeasure):
+            measure = self.measure
+        else:
+            raise ValueError(&#39;Must provide a ProbabilityMeasure.&#39;)
+    elif not isinstance(self.measure, tensap.ProbabilityMeasure):
+        raise ValueError(&#39;Must provide a ProbabilityMeasure.&#39;)
+
+    x = measure.random(n)
+    return self.eval(x), x</code></pre>
+</details>
+</dd>
+<dt id="tensap.functions.function.Function.store_eval"><code class="name flex">
+<span>def <span class="ident">store_eval</span></span>(<span>self, x)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Evaluate the function, reuising previous evaluations if possible, and
+storing the new evaluations in self.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>x</code></strong> :&ensp;<code>numpy.ndarray</code></dt>
+<dd>The input points.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><strong><code>y</code></strong> :&ensp;<code>numpy.ndarray</code></dt>
+<dd>The evaluations of the Function.</dd>
+<dt><code>tensap.Function</code></dt>
+<dd>The Function with stored evaluations, for future reuse.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def store_eval(self, x):
+    &#39;&#39;&#39;
+    Evaluate the function, reuising previous evaluations if possible, and
+    storing the new evaluations in self.
+
+    Parameters
+    ----------
+    x : numpy.ndarray
+        The input points.
+
+    Returns
+    -------
+    y : numpy.ndarray
+        The evaluations of the Function.
+    tensap.Function
+        The Function with stored evaluations, for future reuse.
+
+    &#39;&#39;&#39;
+    if np.ndim(x) &lt; 2:
+        x = np.reshape(x, [np.size(x), 1])
+
+    if self.store and np.size(self._y_stored) != 0:
+        ind_2, ind_1 = np.nonzero(np.all(x == self._x_stored[:,
+                                                             np.newaxis],
+                                         axis=2))
+
+        if np.prod(self.output_shape) != 1:
+            self._y_stored = np.reshape(self._y_stored,
+                                        (self._y_stored.shape[0], -1),
+                                        order=&#39;F&#39;)
+
+        y = np.zeros((x.shape[0], self._y_stored.shape[1]))
+        y[ind_1, :] = self._y_stored[ind_2, :]
+
+        x_new = x[np.setdiff1d(range(x.shape[0]), ind_1), :]
+        if x_new.size != 0:
+            y_new = self.eval(x_new)
+            y[np.setdiff1d(range(x.shape[0]), ind_1), :] = \
+                np.reshape(y_new, (y_new.shape[0], -1))
+            self._x_stored = np.vstack((self._x_stored, x_new))
+            self._y_stored = np.vstack((self._y_stored,
+                                        np.reshape(y_new,
+                                                   (y_new.shape[0], -1))))
+        y = np.reshape(y, np.concatenate(([y.shape[0]],
+                                          np.atleast_1d(
+                                              self.output_shape))),
+                       order=&#39;F&#39;)
+        if np.prod(self.output_shape) != 1:
+            self._y_stored = np.reshape(self._y_stored, np.concatenate(([
+                self._y_stored.shape[0]], np.atleast_1d(
+                    self.output_shape))), order=&#39;F&#39;)
+    else:
+        y = self.eval(x)
+        if np.ndim(y) &lt; 2:
+            y = np.reshape(y, [np.size(y), 1])
+
+        self.store = True
+        self._x_stored = x
+        self._y_stored = y
+
+    return np.squeeze(y), self</code></pre>
+</details>
+</dd>
+<dt id="tensap.functions.function.Function.surf"><code class="name flex">
+<span>def <span class="ident">surf</span></span>(<span>self, n=None, *args)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Surface plot of the bivariate function.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>n</code></strong> :&ensp;<code>list</code> or <code>numpy.ndarray</code>, optional</dt>
+<dd>The number of points used for the surface plot in each dimension.
+The default is [1000, 1000].</dd>
+<dt><strong><code>*args</code></strong> :&ensp;<code>tuple</code></dt>
+<dd>Additional parameters used by matplotlib.pyplot's plot_surface
+function.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><strong><code>ax</code></strong> :&ensp;<code>matplotlib.axes._subplots.AxesSubplot</code></dt>
+<dd>The surface plot as a matplotlib.axes._subplots.AxesSubplot object.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def surf(self, n=None, *args):
+    &#39;&#39;&#39;
+    Surface plot of the bivariate function.
+
+    Parameters
+    ----------
+    n : list or numpy.ndarray, optional
+        The number of points used for the surface plot in each dimension.
+        The default is [1000, 1000].
+    *args : tuple
+        Additional parameters used by matplotlib.pyplot&#39;s plot_surface
+        function.
+
+    Returns
+    -------
+    ax : matplotlib.axes._subplots.AxesSubplot
+        The surface plot as a matplotlib.axes._subplots.AxesSubplot object.
+
+    &#39;&#39;&#39;
+    assert self.measure is not None, &#39;Attribute measure is empty.&#39;
+    assert self.dim == 2, \
+        (&#39;The function should be a bivariate function, use the partial &#39; +
+         &#39;evaluation for higher-dimensional function.&#39;)
+
+    from mpl_toolkits.mplot3d import Axes3D
+    import matplotlib.pyplot as plt
+
+    if n is None:
+        n = [1000, 1000]
+
+    sup = self.measure.truncated_support()
+
+    if np.size(n) == 1:
+        n = np.tile(n, 2)
+
+    grids = [np.linspace(sup[0][0], sup[0][1], n[0]),
+             np.linspace(sup[1][0], sup[1][1], n[1])]
+    grids[0] = grids[0][1:-1]
+    grids[1] = grids[1][1:-1]
+    grids = [np.reshape(x, (x.size, -1)) for x in grids]
+
+    grid = tensap.FullTensorGrid(grids)
+    fg = self.eval_on_tensor_grid(grid)
+
+    fig = plt.figure()
+    ax = fig.add_subplot(111, projection=&#39;3d&#39;)
+    x, y = np.meshgrid(grids[0], grids[1])
+    ax.plot_surface(x, y, fg.data, *args)
+    plt.show()
+
+    return ax</code></pre>
+</details>
+</dd>
+<dt id="tensap.functions.function.Function.test_error"><code class="name flex">
+<span>def <span class="ident">test_error</span></span>(<span>self, g, n=1000, measure=None)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Compute the test error associated with the function, using a function g
+or some of its evaluations as a reference. A measure can be provided
+to randomly draw the test input data.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>g</code></strong> :&ensp;<code>tensap.Function</code> or <code>numpy.ndarray</code></dt>
+<dd>The reference function or evaluations of it.</dd>
+<dt><strong><code>n</code></strong> :&ensp;<code>int</code> or <code>numpy.ndarray</code>, optional</dt>
+<dd>The test sample size, or the test input data. The default is 1000
+test input points.</dd>
+<dt><strong><code>measure</code></strong> :&ensp;<code>tap.ProbabilityMeasure</code>, optional</dt>
+<dd>A probability measure used to draw the test input data. The default
+is None, indicating to either use self.measure, g.measure or the
+provided input points.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><strong><code>err_l2</code></strong> :&ensp;<code>float</code></dt>
+<dd>The L2 error.</dd>
+<dt><strong><code>err_linf</code></strong> :&ensp;<code>float</code></dt>
+<dd>The L-infinity error.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def test_error(self, g, n=1000, measure=None):
+    &#39;&#39;&#39;
+    Compute the test error associated with the function, using a function g
+    or some of its evaluations as a reference. A measure can be provided
+    to randomly draw the test input data.
+
+    Parameters
+    ----------
+    g : tensap.Function or numpy.ndarray
+        The reference function or evaluations of it.
+    n : int or numpy.ndarray, optional
+        The test sample size, or the test input data. The default is 1000
+        test input points.
+    measure : tap.ProbabilityMeasure, optional
+        A probability measure used to draw the test input data. The default
+        is None, indicating to either use self.measure, g.measure or the
+        provided input points.
+
+    Returns
+    -------
+    err_l2 : float
+        The L2 error.
+    err_linf : float
+        The L-infinity error.
+
+    &#39;&#39;&#39;
+    if measure is not None:
+        x_test = measure.random(n)
+        g_x_test = g.eval(x_test)
+        err_l2, err_linf = self.test_error(g_x_test, x_test)
+    else:
+        if isinstance(g, tensap.Function) and np.size(n) == 1:
+            if self.measure is not None:
+                measure = self.measure
+            else:
+                measure = g.measure
+            err_l2, err_linf = self.test_error(g, n, measure)
+        elif np.size(n) != 1:
+            x_test = n
+            n = np.shape(x_test)[0]
+            f_x_test = self.eval(x_test)
+            if isinstance(g, tensap.Function):
+                g_x_test = g.eval(x_test)
+            else:
+                assert np.shape(g)[0] == n, \
+                    (&#39;The number of evaluations does not match the &#39; +
+                     &#39;number of points.&#39;)
+                g_x_test = np.array(g)
+
+            f_x_test = np.reshape(f_x_test, (n, -1), order=&#39;F&#39;)
+            g_x_test = np.reshape(g_x_test, (n, -1), order=&#39;F&#39;)
+            err_l2 = np.linalg.norm(f_x_test - g_x_test) / \
+                np.linalg.norm(g_x_test)
+            err_linf = np.linalg.norm(np.sqrt(np.sum((f_x_test -
+                                                      g_x_test)**2, 1)),
+                                      np.inf) / \
+                np.linalg.norm(np.sqrt(np.sum(g_x_test**2, 1)), np.inf)
+
+    return err_l2, err_linf</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+</dl>
+</section>
+</article>
+<nav id="sidebar">
+<h1>Index</h1>
+<div class="toc">
+<ul></ul>
+</div>
+<ul id="index">
+<li><h3>Super-module</h3>
+<ul>
+<li><code><a title="tensap.functions" href="index.html">tensap.functions</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-classes">Classes</a></h3>
+<ul>
+<li>
+<h4><code><a title="tensap.functions.function.Function" href="#tensap.functions.function.Function">Function</a></code></h4>
+<ul class="two-column">
+<li><code><a title="tensap.functions.function.Function.eval" href="#tensap.functions.function.Function.eval">eval</a></code></li>
+<li><code><a title="tensap.functions.function.Function.eval_on_tensor_grid" href="#tensap.functions.function.Function.eval_on_tensor_grid">eval_on_tensor_grid</a></code></li>
+<li><code><a title="tensap.functions.function.Function.fplot" href="#tensap.functions.function.Function.fplot">fplot</a></code></li>
+<li><code><a title="tensap.functions.function.Function.partial_evaluation" href="#tensap.functions.function.Function.partial_evaluation">partial_evaluation</a></code></li>
+<li><code><a title="tensap.functions.function.Function.random" href="#tensap.functions.function.Function.random">random</a></code></li>
+<li><code><a title="tensap.functions.function.Function.store_eval" href="#tensap.functions.function.Function.store_eval">store_eval</a></code></li>
+<li><code><a title="tensap.functions.function.Function.surf" href="#tensap.functions.function.Function.surf">surf</a></code></li>
+<li><code><a title="tensap.functions.function.Function.test_error" href="#tensap.functions.function.Function.test_error">test_error</a></code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.8.1</a>.</p>
+</footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad()</script>
+</body>
+</html>

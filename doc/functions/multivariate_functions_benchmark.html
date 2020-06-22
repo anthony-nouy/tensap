@@ -1,0 +1,654 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+<meta name="generator" content="pdoc 0.8.1" />
+<title>tensap.functions.multivariate_functions_benchmark API documentation</title>
+<meta name="description" content="Module multivariate_functions_benchmark …" />
+<link href='https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.min.css' rel='stylesheet'>
+<link href='https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/8.0.0/sanitize.min.css' rel='stylesheet'>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css" rel="stylesheet">
+<style>.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}.admonition{padding:.1em .5em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>tensap.functions.multivariate_functions_benchmark</code></h1>
+</header>
+<section id="section-intro">
+<p>Module multivariate_functions_benchmark</p>
+<p>Copyright (c) 2020, Anthony Nouy, Erwan Grelier
+This file is part of tensap (tensor approximation package).</p>
+<p>tensap is free software: you can redistribute it and/or modify
+it under the terms of the GNU Lesser General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.</p>
+<p>tensap is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+See the
+GNU Lesser General Public License for more details.</p>
+<p>You should have received a copy of the GNU Lesser General Public License
+along with tensap.
+If not, see <a href="https://www.gnu.org/licenses/">https://www.gnu.org/licenses/</a>.</p>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">&#39;&#39;&#39;
+Module multivariate_functions_benchmark
+
+Copyright (c) 2020, Anthony Nouy, Erwan Grelier
+This file is part of tensap (tensor approximation package).
+
+tensap is free software: you can redistribute it and/or modify
+it under the terms of the GNU Lesser General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+tensap is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU Lesser General Public License for more details.
+
+You should have received a copy of the GNU Lesser General Public License
+along with tensap.  If not, see &lt;https://www.gnu.org/licenses/&gt;.
+
+&#39;&#39;&#39;
+
+import sys
+import numpy as np
+sys.path.insert(0, &#39;./../../../&#39;)
+import tensap
+
+
+def multivariate_functions_benchmark(case, *args):
+    &#39;&#39;&#39;
+    Generate different functions used to benchmark the package.
+
+    Parameters
+    ----------
+    case : str
+        The name of the function. Can be &#39;borehole&#39;, &#39;ishigami&#39;,
+        &#39;sin_of_a_sum&#39;, &#39;linear_additive&#39;, &#39;linear_rank_one&#39;,
+        &#39;quadratic_rank_one&#39;, &#39;canonical_rank_2&#39;, &#39;mixture&#39;, &#39;field&#39;,
+        &#39;oscillatory&#39;, &#39;product_peak&#39;, &#39;corner_peak&#39;, &#39;gaussian&#39;, &#39;continuous&#39;,
+        &#39;discontinuous&#39;, &#39;henon_heiles&#39;, &#39;sobol&#39;, &#39;anisotropic&#39;, &#39;polynomial&#39;.
+    *args : tuple
+        Parameters of the function.
+
+    Raises
+    ------
+    NotImplementedError
+        If the function is not implemented.
+
+    Returns
+    -------
+    function
+        The asked function.
+    tensap.RandomVector
+        Input random variables.
+
+    &#39;&#39;&#39;
+    if case == &#39;borehole&#39;:
+        X = np.empty(8, dtype=object)
+        X[0] = tensap.NormalRandomVariable(0.1, 0.0161812)
+        X[1] = tensap.NormalRandomVariable(0, 1)
+        X[2] = tensap.UniformRandomVariable(63070, 115600)
+        X[3] = tensap.UniformRandomVariable(990, 1110)
+        X[4] = tensap.UniformRandomVariable(63.1, 116)
+        X[5] = tensap.UniformRandomVariable(700, 820)
+        X[6] = tensap.UniformRandomVariable(1120, 1680)
+        X[7] = tensap.UniformRandomVariable(9855, 12045)
+        X = tensap.RandomVector(X)
+
+        def fun(x):
+            return 2 * np.pi * x[:, 2] * (x[:, 3] - x[:, 5]) / \
+                (np.log(np.exp(7.71 + 1.0056*x[:, 1]) / x[:, 0]) *
+                 (1 + 2 * x[:, 6] * x[:, 2] /
+                  np.log(np.exp(7.71 + 1.0056 * x[:, 1]) / x[:, 0]) /
+                  x[:, 0]**2 / x[:, 7] + x[:, 2] / x[:, 4]))
+
+    elif case == &#39;ishigami&#39;:
+        if len(args) == 0:
+            d = 3
+        else:
+            d = args[0]
+        if len(args) &lt;= 1:
+            a = 7
+        else:
+            a = args[1]
+        if len(args) &lt;= 2:
+            b = 0.1
+        else:
+            b = args[2]
+
+        X = tensap.RandomVector(tensap.UniformRandomVariable(-np.pi, np.pi), d)
+
+        def fun(x):
+            return np.sin(x[:, 0]) + a*np.sin(x[:, 1])**2 + \
+                b*x[:, 2]**4*np.sin(x[:, 0])
+
+    elif case == &#39;sin_of_asum&#39;:
+        if len(args) == 0:
+            d = 3
+        else:
+            d = args[0]
+        if len(args) &lt;= 1:
+            def fun(x):
+                return np.sin(np.sum(x, 1))
+        else:
+            def fun(x):
+                return np.sin(np.matmul(x, np.reshape(args[1], (-1, 1))))
+
+        X = tensap.RandomVector(tensap.UniformRandomVariable(), d)
+
+    elif case == &#39;linear_additive&#39;:
+        if len(args) == 0:
+            d = 3
+        else:
+            d = args[0]
+        if len(args) &lt;= 1:
+            def fun(x):
+                return np.sum(x, 1)
+        else:
+            def fun(x):
+                return np.matmul(x, np.reshape(args[1], (-1, 1)))
+
+        X = tensap.RandomVector(tensap.UniformRandomVariable(), d)
+
+    elif case == &#39;linear_rank_one&#39;:
+        if len(args) == 0:
+            d = 3
+        else:
+            d = args[0]
+        if len(args) &lt;= 1:
+            w = np.zeros((1, d))
+        else:
+            w = np.reshape(args[1], (1, -1))
+
+        X = tensap.RandomVector(tensap.UniformRandomVariable(), d)
+
+        def fun(x):
+            return np.prod(np.tile(w, (np.shape(x)[0], 1)) + 2*x, 1)
+
+    elif case == &#39;quadratic_rank_one&#39;:
+        d = args[0]
+        c = args[1]
+
+        X = tensap.RandomVector(tensap.UniformRandomVariable(), d)
+
+        def fun(x):
+            return np.prod(np.tile(c[0, :], (np.shape(x)[0], 1)) +
+                           np.tile(c[1, :], (np.shape(x)[0], 1))*x +
+                           np.tile(c[2, :], (np.shape(x)[0], 1))*x**2, 1)
+
+    elif case == &#39;canonical_rank_2&#39;:
+        if len(args) == 0:
+            d = 3
+        else:
+            d = args[0]
+
+        X = tensap.RandomVector(tensap.UniformRandomVariable(), d)
+
+        def fun(x):
+            return x[:, 0] * x[:, 1] * x[:, 2] + x[:, 0]**2 + x[:, 1]
+
+    elif case == &#39;mixture&#39;:
+        if len(args) == 0:
+            d = 6
+        else:
+            d = args[0]
+
+        X = tensap.RandomVector(tensap.UniformRandomVariable(), d)
+
+        def fun(x):
+            return np.sin(x[:, 0] + x[:, 3])*np.exp(x[:, 4])*x[:, 5] + \
+                np.sin(x[:, 2]*x[:, 3])*x[:, 5]
+
+    elif case == &#39;field&#39;:
+        if len(args) == 0:
+            d = 6
+        else:
+            d = args[0]
+
+        X = tensap.RandomVector(tensap.UniformRandomVariable(0, 1), d)
+
+        def fun(x):
+            return 1 + np.cos(x[:, 0])*x[:, 1] + np.sin(x[:, 0])*x[:, 2] + \
+                np.exp(x[:, 0])*x[:, 3] + 1/(x[:, 0]+1)*x[:, 4] + \
+                1/(2*x[:, 0]+3)*x[:, 5]
+
+    elif case in (&#39;oscillatory&#39;, &#39;product_peak&#39;, &#39;corner_peak&#39;, &#39;gaussian&#39;,
+                  &#39;continuous&#39;, &#39;discontinuous&#39;):
+        if len(args) == 0:
+            d = 10
+        else:
+            d = args[0]
+
+        w = np.random.rand(1, d)
+        c = np.random.rand(1, d)
+
+        X = tensap.RandomVector(tensap.UniformRandomVariable(0, 1), d)
+
+        if case == &#39;oscillatory&#39;:
+            def fun(x):
+                return np.cos(w[0]*2*np.pi + np.matmul(x, np.transpose(c)))
+        elif case == &#39;product_peak&#39;:
+            def fun(x):
+                return 1/np.prod(np.tile(x**(-2), (np.shape(x)[0], 1)) +
+                                 (x + np.tile(w, (np.shape(x)[0], 1)))**2, 1)
+        elif case == &#39;corner_peak&#39;:
+            b = 185
+            e = 2
+            c = c*b/d**e/np.sum(c)
+
+            def fun(x):
+                return (1+np.matmul(x, np.transpose(c)))**(-d-1)
+        elif case == &#39;gaussian&#39;:
+            def fun(x):
+                return np.matmul(np.exp(
+                    -(x - np.tile(w, (np.shape(x)[0], 1)))**2,
+                    np.transpose(c)**2))
+        elif case == &#39;continuous&#39;:
+            def fun(x):
+                return np.matmul(np.exp(
+                    -np.abs(x - np.tile(w, (np.shape(x)[0], 1))),
+                    np.transpose(c)**2))
+        elif case == &#39;discontinuous&#39;:
+            raise NotImplementedError(&#39;Function not implemented.&#39;)
+
+    elif case == &#39;henon_heiles&#39;:
+        if len(args) == 0:
+            d = 3
+        else:
+            d = args[0]
+
+        X = tensap.RandomVector(tensap.NormalRandomVariable(), d)
+
+        def fun(x):
+            return 0.5*np.sum(x**2, 1) + \
+                0.2*np.sum(x[:, :-1]*x[:, 1:]**2-x[:, :-1]**3, 1) + \
+                0.2**2/16*np.sum((x[:, :-1]**2+x[:, 1:]**2)**2, 1)
+
+    elif case == &#39;sobol&#39;:
+        if len(args) == 0:
+            d = 8
+            a = [1, 2, 5, 10, 20, 50, 100, 500]
+        else:
+            d = args[0]
+            if len(args) &lt;= 1:
+                a = 2**np.arange(0, d)
+            else:
+                a = args[1]
+
+        X = tensap.RandomVector(tensap.UniformRandomVariable(0, 1), d)
+
+        def fun(x):
+            return np.prod((np.abs(4*x-2)+np.tile(a, (np.shape(x)[0], 1))) /
+                           np.tile(1+a, (np.shape(x)[0], 1)), 1)
+
+    elif case == &#39;anisotropic&#39;:
+        if len(args) == 0:
+            d = 16
+        else:
+            d = args[0]
+
+        X = tensap.RandomVector(tensap.UniformRandomVariable(0, 1), d)
+
+        def fun(x):
+            return x[:, 2]*np.sin(x[:, 3] + x[:, 15])
+
+    elif case == &#39;polynomial&#39;:
+        if len(args) == 0:
+            d = 16
+        else:
+            d = args[0]
+        if len(args) &lt;= 1:
+            q = 2
+        else:
+            q = args[1]
+
+        X = tensap.RandomVector(tensap.UniformRandomVariable(0, 1), d)
+
+        def fun(x):
+            return 1/(2**np.shape(x)[1])*np.prod(3*x**q+1, 1)
+
+    else:
+        raise NotImplementedError(&#39;Bad function name.&#39;)
+
+    return fun, X</code></pre>
+</details>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-functions">Functions</h2>
+<dl>
+<dt id="tensap.functions.multivariate_functions_benchmark.multivariate_functions_benchmark"><code class="name flex">
+<span>def <span class="ident">multivariate_functions_benchmark</span></span>(<span>case, *args)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Generate different functions used to benchmark the package.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>case</code></strong> :&ensp;<code>str</code></dt>
+<dd>The name of the function. Can be 'borehole', 'ishigami',
+'sin_of_a_sum', 'linear_additive', 'linear_rank_one',
+'quadratic_rank_one', 'canonical_rank_2', 'mixture', 'field',
+'oscillatory', 'product_peak', 'corner_peak', 'gaussian', 'continuous',
+'discontinuous', 'henon_heiles', 'sobol', 'anisotropic', 'polynomial'.</dd>
+<dt><strong><code>*args</code></strong> :&ensp;<code>tuple</code></dt>
+<dd>Parameters of the function.</dd>
+</dl>
+<h2 id="raises">Raises</h2>
+<dl>
+<dt><code>NotImplementedError</code></dt>
+<dd>If the function is not implemented.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>function</code></dt>
+<dd>The asked function.</dd>
+<dt><code>tensap.RandomVector</code></dt>
+<dd>Input random variables.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def multivariate_functions_benchmark(case, *args):
+    &#39;&#39;&#39;
+    Generate different functions used to benchmark the package.
+
+    Parameters
+    ----------
+    case : str
+        The name of the function. Can be &#39;borehole&#39;, &#39;ishigami&#39;,
+        &#39;sin_of_a_sum&#39;, &#39;linear_additive&#39;, &#39;linear_rank_one&#39;,
+        &#39;quadratic_rank_one&#39;, &#39;canonical_rank_2&#39;, &#39;mixture&#39;, &#39;field&#39;,
+        &#39;oscillatory&#39;, &#39;product_peak&#39;, &#39;corner_peak&#39;, &#39;gaussian&#39;, &#39;continuous&#39;,
+        &#39;discontinuous&#39;, &#39;henon_heiles&#39;, &#39;sobol&#39;, &#39;anisotropic&#39;, &#39;polynomial&#39;.
+    *args : tuple
+        Parameters of the function.
+
+    Raises
+    ------
+    NotImplementedError
+        If the function is not implemented.
+
+    Returns
+    -------
+    function
+        The asked function.
+    tensap.RandomVector
+        Input random variables.
+
+    &#39;&#39;&#39;
+    if case == &#39;borehole&#39;:
+        X = np.empty(8, dtype=object)
+        X[0] = tensap.NormalRandomVariable(0.1, 0.0161812)
+        X[1] = tensap.NormalRandomVariable(0, 1)
+        X[2] = tensap.UniformRandomVariable(63070, 115600)
+        X[3] = tensap.UniformRandomVariable(990, 1110)
+        X[4] = tensap.UniformRandomVariable(63.1, 116)
+        X[5] = tensap.UniformRandomVariable(700, 820)
+        X[6] = tensap.UniformRandomVariable(1120, 1680)
+        X[7] = tensap.UniformRandomVariable(9855, 12045)
+        X = tensap.RandomVector(X)
+
+        def fun(x):
+            return 2 * np.pi * x[:, 2] * (x[:, 3] - x[:, 5]) / \
+                (np.log(np.exp(7.71 + 1.0056*x[:, 1]) / x[:, 0]) *
+                 (1 + 2 * x[:, 6] * x[:, 2] /
+                  np.log(np.exp(7.71 + 1.0056 * x[:, 1]) / x[:, 0]) /
+                  x[:, 0]**2 / x[:, 7] + x[:, 2] / x[:, 4]))
+
+    elif case == &#39;ishigami&#39;:
+        if len(args) == 0:
+            d = 3
+        else:
+            d = args[0]
+        if len(args) &lt;= 1:
+            a = 7
+        else:
+            a = args[1]
+        if len(args) &lt;= 2:
+            b = 0.1
+        else:
+            b = args[2]
+
+        X = tensap.RandomVector(tensap.UniformRandomVariable(-np.pi, np.pi), d)
+
+        def fun(x):
+            return np.sin(x[:, 0]) + a*np.sin(x[:, 1])**2 + \
+                b*x[:, 2]**4*np.sin(x[:, 0])
+
+    elif case == &#39;sin_of_asum&#39;:
+        if len(args) == 0:
+            d = 3
+        else:
+            d = args[0]
+        if len(args) &lt;= 1:
+            def fun(x):
+                return np.sin(np.sum(x, 1))
+        else:
+            def fun(x):
+                return np.sin(np.matmul(x, np.reshape(args[1], (-1, 1))))
+
+        X = tensap.RandomVector(tensap.UniformRandomVariable(), d)
+
+    elif case == &#39;linear_additive&#39;:
+        if len(args) == 0:
+            d = 3
+        else:
+            d = args[0]
+        if len(args) &lt;= 1:
+            def fun(x):
+                return np.sum(x, 1)
+        else:
+            def fun(x):
+                return np.matmul(x, np.reshape(args[1], (-1, 1)))
+
+        X = tensap.RandomVector(tensap.UniformRandomVariable(), d)
+
+    elif case == &#39;linear_rank_one&#39;:
+        if len(args) == 0:
+            d = 3
+        else:
+            d = args[0]
+        if len(args) &lt;= 1:
+            w = np.zeros((1, d))
+        else:
+            w = np.reshape(args[1], (1, -1))
+
+        X = tensap.RandomVector(tensap.UniformRandomVariable(), d)
+
+        def fun(x):
+            return np.prod(np.tile(w, (np.shape(x)[0], 1)) + 2*x, 1)
+
+    elif case == &#39;quadratic_rank_one&#39;:
+        d = args[0]
+        c = args[1]
+
+        X = tensap.RandomVector(tensap.UniformRandomVariable(), d)
+
+        def fun(x):
+            return np.prod(np.tile(c[0, :], (np.shape(x)[0], 1)) +
+                           np.tile(c[1, :], (np.shape(x)[0], 1))*x +
+                           np.tile(c[2, :], (np.shape(x)[0], 1))*x**2, 1)
+
+    elif case == &#39;canonical_rank_2&#39;:
+        if len(args) == 0:
+            d = 3
+        else:
+            d = args[0]
+
+        X = tensap.RandomVector(tensap.UniformRandomVariable(), d)
+
+        def fun(x):
+            return x[:, 0] * x[:, 1] * x[:, 2] + x[:, 0]**2 + x[:, 1]
+
+    elif case == &#39;mixture&#39;:
+        if len(args) == 0:
+            d = 6
+        else:
+            d = args[0]
+
+        X = tensap.RandomVector(tensap.UniformRandomVariable(), d)
+
+        def fun(x):
+            return np.sin(x[:, 0] + x[:, 3])*np.exp(x[:, 4])*x[:, 5] + \
+                np.sin(x[:, 2]*x[:, 3])*x[:, 5]
+
+    elif case == &#39;field&#39;:
+        if len(args) == 0:
+            d = 6
+        else:
+            d = args[0]
+
+        X = tensap.RandomVector(tensap.UniformRandomVariable(0, 1), d)
+
+        def fun(x):
+            return 1 + np.cos(x[:, 0])*x[:, 1] + np.sin(x[:, 0])*x[:, 2] + \
+                np.exp(x[:, 0])*x[:, 3] + 1/(x[:, 0]+1)*x[:, 4] + \
+                1/(2*x[:, 0]+3)*x[:, 5]
+
+    elif case in (&#39;oscillatory&#39;, &#39;product_peak&#39;, &#39;corner_peak&#39;, &#39;gaussian&#39;,
+                  &#39;continuous&#39;, &#39;discontinuous&#39;):
+        if len(args) == 0:
+            d = 10
+        else:
+            d = args[0]
+
+        w = np.random.rand(1, d)
+        c = np.random.rand(1, d)
+
+        X = tensap.RandomVector(tensap.UniformRandomVariable(0, 1), d)
+
+        if case == &#39;oscillatory&#39;:
+            def fun(x):
+                return np.cos(w[0]*2*np.pi + np.matmul(x, np.transpose(c)))
+        elif case == &#39;product_peak&#39;:
+            def fun(x):
+                return 1/np.prod(np.tile(x**(-2), (np.shape(x)[0], 1)) +
+                                 (x + np.tile(w, (np.shape(x)[0], 1)))**2, 1)
+        elif case == &#39;corner_peak&#39;:
+            b = 185
+            e = 2
+            c = c*b/d**e/np.sum(c)
+
+            def fun(x):
+                return (1+np.matmul(x, np.transpose(c)))**(-d-1)
+        elif case == &#39;gaussian&#39;:
+            def fun(x):
+                return np.matmul(np.exp(
+                    -(x - np.tile(w, (np.shape(x)[0], 1)))**2,
+                    np.transpose(c)**2))
+        elif case == &#39;continuous&#39;:
+            def fun(x):
+                return np.matmul(np.exp(
+                    -np.abs(x - np.tile(w, (np.shape(x)[0], 1))),
+                    np.transpose(c)**2))
+        elif case == &#39;discontinuous&#39;:
+            raise NotImplementedError(&#39;Function not implemented.&#39;)
+
+    elif case == &#39;henon_heiles&#39;:
+        if len(args) == 0:
+            d = 3
+        else:
+            d = args[0]
+
+        X = tensap.RandomVector(tensap.NormalRandomVariable(), d)
+
+        def fun(x):
+            return 0.5*np.sum(x**2, 1) + \
+                0.2*np.sum(x[:, :-1]*x[:, 1:]**2-x[:, :-1]**3, 1) + \
+                0.2**2/16*np.sum((x[:, :-1]**2+x[:, 1:]**2)**2, 1)
+
+    elif case == &#39;sobol&#39;:
+        if len(args) == 0:
+            d = 8
+            a = [1, 2, 5, 10, 20, 50, 100, 500]
+        else:
+            d = args[0]
+            if len(args) &lt;= 1:
+                a = 2**np.arange(0, d)
+            else:
+                a = args[1]
+
+        X = tensap.RandomVector(tensap.UniformRandomVariable(0, 1), d)
+
+        def fun(x):
+            return np.prod((np.abs(4*x-2)+np.tile(a, (np.shape(x)[0], 1))) /
+                           np.tile(1+a, (np.shape(x)[0], 1)), 1)
+
+    elif case == &#39;anisotropic&#39;:
+        if len(args) == 0:
+            d = 16
+        else:
+            d = args[0]
+
+        X = tensap.RandomVector(tensap.UniformRandomVariable(0, 1), d)
+
+        def fun(x):
+            return x[:, 2]*np.sin(x[:, 3] + x[:, 15])
+
+    elif case == &#39;polynomial&#39;:
+        if len(args) == 0:
+            d = 16
+        else:
+            d = args[0]
+        if len(args) &lt;= 1:
+            q = 2
+        else:
+            q = args[1]
+
+        X = tensap.RandomVector(tensap.UniformRandomVariable(0, 1), d)
+
+        def fun(x):
+            return 1/(2**np.shape(x)[1])*np.prod(3*x**q+1, 1)
+
+    else:
+        raise NotImplementedError(&#39;Bad function name.&#39;)
+
+    return fun, X</code></pre>
+</details>
+</dd>
+</dl>
+</section>
+<section>
+</section>
+</article>
+<nav id="sidebar">
+<h1>Index</h1>
+<div class="toc">
+<ul></ul>
+</div>
+<ul id="index">
+<li><h3>Super-module</h3>
+<ul>
+<li><code><a title="tensap.functions" href="index.html">tensap.functions</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-functions">Functions</a></h3>
+<ul class="">
+<li><code><a title="tensap.functions.multivariate_functions_benchmark.multivariate_functions_benchmark" href="#tensap.functions.multivariate_functions_benchmark.multivariate_functions_benchmark">multivariate_functions_benchmark</a></code></li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.8.1</a>.</p>
+</footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad()</script>
+</body>
+</html>

@@ -1,0 +1,1350 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+<meta name="generator" content="pdoc 0.8.1" />
+<title>tensap.functions.polynomials.polynomials API documentation</title>
+<meta name="description" content="Module polynomials …" />
+<link href='https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.min.css' rel='stylesheet'>
+<link href='https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/8.0.0/sanitize.min.css' rel='stylesheet'>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css" rel="stylesheet">
+<style>.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}.admonition{padding:.1em .5em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>tensap.functions.polynomials.polynomials</code></h1>
+</header>
+<section id="section-intro">
+<p>Module polynomials.</p>
+<p>Copyright (c) 2020, Anthony Nouy, Erwan Grelier
+This file is part of tensap (tensor approximation package).</p>
+<p>tensap is free software: you can redistribute it and/or modify
+it under the terms of the GNU Lesser General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.</p>
+<p>tensap is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+See the
+GNU Lesser General Public License for more details.</p>
+<p>You should have received a copy of the GNU Lesser General Public License
+along with tensap.
+If not, see <a href="https://www.gnu.org/licenses/">https://www.gnu.org/licenses/</a>.</p>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">&#39;&#39;&#39;
+Module polynomials.
+
+Copyright (c) 2020, Anthony Nouy, Erwan Grelier
+This file is part of tensap (tensor approximation package).
+
+tensap is free software: you can redistribute it and/or modify
+it under the terms of the GNU Lesser General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+tensap is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU Lesser General Public License for more details.
+
+You should have received a copy of the GNU Lesser General Public License
+along with tensap.  If not, see &lt;https://www.gnu.org/licenses/&gt;.
+
+&#39;&#39;&#39;
+
+from abc import ABC, abstractmethod
+import numpy as np
+import tensap
+
+
+class UnivariatePolynomials(ABC):
+    &#39;&#39;&#39;
+    Class UnivariatePolynomials.
+
+    &#39;&#39;&#39;
+
+    def polyval(self, ind, x):
+        &#39;&#39;&#39;
+        Evaluate the polynomials of degrees contained in ind at the points x.
+
+        Parameters
+        ----------
+        ind : list or numpy.ndarray
+            The degrees of the polynomials to be evaluated.
+        x : list or numpy.ndarray
+            The points at which the polynomials are to be evaluated.
+
+        Returns
+        -------
+        numpy.ndarray
+            The evaluation of the selected polynomials at the points x.
+
+        &#39;&#39;&#39;
+        x = np.ravel(x)
+        coef = np.fliplr(self.poly_coeff(np.arange(np.max(ind)+1)))
+
+        out = np.zeros((x.size, coef.shape[0]))
+        for deg in range(coef.shape[0]):
+            out[:, deg] = np.polyval(coef[deg, :], x)
+        return out[:, ind]
+
+    def d_poly_coef(self, ind):
+        &#39;&#39;&#39;
+        Return the coefficients of the first order derivative of the
+        polynomials of degrees contained in ind.
+
+        Parameters
+        ----------
+        ind : list or numpy.ndarray
+            The degrees of the polynomials to be evaluated.
+
+        Returns
+        -------
+        numpy.ndarray
+            The coefficients of the first order derivative of the polynomials
+            of order contained in ind.
+
+        &#39;&#39;&#39;
+        return self.poly_coeff(ind)[:, 1:] * \
+            np.tile(np.arange(1, np.max(ind)+1), (len(ind), 1))
+
+    def dn_poly_coeff(self, n, ind):
+        &#39;&#39;&#39;
+        Return the coefficients of the n-th order derivative of the
+        polynomials of degrees contained in ind.
+
+        Parameters
+        ----------
+        n : int
+            The degrees of derivation of the polynomials.
+        ind : list or numpy.ndarray
+            The orders of the polynomials to be evaluated.
+
+        Returns
+        -------
+        numpy.ndarray
+            The coefficients of the n-th order derivative of the polynomials
+            of order contained in ind.
+
+        &#39;&#39;&#39;
+        coef = np.prod(np.tile(np.arange(np.max(ind)-n+1), (n, 1)) +
+                       np.tile(np.expand_dims(np.arange(1, n+1), axis=1),
+                               (1, np.max(ind)-n+1)), 0)
+        coef = self.poly_coeff(ind)[:, n:] * np.tile(coef, (len(ind), 1))
+        if coef.size == 0:
+            coef = np.zeros(len(ind))
+        return coef
+
+    def d_polyval(self, ind, x):
+        &#39;&#39;&#39;
+        Evaluate the first order derivative of the polynomials of degrees
+        contained in ind at the points x.
+
+        Parameters
+        ----------
+        ind : list or numpy.ndarray
+            The degrees of the polynomials to be evaluated.
+        x : list or numpy.ndarray
+            The points at which the derivatives of the polynomials are to be
+            evaluated.
+
+        Returns
+        -------
+        numpy.ndarray
+            The evaluation of the first order derivatives of the selected
+            polynomials at the points x.
+
+        &#39;&#39;&#39;
+        return self.dn_polyval(1, ind, x)
+
+    def dn_polyval(self, n, ind, x):
+        &#39;&#39;&#39;
+        Evaluate the n-th order derivative of the polynomials of degrees
+        contained in ind at the points x.
+
+        Parameters
+        ----------
+        ind : list or numpy.ndarray
+            The degrees of the polynomials to be evaluated.
+        x : list or numpy.ndarray
+            The points at which the derivatives of the polynomials are to be
+            evaluated.
+
+        Returns
+        -------
+        numpy.ndarray
+            The evaluation of the n-th order derivatives of the selected
+            polynomials at the points x.
+
+        &#39;&#39;&#39;
+        x = np.ravel(x)
+        coef = np.fliplr(self.dn_poly_coeff(n, np.arange(np.max(ind)+1)))
+
+        out = np.zeros((x.size, coef.shape[0]))
+        for deg in range(coef.shape[0]):
+            out[:, deg] = np.polyval(coef[deg, :], x)
+        return out[:, ind]
+
+    def mean(self, ind, measure=None):
+        &#39;&#39;&#39;
+        Return the mean of the polynomials of degrees contained in ind, with a
+        Measure given by measure if provided, or to self.measure otherwise.
+
+        Parameters
+        ----------
+        ind : list or numpy.ndarray
+            The degrees of the polynomials for which the mean is to be
+            computed.
+        measure : tensap.Measure, optional
+            The measure used for the computation of the mean. The default is
+            None, indicating to use self.measure.
+
+        Returns
+        -------
+        numpy.ndarray
+            The mean of the selected polynomials.
+
+        &#39;&#39;&#39;
+        if measure is None:
+            assert self.measure is not None, &#39;Must provide a Measure.&#39;
+            out = self.moment(np.reshape(ind, [-1, 1])) / self.measure.mass()
+        else:
+            out = self.moment(np.reshape(ind, [-1, 1]), measure) / \
+                measure.mass()
+        return out
+
+    def moment(self, ind, measure=None):
+        &#39;&#39;&#39;
+        Return the moments of the family of polynomials p_i(X), i in ind,
+        of a random variable X, using a gauss integration rule.
+
+        Assuming ind is a numpy.ndarray:
+            - if ind.ndim == 1, return the float
+                m = E(p_ind[0](X)...p_ind[-1](X)),
+            - else if ind.ndim == 2, return the vector
+                m = (E(p_ind[j, 0](X)...p_ind[j, -1](X)) :
+                    j = 1, ..., ind.shape[0]).
+
+        Parameters
+        ----------
+        ind : list or numpy.ndarray
+            The degrees of the polynomials for which the moments are to be
+            computed.
+        measure : tensap.Measure, optional
+            The measure used for the computation of the moments. The default is
+            None, indicating to use self.measure.
+
+        Returns
+        -------
+        numpy.ndarray
+            The moments of the family of polynomials.
+
+        &#39;&#39;&#39;
+        if measure is None:
+            measure = self.measure
+
+        ind = np.atleast_2d(ind)
+        out = np.zeros(ind.shape[0])
+
+        max_deg = np.max(np.sum(ind, 1))  # Maximum degree of the product
+        nb_pts = int(np.ceil((max_deg+1)/2))  # Number of points
+
+        G = measure.gauss_integration_rule(nb_pts)
+        for i in range(ind.shape[0]):
+            # Creation of the function to integrate
+            def poly(x):
+                out_loc = self.polyval(ind[i, 0], x)
+                for j in np.arange(1, ind.shape[1]):
+                    out_loc = out_loc * self.polyval(ind[i, j], x)
+                return out_loc
+            out[i] = G.integrate(poly)
+        return out
+
+    @staticmethod
+    def ndim():
+        &#39;&#39;&#39;
+        Return the dimension of the output of the polynomials.
+
+        Returns
+        -------
+        int
+            The dimension of the output of the polynomials.
+
+        &#39;&#39;&#39;
+        return 1
+
+    @abstractmethod
+    def one(self):
+        &#39;&#39;&#39;
+        Coefficients and corresponding indices for the decomposition of the
+        constant function 1.
+
+        &#39;&#39;&#39;
+
+    @abstractmethod
+    def is_orthonormal(self):
+        &#39;&#39;&#39;
+        Check the orthonormality of the basis created by the functions of self.
+
+        Returns
+        -------
+        bool
+            Indicates if the polynomials are orthonormal.
+
+        &#39;&#39;&#39;
+
+    @abstractmethod
+    def poly_coeff(self, ind):
+        &#39;&#39;&#39;
+        Compute the coefficients of the monomials used to create the
+        polynomials of degree specified in ind.
+
+        Parameters
+        ----------
+        ind : ind or numpy.ndarray
+            The orders of the polynomials to be evaluated.
+
+        &#39;&#39;&#39;
+
+
+class CanonicalPolynomials(UnivariatePolynomials):
+    &#39;&#39;&#39;
+    Class CanonicalPolynomials.
+
+    Attributes
+    ----------
+    measure : None or tensap.Measure
+        The measure associated with the canonical polynomials.
+
+    &#39;&#39;&#39;
+
+    def __init__(self, measure=None):
+        &#39;&#39;&#39;
+        Constructor for the class CanonicalPolynomials.
+
+        Parameters
+        ----------
+        measure : tensap.Measure, optional
+            The measure associated with the canonical polynomials. The default
+            is None.
+
+        Raises
+        ------
+        ValueError
+            If the provided measure is not a tensap.Measure object.
+
+        Returns
+        -------
+        None.
+
+        &#39;&#39;&#39;
+        if measure is not None and not isinstance(measure, tensap.Measure):
+            raise ValueError(&#39;Must provide a measure.&#39;)
+        self.measure = measure
+
+    def __eq__(self, poly_2):
+        return isinstance(poly_2, CanonicalPolynomials)
+
+    @staticmethod
+    def is_orthonormal():
+        return False
+
+    def poly_coeff(self, ind):
+        return np.eye(np.max(ind)+1)[ind, :]
+
+    def d_polyval(self, ind, x):
+        x = np.expand_dims(np.ravel(x), axis=1)
+        ind = np.atleast_1d(ind)
+        out = np.zeros((x.size, len(ind)))
+        rep = ind != 0
+        out[:, rep] = x**(ind[rep]-1) * np.tile(ind[rep], (x.size, 1))
+        return out
+
+    @staticmethod
+    def domain():
+        &#39;&#39;&#39;
+        Return the domain of the canonical polynomials.
+
+        Returns
+        -------
+        list
+            The domain of the canonical polynomials.
+
+        &#39;&#39;&#39;
+        return [-np.inf, np.inf]
+
+    @staticmethod
+    def one():
+        return 1, 0</code></pre>
+</details>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-classes">Classes</h2>
+<dl>
+<dt id="tensap.functions.polynomials.polynomials.CanonicalPolynomials"><code class="flex name class">
+<span>class <span class="ident">CanonicalPolynomials</span></span>
+<span>(</span><span>measure=None)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Class CanonicalPolynomials.</p>
+<h2 id="attributes">Attributes</h2>
+<dl>
+<dt><strong><code>measure</code></strong> :&ensp;<code>None</code> or <code>tensap.Measure</code></dt>
+<dd>The measure associated with the canonical polynomials.</dd>
+</dl>
+<p>Constructor for the class CanonicalPolynomials.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>measure</code></strong> :&ensp;<code>tensap.Measure</code>, optional</dt>
+<dd>The measure associated with the canonical polynomials. The default
+is None.</dd>
+</dl>
+<h2 id="raises">Raises</h2>
+<dl>
+<dt><code>ValueError</code></dt>
+<dd>If the provided measure is not a tensap.Measure object.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<p>None.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class CanonicalPolynomials(UnivariatePolynomials):
+    &#39;&#39;&#39;
+    Class CanonicalPolynomials.
+
+    Attributes
+    ----------
+    measure : None or tensap.Measure
+        The measure associated with the canonical polynomials.
+
+    &#39;&#39;&#39;
+
+    def __init__(self, measure=None):
+        &#39;&#39;&#39;
+        Constructor for the class CanonicalPolynomials.
+
+        Parameters
+        ----------
+        measure : tensap.Measure, optional
+            The measure associated with the canonical polynomials. The default
+            is None.
+
+        Raises
+        ------
+        ValueError
+            If the provided measure is not a tensap.Measure object.
+
+        Returns
+        -------
+        None.
+
+        &#39;&#39;&#39;
+        if measure is not None and not isinstance(measure, tensap.Measure):
+            raise ValueError(&#39;Must provide a measure.&#39;)
+        self.measure = measure
+
+    def __eq__(self, poly_2):
+        return isinstance(poly_2, CanonicalPolynomials)
+
+    @staticmethod
+    def is_orthonormal():
+        return False
+
+    def poly_coeff(self, ind):
+        return np.eye(np.max(ind)+1)[ind, :]
+
+    def d_polyval(self, ind, x):
+        x = np.expand_dims(np.ravel(x), axis=1)
+        ind = np.atleast_1d(ind)
+        out = np.zeros((x.size, len(ind)))
+        rep = ind != 0
+        out[:, rep] = x**(ind[rep]-1) * np.tile(ind[rep], (x.size, 1))
+        return out
+
+    @staticmethod
+    def domain():
+        &#39;&#39;&#39;
+        Return the domain of the canonical polynomials.
+
+        Returns
+        -------
+        list
+            The domain of the canonical polynomials.
+
+        &#39;&#39;&#39;
+        return [-np.inf, np.inf]
+
+    @staticmethod
+    def one():
+        return 1, 0</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="tensap.functions.polynomials.polynomials.UnivariatePolynomials" href="#tensap.functions.polynomials.polynomials.UnivariatePolynomials">UnivariatePolynomials</a></li>
+<li>abc.ABC</li>
+</ul>
+<h3>Static methods</h3>
+<dl>
+<dt id="tensap.functions.polynomials.polynomials.CanonicalPolynomials.domain"><code class="name flex">
+<span>def <span class="ident">domain</span></span>(<span>)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Return the domain of the canonical polynomials.</p>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>list</code></dt>
+<dd>The domain of the canonical polynomials.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@staticmethod
+def domain():
+    &#39;&#39;&#39;
+    Return the domain of the canonical polynomials.
+
+    Returns
+    -------
+    list
+        The domain of the canonical polynomials.
+
+    &#39;&#39;&#39;
+    return [-np.inf, np.inf]</code></pre>
+</details>
+</dd>
+</dl>
+<h3>Inherited members</h3>
+<ul class="hlist">
+<li><code><b><a title="tensap.functions.polynomials.polynomials.UnivariatePolynomials" href="#tensap.functions.polynomials.polynomials.UnivariatePolynomials">UnivariatePolynomials</a></b></code>:
+<ul class="hlist">
+<li><code><a title="tensap.functions.polynomials.polynomials.UnivariatePolynomials.d_poly_coef" href="#tensap.functions.polynomials.polynomials.UnivariatePolynomials.d_poly_coef">d_poly_coef</a></code></li>
+<li><code><a title="tensap.functions.polynomials.polynomials.UnivariatePolynomials.d_polyval" href="#tensap.functions.polynomials.polynomials.UnivariatePolynomials.d_polyval">d_polyval</a></code></li>
+<li><code><a title="tensap.functions.polynomials.polynomials.UnivariatePolynomials.dn_poly_coeff" href="#tensap.functions.polynomials.polynomials.UnivariatePolynomials.dn_poly_coeff">dn_poly_coeff</a></code></li>
+<li><code><a title="tensap.functions.polynomials.polynomials.UnivariatePolynomials.dn_polyval" href="#tensap.functions.polynomials.polynomials.UnivariatePolynomials.dn_polyval">dn_polyval</a></code></li>
+<li><code><a title="tensap.functions.polynomials.polynomials.UnivariatePolynomials.is_orthonormal" href="#tensap.functions.polynomials.polynomials.UnivariatePolynomials.is_orthonormal">is_orthonormal</a></code></li>
+<li><code><a title="tensap.functions.polynomials.polynomials.UnivariatePolynomials.mean" href="#tensap.functions.polynomials.polynomials.UnivariatePolynomials.mean">mean</a></code></li>
+<li><code><a title="tensap.functions.polynomials.polynomials.UnivariatePolynomials.moment" href="#tensap.functions.polynomials.polynomials.UnivariatePolynomials.moment">moment</a></code></li>
+<li><code><a title="tensap.functions.polynomials.polynomials.UnivariatePolynomials.ndim" href="#tensap.functions.polynomials.polynomials.UnivariatePolynomials.ndim">ndim</a></code></li>
+<li><code><a title="tensap.functions.polynomials.polynomials.UnivariatePolynomials.one" href="#tensap.functions.polynomials.polynomials.UnivariatePolynomials.one">one</a></code></li>
+<li><code><a title="tensap.functions.polynomials.polynomials.UnivariatePolynomials.poly_coeff" href="#tensap.functions.polynomials.polynomials.UnivariatePolynomials.poly_coeff">poly_coeff</a></code></li>
+<li><code><a title="tensap.functions.polynomials.polynomials.UnivariatePolynomials.polyval" href="#tensap.functions.polynomials.polynomials.UnivariatePolynomials.polyval">polyval</a></code></li>
+</ul>
+</li>
+</ul>
+</dd>
+<dt id="tensap.functions.polynomials.polynomials.UnivariatePolynomials"><code class="flex name class">
+<span>class <span class="ident">UnivariatePolynomials</span></span>
+</code></dt>
+<dd>
+<div class="desc"><p>Class UnivariatePolynomials.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class UnivariatePolynomials(ABC):
+    &#39;&#39;&#39;
+    Class UnivariatePolynomials.
+
+    &#39;&#39;&#39;
+
+    def polyval(self, ind, x):
+        &#39;&#39;&#39;
+        Evaluate the polynomials of degrees contained in ind at the points x.
+
+        Parameters
+        ----------
+        ind : list or numpy.ndarray
+            The degrees of the polynomials to be evaluated.
+        x : list or numpy.ndarray
+            The points at which the polynomials are to be evaluated.
+
+        Returns
+        -------
+        numpy.ndarray
+            The evaluation of the selected polynomials at the points x.
+
+        &#39;&#39;&#39;
+        x = np.ravel(x)
+        coef = np.fliplr(self.poly_coeff(np.arange(np.max(ind)+1)))
+
+        out = np.zeros((x.size, coef.shape[0]))
+        for deg in range(coef.shape[0]):
+            out[:, deg] = np.polyval(coef[deg, :], x)
+        return out[:, ind]
+
+    def d_poly_coef(self, ind):
+        &#39;&#39;&#39;
+        Return the coefficients of the first order derivative of the
+        polynomials of degrees contained in ind.
+
+        Parameters
+        ----------
+        ind : list or numpy.ndarray
+            The degrees of the polynomials to be evaluated.
+
+        Returns
+        -------
+        numpy.ndarray
+            The coefficients of the first order derivative of the polynomials
+            of order contained in ind.
+
+        &#39;&#39;&#39;
+        return self.poly_coeff(ind)[:, 1:] * \
+            np.tile(np.arange(1, np.max(ind)+1), (len(ind), 1))
+
+    def dn_poly_coeff(self, n, ind):
+        &#39;&#39;&#39;
+        Return the coefficients of the n-th order derivative of the
+        polynomials of degrees contained in ind.
+
+        Parameters
+        ----------
+        n : int
+            The degrees of derivation of the polynomials.
+        ind : list or numpy.ndarray
+            The orders of the polynomials to be evaluated.
+
+        Returns
+        -------
+        numpy.ndarray
+            The coefficients of the n-th order derivative of the polynomials
+            of order contained in ind.
+
+        &#39;&#39;&#39;
+        coef = np.prod(np.tile(np.arange(np.max(ind)-n+1), (n, 1)) +
+                       np.tile(np.expand_dims(np.arange(1, n+1), axis=1),
+                               (1, np.max(ind)-n+1)), 0)
+        coef = self.poly_coeff(ind)[:, n:] * np.tile(coef, (len(ind), 1))
+        if coef.size == 0:
+            coef = np.zeros(len(ind))
+        return coef
+
+    def d_polyval(self, ind, x):
+        &#39;&#39;&#39;
+        Evaluate the first order derivative of the polynomials of degrees
+        contained in ind at the points x.
+
+        Parameters
+        ----------
+        ind : list or numpy.ndarray
+            The degrees of the polynomials to be evaluated.
+        x : list or numpy.ndarray
+            The points at which the derivatives of the polynomials are to be
+            evaluated.
+
+        Returns
+        -------
+        numpy.ndarray
+            The evaluation of the first order derivatives of the selected
+            polynomials at the points x.
+
+        &#39;&#39;&#39;
+        return self.dn_polyval(1, ind, x)
+
+    def dn_polyval(self, n, ind, x):
+        &#39;&#39;&#39;
+        Evaluate the n-th order derivative of the polynomials of degrees
+        contained in ind at the points x.
+
+        Parameters
+        ----------
+        ind : list or numpy.ndarray
+            The degrees of the polynomials to be evaluated.
+        x : list or numpy.ndarray
+            The points at which the derivatives of the polynomials are to be
+            evaluated.
+
+        Returns
+        -------
+        numpy.ndarray
+            The evaluation of the n-th order derivatives of the selected
+            polynomials at the points x.
+
+        &#39;&#39;&#39;
+        x = np.ravel(x)
+        coef = np.fliplr(self.dn_poly_coeff(n, np.arange(np.max(ind)+1)))
+
+        out = np.zeros((x.size, coef.shape[0]))
+        for deg in range(coef.shape[0]):
+            out[:, deg] = np.polyval(coef[deg, :], x)
+        return out[:, ind]
+
+    def mean(self, ind, measure=None):
+        &#39;&#39;&#39;
+        Return the mean of the polynomials of degrees contained in ind, with a
+        Measure given by measure if provided, or to self.measure otherwise.
+
+        Parameters
+        ----------
+        ind : list or numpy.ndarray
+            The degrees of the polynomials for which the mean is to be
+            computed.
+        measure : tensap.Measure, optional
+            The measure used for the computation of the mean. The default is
+            None, indicating to use self.measure.
+
+        Returns
+        -------
+        numpy.ndarray
+            The mean of the selected polynomials.
+
+        &#39;&#39;&#39;
+        if measure is None:
+            assert self.measure is not None, &#39;Must provide a Measure.&#39;
+            out = self.moment(np.reshape(ind, [-1, 1])) / self.measure.mass()
+        else:
+            out = self.moment(np.reshape(ind, [-1, 1]), measure) / \
+                measure.mass()
+        return out
+
+    def moment(self, ind, measure=None):
+        &#39;&#39;&#39;
+        Return the moments of the family of polynomials p_i(X), i in ind,
+        of a random variable X, using a gauss integration rule.
+
+        Assuming ind is a numpy.ndarray:
+            - if ind.ndim == 1, return the float
+                m = E(p_ind[0](X)...p_ind[-1](X)),
+            - else if ind.ndim == 2, return the vector
+                m = (E(p_ind[j, 0](X)...p_ind[j, -1](X)) :
+                    j = 1, ..., ind.shape[0]).
+
+        Parameters
+        ----------
+        ind : list or numpy.ndarray
+            The degrees of the polynomials for which the moments are to be
+            computed.
+        measure : tensap.Measure, optional
+            The measure used for the computation of the moments. The default is
+            None, indicating to use self.measure.
+
+        Returns
+        -------
+        numpy.ndarray
+            The moments of the family of polynomials.
+
+        &#39;&#39;&#39;
+        if measure is None:
+            measure = self.measure
+
+        ind = np.atleast_2d(ind)
+        out = np.zeros(ind.shape[0])
+
+        max_deg = np.max(np.sum(ind, 1))  # Maximum degree of the product
+        nb_pts = int(np.ceil((max_deg+1)/2))  # Number of points
+
+        G = measure.gauss_integration_rule(nb_pts)
+        for i in range(ind.shape[0]):
+            # Creation of the function to integrate
+            def poly(x):
+                out_loc = self.polyval(ind[i, 0], x)
+                for j in np.arange(1, ind.shape[1]):
+                    out_loc = out_loc * self.polyval(ind[i, j], x)
+                return out_loc
+            out[i] = G.integrate(poly)
+        return out
+
+    @staticmethod
+    def ndim():
+        &#39;&#39;&#39;
+        Return the dimension of the output of the polynomials.
+
+        Returns
+        -------
+        int
+            The dimension of the output of the polynomials.
+
+        &#39;&#39;&#39;
+        return 1
+
+    @abstractmethod
+    def one(self):
+        &#39;&#39;&#39;
+        Coefficients and corresponding indices for the decomposition of the
+        constant function 1.
+
+        &#39;&#39;&#39;
+
+    @abstractmethod
+    def is_orthonormal(self):
+        &#39;&#39;&#39;
+        Check the orthonormality of the basis created by the functions of self.
+
+        Returns
+        -------
+        bool
+            Indicates if the polynomials are orthonormal.
+
+        &#39;&#39;&#39;
+
+    @abstractmethod
+    def poly_coeff(self, ind):
+        &#39;&#39;&#39;
+        Compute the coefficients of the monomials used to create the
+        polynomials of degree specified in ind.
+
+        Parameters
+        ----------
+        ind : ind or numpy.ndarray
+            The orders of the polynomials to be evaluated.
+
+        &#39;&#39;&#39;</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>abc.ABC</li>
+</ul>
+<h3>Subclasses</h3>
+<ul class="hlist">
+<li><a title="tensap.functions.polynomials.orthonormal_polynomials.OrthonormalPolynomials" href="orthonormal_polynomials.html#tensap.functions.polynomials.orthonormal_polynomials.OrthonormalPolynomials">OrthonormalPolynomials</a></li>
+<li><a title="tensap.functions.polynomials.orthonormal_polynomials.ShiftedOrthonormalPolynomials" href="orthonormal_polynomials.html#tensap.functions.polynomials.orthonormal_polynomials.ShiftedOrthonormalPolynomials">ShiftedOrthonormalPolynomials</a></li>
+<li><a title="tensap.functions.polynomials.polynomials.CanonicalPolynomials" href="#tensap.functions.polynomials.polynomials.CanonicalPolynomials">CanonicalPolynomials</a></li>
+</ul>
+<h3>Static methods</h3>
+<dl>
+<dt id="tensap.functions.polynomials.polynomials.UnivariatePolynomials.ndim"><code class="name flex">
+<span>def <span class="ident">ndim</span></span>(<span>)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Return the dimension of the output of the polynomials.</p>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>int</code></dt>
+<dd>The dimension of the output of the polynomials.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@staticmethod
+def ndim():
+    &#39;&#39;&#39;
+    Return the dimension of the output of the polynomials.
+
+    Returns
+    -------
+    int
+        The dimension of the output of the polynomials.
+
+    &#39;&#39;&#39;
+    return 1</code></pre>
+</details>
+</dd>
+</dl>
+<h3>Methods</h3>
+<dl>
+<dt id="tensap.functions.polynomials.polynomials.UnivariatePolynomials.d_poly_coef"><code class="name flex">
+<span>def <span class="ident">d_poly_coef</span></span>(<span>self, ind)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Return the coefficients of the first order derivative of the
+polynomials of degrees contained in ind.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>ind</code></strong> :&ensp;<code>list</code> or <code>numpy.ndarray</code></dt>
+<dd>The degrees of the polynomials to be evaluated.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>numpy.ndarray</code></dt>
+<dd>The coefficients of the first order derivative of the polynomials
+of order contained in ind.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def d_poly_coef(self, ind):
+    &#39;&#39;&#39;
+    Return the coefficients of the first order derivative of the
+    polynomials of degrees contained in ind.
+
+    Parameters
+    ----------
+    ind : list or numpy.ndarray
+        The degrees of the polynomials to be evaluated.
+
+    Returns
+    -------
+    numpy.ndarray
+        The coefficients of the first order derivative of the polynomials
+        of order contained in ind.
+
+    &#39;&#39;&#39;
+    return self.poly_coeff(ind)[:, 1:] * \
+        np.tile(np.arange(1, np.max(ind)+1), (len(ind), 1))</code></pre>
+</details>
+</dd>
+<dt id="tensap.functions.polynomials.polynomials.UnivariatePolynomials.d_polyval"><code class="name flex">
+<span>def <span class="ident">d_polyval</span></span>(<span>self, ind, x)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Evaluate the first order derivative of the polynomials of degrees
+contained in ind at the points x.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>ind</code></strong> :&ensp;<code>list</code> or <code>numpy.ndarray</code></dt>
+<dd>The degrees of the polynomials to be evaluated.</dd>
+<dt><strong><code>x</code></strong> :&ensp;<code>list</code> or <code>numpy.ndarray</code></dt>
+<dd>The points at which the derivatives of the polynomials are to be
+evaluated.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>numpy.ndarray</code></dt>
+<dd>The evaluation of the first order derivatives of the selected
+polynomials at the points x.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def d_polyval(self, ind, x):
+    &#39;&#39;&#39;
+    Evaluate the first order derivative of the polynomials of degrees
+    contained in ind at the points x.
+
+    Parameters
+    ----------
+    ind : list or numpy.ndarray
+        The degrees of the polynomials to be evaluated.
+    x : list or numpy.ndarray
+        The points at which the derivatives of the polynomials are to be
+        evaluated.
+
+    Returns
+    -------
+    numpy.ndarray
+        The evaluation of the first order derivatives of the selected
+        polynomials at the points x.
+
+    &#39;&#39;&#39;
+    return self.dn_polyval(1, ind, x)</code></pre>
+</details>
+</dd>
+<dt id="tensap.functions.polynomials.polynomials.UnivariatePolynomials.dn_poly_coeff"><code class="name flex">
+<span>def <span class="ident">dn_poly_coeff</span></span>(<span>self, n, ind)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Return the coefficients of the n-th order derivative of the
+polynomials of degrees contained in ind.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>n</code></strong> :&ensp;<code>int</code></dt>
+<dd>The degrees of derivation of the polynomials.</dd>
+<dt><strong><code>ind</code></strong> :&ensp;<code>list</code> or <code>numpy.ndarray</code></dt>
+<dd>The orders of the polynomials to be evaluated.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>numpy.ndarray</code></dt>
+<dd>The coefficients of the n-th order derivative of the polynomials
+of order contained in ind.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def dn_poly_coeff(self, n, ind):
+    &#39;&#39;&#39;
+    Return the coefficients of the n-th order derivative of the
+    polynomials of degrees contained in ind.
+
+    Parameters
+    ----------
+    n : int
+        The degrees of derivation of the polynomials.
+    ind : list or numpy.ndarray
+        The orders of the polynomials to be evaluated.
+
+    Returns
+    -------
+    numpy.ndarray
+        The coefficients of the n-th order derivative of the polynomials
+        of order contained in ind.
+
+    &#39;&#39;&#39;
+    coef = np.prod(np.tile(np.arange(np.max(ind)-n+1), (n, 1)) +
+                   np.tile(np.expand_dims(np.arange(1, n+1), axis=1),
+                           (1, np.max(ind)-n+1)), 0)
+    coef = self.poly_coeff(ind)[:, n:] * np.tile(coef, (len(ind), 1))
+    if coef.size == 0:
+        coef = np.zeros(len(ind))
+    return coef</code></pre>
+</details>
+</dd>
+<dt id="tensap.functions.polynomials.polynomials.UnivariatePolynomials.dn_polyval"><code class="name flex">
+<span>def <span class="ident">dn_polyval</span></span>(<span>self, n, ind, x)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Evaluate the n-th order derivative of the polynomials of degrees
+contained in ind at the points x.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>ind</code></strong> :&ensp;<code>list</code> or <code>numpy.ndarray</code></dt>
+<dd>The degrees of the polynomials to be evaluated.</dd>
+<dt><strong><code>x</code></strong> :&ensp;<code>list</code> or <code>numpy.ndarray</code></dt>
+<dd>The points at which the derivatives of the polynomials are to be
+evaluated.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>numpy.ndarray</code></dt>
+<dd>The evaluation of the n-th order derivatives of the selected
+polynomials at the points x.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def dn_polyval(self, n, ind, x):
+    &#39;&#39;&#39;
+    Evaluate the n-th order derivative of the polynomials of degrees
+    contained in ind at the points x.
+
+    Parameters
+    ----------
+    ind : list or numpy.ndarray
+        The degrees of the polynomials to be evaluated.
+    x : list or numpy.ndarray
+        The points at which the derivatives of the polynomials are to be
+        evaluated.
+
+    Returns
+    -------
+    numpy.ndarray
+        The evaluation of the n-th order derivatives of the selected
+        polynomials at the points x.
+
+    &#39;&#39;&#39;
+    x = np.ravel(x)
+    coef = np.fliplr(self.dn_poly_coeff(n, np.arange(np.max(ind)+1)))
+
+    out = np.zeros((x.size, coef.shape[0]))
+    for deg in range(coef.shape[0]):
+        out[:, deg] = np.polyval(coef[deg, :], x)
+    return out[:, ind]</code></pre>
+</details>
+</dd>
+<dt id="tensap.functions.polynomials.polynomials.UnivariatePolynomials.is_orthonormal"><code class="name flex">
+<span>def <span class="ident">is_orthonormal</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Check the orthonormality of the basis created by the functions of self.</p>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>bool</code></dt>
+<dd>Indicates if the polynomials are orthonormal.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@abstractmethod
+def is_orthonormal(self):
+    &#39;&#39;&#39;
+    Check the orthonormality of the basis created by the functions of self.
+
+    Returns
+    -------
+    bool
+        Indicates if the polynomials are orthonormal.
+
+    &#39;&#39;&#39;</code></pre>
+</details>
+</dd>
+<dt id="tensap.functions.polynomials.polynomials.UnivariatePolynomials.mean"><code class="name flex">
+<span>def <span class="ident">mean</span></span>(<span>self, ind, measure=None)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Return the mean of the polynomials of degrees contained in ind, with a
+Measure given by measure if provided, or to self.measure otherwise.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>ind</code></strong> :&ensp;<code>list</code> or <code>numpy.ndarray</code></dt>
+<dd>The degrees of the polynomials for which the mean is to be
+computed.</dd>
+<dt><strong><code>measure</code></strong> :&ensp;<code>tensap.Measure</code>, optional</dt>
+<dd>The measure used for the computation of the mean. The default is
+None, indicating to use self.measure.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>numpy.ndarray</code></dt>
+<dd>The mean of the selected polynomials.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def mean(self, ind, measure=None):
+    &#39;&#39;&#39;
+    Return the mean of the polynomials of degrees contained in ind, with a
+    Measure given by measure if provided, or to self.measure otherwise.
+
+    Parameters
+    ----------
+    ind : list or numpy.ndarray
+        The degrees of the polynomials for which the mean is to be
+        computed.
+    measure : tensap.Measure, optional
+        The measure used for the computation of the mean. The default is
+        None, indicating to use self.measure.
+
+    Returns
+    -------
+    numpy.ndarray
+        The mean of the selected polynomials.
+
+    &#39;&#39;&#39;
+    if measure is None:
+        assert self.measure is not None, &#39;Must provide a Measure.&#39;
+        out = self.moment(np.reshape(ind, [-1, 1])) / self.measure.mass()
+    else:
+        out = self.moment(np.reshape(ind, [-1, 1]), measure) / \
+            measure.mass()
+    return out</code></pre>
+</details>
+</dd>
+<dt id="tensap.functions.polynomials.polynomials.UnivariatePolynomials.moment"><code class="name flex">
+<span>def <span class="ident">moment</span></span>(<span>self, ind, measure=None)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Return the moments of the family of polynomials p_i(X), i in ind,
+of a random variable X, using a gauss integration rule.</p>
+<p>Assuming ind is a numpy.ndarray:
+- if ind.ndim == 1, return the float
+m = E(p_ind<a href="X">0</a>&hellip;p_ind<a href="X">-1</a>),
+- else if ind.ndim == 2, return the vector
+m = (E(p_ind<a href="X">j, 0</a>&hellip;p_ind<a href="X">j, -1</a>) :
+j = 1, &hellip;, ind.shape[0]).</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>ind</code></strong> :&ensp;<code>list</code> or <code>numpy.ndarray</code></dt>
+<dd>The degrees of the polynomials for which the moments are to be
+computed.</dd>
+<dt><strong><code>measure</code></strong> :&ensp;<code>tensap.Measure</code>, optional</dt>
+<dd>The measure used for the computation of the moments. The default is
+None, indicating to use self.measure.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>numpy.ndarray</code></dt>
+<dd>The moments of the family of polynomials.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def moment(self, ind, measure=None):
+    &#39;&#39;&#39;
+    Return the moments of the family of polynomials p_i(X), i in ind,
+    of a random variable X, using a gauss integration rule.
+
+    Assuming ind is a numpy.ndarray:
+        - if ind.ndim == 1, return the float
+            m = E(p_ind[0](X)...p_ind[-1](X)),
+        - else if ind.ndim == 2, return the vector
+            m = (E(p_ind[j, 0](X)...p_ind[j, -1](X)) :
+                j = 1, ..., ind.shape[0]).
+
+    Parameters
+    ----------
+    ind : list or numpy.ndarray
+        The degrees of the polynomials for which the moments are to be
+        computed.
+    measure : tensap.Measure, optional
+        The measure used for the computation of the moments. The default is
+        None, indicating to use self.measure.
+
+    Returns
+    -------
+    numpy.ndarray
+        The moments of the family of polynomials.
+
+    &#39;&#39;&#39;
+    if measure is None:
+        measure = self.measure
+
+    ind = np.atleast_2d(ind)
+    out = np.zeros(ind.shape[0])
+
+    max_deg = np.max(np.sum(ind, 1))  # Maximum degree of the product
+    nb_pts = int(np.ceil((max_deg+1)/2))  # Number of points
+
+    G = measure.gauss_integration_rule(nb_pts)
+    for i in range(ind.shape[0]):
+        # Creation of the function to integrate
+        def poly(x):
+            out_loc = self.polyval(ind[i, 0], x)
+            for j in np.arange(1, ind.shape[1]):
+                out_loc = out_loc * self.polyval(ind[i, j], x)
+            return out_loc
+        out[i] = G.integrate(poly)
+    return out</code></pre>
+</details>
+</dd>
+<dt id="tensap.functions.polynomials.polynomials.UnivariatePolynomials.one"><code class="name flex">
+<span>def <span class="ident">one</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Coefficients and corresponding indices for the decomposition of the
+constant function 1.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@abstractmethod
+def one(self):
+    &#39;&#39;&#39;
+    Coefficients and corresponding indices for the decomposition of the
+    constant function 1.
+
+    &#39;&#39;&#39;</code></pre>
+</details>
+</dd>
+<dt id="tensap.functions.polynomials.polynomials.UnivariatePolynomials.poly_coeff"><code class="name flex">
+<span>def <span class="ident">poly_coeff</span></span>(<span>self, ind)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Compute the coefficients of the monomials used to create the
+polynomials of degree specified in ind.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>ind</code></strong> :&ensp;<code>ind</code> or <code>numpy.ndarray</code></dt>
+<dd>The orders of the polynomials to be evaluated.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@abstractmethod
+def poly_coeff(self, ind):
+    &#39;&#39;&#39;
+    Compute the coefficients of the monomials used to create the
+    polynomials of degree specified in ind.
+
+    Parameters
+    ----------
+    ind : ind or numpy.ndarray
+        The orders of the polynomials to be evaluated.
+
+    &#39;&#39;&#39;</code></pre>
+</details>
+</dd>
+<dt id="tensap.functions.polynomials.polynomials.UnivariatePolynomials.polyval"><code class="name flex">
+<span>def <span class="ident">polyval</span></span>(<span>self, ind, x)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Evaluate the polynomials of degrees contained in ind at the points x.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>ind</code></strong> :&ensp;<code>list</code> or <code>numpy.ndarray</code></dt>
+<dd>The degrees of the polynomials to be evaluated.</dd>
+<dt><strong><code>x</code></strong> :&ensp;<code>list</code> or <code>numpy.ndarray</code></dt>
+<dd>The points at which the polynomials are to be evaluated.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>numpy.ndarray</code></dt>
+<dd>The evaluation of the selected polynomials at the points x.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def polyval(self, ind, x):
+    &#39;&#39;&#39;
+    Evaluate the polynomials of degrees contained in ind at the points x.
+
+    Parameters
+    ----------
+    ind : list or numpy.ndarray
+        The degrees of the polynomials to be evaluated.
+    x : list or numpy.ndarray
+        The points at which the polynomials are to be evaluated.
+
+    Returns
+    -------
+    numpy.ndarray
+        The evaluation of the selected polynomials at the points x.
+
+    &#39;&#39;&#39;
+    x = np.ravel(x)
+    coef = np.fliplr(self.poly_coeff(np.arange(np.max(ind)+1)))
+
+    out = np.zeros((x.size, coef.shape[0]))
+    for deg in range(coef.shape[0]):
+        out[:, deg] = np.polyval(coef[deg, :], x)
+    return out[:, ind]</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+</dl>
+</section>
+</article>
+<nav id="sidebar">
+<h1>Index</h1>
+<div class="toc">
+<ul></ul>
+</div>
+<ul id="index">
+<li><h3>Super-module</h3>
+<ul>
+<li><code><a title="tensap.functions.polynomials" href="index.html">tensap.functions.polynomials</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-classes">Classes</a></h3>
+<ul>
+<li>
+<h4><code><a title="tensap.functions.polynomials.polynomials.CanonicalPolynomials" href="#tensap.functions.polynomials.polynomials.CanonicalPolynomials">CanonicalPolynomials</a></code></h4>
+<ul class="">
+<li><code><a title="tensap.functions.polynomials.polynomials.CanonicalPolynomials.domain" href="#tensap.functions.polynomials.polynomials.CanonicalPolynomials.domain">domain</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="tensap.functions.polynomials.polynomials.UnivariatePolynomials" href="#tensap.functions.polynomials.polynomials.UnivariatePolynomials">UnivariatePolynomials</a></code></h4>
+<ul class="two-column">
+<li><code><a title="tensap.functions.polynomials.polynomials.UnivariatePolynomials.d_poly_coef" href="#tensap.functions.polynomials.polynomials.UnivariatePolynomials.d_poly_coef">d_poly_coef</a></code></li>
+<li><code><a title="tensap.functions.polynomials.polynomials.UnivariatePolynomials.d_polyval" href="#tensap.functions.polynomials.polynomials.UnivariatePolynomials.d_polyval">d_polyval</a></code></li>
+<li><code><a title="tensap.functions.polynomials.polynomials.UnivariatePolynomials.dn_poly_coeff" href="#tensap.functions.polynomials.polynomials.UnivariatePolynomials.dn_poly_coeff">dn_poly_coeff</a></code></li>
+<li><code><a title="tensap.functions.polynomials.polynomials.UnivariatePolynomials.dn_polyval" href="#tensap.functions.polynomials.polynomials.UnivariatePolynomials.dn_polyval">dn_polyval</a></code></li>
+<li><code><a title="tensap.functions.polynomials.polynomials.UnivariatePolynomials.is_orthonormal" href="#tensap.functions.polynomials.polynomials.UnivariatePolynomials.is_orthonormal">is_orthonormal</a></code></li>
+<li><code><a title="tensap.functions.polynomials.polynomials.UnivariatePolynomials.mean" href="#tensap.functions.polynomials.polynomials.UnivariatePolynomials.mean">mean</a></code></li>
+<li><code><a title="tensap.functions.polynomials.polynomials.UnivariatePolynomials.moment" href="#tensap.functions.polynomials.polynomials.UnivariatePolynomials.moment">moment</a></code></li>
+<li><code><a title="tensap.functions.polynomials.polynomials.UnivariatePolynomials.ndim" href="#tensap.functions.polynomials.polynomials.UnivariatePolynomials.ndim">ndim</a></code></li>
+<li><code><a title="tensap.functions.polynomials.polynomials.UnivariatePolynomials.one" href="#tensap.functions.polynomials.polynomials.UnivariatePolynomials.one">one</a></code></li>
+<li><code><a title="tensap.functions.polynomials.polynomials.UnivariatePolynomials.poly_coeff" href="#tensap.functions.polynomials.polynomials.UnivariatePolynomials.poly_coeff">poly_coeff</a></code></li>
+<li><code><a title="tensap.functions.polynomials.polynomials.UnivariatePolynomials.polyval" href="#tensap.functions.polynomials.polynomials.UnivariatePolynomials.polyval">polyval</a></code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.8.1</a>.</p>
+</footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad()</script>
+</body>
+</html>

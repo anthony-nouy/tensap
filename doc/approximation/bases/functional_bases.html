@@ -1,0 +1,2417 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+<meta name="generator" content="pdoc 0.8.1" />
+<title>tensap.approximation.bases.functional_bases API documentation</title>
+<meta name="description" content="Module functional_bases …" />
+<link href='https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.min.css' rel='stylesheet'>
+<link href='https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/8.0.0/sanitize.min.css' rel='stylesheet'>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css" rel="stylesheet">
+<style>.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}.admonition{padding:.1em .5em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>tensap.approximation.bases.functional_bases</code></h1>
+</header>
+<section id="section-intro">
+<p>Module functional_bases.</p>
+<p>Copyright (c) 2020, Anthony Nouy, Erwan Grelier
+This file is part of tensap (tensor approximation package).</p>
+<p>tensap is free software: you can redistribute it and/or modify
+it under the terms of the GNU Lesser General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.</p>
+<p>tensap is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+See the
+GNU Lesser General Public License for more details.</p>
+<p>You should have received a copy of the GNU Lesser General Public License
+along with tensap.
+If not, see <a href="https://www.gnu.org/licenses/">https://www.gnu.org/licenses/</a>.</p>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">&#39;&#39;&#39;
+Module functional_bases.
+
+Copyright (c) 2020, Anthony Nouy, Erwan Grelier
+This file is part of tensap (tensor approximation package).
+
+tensap is free software: you can redistribute it and/or modify
+it under the terms of the GNU Lesser General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+tensap is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU Lesser General Public License for more details.
+
+You should have received a copy of the GNU Lesser General Public License
+along with tensap.  If not, see &lt;https://www.gnu.org/licenses/&gt;.
+
+&#39;&#39;&#39;
+
+import numpy as np
+from copy import deepcopy
+import tensap
+
+
+class FunctionalBases:
+    &#39;&#39;&#39;
+    Class FunctionalBases.
+
+    Attributes
+    ----------
+    bases : list or numpy.ndarray, or tensap.FunctionalBases, optional
+        List or numpy.ndarray containing objects of type FunctionalBasis.
+        The default is None.
+
+    measure : tensap.Measure
+        The measure associated with the functional bases. By default, a
+        tensap.ProductMeasure constituted of the attribute measure of each
+        basis of bases.
+
+    &#39;&#39;&#39;
+
+    def __init__(self, bases=None):
+        &#39;&#39;&#39;
+        Constructor for the class FunctionalBases.
+
+        To create a FunctionalBases by replication of FunctionalBasis,
+            see FunctionalBases.duplicate.
+
+        Parameters
+        ----------
+        bases : list or numpy.ndarray, or tensap.FunctionalBases, optional
+            List or numpy.ndarray containing objects of type FunctionalBasis.
+            The default is None.
+
+        Raises
+        ------
+        ValueError
+            If the provided bases are not of type FunctionalBasis.
+
+        Returns
+        -------
+        None.
+
+        &#39;&#39;&#39;
+        if bases is not None:
+            if isinstance(bases, FunctionalBases):
+                measure = bases.measure
+                bases = bases.bases
+            elif np.all([isinstance(x, tensap.FunctionalBasis) for
+                         x in bases]):
+                measure = tensap.ProductMeasure([x.measure for x in bases])
+            else:
+                raise ValueError(&#39;Wrong argument.&#39;)
+
+        self.bases = np.atleast_1d(bases)
+        self.measure = measure
+        if not np.all([isinstance(x, tensap.FunctionalBasis)
+                       for x in self.bases]):
+            raise ValueError(
+                &#39;Bases must contain objects of type FunctionalBasis&#39;)
+
+    def __repr__(self):
+        return (&#39;&lt;{}:{n}&#39; +
+                &#39;{t}bases = {},{n}&#39; +
+                &#39;{t}measure = {}&gt;&#39;).format(self.__class__.__name__,
+                                           self.bases,
+                                           self.measure,
+                                           t=&#39;\t&#39;, n=&#39;\n&#39;)
+
+    def length(self):
+        &#39;&#39;&#39;
+        Return the number of bases in self.
+
+        Returns
+        -------
+        int
+            The number of bases in self.
+
+        &#39;&#39;&#39;
+        return len(self.bases)
+
+    def __len__(self):
+        return self.length()
+
+    def cardinals(self, ind=None):
+        &#39;&#39;&#39;
+        Return the number of functions in each basis of self, or in basis ind
+        if provided.
+
+        Parameters
+        ----------
+        ind : ind, optional
+            The index of the selected basis. The default is None.
+
+        Returns
+        -------
+        numpy.ndarray
+            The number of functions in each basis of self, or in basis ind
+            if provided.
+
+        &#39;&#39;&#39;
+        if ind is None:
+            card = [x.cardinal() for x in self.bases]
+        else:
+            card = [x.cardinal() for x in self.bases[ind]]
+        return np.array(card)
+
+    def ndim(self):
+        &#39;&#39;&#39;
+        Return the dimension of each basis of self.
+
+        Returns
+        -------
+        list
+            The dimension of each basis of self.
+
+        &#39;&#39;&#39;
+        return [x.ndim() for x in self.bases]
+
+    def domain(self):
+        &#39;&#39;&#39;
+        Return the domain of each basis of self.
+
+        Returns
+        -------
+        list
+            The domain of each basis of self.
+
+        &#39;&#39;&#39;
+        return [x.domain() for x in self.bases]
+
+    def orthonormalize(self):
+        &#39;&#39;&#39;
+        Orthonormalize the basis functions of self.
+
+        Returns
+        -------
+        tensap.FunctionalBases
+            The FunctionalBases with orthonormalized basis functions.
+
+        &#39;&#39;&#39;
+        return FunctionalBases([x.orthonormalize() for x in self.bases])
+
+    def kron(self, g):
+        &#39;&#39;&#39;
+        Return the bases obtained by the Kronecker product of two bases.
+
+        Parameters
+        ----------
+        g : FunctionalBases
+            The second bases of the product.
+
+        Returns
+        -------
+        out : FunctionalBases
+            The bases obtained by the Kronecker product of two bases.
+
+        &#39;&#39;&#39;
+        out = deepcopy(self)
+        out.bases = [x.kron(y) for x, y in zip(self.bases, g.bases)]
+        return out
+
+    def remove_bases(self, ind):
+        &#39;&#39;&#39;
+        Remove bases of self of index ind.
+
+        Parameters
+        ----------
+        ind : int or list or numpy.ndarray
+            The indices of the bases to remove.
+
+        Returns
+        -------
+        out : tensap.FunctionalBases
+            The FunctionalBases with removed bases.
+
+        &#39;&#39;&#39;
+        out = deepcopy(self)
+        out.bases = np.delete(self.bases, ind)
+        return out
+
+    def keep_bases(self, ind):
+        &#39;&#39;&#39;
+        Keep only the bases of self of index ind.
+
+        Parameters
+        ----------
+        ind : int or list or numpy.ndarray
+            The indices of the bases to keep.
+
+        Returns
+        -------
+        out : tensap.FunctionalBases
+            The FunctionalBases with kept bases.
+
+        &#39;&#39;&#39;
+        out = deepcopy(self)
+        out.bases = out.bases[ind]
+        return out
+
+    def transpose(self, perm):
+        &#39;&#39;&#39;
+        Return self with the basis permutation perm.
+
+        Parameters
+        ----------
+        perm : list or numpy.ndarray
+            The permutation of the bases.
+
+        Returns
+        -------
+        out : tensap.FunctionalBases
+            The FunctionalBases with permuted bases.
+
+        &#39;&#39;&#39;
+        out = deepcopy(self)
+        out.bases = out.bases[perm]
+        return out
+
+    def __eq__(self, bases_2):
+        if not isinstance(bases_2, FunctionalBases):
+            out = False
+        else:
+            out = np.all([x == y for x, y in zip(self.bases,
+                                                 bases_2.bases)]) and \
+                self.measure == bases_2.measure
+        return out
+
+    def adaptation_path(self):
+        &#39;&#39;&#39;
+        Compute the adaptationPath for each basis in self.
+
+        See also tensap.FunctionalBasis.adaptation_path.
+
+        Returns
+        -------
+        list
+            List of adaptation paths for each basis.
+
+        &#39;&#39;&#39;
+        return np.array([x.adaptation_path() for x in self.bases],
+                        dtype=object)
+
+    def eval(self, x, dims=None, nargout=1):
+        &#39;&#39;&#39;
+        Computes evaluations of the basis functions of self at points x
+        in dimensions dims if provided, in all the dimensions if not.
+
+        Parameters
+        ----------
+        x : numpy.ndarray
+            The input points.
+        dims : list or numpy.ndarray, optional
+            The dimensions of the bases to be evaluated. The default is None,
+            indicating all the dimensions.
+        nargout : int, optional
+            Indicates the number of expected outputs. The default is 1,
+            indicating to return only the evaluations of the basis functions.
+
+        Returns
+        -------
+        out : list
+            Evaluations of the basis functions of self.
+        x : numpy.ndarray
+            The input points, grouped by basis.
+
+        &#39;&#39;&#39;
+        if dims is None:
+            dims = np.arange(self.length())
+        if not isinstance(x, list):
+            ind = np.atleast_1d(self.ndim())
+            x = np.hsplit(x, np.cumsum(ind[dims])[:-1])
+
+        out = [y.eval(z) for y, z in zip(self.bases[dims], x)]
+        if nargout == 1:
+            return out
+        return out, x
+
+    def eval_derivative(self, n, x, dims=None, nargout=1):
+        &#39;&#39;&#39;
+         Compute evaluations of the n-derivative of the basis functions of
+         self at points x in each dimension in dims if provided, in all the
+         dimensions otherwise.
+
+        Parameters
+        ----------
+        n : list or numpy.ndarray
+            The order of derivation in each dimension (in dims if provided).
+        x : numpy.ndarray
+            The input points.
+        dims : list or numpy.ndarray, optional
+            The dimensions of the bases for which the n-derivative is to be
+            computed. The default is None, indicating all the dimensions.
+        nargout : int, optional
+            Indicates the number of expected outputs. The default is 1,
+            indicating to return only the evaluations of the n-derivative of
+            the basis functions.
+
+        Returns
+        -------
+        out : list
+            Evaluations of the n-derivative of the basis functions of self.
+        x : numpy.ndarray
+            The input points, grouped by basis.
+
+        &#39;&#39;&#39;
+        if dims is None:
+            dims = np.arange(self.length())
+        if not isinstance(x, list):
+            ind = np.atleast_1d(self.ndim())
+            x = np.hsplit(x, np.cumsum(ind[dims])[:-1])
+
+        out = [y.eval_derivative(m, z) for
+               y, m, z in zip(self.bases[dims], n, x)]
+        if nargout == 1:
+            return out
+        return out, x
+
+    def derivative(self, n):
+        &#39;&#39;&#39;
+        Compute the n-derivative of the basis functions of self.
+
+        Parameters
+        ----------
+        n : list or numpy.ndarray
+            The order of derivation in each dimension.
+
+        Returns
+        -------
+        out : FunctionalBases
+            A Functionalbases with the n-derivative of the basis functions of
+            self.
+
+        &#39;&#39;&#39;
+        out = deepcopy(self)
+        out.bases = [x.derivative(m) for x, m in zip(self.bases, n)]
+        return out
+
+    def random(self, *args, **kwargs):
+        &#39;&#39;&#39;
+        Compute random evaluations of the bases in self.
+
+        Parameters
+        ----------
+        *args : misc
+            Additional parameters for the random generation. See random_dims.
+
+        Returns
+        -------
+        list or numpy.ndarray
+            Random evaluations of the basis functions of self.
+        numpy.ndarray
+            The input points, grouped by basis.
+
+        &#39;&#39;&#39;
+        return self.random_dims(range(len(self)), *args, **kwargs)
+
+    def random_dims(self, dims, n=1, measure=None, nargout=1):
+        &#39;&#39;&#39;
+        Evaluate the bases in dimensions dims of the bases of self
+        using n points drawn randomly according to measure if provided, or to
+        self.measure.marginal(dims) otherwise.
+
+        Parameters
+        ----------
+        dims : list or numpy.ndarray
+            The dimensions of the bases to be evaluated.
+        n : int, optional
+            The number of random evaluations. The default is 1.
+        measure : tensap.ProbabilityMeasure, optional
+            The probability measure used for the generation of the input
+            points. The default is None, indicating to use
+            self.measure.marginal(dims).
+
+        Returns
+        -------
+        bases_eval : list or numpy.ndarray
+            Random evaluations of the basis functions of self.
+        x : numpy.ndarray
+            The input points, grouped by basis.
+
+        &#39;&#39;&#39;
+        if measure is not None:
+            assert isinstance(measure, tensap.ProbabilityMeasure), \
+                &#39;Must provide a ProbabilityMeasure.&#39;
+            x = measure.marginal(dims).random(int(n))
+            bases_eval, x = self.eval(x, dims, 2)
+
+            if len(bases_eval) == 1:
+                bases_eval = bases_eval[0]
+
+            if nargout == 1:
+                return bases_eval
+            return bases_eval, x
+        return self.random_dims(dims, n, self.measure, nargout)
+
+    def get_random_vector(self):
+        &#39;&#39;&#39;
+        Returns the random vector associated with self.
+
+        Returns
+        -------
+        measure : tensap.RandomVector
+            The random vector associated with self.
+
+        &#39;&#39;&#39;
+        if isinstance(self.measure, tensap.RandomVector):
+            measure = self.measure
+        elif isinstance(self.measure, tensap.ProbabilityMeasure):
+            measure = self.measure.random_vector()
+        else:
+            measure = None
+        return measure
+
+    def one(self, dims=None):
+        &#39;&#39;&#39;
+        Return the coefficients associated with the FunctionalBases so that it
+        returns one.
+
+        Parameters
+        ----------
+        dims : list or numpy.ndarray, optional
+            The dimensions of the bases that need to return one. The default
+            is None, indicating all the bases.
+
+        Returns
+        -------
+        list
+            The list of coefficients so that the selected bases return one.
+
+        &#39;&#39;&#39;
+        if dims is None:
+            dims = range(len(self))
+        return [x.one() for x in self.bases[dims]]
+
+    def gram_matrix(self, dims=None):
+        &#39;&#39;&#39;
+        Return the gram matrix of each basis of self, or of a selection of
+        them if dims is provided.
+
+        Parameters
+        ----------
+        dims : list or numpy.ndarray, optional
+            The dimensions of the bases for which the gram matrix is computed.
+            The default is None, indicating all the bases.
+
+        Returns
+        -------
+        list
+            The gram matrix of the selected bases.
+
+        &#39;&#39;&#39;
+        if dims is None:
+            dims = range(len(self))
+        return [x.gram_matrix() for x in self.bases[dims]]
+
+    def storage(self):
+        &#39;&#39;&#39;
+        Return the storage requirement of the FunctionalBases.
+
+        Returns
+        -------
+        int
+            The storage requirement of the FunctionalBases.
+
+        &#39;&#39;&#39;
+        return np.sum([x.storage() for x in self.bases])
+
+    def mean(self, dims=None, measure=None):
+        &#39;&#39;&#39;
+        Compute the mean of self in the dimensions in dims according to
+        the RandomVector measure if provided, or to the standard RandomVector
+        associated with each basis if not.
+
+        Parameters
+        ----------
+        dims : list or numpy.ndarray, optional
+            The dimensions of the bases for which the mean is to be computed.
+            The default is None, indicating all the bases.
+        measure : tensap.RandomVector or tensap.RandomVariable, optional
+            The probability measure according to which the mean is computed.
+            The default is None, indicating to use the self.measure.
+
+        Returns
+        -------
+        out : list
+            The mean of each basis functions.
+
+        &#39;&#39;&#39;
+        if dims is None:
+            dims = np.arange(self.length())
+
+        if isinstance(measure, tensap.RandomVector):
+            out = [x.mean(y) for x, y in zip(self.bases[dims],
+                                             measure.random_variables)]
+        elif isinstance(measure, tensap.RandomVariable):
+            out = [x.mean(measure) for x in self.bases[dims]]
+        else:
+            out = [x.mean() for x in self.bases[dims]]
+        return out
+
+    def interpolation_points(self, x=None):
+        &#39;&#39;&#39;
+        Return the interpolation points for the bases.
+
+        Parameters
+        ----------
+        x : tensap.FullTensorGrid or list or numpy.ndarray
+            The set of points in which the interpolation points are selected.
+
+        Returns
+        -------
+        points : list
+            The interpolation points.
+
+        &#39;&#39;&#39;
+        if x is not None:
+            if isinstance(x, tensap.FullTensorGrid):
+                x = x.grids
+            elif not isinstance(x, list):
+                x = np.split(x, x.shape[1], 1)
+
+        points = []
+        for k, basis in enumerate(self.bases):
+            if x is None:
+                points.append(basis.interpolation_points())
+            else:
+                points.append(basis.interpolation_points(x[k]))
+        return points
+
+    def tensor_product_interpolation(self, *args):
+        &#39;&#39;&#39;
+        Interpolate a function on a product grid.
+
+        See also
+        tensap.FullTensorProductFunctionalBasis.tensorProductInterpolation.
+
+        Parameters
+        ----------
+        *args : tuple
+            Parameters of the method tensorProductInterpolation of
+            tensap.FullTensorProductFunctionalBasis.
+
+        Returns
+        -------
+        tensap.FunctionalTensor
+            The interpolation of the function on a product grid.
+
+        &#39;&#39;&#39;
+        H = tensap.FullTensorProductFunctionalBasis(self)
+        return H.tensor_product_interpolation(*args)
+
+    def magic_points(self, x, J=None):
+        &#39;&#39;&#39;
+        Provide the magic points associated with the functional bases selected
+        in a given set of points x.
+
+        Parameters
+        ----------
+        x : tensap.FullTensorGrid or list or numpy.ndarray
+            The set of points in which the magic points are selected.
+        J : numpy.ndarray, optional
+            The default is None. If not none, selected the magic indices with
+            tensap.magic_indices(F[:, J], self.cardinal(), &#39;left&#39;)[0]
+
+        Returns
+        -------
+        points : list
+            The magic points associated with each basis of self.
+        ind : list
+            The locations of the magic points in x for each basis of self.
+
+        &#39;&#39;&#39;
+        if isinstance(x, tensap.FullTensorGrid):
+            x = x.grids
+        elif not isinstance(x, list):
+            x = np.split(x, x.shape[1], 1)
+
+        points = [[]]*len(self)
+        ind = [[]]*len(self)
+        for k, basis in enumerate(self.bases):
+            if J is None:
+                points[k], ind[k], _ = basis.magic_points(x[k])
+            else:
+                points[k], ind[k], _ = basis.magic_points(x[k], J[k])
+        return points, ind
+
+    @staticmethod
+    def duplicate(basis, dim):
+        &#39;&#39;&#39;
+        Create a FunctionalBases with bases created with a duplication of
+        basis d times.
+
+        Parameters
+        ----------
+        basis : tensap.FunctionalBasis
+            The basis to be duplicated.
+        dim : int
+            The number of times basis is duplicated.
+
+        Returns
+        -------
+        tensap.FunctionalBases
+            The obtained FunctionalBases.
+
+        &#39;&#39;&#39;
+        return FunctionalBases([basis]*dim)</code></pre>
+</details>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-classes">Classes</h2>
+<dl>
+<dt id="tensap.approximation.bases.functional_bases.FunctionalBases"><code class="flex name class">
+<span>class <span class="ident">FunctionalBases</span></span>
+<span>(</span><span>bases=None)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Class FunctionalBases.</p>
+<h2 id="attributes">Attributes</h2>
+<dl>
+<dt><strong><code>bases</code></strong> :&ensp;<code>list</code> or <code>numpy.ndarray,</code> or <code>tensap.FunctionalBases</code>, optional</dt>
+<dd>List or numpy.ndarray containing objects of type FunctionalBasis.
+The default is None.</dd>
+<dt><strong><code>measure</code></strong> :&ensp;<code>tensap.Measure</code></dt>
+<dd>The measure associated with the functional bases. By default, a
+tensap.ProductMeasure constituted of the attribute measure of each
+basis of bases.</dd>
+</dl>
+<p>Constructor for the class FunctionalBases.</p>
+<p>To create a FunctionalBases by replication of FunctionalBasis,
+see FunctionalBases.duplicate.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>bases</code></strong> :&ensp;<code>list</code> or <code>numpy.ndarray,</code> or <code>tensap.FunctionalBases</code>, optional</dt>
+<dd>List or numpy.ndarray containing objects of type FunctionalBasis.
+The default is None.</dd>
+</dl>
+<h2 id="raises">Raises</h2>
+<dl>
+<dt><code>ValueError</code></dt>
+<dd>If the provided bases are not of type FunctionalBasis.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<p>None.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class FunctionalBases:
+    &#39;&#39;&#39;
+    Class FunctionalBases.
+
+    Attributes
+    ----------
+    bases : list or numpy.ndarray, or tensap.FunctionalBases, optional
+        List or numpy.ndarray containing objects of type FunctionalBasis.
+        The default is None.
+
+    measure : tensap.Measure
+        The measure associated with the functional bases. By default, a
+        tensap.ProductMeasure constituted of the attribute measure of each
+        basis of bases.
+
+    &#39;&#39;&#39;
+
+    def __init__(self, bases=None):
+        &#39;&#39;&#39;
+        Constructor for the class FunctionalBases.
+
+        To create a FunctionalBases by replication of FunctionalBasis,
+            see FunctionalBases.duplicate.
+
+        Parameters
+        ----------
+        bases : list or numpy.ndarray, or tensap.FunctionalBases, optional
+            List or numpy.ndarray containing objects of type FunctionalBasis.
+            The default is None.
+
+        Raises
+        ------
+        ValueError
+            If the provided bases are not of type FunctionalBasis.
+
+        Returns
+        -------
+        None.
+
+        &#39;&#39;&#39;
+        if bases is not None:
+            if isinstance(bases, FunctionalBases):
+                measure = bases.measure
+                bases = bases.bases
+            elif np.all([isinstance(x, tensap.FunctionalBasis) for
+                         x in bases]):
+                measure = tensap.ProductMeasure([x.measure for x in bases])
+            else:
+                raise ValueError(&#39;Wrong argument.&#39;)
+
+        self.bases = np.atleast_1d(bases)
+        self.measure = measure
+        if not np.all([isinstance(x, tensap.FunctionalBasis)
+                       for x in self.bases]):
+            raise ValueError(
+                &#39;Bases must contain objects of type FunctionalBasis&#39;)
+
+    def __repr__(self):
+        return (&#39;&lt;{}:{n}&#39; +
+                &#39;{t}bases = {},{n}&#39; +
+                &#39;{t}measure = {}&gt;&#39;).format(self.__class__.__name__,
+                                           self.bases,
+                                           self.measure,
+                                           t=&#39;\t&#39;, n=&#39;\n&#39;)
+
+    def length(self):
+        &#39;&#39;&#39;
+        Return the number of bases in self.
+
+        Returns
+        -------
+        int
+            The number of bases in self.
+
+        &#39;&#39;&#39;
+        return len(self.bases)
+
+    def __len__(self):
+        return self.length()
+
+    def cardinals(self, ind=None):
+        &#39;&#39;&#39;
+        Return the number of functions in each basis of self, or in basis ind
+        if provided.
+
+        Parameters
+        ----------
+        ind : ind, optional
+            The index of the selected basis. The default is None.
+
+        Returns
+        -------
+        numpy.ndarray
+            The number of functions in each basis of self, or in basis ind
+            if provided.
+
+        &#39;&#39;&#39;
+        if ind is None:
+            card = [x.cardinal() for x in self.bases]
+        else:
+            card = [x.cardinal() for x in self.bases[ind]]
+        return np.array(card)
+
+    def ndim(self):
+        &#39;&#39;&#39;
+        Return the dimension of each basis of self.
+
+        Returns
+        -------
+        list
+            The dimension of each basis of self.
+
+        &#39;&#39;&#39;
+        return [x.ndim() for x in self.bases]
+
+    def domain(self):
+        &#39;&#39;&#39;
+        Return the domain of each basis of self.
+
+        Returns
+        -------
+        list
+            The domain of each basis of self.
+
+        &#39;&#39;&#39;
+        return [x.domain() for x in self.bases]
+
+    def orthonormalize(self):
+        &#39;&#39;&#39;
+        Orthonormalize the basis functions of self.
+
+        Returns
+        -------
+        tensap.FunctionalBases
+            The FunctionalBases with orthonormalized basis functions.
+
+        &#39;&#39;&#39;
+        return FunctionalBases([x.orthonormalize() for x in self.bases])
+
+    def kron(self, g):
+        &#39;&#39;&#39;
+        Return the bases obtained by the Kronecker product of two bases.
+
+        Parameters
+        ----------
+        g : FunctionalBases
+            The second bases of the product.
+
+        Returns
+        -------
+        out : FunctionalBases
+            The bases obtained by the Kronecker product of two bases.
+
+        &#39;&#39;&#39;
+        out = deepcopy(self)
+        out.bases = [x.kron(y) for x, y in zip(self.bases, g.bases)]
+        return out
+
+    def remove_bases(self, ind):
+        &#39;&#39;&#39;
+        Remove bases of self of index ind.
+
+        Parameters
+        ----------
+        ind : int or list or numpy.ndarray
+            The indices of the bases to remove.
+
+        Returns
+        -------
+        out : tensap.FunctionalBases
+            The FunctionalBases with removed bases.
+
+        &#39;&#39;&#39;
+        out = deepcopy(self)
+        out.bases = np.delete(self.bases, ind)
+        return out
+
+    def keep_bases(self, ind):
+        &#39;&#39;&#39;
+        Keep only the bases of self of index ind.
+
+        Parameters
+        ----------
+        ind : int or list or numpy.ndarray
+            The indices of the bases to keep.
+
+        Returns
+        -------
+        out : tensap.FunctionalBases
+            The FunctionalBases with kept bases.
+
+        &#39;&#39;&#39;
+        out = deepcopy(self)
+        out.bases = out.bases[ind]
+        return out
+
+    def transpose(self, perm):
+        &#39;&#39;&#39;
+        Return self with the basis permutation perm.
+
+        Parameters
+        ----------
+        perm : list or numpy.ndarray
+            The permutation of the bases.
+
+        Returns
+        -------
+        out : tensap.FunctionalBases
+            The FunctionalBases with permuted bases.
+
+        &#39;&#39;&#39;
+        out = deepcopy(self)
+        out.bases = out.bases[perm]
+        return out
+
+    def __eq__(self, bases_2):
+        if not isinstance(bases_2, FunctionalBases):
+            out = False
+        else:
+            out = np.all([x == y for x, y in zip(self.bases,
+                                                 bases_2.bases)]) and \
+                self.measure == bases_2.measure
+        return out
+
+    def adaptation_path(self):
+        &#39;&#39;&#39;
+        Compute the adaptationPath for each basis in self.
+
+        See also tensap.FunctionalBasis.adaptation_path.
+
+        Returns
+        -------
+        list
+            List of adaptation paths for each basis.
+
+        &#39;&#39;&#39;
+        return np.array([x.adaptation_path() for x in self.bases],
+                        dtype=object)
+
+    def eval(self, x, dims=None, nargout=1):
+        &#39;&#39;&#39;
+        Computes evaluations of the basis functions of self at points x
+        in dimensions dims if provided, in all the dimensions if not.
+
+        Parameters
+        ----------
+        x : numpy.ndarray
+            The input points.
+        dims : list or numpy.ndarray, optional
+            The dimensions of the bases to be evaluated. The default is None,
+            indicating all the dimensions.
+        nargout : int, optional
+            Indicates the number of expected outputs. The default is 1,
+            indicating to return only the evaluations of the basis functions.
+
+        Returns
+        -------
+        out : list
+            Evaluations of the basis functions of self.
+        x : numpy.ndarray
+            The input points, grouped by basis.
+
+        &#39;&#39;&#39;
+        if dims is None:
+            dims = np.arange(self.length())
+        if not isinstance(x, list):
+            ind = np.atleast_1d(self.ndim())
+            x = np.hsplit(x, np.cumsum(ind[dims])[:-1])
+
+        out = [y.eval(z) for y, z in zip(self.bases[dims], x)]
+        if nargout == 1:
+            return out
+        return out, x
+
+    def eval_derivative(self, n, x, dims=None, nargout=1):
+        &#39;&#39;&#39;
+         Compute evaluations of the n-derivative of the basis functions of
+         self at points x in each dimension in dims if provided, in all the
+         dimensions otherwise.
+
+        Parameters
+        ----------
+        n : list or numpy.ndarray
+            The order of derivation in each dimension (in dims if provided).
+        x : numpy.ndarray
+            The input points.
+        dims : list or numpy.ndarray, optional
+            The dimensions of the bases for which the n-derivative is to be
+            computed. The default is None, indicating all the dimensions.
+        nargout : int, optional
+            Indicates the number of expected outputs. The default is 1,
+            indicating to return only the evaluations of the n-derivative of
+            the basis functions.
+
+        Returns
+        -------
+        out : list
+            Evaluations of the n-derivative of the basis functions of self.
+        x : numpy.ndarray
+            The input points, grouped by basis.
+
+        &#39;&#39;&#39;
+        if dims is None:
+            dims = np.arange(self.length())
+        if not isinstance(x, list):
+            ind = np.atleast_1d(self.ndim())
+            x = np.hsplit(x, np.cumsum(ind[dims])[:-1])
+
+        out = [y.eval_derivative(m, z) for
+               y, m, z in zip(self.bases[dims], n, x)]
+        if nargout == 1:
+            return out
+        return out, x
+
+    def derivative(self, n):
+        &#39;&#39;&#39;
+        Compute the n-derivative of the basis functions of self.
+
+        Parameters
+        ----------
+        n : list or numpy.ndarray
+            The order of derivation in each dimension.
+
+        Returns
+        -------
+        out : FunctionalBases
+            A Functionalbases with the n-derivative of the basis functions of
+            self.
+
+        &#39;&#39;&#39;
+        out = deepcopy(self)
+        out.bases = [x.derivative(m) for x, m in zip(self.bases, n)]
+        return out
+
+    def random(self, *args, **kwargs):
+        &#39;&#39;&#39;
+        Compute random evaluations of the bases in self.
+
+        Parameters
+        ----------
+        *args : misc
+            Additional parameters for the random generation. See random_dims.
+
+        Returns
+        -------
+        list or numpy.ndarray
+            Random evaluations of the basis functions of self.
+        numpy.ndarray
+            The input points, grouped by basis.
+
+        &#39;&#39;&#39;
+        return self.random_dims(range(len(self)), *args, **kwargs)
+
+    def random_dims(self, dims, n=1, measure=None, nargout=1):
+        &#39;&#39;&#39;
+        Evaluate the bases in dimensions dims of the bases of self
+        using n points drawn randomly according to measure if provided, or to
+        self.measure.marginal(dims) otherwise.
+
+        Parameters
+        ----------
+        dims : list or numpy.ndarray
+            The dimensions of the bases to be evaluated.
+        n : int, optional
+            The number of random evaluations. The default is 1.
+        measure : tensap.ProbabilityMeasure, optional
+            The probability measure used for the generation of the input
+            points. The default is None, indicating to use
+            self.measure.marginal(dims).
+
+        Returns
+        -------
+        bases_eval : list or numpy.ndarray
+            Random evaluations of the basis functions of self.
+        x : numpy.ndarray
+            The input points, grouped by basis.
+
+        &#39;&#39;&#39;
+        if measure is not None:
+            assert isinstance(measure, tensap.ProbabilityMeasure), \
+                &#39;Must provide a ProbabilityMeasure.&#39;
+            x = measure.marginal(dims).random(int(n))
+            bases_eval, x = self.eval(x, dims, 2)
+
+            if len(bases_eval) == 1:
+                bases_eval = bases_eval[0]
+
+            if nargout == 1:
+                return bases_eval
+            return bases_eval, x
+        return self.random_dims(dims, n, self.measure, nargout)
+
+    def get_random_vector(self):
+        &#39;&#39;&#39;
+        Returns the random vector associated with self.
+
+        Returns
+        -------
+        measure : tensap.RandomVector
+            The random vector associated with self.
+
+        &#39;&#39;&#39;
+        if isinstance(self.measure, tensap.RandomVector):
+            measure = self.measure
+        elif isinstance(self.measure, tensap.ProbabilityMeasure):
+            measure = self.measure.random_vector()
+        else:
+            measure = None
+        return measure
+
+    def one(self, dims=None):
+        &#39;&#39;&#39;
+        Return the coefficients associated with the FunctionalBases so that it
+        returns one.
+
+        Parameters
+        ----------
+        dims : list or numpy.ndarray, optional
+            The dimensions of the bases that need to return one. The default
+            is None, indicating all the bases.
+
+        Returns
+        -------
+        list
+            The list of coefficients so that the selected bases return one.
+
+        &#39;&#39;&#39;
+        if dims is None:
+            dims = range(len(self))
+        return [x.one() for x in self.bases[dims]]
+
+    def gram_matrix(self, dims=None):
+        &#39;&#39;&#39;
+        Return the gram matrix of each basis of self, or of a selection of
+        them if dims is provided.
+
+        Parameters
+        ----------
+        dims : list or numpy.ndarray, optional
+            The dimensions of the bases for which the gram matrix is computed.
+            The default is None, indicating all the bases.
+
+        Returns
+        -------
+        list
+            The gram matrix of the selected bases.
+
+        &#39;&#39;&#39;
+        if dims is None:
+            dims = range(len(self))
+        return [x.gram_matrix() for x in self.bases[dims]]
+
+    def storage(self):
+        &#39;&#39;&#39;
+        Return the storage requirement of the FunctionalBases.
+
+        Returns
+        -------
+        int
+            The storage requirement of the FunctionalBases.
+
+        &#39;&#39;&#39;
+        return np.sum([x.storage() for x in self.bases])
+
+    def mean(self, dims=None, measure=None):
+        &#39;&#39;&#39;
+        Compute the mean of self in the dimensions in dims according to
+        the RandomVector measure if provided, or to the standard RandomVector
+        associated with each basis if not.
+
+        Parameters
+        ----------
+        dims : list or numpy.ndarray, optional
+            The dimensions of the bases for which the mean is to be computed.
+            The default is None, indicating all the bases.
+        measure : tensap.RandomVector or tensap.RandomVariable, optional
+            The probability measure according to which the mean is computed.
+            The default is None, indicating to use the self.measure.
+
+        Returns
+        -------
+        out : list
+            The mean of each basis functions.
+
+        &#39;&#39;&#39;
+        if dims is None:
+            dims = np.arange(self.length())
+
+        if isinstance(measure, tensap.RandomVector):
+            out = [x.mean(y) for x, y in zip(self.bases[dims],
+                                             measure.random_variables)]
+        elif isinstance(measure, tensap.RandomVariable):
+            out = [x.mean(measure) for x in self.bases[dims]]
+        else:
+            out = [x.mean() for x in self.bases[dims]]
+        return out
+
+    def interpolation_points(self, x=None):
+        &#39;&#39;&#39;
+        Return the interpolation points for the bases.
+
+        Parameters
+        ----------
+        x : tensap.FullTensorGrid or list or numpy.ndarray
+            The set of points in which the interpolation points are selected.
+
+        Returns
+        -------
+        points : list
+            The interpolation points.
+
+        &#39;&#39;&#39;
+        if x is not None:
+            if isinstance(x, tensap.FullTensorGrid):
+                x = x.grids
+            elif not isinstance(x, list):
+                x = np.split(x, x.shape[1], 1)
+
+        points = []
+        for k, basis in enumerate(self.bases):
+            if x is None:
+                points.append(basis.interpolation_points())
+            else:
+                points.append(basis.interpolation_points(x[k]))
+        return points
+
+    def tensor_product_interpolation(self, *args):
+        &#39;&#39;&#39;
+        Interpolate a function on a product grid.
+
+        See also
+        tensap.FullTensorProductFunctionalBasis.tensorProductInterpolation.
+
+        Parameters
+        ----------
+        *args : tuple
+            Parameters of the method tensorProductInterpolation of
+            tensap.FullTensorProductFunctionalBasis.
+
+        Returns
+        -------
+        tensap.FunctionalTensor
+            The interpolation of the function on a product grid.
+
+        &#39;&#39;&#39;
+        H = tensap.FullTensorProductFunctionalBasis(self)
+        return H.tensor_product_interpolation(*args)
+
+    def magic_points(self, x, J=None):
+        &#39;&#39;&#39;
+        Provide the magic points associated with the functional bases selected
+        in a given set of points x.
+
+        Parameters
+        ----------
+        x : tensap.FullTensorGrid or list or numpy.ndarray
+            The set of points in which the magic points are selected.
+        J : numpy.ndarray, optional
+            The default is None. If not none, selected the magic indices with
+            tensap.magic_indices(F[:, J], self.cardinal(), &#39;left&#39;)[0]
+
+        Returns
+        -------
+        points : list
+            The magic points associated with each basis of self.
+        ind : list
+            The locations of the magic points in x for each basis of self.
+
+        &#39;&#39;&#39;
+        if isinstance(x, tensap.FullTensorGrid):
+            x = x.grids
+        elif not isinstance(x, list):
+            x = np.split(x, x.shape[1], 1)
+
+        points = [[]]*len(self)
+        ind = [[]]*len(self)
+        for k, basis in enumerate(self.bases):
+            if J is None:
+                points[k], ind[k], _ = basis.magic_points(x[k])
+            else:
+                points[k], ind[k], _ = basis.magic_points(x[k], J[k])
+        return points, ind
+
+    @staticmethod
+    def duplicate(basis, dim):
+        &#39;&#39;&#39;
+        Create a FunctionalBases with bases created with a duplication of
+        basis d times.
+
+        Parameters
+        ----------
+        basis : tensap.FunctionalBasis
+            The basis to be duplicated.
+        dim : int
+            The number of times basis is duplicated.
+
+        Returns
+        -------
+        tensap.FunctionalBases
+            The obtained FunctionalBases.
+
+        &#39;&#39;&#39;
+        return FunctionalBases([basis]*dim)</code></pre>
+</details>
+<h3>Static methods</h3>
+<dl>
+<dt id="tensap.approximation.bases.functional_bases.FunctionalBases.duplicate"><code class="name flex">
+<span>def <span class="ident">duplicate</span></span>(<span>basis, dim)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Create a FunctionalBases with bases created with a duplication of
+basis d times.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>basis</code></strong> :&ensp;<code>tensap.FunctionalBasis</code></dt>
+<dd>The basis to be duplicated.</dd>
+<dt><strong><code>dim</code></strong> :&ensp;<code>int</code></dt>
+<dd>The number of times basis is duplicated.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>tensap.FunctionalBases</code></dt>
+<dd>The obtained FunctionalBases.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@staticmethod
+def duplicate(basis, dim):
+    &#39;&#39;&#39;
+    Create a FunctionalBases with bases created with a duplication of
+    basis d times.
+
+    Parameters
+    ----------
+    basis : tensap.FunctionalBasis
+        The basis to be duplicated.
+    dim : int
+        The number of times basis is duplicated.
+
+    Returns
+    -------
+    tensap.FunctionalBases
+        The obtained FunctionalBases.
+
+    &#39;&#39;&#39;
+    return FunctionalBases([basis]*dim)</code></pre>
+</details>
+</dd>
+</dl>
+<h3>Methods</h3>
+<dl>
+<dt id="tensap.approximation.bases.functional_bases.FunctionalBases.adaptation_path"><code class="name flex">
+<span>def <span class="ident">adaptation_path</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Compute the adaptationPath for each basis in self.</p>
+<p>See also tensap.FunctionalBasis.adaptation_path.</p>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>list</code></dt>
+<dd>List of adaptation paths for each basis.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def adaptation_path(self):
+    &#39;&#39;&#39;
+    Compute the adaptationPath for each basis in self.
+
+    See also tensap.FunctionalBasis.adaptation_path.
+
+    Returns
+    -------
+    list
+        List of adaptation paths for each basis.
+
+    &#39;&#39;&#39;
+    return np.array([x.adaptation_path() for x in self.bases],
+                    dtype=object)</code></pre>
+</details>
+</dd>
+<dt id="tensap.approximation.bases.functional_bases.FunctionalBases.cardinals"><code class="name flex">
+<span>def <span class="ident">cardinals</span></span>(<span>self, ind=None)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Return the number of functions in each basis of self, or in basis ind
+if provided.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>ind</code></strong> :&ensp;<code>ind</code>, optional</dt>
+<dd>The index of the selected basis. The default is None.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>numpy.ndarray</code></dt>
+<dd>The number of functions in each basis of self, or in basis ind
+if provided.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def cardinals(self, ind=None):
+    &#39;&#39;&#39;
+    Return the number of functions in each basis of self, or in basis ind
+    if provided.
+
+    Parameters
+    ----------
+    ind : ind, optional
+        The index of the selected basis. The default is None.
+
+    Returns
+    -------
+    numpy.ndarray
+        The number of functions in each basis of self, or in basis ind
+        if provided.
+
+    &#39;&#39;&#39;
+    if ind is None:
+        card = [x.cardinal() for x in self.bases]
+    else:
+        card = [x.cardinal() for x in self.bases[ind]]
+    return np.array(card)</code></pre>
+</details>
+</dd>
+<dt id="tensap.approximation.bases.functional_bases.FunctionalBases.derivative"><code class="name flex">
+<span>def <span class="ident">derivative</span></span>(<span>self, n)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Compute the n-derivative of the basis functions of self.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>n</code></strong> :&ensp;<code>list</code> or <code>numpy.ndarray</code></dt>
+<dd>The order of derivation in each dimension.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><strong><code>out</code></strong> :&ensp;<code><a title="tensap.approximation.bases.functional_bases.FunctionalBases" href="#tensap.approximation.bases.functional_bases.FunctionalBases">FunctionalBases</a></code></dt>
+<dd>A Functionalbases with the n-derivative of the basis functions of
+self.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def derivative(self, n):
+    &#39;&#39;&#39;
+    Compute the n-derivative of the basis functions of self.
+
+    Parameters
+    ----------
+    n : list or numpy.ndarray
+        The order of derivation in each dimension.
+
+    Returns
+    -------
+    out : FunctionalBases
+        A Functionalbases with the n-derivative of the basis functions of
+        self.
+
+    &#39;&#39;&#39;
+    out = deepcopy(self)
+    out.bases = [x.derivative(m) for x, m in zip(self.bases, n)]
+    return out</code></pre>
+</details>
+</dd>
+<dt id="tensap.approximation.bases.functional_bases.FunctionalBases.domain"><code class="name flex">
+<span>def <span class="ident">domain</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Return the domain of each basis of self.</p>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>list</code></dt>
+<dd>The domain of each basis of self.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def domain(self):
+    &#39;&#39;&#39;
+    Return the domain of each basis of self.
+
+    Returns
+    -------
+    list
+        The domain of each basis of self.
+
+    &#39;&#39;&#39;
+    return [x.domain() for x in self.bases]</code></pre>
+</details>
+</dd>
+<dt id="tensap.approximation.bases.functional_bases.FunctionalBases.eval"><code class="name flex">
+<span>def <span class="ident">eval</span></span>(<span>self, x, dims=None, nargout=1)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Computes evaluations of the basis functions of self at points x
+in dimensions dims if provided, in all the dimensions if not.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>x</code></strong> :&ensp;<code>numpy.ndarray</code></dt>
+<dd>The input points.</dd>
+<dt><strong><code>dims</code></strong> :&ensp;<code>list</code> or <code>numpy.ndarray</code>, optional</dt>
+<dd>The dimensions of the bases to be evaluated. The default is None,
+indicating all the dimensions.</dd>
+<dt><strong><code>nargout</code></strong> :&ensp;<code>int</code>, optional</dt>
+<dd>Indicates the number of expected outputs. The default is 1,
+indicating to return only the evaluations of the basis functions.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><strong><code>out</code></strong> :&ensp;<code>list</code></dt>
+<dd>Evaluations of the basis functions of self.</dd>
+<dt><strong><code>x</code></strong> :&ensp;<code>numpy.ndarray</code></dt>
+<dd>The input points, grouped by basis.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def eval(self, x, dims=None, nargout=1):
+    &#39;&#39;&#39;
+    Computes evaluations of the basis functions of self at points x
+    in dimensions dims if provided, in all the dimensions if not.
+
+    Parameters
+    ----------
+    x : numpy.ndarray
+        The input points.
+    dims : list or numpy.ndarray, optional
+        The dimensions of the bases to be evaluated. The default is None,
+        indicating all the dimensions.
+    nargout : int, optional
+        Indicates the number of expected outputs. The default is 1,
+        indicating to return only the evaluations of the basis functions.
+
+    Returns
+    -------
+    out : list
+        Evaluations of the basis functions of self.
+    x : numpy.ndarray
+        The input points, grouped by basis.
+
+    &#39;&#39;&#39;
+    if dims is None:
+        dims = np.arange(self.length())
+    if not isinstance(x, list):
+        ind = np.atleast_1d(self.ndim())
+        x = np.hsplit(x, np.cumsum(ind[dims])[:-1])
+
+    out = [y.eval(z) for y, z in zip(self.bases[dims], x)]
+    if nargout == 1:
+        return out
+    return out, x</code></pre>
+</details>
+</dd>
+<dt id="tensap.approximation.bases.functional_bases.FunctionalBases.eval_derivative"><code class="name flex">
+<span>def <span class="ident">eval_derivative</span></span>(<span>self, n, x, dims=None, nargout=1)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Compute evaluations of the n-derivative of the basis functions of
+self at points x in each dimension in dims if provided, in all the
+dimensions otherwise.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>n</code></strong> :&ensp;<code>list</code> or <code>numpy.ndarray</code></dt>
+<dd>The order of derivation in each dimension (in dims if provided).</dd>
+<dt><strong><code>x</code></strong> :&ensp;<code>numpy.ndarray</code></dt>
+<dd>The input points.</dd>
+<dt><strong><code>dims</code></strong> :&ensp;<code>list</code> or <code>numpy.ndarray</code>, optional</dt>
+<dd>The dimensions of the bases for which the n-derivative is to be
+computed. The default is None, indicating all the dimensions.</dd>
+<dt><strong><code>nargout</code></strong> :&ensp;<code>int</code>, optional</dt>
+<dd>Indicates the number of expected outputs. The default is 1,
+indicating to return only the evaluations of the n-derivative of
+the basis functions.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><strong><code>out</code></strong> :&ensp;<code>list</code></dt>
+<dd>Evaluations of the n-derivative of the basis functions of self.</dd>
+<dt><strong><code>x</code></strong> :&ensp;<code>numpy.ndarray</code></dt>
+<dd>The input points, grouped by basis.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def eval_derivative(self, n, x, dims=None, nargout=1):
+    &#39;&#39;&#39;
+     Compute evaluations of the n-derivative of the basis functions of
+     self at points x in each dimension in dims if provided, in all the
+     dimensions otherwise.
+
+    Parameters
+    ----------
+    n : list or numpy.ndarray
+        The order of derivation in each dimension (in dims if provided).
+    x : numpy.ndarray
+        The input points.
+    dims : list or numpy.ndarray, optional
+        The dimensions of the bases for which the n-derivative is to be
+        computed. The default is None, indicating all the dimensions.
+    nargout : int, optional
+        Indicates the number of expected outputs. The default is 1,
+        indicating to return only the evaluations of the n-derivative of
+        the basis functions.
+
+    Returns
+    -------
+    out : list
+        Evaluations of the n-derivative of the basis functions of self.
+    x : numpy.ndarray
+        The input points, grouped by basis.
+
+    &#39;&#39;&#39;
+    if dims is None:
+        dims = np.arange(self.length())
+    if not isinstance(x, list):
+        ind = np.atleast_1d(self.ndim())
+        x = np.hsplit(x, np.cumsum(ind[dims])[:-1])
+
+    out = [y.eval_derivative(m, z) for
+           y, m, z in zip(self.bases[dims], n, x)]
+    if nargout == 1:
+        return out
+    return out, x</code></pre>
+</details>
+</dd>
+<dt id="tensap.approximation.bases.functional_bases.FunctionalBases.get_random_vector"><code class="name flex">
+<span>def <span class="ident">get_random_vector</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Returns the random vector associated with self.</p>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><strong><code>measure</code></strong> :&ensp;<code>tensap.RandomVector</code></dt>
+<dd>The random vector associated with self.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_random_vector(self):
+    &#39;&#39;&#39;
+    Returns the random vector associated with self.
+
+    Returns
+    -------
+    measure : tensap.RandomVector
+        The random vector associated with self.
+
+    &#39;&#39;&#39;
+    if isinstance(self.measure, tensap.RandomVector):
+        measure = self.measure
+    elif isinstance(self.measure, tensap.ProbabilityMeasure):
+        measure = self.measure.random_vector()
+    else:
+        measure = None
+    return measure</code></pre>
+</details>
+</dd>
+<dt id="tensap.approximation.bases.functional_bases.FunctionalBases.gram_matrix"><code class="name flex">
+<span>def <span class="ident">gram_matrix</span></span>(<span>self, dims=None)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Return the gram matrix of each basis of self, or of a selection of
+them if dims is provided.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>dims</code></strong> :&ensp;<code>list</code> or <code>numpy.ndarray</code>, optional</dt>
+<dd>The dimensions of the bases for which the gram matrix is computed.
+The default is None, indicating all the bases.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>list</code></dt>
+<dd>The gram matrix of the selected bases.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def gram_matrix(self, dims=None):
+    &#39;&#39;&#39;
+    Return the gram matrix of each basis of self, or of a selection of
+    them if dims is provided.
+
+    Parameters
+    ----------
+    dims : list or numpy.ndarray, optional
+        The dimensions of the bases for which the gram matrix is computed.
+        The default is None, indicating all the bases.
+
+    Returns
+    -------
+    list
+        The gram matrix of the selected bases.
+
+    &#39;&#39;&#39;
+    if dims is None:
+        dims = range(len(self))
+    return [x.gram_matrix() for x in self.bases[dims]]</code></pre>
+</details>
+</dd>
+<dt id="tensap.approximation.bases.functional_bases.FunctionalBases.interpolation_points"><code class="name flex">
+<span>def <span class="ident">interpolation_points</span></span>(<span>self, x=None)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Return the interpolation points for the bases.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>x</code></strong> :&ensp;<code>tensap.FullTensorGrid</code> or <code>list</code> or <code>numpy.ndarray</code></dt>
+<dd>The set of points in which the interpolation points are selected.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><strong><code>points</code></strong> :&ensp;<code>list</code></dt>
+<dd>The interpolation points.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def interpolation_points(self, x=None):
+    &#39;&#39;&#39;
+    Return the interpolation points for the bases.
+
+    Parameters
+    ----------
+    x : tensap.FullTensorGrid or list or numpy.ndarray
+        The set of points in which the interpolation points are selected.
+
+    Returns
+    -------
+    points : list
+        The interpolation points.
+
+    &#39;&#39;&#39;
+    if x is not None:
+        if isinstance(x, tensap.FullTensorGrid):
+            x = x.grids
+        elif not isinstance(x, list):
+            x = np.split(x, x.shape[1], 1)
+
+    points = []
+    for k, basis in enumerate(self.bases):
+        if x is None:
+            points.append(basis.interpolation_points())
+        else:
+            points.append(basis.interpolation_points(x[k]))
+    return points</code></pre>
+</details>
+</dd>
+<dt id="tensap.approximation.bases.functional_bases.FunctionalBases.keep_bases"><code class="name flex">
+<span>def <span class="ident">keep_bases</span></span>(<span>self, ind)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Keep only the bases of self of index ind.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>ind</code></strong> :&ensp;<code>int</code> or <code>list</code> or <code>numpy.ndarray</code></dt>
+<dd>The indices of the bases to keep.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><strong><code>out</code></strong> :&ensp;<code>tensap.FunctionalBases</code></dt>
+<dd>The FunctionalBases with kept bases.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def keep_bases(self, ind):
+    &#39;&#39;&#39;
+    Keep only the bases of self of index ind.
+
+    Parameters
+    ----------
+    ind : int or list or numpy.ndarray
+        The indices of the bases to keep.
+
+    Returns
+    -------
+    out : tensap.FunctionalBases
+        The FunctionalBases with kept bases.
+
+    &#39;&#39;&#39;
+    out = deepcopy(self)
+    out.bases = out.bases[ind]
+    return out</code></pre>
+</details>
+</dd>
+<dt id="tensap.approximation.bases.functional_bases.FunctionalBases.kron"><code class="name flex">
+<span>def <span class="ident">kron</span></span>(<span>self, g)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Return the bases obtained by the Kronecker product of two bases.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>g</code></strong> :&ensp;<code><a title="tensap.approximation.bases.functional_bases.FunctionalBases" href="#tensap.approximation.bases.functional_bases.FunctionalBases">FunctionalBases</a></code></dt>
+<dd>The second bases of the product.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><strong><code>out</code></strong> :&ensp;<code><a title="tensap.approximation.bases.functional_bases.FunctionalBases" href="#tensap.approximation.bases.functional_bases.FunctionalBases">FunctionalBases</a></code></dt>
+<dd>The bases obtained by the Kronecker product of two bases.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def kron(self, g):
+    &#39;&#39;&#39;
+    Return the bases obtained by the Kronecker product of two bases.
+
+    Parameters
+    ----------
+    g : FunctionalBases
+        The second bases of the product.
+
+    Returns
+    -------
+    out : FunctionalBases
+        The bases obtained by the Kronecker product of two bases.
+
+    &#39;&#39;&#39;
+    out = deepcopy(self)
+    out.bases = [x.kron(y) for x, y in zip(self.bases, g.bases)]
+    return out</code></pre>
+</details>
+</dd>
+<dt id="tensap.approximation.bases.functional_bases.FunctionalBases.length"><code class="name flex">
+<span>def <span class="ident">length</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Return the number of bases in self.</p>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>int</code></dt>
+<dd>The number of bases in self.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def length(self):
+    &#39;&#39;&#39;
+    Return the number of bases in self.
+
+    Returns
+    -------
+    int
+        The number of bases in self.
+
+    &#39;&#39;&#39;
+    return len(self.bases)</code></pre>
+</details>
+</dd>
+<dt id="tensap.approximation.bases.functional_bases.FunctionalBases.magic_points"><code class="name flex">
+<span>def <span class="ident">magic_points</span></span>(<span>self, x, J=None)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Provide the magic points associated with the functional bases selected
+in a given set of points x.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>x</code></strong> :&ensp;<code>tensap.FullTensorGrid</code> or <code>list</code> or <code>numpy.ndarray</code></dt>
+<dd>The set of points in which the magic points are selected.</dd>
+<dt><strong><code>J</code></strong> :&ensp;<code>numpy.ndarray</code>, optional</dt>
+<dd>The default is None. If not none, selected the magic indices with
+tensap.magic_indices(F[:, J], self.cardinal(), 'left')[0]</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><strong><code>points</code></strong> :&ensp;<code>list</code></dt>
+<dd>The magic points associated with each basis of self.</dd>
+<dt><strong><code>ind</code></strong> :&ensp;<code>list</code></dt>
+<dd>The locations of the magic points in x for each basis of self.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def magic_points(self, x, J=None):
+    &#39;&#39;&#39;
+    Provide the magic points associated with the functional bases selected
+    in a given set of points x.
+
+    Parameters
+    ----------
+    x : tensap.FullTensorGrid or list or numpy.ndarray
+        The set of points in which the magic points are selected.
+    J : numpy.ndarray, optional
+        The default is None. If not none, selected the magic indices with
+        tensap.magic_indices(F[:, J], self.cardinal(), &#39;left&#39;)[0]
+
+    Returns
+    -------
+    points : list
+        The magic points associated with each basis of self.
+    ind : list
+        The locations of the magic points in x for each basis of self.
+
+    &#39;&#39;&#39;
+    if isinstance(x, tensap.FullTensorGrid):
+        x = x.grids
+    elif not isinstance(x, list):
+        x = np.split(x, x.shape[1], 1)
+
+    points = [[]]*len(self)
+    ind = [[]]*len(self)
+    for k, basis in enumerate(self.bases):
+        if J is None:
+            points[k], ind[k], _ = basis.magic_points(x[k])
+        else:
+            points[k], ind[k], _ = basis.magic_points(x[k], J[k])
+    return points, ind</code></pre>
+</details>
+</dd>
+<dt id="tensap.approximation.bases.functional_bases.FunctionalBases.mean"><code class="name flex">
+<span>def <span class="ident">mean</span></span>(<span>self, dims=None, measure=None)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Compute the mean of self in the dimensions in dims according to
+the RandomVector measure if provided, or to the standard RandomVector
+associated with each basis if not.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>dims</code></strong> :&ensp;<code>list</code> or <code>numpy.ndarray</code>, optional</dt>
+<dd>The dimensions of the bases for which the mean is to be computed.
+The default is None, indicating all the bases.</dd>
+<dt><strong><code>measure</code></strong> :&ensp;<code>tensap.RandomVector</code> or <code>tensap.RandomVariable</code>, optional</dt>
+<dd>The probability measure according to which the mean is computed.
+The default is None, indicating to use the self.measure.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><strong><code>out</code></strong> :&ensp;<code>list</code></dt>
+<dd>The mean of each basis functions.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def mean(self, dims=None, measure=None):
+    &#39;&#39;&#39;
+    Compute the mean of self in the dimensions in dims according to
+    the RandomVector measure if provided, or to the standard RandomVector
+    associated with each basis if not.
+
+    Parameters
+    ----------
+    dims : list or numpy.ndarray, optional
+        The dimensions of the bases for which the mean is to be computed.
+        The default is None, indicating all the bases.
+    measure : tensap.RandomVector or tensap.RandomVariable, optional
+        The probability measure according to which the mean is computed.
+        The default is None, indicating to use the self.measure.
+
+    Returns
+    -------
+    out : list
+        The mean of each basis functions.
+
+    &#39;&#39;&#39;
+    if dims is None:
+        dims = np.arange(self.length())
+
+    if isinstance(measure, tensap.RandomVector):
+        out = [x.mean(y) for x, y in zip(self.bases[dims],
+                                         measure.random_variables)]
+    elif isinstance(measure, tensap.RandomVariable):
+        out = [x.mean(measure) for x in self.bases[dims]]
+    else:
+        out = [x.mean() for x in self.bases[dims]]
+    return out</code></pre>
+</details>
+</dd>
+<dt id="tensap.approximation.bases.functional_bases.FunctionalBases.ndim"><code class="name flex">
+<span>def <span class="ident">ndim</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Return the dimension of each basis of self.</p>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>list</code></dt>
+<dd>The dimension of each basis of self.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def ndim(self):
+    &#39;&#39;&#39;
+    Return the dimension of each basis of self.
+
+    Returns
+    -------
+    list
+        The dimension of each basis of self.
+
+    &#39;&#39;&#39;
+    return [x.ndim() for x in self.bases]</code></pre>
+</details>
+</dd>
+<dt id="tensap.approximation.bases.functional_bases.FunctionalBases.one"><code class="name flex">
+<span>def <span class="ident">one</span></span>(<span>self, dims=None)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Return the coefficients associated with the FunctionalBases so that it
+returns one.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>dims</code></strong> :&ensp;<code>list</code> or <code>numpy.ndarray</code>, optional</dt>
+<dd>The dimensions of the bases that need to return one. The default
+is None, indicating all the bases.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>list</code></dt>
+<dd>The list of coefficients so that the selected bases return one.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def one(self, dims=None):
+    &#39;&#39;&#39;
+    Return the coefficients associated with the FunctionalBases so that it
+    returns one.
+
+    Parameters
+    ----------
+    dims : list or numpy.ndarray, optional
+        The dimensions of the bases that need to return one. The default
+        is None, indicating all the bases.
+
+    Returns
+    -------
+    list
+        The list of coefficients so that the selected bases return one.
+
+    &#39;&#39;&#39;
+    if dims is None:
+        dims = range(len(self))
+    return [x.one() for x in self.bases[dims]]</code></pre>
+</details>
+</dd>
+<dt id="tensap.approximation.bases.functional_bases.FunctionalBases.orthonormalize"><code class="name flex">
+<span>def <span class="ident">orthonormalize</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Orthonormalize the basis functions of self.</p>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>tensap.FunctionalBases</code></dt>
+<dd>The FunctionalBases with orthonormalized basis functions.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def orthonormalize(self):
+    &#39;&#39;&#39;
+    Orthonormalize the basis functions of self.
+
+    Returns
+    -------
+    tensap.FunctionalBases
+        The FunctionalBases with orthonormalized basis functions.
+
+    &#39;&#39;&#39;
+    return FunctionalBases([x.orthonormalize() for x in self.bases])</code></pre>
+</details>
+</dd>
+<dt id="tensap.approximation.bases.functional_bases.FunctionalBases.random"><code class="name flex">
+<span>def <span class="ident">random</span></span>(<span>self, *args, **kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Compute random evaluations of the bases in self.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>*args</code></strong> :&ensp;<code>misc</code></dt>
+<dd>Additional parameters for the random generation. See random_dims.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>list</code> or <code>numpy.ndarray</code></dt>
+<dd>Random evaluations of the basis functions of self.</dd>
+<dt><code>numpy.ndarray</code></dt>
+<dd>The input points, grouped by basis.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def random(self, *args, **kwargs):
+    &#39;&#39;&#39;
+    Compute random evaluations of the bases in self.
+
+    Parameters
+    ----------
+    *args : misc
+        Additional parameters for the random generation. See random_dims.
+
+    Returns
+    -------
+    list or numpy.ndarray
+        Random evaluations of the basis functions of self.
+    numpy.ndarray
+        The input points, grouped by basis.
+
+    &#39;&#39;&#39;
+    return self.random_dims(range(len(self)), *args, **kwargs)</code></pre>
+</details>
+</dd>
+<dt id="tensap.approximation.bases.functional_bases.FunctionalBases.random_dims"><code class="name flex">
+<span>def <span class="ident">random_dims</span></span>(<span>self, dims, n=1, measure=None, nargout=1)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Evaluate the bases in dimensions dims of the bases of self
+using n points drawn randomly according to measure if provided, or to
+self.measure.marginal(dims) otherwise.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>dims</code></strong> :&ensp;<code>list</code> or <code>numpy.ndarray</code></dt>
+<dd>The dimensions of the bases to be evaluated.</dd>
+<dt><strong><code>n</code></strong> :&ensp;<code>int</code>, optional</dt>
+<dd>The number of random evaluations. The default is 1.</dd>
+<dt><strong><code>measure</code></strong> :&ensp;<code>tensap.ProbabilityMeasure</code>, optional</dt>
+<dd>The probability measure used for the generation of the input
+points. The default is None, indicating to use
+self.measure.marginal(dims).</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><strong><code>bases_eval</code></strong> :&ensp;<code>list</code> or <code>numpy.ndarray</code></dt>
+<dd>Random evaluations of the basis functions of self.</dd>
+<dt><strong><code>x</code></strong> :&ensp;<code>numpy.ndarray</code></dt>
+<dd>The input points, grouped by basis.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def random_dims(self, dims, n=1, measure=None, nargout=1):
+    &#39;&#39;&#39;
+    Evaluate the bases in dimensions dims of the bases of self
+    using n points drawn randomly according to measure if provided, or to
+    self.measure.marginal(dims) otherwise.
+
+    Parameters
+    ----------
+    dims : list or numpy.ndarray
+        The dimensions of the bases to be evaluated.
+    n : int, optional
+        The number of random evaluations. The default is 1.
+    measure : tensap.ProbabilityMeasure, optional
+        The probability measure used for the generation of the input
+        points. The default is None, indicating to use
+        self.measure.marginal(dims).
+
+    Returns
+    -------
+    bases_eval : list or numpy.ndarray
+        Random evaluations of the basis functions of self.
+    x : numpy.ndarray
+        The input points, grouped by basis.
+
+    &#39;&#39;&#39;
+    if measure is not None:
+        assert isinstance(measure, tensap.ProbabilityMeasure), \
+            &#39;Must provide a ProbabilityMeasure.&#39;
+        x = measure.marginal(dims).random(int(n))
+        bases_eval, x = self.eval(x, dims, 2)
+
+        if len(bases_eval) == 1:
+            bases_eval = bases_eval[0]
+
+        if nargout == 1:
+            return bases_eval
+        return bases_eval, x
+    return self.random_dims(dims, n, self.measure, nargout)</code></pre>
+</details>
+</dd>
+<dt id="tensap.approximation.bases.functional_bases.FunctionalBases.remove_bases"><code class="name flex">
+<span>def <span class="ident">remove_bases</span></span>(<span>self, ind)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Remove bases of self of index ind.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>ind</code></strong> :&ensp;<code>int</code> or <code>list</code> or <code>numpy.ndarray</code></dt>
+<dd>The indices of the bases to remove.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><strong><code>out</code></strong> :&ensp;<code>tensap.FunctionalBases</code></dt>
+<dd>The FunctionalBases with removed bases.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def remove_bases(self, ind):
+    &#39;&#39;&#39;
+    Remove bases of self of index ind.
+
+    Parameters
+    ----------
+    ind : int or list or numpy.ndarray
+        The indices of the bases to remove.
+
+    Returns
+    -------
+    out : tensap.FunctionalBases
+        The FunctionalBases with removed bases.
+
+    &#39;&#39;&#39;
+    out = deepcopy(self)
+    out.bases = np.delete(self.bases, ind)
+    return out</code></pre>
+</details>
+</dd>
+<dt id="tensap.approximation.bases.functional_bases.FunctionalBases.storage"><code class="name flex">
+<span>def <span class="ident">storage</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Return the storage requirement of the FunctionalBases.</p>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>int</code></dt>
+<dd>The storage requirement of the FunctionalBases.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def storage(self):
+    &#39;&#39;&#39;
+    Return the storage requirement of the FunctionalBases.
+
+    Returns
+    -------
+    int
+        The storage requirement of the FunctionalBases.
+
+    &#39;&#39;&#39;
+    return np.sum([x.storage() for x in self.bases])</code></pre>
+</details>
+</dd>
+<dt id="tensap.approximation.bases.functional_bases.FunctionalBases.tensor_product_interpolation"><code class="name flex">
+<span>def <span class="ident">tensor_product_interpolation</span></span>(<span>self, *args)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Interpolate a function on a product grid.</p>
+<p>See also
+tensap.FullTensorProductFunctionalBasis.tensorProductInterpolation.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>*args</code></strong> :&ensp;<code>tuple</code></dt>
+<dd>Parameters of the method tensorProductInterpolation of
+tensap.FullTensorProductFunctionalBasis.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>tensap.FunctionalTensor</code></dt>
+<dd>The interpolation of the function on a product grid.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def tensor_product_interpolation(self, *args):
+    &#39;&#39;&#39;
+    Interpolate a function on a product grid.
+
+    See also
+    tensap.FullTensorProductFunctionalBasis.tensorProductInterpolation.
+
+    Parameters
+    ----------
+    *args : tuple
+        Parameters of the method tensorProductInterpolation of
+        tensap.FullTensorProductFunctionalBasis.
+
+    Returns
+    -------
+    tensap.FunctionalTensor
+        The interpolation of the function on a product grid.
+
+    &#39;&#39;&#39;
+    H = tensap.FullTensorProductFunctionalBasis(self)
+    return H.tensor_product_interpolation(*args)</code></pre>
+</details>
+</dd>
+<dt id="tensap.approximation.bases.functional_bases.FunctionalBases.transpose"><code class="name flex">
+<span>def <span class="ident">transpose</span></span>(<span>self, perm)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Return self with the basis permutation perm.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>perm</code></strong> :&ensp;<code>list</code> or <code>numpy.ndarray</code></dt>
+<dd>The permutation of the bases.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><strong><code>out</code></strong> :&ensp;<code>tensap.FunctionalBases</code></dt>
+<dd>The FunctionalBases with permuted bases.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def transpose(self, perm):
+    &#39;&#39;&#39;
+    Return self with the basis permutation perm.
+
+    Parameters
+    ----------
+    perm : list or numpy.ndarray
+        The permutation of the bases.
+
+    Returns
+    -------
+    out : tensap.FunctionalBases
+        The FunctionalBases with permuted bases.
+
+    &#39;&#39;&#39;
+    out = deepcopy(self)
+    out.bases = out.bases[perm]
+    return out</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+</dl>
+</section>
+</article>
+<nav id="sidebar">
+<h1>Index</h1>
+<div class="toc">
+<ul></ul>
+</div>
+<ul id="index">
+<li><h3>Super-module</h3>
+<ul>
+<li><code><a title="tensap.approximation.bases" href="index.html">tensap.approximation.bases</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-classes">Classes</a></h3>
+<ul>
+<li>
+<h4><code><a title="tensap.approximation.bases.functional_bases.FunctionalBases" href="#tensap.approximation.bases.functional_bases.FunctionalBases">FunctionalBases</a></code></h4>
+<ul class="">
+<li><code><a title="tensap.approximation.bases.functional_bases.FunctionalBases.adaptation_path" href="#tensap.approximation.bases.functional_bases.FunctionalBases.adaptation_path">adaptation_path</a></code></li>
+<li><code><a title="tensap.approximation.bases.functional_bases.FunctionalBases.cardinals" href="#tensap.approximation.bases.functional_bases.FunctionalBases.cardinals">cardinals</a></code></li>
+<li><code><a title="tensap.approximation.bases.functional_bases.FunctionalBases.derivative" href="#tensap.approximation.bases.functional_bases.FunctionalBases.derivative">derivative</a></code></li>
+<li><code><a title="tensap.approximation.bases.functional_bases.FunctionalBases.domain" href="#tensap.approximation.bases.functional_bases.FunctionalBases.domain">domain</a></code></li>
+<li><code><a title="tensap.approximation.bases.functional_bases.FunctionalBases.duplicate" href="#tensap.approximation.bases.functional_bases.FunctionalBases.duplicate">duplicate</a></code></li>
+<li><code><a title="tensap.approximation.bases.functional_bases.FunctionalBases.eval" href="#tensap.approximation.bases.functional_bases.FunctionalBases.eval">eval</a></code></li>
+<li><code><a title="tensap.approximation.bases.functional_bases.FunctionalBases.eval_derivative" href="#tensap.approximation.bases.functional_bases.FunctionalBases.eval_derivative">eval_derivative</a></code></li>
+<li><code><a title="tensap.approximation.bases.functional_bases.FunctionalBases.get_random_vector" href="#tensap.approximation.bases.functional_bases.FunctionalBases.get_random_vector">get_random_vector</a></code></li>
+<li><code><a title="tensap.approximation.bases.functional_bases.FunctionalBases.gram_matrix" href="#tensap.approximation.bases.functional_bases.FunctionalBases.gram_matrix">gram_matrix</a></code></li>
+<li><code><a title="tensap.approximation.bases.functional_bases.FunctionalBases.interpolation_points" href="#tensap.approximation.bases.functional_bases.FunctionalBases.interpolation_points">interpolation_points</a></code></li>
+<li><code><a title="tensap.approximation.bases.functional_bases.FunctionalBases.keep_bases" href="#tensap.approximation.bases.functional_bases.FunctionalBases.keep_bases">keep_bases</a></code></li>
+<li><code><a title="tensap.approximation.bases.functional_bases.FunctionalBases.kron" href="#tensap.approximation.bases.functional_bases.FunctionalBases.kron">kron</a></code></li>
+<li><code><a title="tensap.approximation.bases.functional_bases.FunctionalBases.length" href="#tensap.approximation.bases.functional_bases.FunctionalBases.length">length</a></code></li>
+<li><code><a title="tensap.approximation.bases.functional_bases.FunctionalBases.magic_points" href="#tensap.approximation.bases.functional_bases.FunctionalBases.magic_points">magic_points</a></code></li>
+<li><code><a title="tensap.approximation.bases.functional_bases.FunctionalBases.mean" href="#tensap.approximation.bases.functional_bases.FunctionalBases.mean">mean</a></code></li>
+<li><code><a title="tensap.approximation.bases.functional_bases.FunctionalBases.ndim" href="#tensap.approximation.bases.functional_bases.FunctionalBases.ndim">ndim</a></code></li>
+<li><code><a title="tensap.approximation.bases.functional_bases.FunctionalBases.one" href="#tensap.approximation.bases.functional_bases.FunctionalBases.one">one</a></code></li>
+<li><code><a title="tensap.approximation.bases.functional_bases.FunctionalBases.orthonormalize" href="#tensap.approximation.bases.functional_bases.FunctionalBases.orthonormalize">orthonormalize</a></code></li>
+<li><code><a title="tensap.approximation.bases.functional_bases.FunctionalBases.random" href="#tensap.approximation.bases.functional_bases.FunctionalBases.random">random</a></code></li>
+<li><code><a title="tensap.approximation.bases.functional_bases.FunctionalBases.random_dims" href="#tensap.approximation.bases.functional_bases.FunctionalBases.random_dims">random_dims</a></code></li>
+<li><code><a title="tensap.approximation.bases.functional_bases.FunctionalBases.remove_bases" href="#tensap.approximation.bases.functional_bases.FunctionalBases.remove_bases">remove_bases</a></code></li>
+<li><code><a title="tensap.approximation.bases.functional_bases.FunctionalBases.storage" href="#tensap.approximation.bases.functional_bases.FunctionalBases.storage">storage</a></code></li>
+<li><code><a title="tensap.approximation.bases.functional_bases.FunctionalBases.tensor_product_interpolation" href="#tensap.approximation.bases.functional_bases.FunctionalBases.tensor_product_interpolation">tensor_product_interpolation</a></code></li>
+<li><code><a title="tensap.approximation.bases.functional_bases.FunctionalBases.transpose" href="#tensap.approximation.bases.functional_bases.FunctionalBases.transpose">transpose</a></code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.8.1</a>.</p>
+</footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad()</script>
+</body>
+</html>

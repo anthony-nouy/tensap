@@ -1,0 +1,982 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+<meta name="generator" content="pdoc 0.8.1" />
+<title>tensap.approximation.tensor_approximation.tensor_learning.canonical_tensor_learning API documentation</title>
+<meta name="description" content="Module canonical_tensor_learning …" />
+<link href='https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.min.css' rel='stylesheet'>
+<link href='https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/8.0.0/sanitize.min.css' rel='stylesheet'>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css" rel="stylesheet">
+<style>.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}.admonition{padding:.1em .5em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>tensap.approximation.tensor_approximation.tensor_learning.canonical_tensor_learning</code></h1>
+</header>
+<section id="section-intro">
+<p>Module canonical_tensor_learning.</p>
+<p>Copyright (c) 2020, Anthony Nouy, Erwan Grelier
+This file is part of tensap (tensor approximation package).</p>
+<p>tensap is free software: you can redistribute it and/or modify
+it under the terms of the GNU Lesser General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.</p>
+<p>tensap is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+See the
+GNU Lesser General Public License for more details.</p>
+<p>You should have received a copy of the GNU Lesser General Public License
+along with tensap.
+If not, see <a href="https://www.gnu.org/licenses/">https://www.gnu.org/licenses/</a>.</p>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">&#39;&#39;&#39;
+Module canonical_tensor_learning.
+
+Copyright (c) 2020, Anthony Nouy, Erwan Grelier
+This file is part of tensap (tensor approximation package).
+
+tensap is free software: you can redistribute it and/or modify
+it under the terms of the GNU Lesser General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+tensap is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU Lesser General Public License for more details.
+
+You should have received a copy of the GNU Lesser General Public License
+along with tensap.  If not, see &lt;https://www.gnu.org/licenses/&gt;.
+
+&#39;&#39;&#39;
+
+from copy import deepcopy
+import numpy as np
+import tensap
+
+
+class CanonicalTensorLearning(tensap.TensorLearning):
+    &#39;&#39;&#39;
+    Class CanonicalTensorLearning.
+
+    See also tensap.TensorLearning.
+
+    Attributes
+    ----------
+    order : int
+        The order of the tensor.
+
+    &#39;&#39;&#39;
+
+    def __init__(self, order, *args):
+        &#39;&#39;&#39;
+        Constructor for the class CanonicalTensorLearning.
+
+        Parameters
+        ----------
+        order : int
+            The order of the tensor.
+        *args : tuple
+            Additional parameters.
+
+        Returns
+        -------
+        None.
+
+        &#39;&#39;&#39;
+        super().__init__(*args)
+        self.order = order
+        self.initialization_type = &#39;mean&#39;
+        self.truncate_initialization = True
+
+# %% Standard solver methods
+    def initialize(self):
+        if self.tree_adaptation:
+            print(&#39;tree_adaptation not defined for CanonicalTensorLearning.&#39;)
+            self.tree_adaptation = False
+
+        if &#39;one_by_one_factor&#39; in self.alternating_minimization_parameters and\
+            self.alternating_minimization_parameters[&#39;one_by_one_factor&#39;] and \
+                self.rank != 1:
+            self._exploration_strategy = np.arange(
+                1, self.alternating_minimization_parameters[&#39;inner_loops&#39;] *
+                self.rank*self.order+2)
+            self._number_of_parameters = self._exploration_strategy.size
+        else:
+            self.alternating_minimization_parameters[&#39;one_by_one_factor&#39;] = \
+                False
+            self._exploration_strategy = np.arange(1, self.order+2)
+            self._number_of_parameters = self.order + 1
+
+        shape = [x.shape[1] for x in self.bases_eval]
+        if self.initialization_type == &#39;random&#39;:
+            f = tensap.CanonicalTensor.randn(self.rank, shape)
+        elif self.initialization_type == &#39;ones&#39;:
+            f = tensap.CanonicalTensor.ones(self.rank, shape)
+        elif self.initialization_type == &#39;initial_guess&#39;:
+            f = self.initial_guess
+        elif self.initialization_type == &#39;mean&#39; or \
+                self.initialization_type == &#39;mean_randomized&#39;:
+            if not isinstance(self.training_data, list) or \
+                    (isinstance(self.training_data, list) and
+                     len(self.training_data) == 1):
+                raise NotImplementedError(&#39;Initialization type not &#39; +
+                                          &#39;implemented in unsupervised &#39; +
+                                          &#39;learning.&#39;)
+            if isinstance(self.bases, tensap.FunctionalBases):
+                means = self.bases.mean()
+            else:
+                means = [np.mean(x, 0) for x in self.bases_eval]
+            if self.initialization_type == &#39;mean_randomized&#39;:
+                means = [x + 0.01*np.random.randn(*x.shape) for x in means]
+            means = [np.reshape(x, [-1, 1]) for x in means]
+
+            f = tensap.CanonicalTensor(
+                means, np.atleast_1d(np.mean(self.training_data[1])))
+        elif self.initialization_type == &#39;greedy&#39;:
+            s_ini = deepcopy(self)
+            s_ini.rank_adaptation = False
+            s_ini.algorithm = &#39;greedy&#39;
+            s_ini.initialization_type = &#39;mean&#39;
+            s_ini.alternating_minimization_parameters[&#39;display&#39;] = False
+            s_ini.linear_model_learning.error_estimation = False
+            s_ini.test_error = False
+            s_ini.display = False
+            f, output_ini = s_ini.solve()
+
+            if self.display and &#39;error&#39; in output_ini:
+                print(&#39;Greedy initialization: rank = %i, error = %2.5e&#39; %
+                      (len(f.tensor.core.data), output_ini[&#39;error&#39;]))
+        else:
+            raise ValueError(&#39;Wrong initialization type.&#39;)
+
+        if isinstance(f, tensap.FunctionalTensor):
+            f = f.tensor
+
+        if self.rank &gt; len(f.core.data):
+            fx = f.tensor_matrix_product(self.bases_eval).eval_diag().data
+
+            s_ini = deepcopy(self)
+            s_ini.rank_adaptation = False
+            s_ini.algorithm = &#39;standard&#39;
+            s_ini.initialization_type = &#39;greedy&#39;
+            s_ini.rank = self.rank - len(f.core.data)
+            s_ini.alternating_minimization_parameters[&#39;display&#39;] = False
+            s_ini.linear_model_learning.error_estimation = False
+            s_ini.test_error = False
+            s_ini.display = False
+            if isinstance(s_ini.training_data, list) and \
+                    len(s_ini.training_data) == 2:
+                s_ini.training_data[1] -= fx
+            elif isinstance(s_ini.loss_function, tensap.DensityL2LossFunction):
+                s_ini.training_data = [s_ini.training_data, fx]
+
+            f_add = s_ini.solve()[0]
+            if isinstance(f_add, tensap.FunctionalTensor):
+                f += f_add.tensor
+            else:
+                f += f_add
+
+        if self.truncate_initialization:
+            if self.order == 2:
+                tr = tensap.Truncator()
+                f = tr.truncate(f)
+                f = tensap.CanonicalTensor(f.space, f.core.data)
+                self.rank = len(f.core.data)
+        return self, f
+
+    def pre_processing(self, f):
+        return self, f
+
+    def randomize_exploration_strategy(self):
+        if &#39;one_by_one_factor&#39; not \
+            in self.alternating_minimization_parameters or not \
+                self.alternating_minimization_parameters[&#39;one_by_one_factor&#39;]:
+            strategy = np.concatenate((
+                np.random.permutation(self._number_of_parameters-1)+1,
+                [self._number_of_parameters]))
+        else:
+            strat_mu = np.random.permutation(self.order)
+            strat_i = np.random.permutation(self.rank)
+            strategy = np.reshape(self._exploration_strategy[:-1],
+                                  [-1, self.order], order=&#39;F&#39;)
+            strategy[:, strat_mu] = np.array(strategy)
+            strategy = np.reshape(np.reshape(strategy, [1, -1], order=&#39;F&#39;),
+                                  [self.rank, -1], order=&#39;F&#39;)
+            strategy[strat_i, :] = np.array(strategy)
+            strategy = np.concatenate((np.reshape(strategy, -1, order=&#39;F&#39;),
+                                       [self._number_of_parameters]))
+        return strategy
+
+    def prepare_alternating_minimization_system(self, f, mu):
+        assert isinstance(self.loss_function, tensap.SquareLossFunction), \
+            &#39;Method not implemented for this loss function.&#39;
+        y = self.training_data[1]
+        N = self.bases_eval[0].shape[0]
+
+        if mu != self._number_of_parameters:
+            if self.alternating_minimization_parameters[&#39;one_by_one_factor&#39;]:
+                ind = mu
+                mu = int(np.ceil(ind /
+                                 self.alternating_minimization_parameters[
+                                     &#39;inner_loops&#39;] / self.rank))
+                ind = int(ind - self.rank * (np.ceil(ind / self.rank) - 1))
+
+                coef = f.tensor.space[mu-1][:, ind-1]
+
+                fH = f.tensor.tensor_matrix_product(self.bases_eval)
+
+                fH_mu = np.ones((N, self.rank))
+                no_mu = np.setdiff1d(np.arange(1, f.tensor.order+1), mu)
+                for nu in no_mu:
+                    fH_mu *= fH.space[nu-1]
+
+                B = fH_mu * fH.space[mu-1]
+                no_i = np.setdiff1d(np.arange(1, self.rank+1), ind)
+                b = y - np.matmul(B[:, no_i-1], fH.core.data[no_i-1])
+
+                A = self.bases_eval[mu-1] * np.transpose(
+                    np.tile(fH_mu[:, ind-1], (f.tensor.shape[mu-1], 1)))
+                if self.linear_model_learning[mu-1].basis_adaptation:
+                    self.linear_model_learning[mu-1].basis_adaptation_path = \
+                        self.bases_adaptation_path[mu-1]
+            else:
+                coef = f.tensor.space[mu-1]
+                grad = f.parameter_gradient_eval(mu).transpose([0, 2, 1])
+                A = np.reshape(grad.data, [grad.shape[0], -1], order=&#39;F&#39;)
+
+                if self.linear_model_learning[mu-1].basis_adaptation:
+                    self.linear_model_learning[mu-1].basis_adaptation_path = \
+                        np.tile(self.bases_adaptation_path[mu-1],
+                                (self.rank, 1))
+                elif self.rank &gt; 1:
+                    self.linear_model_learning[mu-1].options[
+                        &#39;non_zero_blocks&#39;] = np.empty(self.rank, dtype=object)
+                    for kk in range(self.rank):
+                        shape_mu = f.tensor.shape[mu-1]
+                        self.linear_model_learning[mu-1].options[
+                            &#39;non_zero_blocks&#39;][kk] = \
+                            kk * shape_mu + np.arange(shape_mu)
+                b = y
+        else:
+            coef = f.tensor.core.data
+            if self.alternating_minimization_parameters[&#39;one_by_one_factor&#39;]:
+                mu = self.order + 1
+            grad = f.parameter_gradient_eval(mu)
+            A = np.reshape(grad.data, [grad.shape[0], -1], order=&#39;F&#39;)
+            b = y
+            self.linear_model_learning[mu-1].basis_adaptation = False
+
+        self.linear_model_learning[mu-1].initial_guess = np.reshape(coef, -1)
+
+        return self, A, b, f
+
+    def set_parameter(self, f, mu, coef):
+        if mu != self._number_of_parameters:
+            if not self.alternating_minimization_parameters[
+                    &#39;one_by_one_factor&#39;]:
+                coef = np.reshape(coef, [f.tensor.shape[mu-1], self.rank],
+                                  order=&#39;F&#39;)
+                norm_coef = np.sqrt(np.sum(coef**2, 0))
+                ind = norm_coef != 0
+                if not np.all(ind):
+                    print(&#39;Degenerate case: one factor is zero.&#39;)
+                coef[:, ind] = np.matmul(coef[:, ind],
+                                         np.diag(1/norm_coef[ind]))
+                f.tensor.space[mu-1] = coef
+                f.tensor.core.data = np.ravel(norm_coef)
+
+                if len(f.tensor.space) == 2 and mu == 1:
+                    f.tensor.space[0] = np.linalg.qr(
+                        f.tensor.space[0])[0]
+            else:
+                ind = mu
+                mu = int(np.ceil(ind /
+                                 self.alternating_minimization_parameters[
+                                     &#39;inner_loops&#39;] / self.rank))
+                ind = int(ind - self.rank * (np.ceil(ind / self.rank) - 1))
+                norm_coef = np.linalg.norm(coef)
+                coef /= norm_coef
+                f.tensor.space[mu-1][:, ind-1] = coef
+                f.tensor.core.data[ind-1] = norm_coef
+        else:
+            f.tensor.core.data = coef
+        return f
+
+    def stagnation_criterion(self, f, f0):
+        norm_f = f.tensor.norm()
+        norm_f0 = f0.tensor.norm()
+        return 2 * np.abs(norm_f - norm_f0) / (norm_f + norm_f0)
+
+    def final_display(self, f):
+        print(&#39;Rank = %i&#39; % len(f.tensor.core.data), end=&#39;&#39;)
+
+# %% Rank adaptation solver methods
+    def local_solver(self):
+        s_local = deepcopy(self)
+        s_local.display = False
+        s_local.rank_adaptation = False
+        s_local.test_error = False
+        s_local.algorithm = &#39;standard&#39;
+        s_local.initialization_type = &#39;mean&#39;
+        s_local.model_selection = False
+        return s_local
+
+    def new_rank_selection(self, f):
+        return len(f.tensor.core.data) + 1, 1, deepcopy(f)
+
+    def initial_guess_new_rank(self, s_local, f, *args):
+        s_local.initialization_type = &#39;initial_guess&#39;
+        s_local.initial_guess = f
+        return s_local
+
+    def adaptation_display(self, f, *args):
+        print(&#39;\tRank = %i&#39; % len(f.tensor.core.data))
+
+# %% Greedy solver
+    def _solve_greedy(self):
+        &#39;&#39;&#39;
+        Greedy solver in canonical tensor format.
+
+        Raises
+        ------
+        ValueError
+            If the number of LinearModelLearning objects is not equal to
+            _numberOfParameters.
+
+        Returns
+        -------
+        f : tensap.FunctionalTensor
+            The learned approximation.
+        output : dict
+            The outputs of the solver.
+
+        &#39;&#39;&#39;
+        assert isinstance(self.loss_function, tensap.SquareLossFunction), \
+            &#39;Method not implemented for this loss function.&#39;
+
+        bases_eval = self.bases_eval
+        output = {}
+        output[&#39;sequence&#39;] = np.empty(self.rank, dtype=object)
+
+        # Replication of the LinearModelLearning objects
+        if self.linear_model_learning_parameters[
+                &#39;identical_for_all_parameters&#39;] and \
+                not isinstance(self.linear_model_learning, (list, np.ndarray)):
+            self.linear_model_learning = list(map(deepcopy, [
+                self.linear_model_learning] * self._number_of_parameters))
+        elif isinstance(self.linear_model_learning, (list, np.ndarray)) and \
+                len(self.linear_model_learning) != self._number_of_parameters:
+            raise ValueError(&#39;Must provide self._numberOfParameters &#39; +
+                             &#39;LinearModelLearning objects.&#39;)
+
+        # Working set paths
+        if isinstance(self.linear_model_learning, (list, np.ndarray)) and \
+            np.any([x.basis_adaptation for
+                    x in self.linear_model_learning]) and \
+                self.bases_adaptation_path is None:
+            self.bases_adaptation_path = self.bases.adaptation_path()
+
+        y = self.training_data[1]
+
+        s_local = deepcopy(self)
+        s_local.algorithm = &#39;standard&#39;
+        s_local.rank = 1
+        s_local.display = False
+        s_local.test_error = False
+        s_local.model_selection = False
+
+        f = tensap.CanonicalTensor.zeros(0, [x.shape[1] for x in bases_eval])
+        f_0 = deepcopy(f)
+        stagnation = np.zeros((1, self.rank))
+
+        ls_local = deepcopy(s_local.linear_model_learning
+                            [self._number_of_parameters-1])
+
+        is_error = False
+        error = np.ones((1, self.rank))
+        pure_greedy = False
+        if not pure_greedy:
+            for linear_solver in self.linear_model_learning:
+                setattr(linear_solver, &#39;error_estimation&#39;, False)
+
+        for k in np.arange(1, self.rank+1):
+            s_local.training_data[1] = \
+                y - f.tensor_matrix_product(bases_eval).eval_diag().data
+            f_add, output_greedy = s_local.solve()
+            if isinstance(f_add, tensap.FunctionalTensor):
+                f += f_add.tensor
+            else:
+                f += f_add
+
+            if not pure_greedy:
+                f_H = f.tensor_matrix_product(bases_eval)
+                A = np.ones((bases_eval[0].shape[0], len(f_H.core.data)))
+                for space in f_H.space:
+                    A *= space
+                ls_local.basis_adaptation = False
+                ls_local.basis = None
+                ls_local.basis_eval = A
+                ls_local.training_data = [None, y]
+                coef, output_greedy = ls_local.solve()
+                f.core.data = np.ravel(coef)
+
+            stagnation[k-1] = 2*(f - f_0).norm() / (f.norm() + f_0.norm())
+            current_rank = len(f.core.data)
+            output[&#39;sequence&#39;][k-1] = f
+
+            if &#39;error&#39; in output_greedy:
+                error[k-1] = output_greedy[&#39;error&#39;]
+                is_error = True
+                if self.alternating_minimization_parameters[&#39;display&#39;]:
+                    print(&#39;Alternating minimization (greedy): rank = %i, &#39; +
+                          &#39;error = %2.5e, stagnation = %2.5e&#39;, current_rank,
+                          error[k-1], stagnation[k-1])
+            else:
+                if self.alternating_minimization_parameters[&#39;display&#39;]:
+                    print(&#39;Alternating minimization (greedy): rank = %i, &#39; +
+                          &#39;stagnation = %2.5e&#39;, current_rank, stagnation[k-1])
+
+            if error[k-1] &lt; self.tolerance[&#39;on_error&#39;] or \
+                stagnation[k-1] &lt; self.tolerance[&#39;on_stagnation&#39;] or \
+                    (k &gt; 2 and error[k-1] &gt; error[k-2] and
+                     error[k-2] &gt; error[k-3]):
+                break
+
+            f_0 = deepcopy(f)
+            if self.test_error:
+                f_eval_test = tensap.FunctionalTensor(f, self.bases_eval_test)
+                output[&#39;test_error&#39;] = self.loss_function.test_error(
+                    f_eval_test, self.test_data)
+                output[&#39;test_error_iterations&#39;].append(output[&#39;test_error&#39;])
+                if self.display:
+                    print(&#39;Greedy: iteration %i, test error = %2.5e&#39;, k,
+                          output[&#39;test_error&#39;])
+
+        output[&#39;stagnation&#39;] = stagnation[:k-1]
+        if is_error:
+            output[&#39;errors&#39;] = error[:k-1]
+            K = np.argmin(output[&#39;errors&#39;])
+            f = output[&#39;sequence&#39;][K]
+            output[&#39;selected_iterate&#39;] = K
+            output[&#39;error&#39;] = output[&#39;errors&#39;][K]
+
+        if isinstance(self.bases, tensap.FunctionalBases):
+            f = tensap.FunctionalTensor(f, self.bases)
+
+        return f, output</code></pre>
+</details>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-classes">Classes</h2>
+<dl>
+<dt id="tensap.approximation.tensor_approximation.tensor_learning.canonical_tensor_learning.CanonicalTensorLearning"><code class="flex name class">
+<span>class <span class="ident">CanonicalTensorLearning</span></span>
+<span>(</span><span>order, *args)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Class CanonicalTensorLearning.</p>
+<p>See also tensap.TensorLearning.</p>
+<h2 id="attributes">Attributes</h2>
+<dl>
+<dt><strong><code>order</code></strong> :&ensp;<code>int</code></dt>
+<dd>The order of the tensor.</dd>
+</dl>
+<p>Constructor for the class CanonicalTensorLearning.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>order</code></strong> :&ensp;<code>int</code></dt>
+<dd>The order of the tensor.</dd>
+<dt><strong><code>*args</code></strong> :&ensp;<code>tuple</code></dt>
+<dd>Additional parameters.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<p>None.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class CanonicalTensorLearning(tensap.TensorLearning):
+    &#39;&#39;&#39;
+    Class CanonicalTensorLearning.
+
+    See also tensap.TensorLearning.
+
+    Attributes
+    ----------
+    order : int
+        The order of the tensor.
+
+    &#39;&#39;&#39;
+
+    def __init__(self, order, *args):
+        &#39;&#39;&#39;
+        Constructor for the class CanonicalTensorLearning.
+
+        Parameters
+        ----------
+        order : int
+            The order of the tensor.
+        *args : tuple
+            Additional parameters.
+
+        Returns
+        -------
+        None.
+
+        &#39;&#39;&#39;
+        super().__init__(*args)
+        self.order = order
+        self.initialization_type = &#39;mean&#39;
+        self.truncate_initialization = True
+
+# %% Standard solver methods
+    def initialize(self):
+        if self.tree_adaptation:
+            print(&#39;tree_adaptation not defined for CanonicalTensorLearning.&#39;)
+            self.tree_adaptation = False
+
+        if &#39;one_by_one_factor&#39; in self.alternating_minimization_parameters and\
+            self.alternating_minimization_parameters[&#39;one_by_one_factor&#39;] and \
+                self.rank != 1:
+            self._exploration_strategy = np.arange(
+                1, self.alternating_minimization_parameters[&#39;inner_loops&#39;] *
+                self.rank*self.order+2)
+            self._number_of_parameters = self._exploration_strategy.size
+        else:
+            self.alternating_minimization_parameters[&#39;one_by_one_factor&#39;] = \
+                False
+            self._exploration_strategy = np.arange(1, self.order+2)
+            self._number_of_parameters = self.order + 1
+
+        shape = [x.shape[1] for x in self.bases_eval]
+        if self.initialization_type == &#39;random&#39;:
+            f = tensap.CanonicalTensor.randn(self.rank, shape)
+        elif self.initialization_type == &#39;ones&#39;:
+            f = tensap.CanonicalTensor.ones(self.rank, shape)
+        elif self.initialization_type == &#39;initial_guess&#39;:
+            f = self.initial_guess
+        elif self.initialization_type == &#39;mean&#39; or \
+                self.initialization_type == &#39;mean_randomized&#39;:
+            if not isinstance(self.training_data, list) or \
+                    (isinstance(self.training_data, list) and
+                     len(self.training_data) == 1):
+                raise NotImplementedError(&#39;Initialization type not &#39; +
+                                          &#39;implemented in unsupervised &#39; +
+                                          &#39;learning.&#39;)
+            if isinstance(self.bases, tensap.FunctionalBases):
+                means = self.bases.mean()
+            else:
+                means = [np.mean(x, 0) for x in self.bases_eval]
+            if self.initialization_type == &#39;mean_randomized&#39;:
+                means = [x + 0.01*np.random.randn(*x.shape) for x in means]
+            means = [np.reshape(x, [-1, 1]) for x in means]
+
+            f = tensap.CanonicalTensor(
+                means, np.atleast_1d(np.mean(self.training_data[1])))
+        elif self.initialization_type == &#39;greedy&#39;:
+            s_ini = deepcopy(self)
+            s_ini.rank_adaptation = False
+            s_ini.algorithm = &#39;greedy&#39;
+            s_ini.initialization_type = &#39;mean&#39;
+            s_ini.alternating_minimization_parameters[&#39;display&#39;] = False
+            s_ini.linear_model_learning.error_estimation = False
+            s_ini.test_error = False
+            s_ini.display = False
+            f, output_ini = s_ini.solve()
+
+            if self.display and &#39;error&#39; in output_ini:
+                print(&#39;Greedy initialization: rank = %i, error = %2.5e&#39; %
+                      (len(f.tensor.core.data), output_ini[&#39;error&#39;]))
+        else:
+            raise ValueError(&#39;Wrong initialization type.&#39;)
+
+        if isinstance(f, tensap.FunctionalTensor):
+            f = f.tensor
+
+        if self.rank &gt; len(f.core.data):
+            fx = f.tensor_matrix_product(self.bases_eval).eval_diag().data
+
+            s_ini = deepcopy(self)
+            s_ini.rank_adaptation = False
+            s_ini.algorithm = &#39;standard&#39;
+            s_ini.initialization_type = &#39;greedy&#39;
+            s_ini.rank = self.rank - len(f.core.data)
+            s_ini.alternating_minimization_parameters[&#39;display&#39;] = False
+            s_ini.linear_model_learning.error_estimation = False
+            s_ini.test_error = False
+            s_ini.display = False
+            if isinstance(s_ini.training_data, list) and \
+                    len(s_ini.training_data) == 2:
+                s_ini.training_data[1] -= fx
+            elif isinstance(s_ini.loss_function, tensap.DensityL2LossFunction):
+                s_ini.training_data = [s_ini.training_data, fx]
+
+            f_add = s_ini.solve()[0]
+            if isinstance(f_add, tensap.FunctionalTensor):
+                f += f_add.tensor
+            else:
+                f += f_add
+
+        if self.truncate_initialization:
+            if self.order == 2:
+                tr = tensap.Truncator()
+                f = tr.truncate(f)
+                f = tensap.CanonicalTensor(f.space, f.core.data)
+                self.rank = len(f.core.data)
+        return self, f
+
+    def pre_processing(self, f):
+        return self, f
+
+    def randomize_exploration_strategy(self):
+        if &#39;one_by_one_factor&#39; not \
+            in self.alternating_minimization_parameters or not \
+                self.alternating_minimization_parameters[&#39;one_by_one_factor&#39;]:
+            strategy = np.concatenate((
+                np.random.permutation(self._number_of_parameters-1)+1,
+                [self._number_of_parameters]))
+        else:
+            strat_mu = np.random.permutation(self.order)
+            strat_i = np.random.permutation(self.rank)
+            strategy = np.reshape(self._exploration_strategy[:-1],
+                                  [-1, self.order], order=&#39;F&#39;)
+            strategy[:, strat_mu] = np.array(strategy)
+            strategy = np.reshape(np.reshape(strategy, [1, -1], order=&#39;F&#39;),
+                                  [self.rank, -1], order=&#39;F&#39;)
+            strategy[strat_i, :] = np.array(strategy)
+            strategy = np.concatenate((np.reshape(strategy, -1, order=&#39;F&#39;),
+                                       [self._number_of_parameters]))
+        return strategy
+
+    def prepare_alternating_minimization_system(self, f, mu):
+        assert isinstance(self.loss_function, tensap.SquareLossFunction), \
+            &#39;Method not implemented for this loss function.&#39;
+        y = self.training_data[1]
+        N = self.bases_eval[0].shape[0]
+
+        if mu != self._number_of_parameters:
+            if self.alternating_minimization_parameters[&#39;one_by_one_factor&#39;]:
+                ind = mu
+                mu = int(np.ceil(ind /
+                                 self.alternating_minimization_parameters[
+                                     &#39;inner_loops&#39;] / self.rank))
+                ind = int(ind - self.rank * (np.ceil(ind / self.rank) - 1))
+
+                coef = f.tensor.space[mu-1][:, ind-1]
+
+                fH = f.tensor.tensor_matrix_product(self.bases_eval)
+
+                fH_mu = np.ones((N, self.rank))
+                no_mu = np.setdiff1d(np.arange(1, f.tensor.order+1), mu)
+                for nu in no_mu:
+                    fH_mu *= fH.space[nu-1]
+
+                B = fH_mu * fH.space[mu-1]
+                no_i = np.setdiff1d(np.arange(1, self.rank+1), ind)
+                b = y - np.matmul(B[:, no_i-1], fH.core.data[no_i-1])
+
+                A = self.bases_eval[mu-1] * np.transpose(
+                    np.tile(fH_mu[:, ind-1], (f.tensor.shape[mu-1], 1)))
+                if self.linear_model_learning[mu-1].basis_adaptation:
+                    self.linear_model_learning[mu-1].basis_adaptation_path = \
+                        self.bases_adaptation_path[mu-1]
+            else:
+                coef = f.tensor.space[mu-1]
+                grad = f.parameter_gradient_eval(mu).transpose([0, 2, 1])
+                A = np.reshape(grad.data, [grad.shape[0], -1], order=&#39;F&#39;)
+
+                if self.linear_model_learning[mu-1].basis_adaptation:
+                    self.linear_model_learning[mu-1].basis_adaptation_path = \
+                        np.tile(self.bases_adaptation_path[mu-1],
+                                (self.rank, 1))
+                elif self.rank &gt; 1:
+                    self.linear_model_learning[mu-1].options[
+                        &#39;non_zero_blocks&#39;] = np.empty(self.rank, dtype=object)
+                    for kk in range(self.rank):
+                        shape_mu = f.tensor.shape[mu-1]
+                        self.linear_model_learning[mu-1].options[
+                            &#39;non_zero_blocks&#39;][kk] = \
+                            kk * shape_mu + np.arange(shape_mu)
+                b = y
+        else:
+            coef = f.tensor.core.data
+            if self.alternating_minimization_parameters[&#39;one_by_one_factor&#39;]:
+                mu = self.order + 1
+            grad = f.parameter_gradient_eval(mu)
+            A = np.reshape(grad.data, [grad.shape[0], -1], order=&#39;F&#39;)
+            b = y
+            self.linear_model_learning[mu-1].basis_adaptation = False
+
+        self.linear_model_learning[mu-1].initial_guess = np.reshape(coef, -1)
+
+        return self, A, b, f
+
+    def set_parameter(self, f, mu, coef):
+        if mu != self._number_of_parameters:
+            if not self.alternating_minimization_parameters[
+                    &#39;one_by_one_factor&#39;]:
+                coef = np.reshape(coef, [f.tensor.shape[mu-1], self.rank],
+                                  order=&#39;F&#39;)
+                norm_coef = np.sqrt(np.sum(coef**2, 0))
+                ind = norm_coef != 0
+                if not np.all(ind):
+                    print(&#39;Degenerate case: one factor is zero.&#39;)
+                coef[:, ind] = np.matmul(coef[:, ind],
+                                         np.diag(1/norm_coef[ind]))
+                f.tensor.space[mu-1] = coef
+                f.tensor.core.data = np.ravel(norm_coef)
+
+                if len(f.tensor.space) == 2 and mu == 1:
+                    f.tensor.space[0] = np.linalg.qr(
+                        f.tensor.space[0])[0]
+            else:
+                ind = mu
+                mu = int(np.ceil(ind /
+                                 self.alternating_minimization_parameters[
+                                     &#39;inner_loops&#39;] / self.rank))
+                ind = int(ind - self.rank * (np.ceil(ind / self.rank) - 1))
+                norm_coef = np.linalg.norm(coef)
+                coef /= norm_coef
+                f.tensor.space[mu-1][:, ind-1] = coef
+                f.tensor.core.data[ind-1] = norm_coef
+        else:
+            f.tensor.core.data = coef
+        return f
+
+    def stagnation_criterion(self, f, f0):
+        norm_f = f.tensor.norm()
+        norm_f0 = f0.tensor.norm()
+        return 2 * np.abs(norm_f - norm_f0) / (norm_f + norm_f0)
+
+    def final_display(self, f):
+        print(&#39;Rank = %i&#39; % len(f.tensor.core.data), end=&#39;&#39;)
+
+# %% Rank adaptation solver methods
+    def local_solver(self):
+        s_local = deepcopy(self)
+        s_local.display = False
+        s_local.rank_adaptation = False
+        s_local.test_error = False
+        s_local.algorithm = &#39;standard&#39;
+        s_local.initialization_type = &#39;mean&#39;
+        s_local.model_selection = False
+        return s_local
+
+    def new_rank_selection(self, f):
+        return len(f.tensor.core.data) + 1, 1, deepcopy(f)
+
+    def initial_guess_new_rank(self, s_local, f, *args):
+        s_local.initialization_type = &#39;initial_guess&#39;
+        s_local.initial_guess = f
+        return s_local
+
+    def adaptation_display(self, f, *args):
+        print(&#39;\tRank = %i&#39; % len(f.tensor.core.data))
+
+# %% Greedy solver
+    def _solve_greedy(self):
+        &#39;&#39;&#39;
+        Greedy solver in canonical tensor format.
+
+        Raises
+        ------
+        ValueError
+            If the number of LinearModelLearning objects is not equal to
+            _numberOfParameters.
+
+        Returns
+        -------
+        f : tensap.FunctionalTensor
+            The learned approximation.
+        output : dict
+            The outputs of the solver.
+
+        &#39;&#39;&#39;
+        assert isinstance(self.loss_function, tensap.SquareLossFunction), \
+            &#39;Method not implemented for this loss function.&#39;
+
+        bases_eval = self.bases_eval
+        output = {}
+        output[&#39;sequence&#39;] = np.empty(self.rank, dtype=object)
+
+        # Replication of the LinearModelLearning objects
+        if self.linear_model_learning_parameters[
+                &#39;identical_for_all_parameters&#39;] and \
+                not isinstance(self.linear_model_learning, (list, np.ndarray)):
+            self.linear_model_learning = list(map(deepcopy, [
+                self.linear_model_learning] * self._number_of_parameters))
+        elif isinstance(self.linear_model_learning, (list, np.ndarray)) and \
+                len(self.linear_model_learning) != self._number_of_parameters:
+            raise ValueError(&#39;Must provide self._numberOfParameters &#39; +
+                             &#39;LinearModelLearning objects.&#39;)
+
+        # Working set paths
+        if isinstance(self.linear_model_learning, (list, np.ndarray)) and \
+            np.any([x.basis_adaptation for
+                    x in self.linear_model_learning]) and \
+                self.bases_adaptation_path is None:
+            self.bases_adaptation_path = self.bases.adaptation_path()
+
+        y = self.training_data[1]
+
+        s_local = deepcopy(self)
+        s_local.algorithm = &#39;standard&#39;
+        s_local.rank = 1
+        s_local.display = False
+        s_local.test_error = False
+        s_local.model_selection = False
+
+        f = tensap.CanonicalTensor.zeros(0, [x.shape[1] for x in bases_eval])
+        f_0 = deepcopy(f)
+        stagnation = np.zeros((1, self.rank))
+
+        ls_local = deepcopy(s_local.linear_model_learning
+                            [self._number_of_parameters-1])
+
+        is_error = False
+        error = np.ones((1, self.rank))
+        pure_greedy = False
+        if not pure_greedy:
+            for linear_solver in self.linear_model_learning:
+                setattr(linear_solver, &#39;error_estimation&#39;, False)
+
+        for k in np.arange(1, self.rank+1):
+            s_local.training_data[1] = \
+                y - f.tensor_matrix_product(bases_eval).eval_diag().data
+            f_add, output_greedy = s_local.solve()
+            if isinstance(f_add, tensap.FunctionalTensor):
+                f += f_add.tensor
+            else:
+                f += f_add
+
+            if not pure_greedy:
+                f_H = f.tensor_matrix_product(bases_eval)
+                A = np.ones((bases_eval[0].shape[0], len(f_H.core.data)))
+                for space in f_H.space:
+                    A *= space
+                ls_local.basis_adaptation = False
+                ls_local.basis = None
+                ls_local.basis_eval = A
+                ls_local.training_data = [None, y]
+                coef, output_greedy = ls_local.solve()
+                f.core.data = np.ravel(coef)
+
+            stagnation[k-1] = 2*(f - f_0).norm() / (f.norm() + f_0.norm())
+            current_rank = len(f.core.data)
+            output[&#39;sequence&#39;][k-1] = f
+
+            if &#39;error&#39; in output_greedy:
+                error[k-1] = output_greedy[&#39;error&#39;]
+                is_error = True
+                if self.alternating_minimization_parameters[&#39;display&#39;]:
+                    print(&#39;Alternating minimization (greedy): rank = %i, &#39; +
+                          &#39;error = %2.5e, stagnation = %2.5e&#39;, current_rank,
+                          error[k-1], stagnation[k-1])
+            else:
+                if self.alternating_minimization_parameters[&#39;display&#39;]:
+                    print(&#39;Alternating minimization (greedy): rank = %i, &#39; +
+                          &#39;stagnation = %2.5e&#39;, current_rank, stagnation[k-1])
+
+            if error[k-1] &lt; self.tolerance[&#39;on_error&#39;] or \
+                stagnation[k-1] &lt; self.tolerance[&#39;on_stagnation&#39;] or \
+                    (k &gt; 2 and error[k-1] &gt; error[k-2] and
+                     error[k-2] &gt; error[k-3]):
+                break
+
+            f_0 = deepcopy(f)
+            if self.test_error:
+                f_eval_test = tensap.FunctionalTensor(f, self.bases_eval_test)
+                output[&#39;test_error&#39;] = self.loss_function.test_error(
+                    f_eval_test, self.test_data)
+                output[&#39;test_error_iterations&#39;].append(output[&#39;test_error&#39;])
+                if self.display:
+                    print(&#39;Greedy: iteration %i, test error = %2.5e&#39;, k,
+                          output[&#39;test_error&#39;])
+
+        output[&#39;stagnation&#39;] = stagnation[:k-1]
+        if is_error:
+            output[&#39;errors&#39;] = error[:k-1]
+            K = np.argmin(output[&#39;errors&#39;])
+            f = output[&#39;sequence&#39;][K]
+            output[&#39;selected_iterate&#39;] = K
+            output[&#39;error&#39;] = output[&#39;errors&#39;][K]
+
+        if isinstance(self.bases, tensap.FunctionalBases):
+            f = tensap.FunctionalTensor(f, self.bases)
+
+        return f, output</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="tensap.approximation.tensor_approximation.tensor_learning.tensor_learning.TensorLearning" href="tensor_learning.html#tensap.approximation.tensor_approximation.tensor_learning.tensor_learning.TensorLearning">TensorLearning</a></li>
+<li><a title="tensap.approximation.learning.learning.Learning" href="../../learning/learning.html#tensap.approximation.learning.learning.Learning">Learning</a></li>
+</ul>
+<h3>Inherited members</h3>
+<ul class="hlist">
+<li><code><b><a title="tensap.approximation.tensor_approximation.tensor_learning.tensor_learning.TensorLearning" href="tensor_learning.html#tensap.approximation.tensor_approximation.tensor_learning.tensor_learning.TensorLearning">TensorLearning</a></b></code>:
+<ul class="hlist">
+<li><code><a title="tensap.approximation.tensor_approximation.tensor_learning.tensor_learning.TensorLearning.adapt_tree" href="tensor_learning.html#tensap.approximation.tensor_approximation.tensor_learning.tensor_learning.TensorLearning.adapt_tree">adapt_tree</a></code></li>
+<li><code><a title="tensap.approximation.tensor_approximation.tensor_learning.tensor_learning.TensorLearning.adaptation_display" href="tensor_learning.html#tensap.approximation.tensor_approximation.tensor_learning.tensor_learning.TensorLearning.adaptation_display">adaptation_display</a></code></li>
+<li><code><a title="tensap.approximation.tensor_approximation.tensor_learning.tensor_learning.TensorLearning.final_display" href="tensor_learning.html#tensap.approximation.tensor_approximation.tensor_learning.tensor_learning.TensorLearning.final_display">final_display</a></code></li>
+<li><code><a title="tensap.approximation.tensor_approximation.tensor_learning.tensor_learning.TensorLearning.initial_guess_new_rank" href="tensor_learning.html#tensap.approximation.tensor_approximation.tensor_learning.tensor_learning.TensorLearning.initial_guess_new_rank">initial_guess_new_rank</a></code></li>
+<li><code><a title="tensap.approximation.tensor_approximation.tensor_learning.tensor_learning.TensorLearning.initialize" href="tensor_learning.html#tensap.approximation.tensor_approximation.tensor_learning.tensor_learning.TensorLearning.initialize">initialize</a></code></li>
+<li><code><a title="tensap.approximation.tensor_approximation.tensor_learning.tensor_learning.TensorLearning.local_solver" href="tensor_learning.html#tensap.approximation.tensor_approximation.tensor_learning.tensor_learning.TensorLearning.local_solver">local_solver</a></code></li>
+<li><code><a title="tensap.approximation.tensor_approximation.tensor_learning.tensor_learning.TensorLearning.new_rank_selection" href="tensor_learning.html#tensap.approximation.tensor_approximation.tensor_learning.tensor_learning.TensorLearning.new_rank_selection">new_rank_selection</a></code></li>
+<li><code><a title="tensap.approximation.tensor_approximation.tensor_learning.tensor_learning.TensorLearning.pre_processing" href="tensor_learning.html#tensap.approximation.tensor_approximation.tensor_learning.tensor_learning.TensorLearning.pre_processing">pre_processing</a></code></li>
+<li><code><a title="tensap.approximation.tensor_approximation.tensor_learning.tensor_learning.TensorLearning.prepare_alternating_minimization_system" href="tensor_learning.html#tensap.approximation.tensor_approximation.tensor_learning.tensor_learning.TensorLearning.prepare_alternating_minimization_system">prepare_alternating_minimization_system</a></code></li>
+<li><code><a title="tensap.approximation.tensor_approximation.tensor_learning.tensor_learning.TensorLearning.randomize_exploration_strategy" href="tensor_learning.html#tensap.approximation.tensor_approximation.tensor_learning.tensor_learning.TensorLearning.randomize_exploration_strategy">randomize_exploration_strategy</a></code></li>
+<li><code><a title="tensap.approximation.tensor_approximation.tensor_learning.tensor_learning.TensorLearning.set_parameter" href="tensor_learning.html#tensap.approximation.tensor_approximation.tensor_learning.tensor_learning.TensorLearning.set_parameter">set_parameter</a></code></li>
+<li><code><a title="tensap.approximation.tensor_approximation.tensor_learning.tensor_learning.TensorLearning.solve" href="tensor_learning.html#tensap.approximation.tensor_approximation.tensor_learning.tensor_learning.TensorLearning.solve">solve</a></code></li>
+<li><code><a title="tensap.approximation.tensor_approximation.tensor_learning.tensor_learning.TensorLearning.stagnation_criterion" href="tensor_learning.html#tensap.approximation.tensor_approximation.tensor_learning.tensor_learning.TensorLearning.stagnation_criterion">stagnation_criterion</a></code></li>
+</ul>
+</li>
+</ul>
+</dd>
+</dl>
+</section>
+</article>
+<nav id="sidebar">
+<h1>Index</h1>
+<div class="toc">
+<ul></ul>
+</div>
+<ul id="index">
+<li><h3>Super-module</h3>
+<ul>
+<li><code><a title="tensap.approximation.tensor_approximation.tensor_learning" href="index.html">tensap.approximation.tensor_approximation.tensor_learning</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-classes">Classes</a></h3>
+<ul>
+<li>
+<h4><code><a title="tensap.approximation.tensor_approximation.tensor_learning.canonical_tensor_learning.CanonicalTensorLearning" href="#tensap.approximation.tensor_approximation.tensor_learning.canonical_tensor_learning.CanonicalTensorLearning">CanonicalTensorLearning</a></code></h4>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.8.1</a>.</p>
+</footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad()</script>
+</body>
+</html>

@@ -1,0 +1,2036 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+<meta name="generator" content="pdoc 0.8.1" />
+<title>tensap.tensor_algebra.tensors.canonical_tensor API documentation</title>
+<meta name="description" content="Module canonical_tensor …" />
+<link href='https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.min.css' rel='stylesheet'>
+<link href='https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/8.0.0/sanitize.min.css' rel='stylesheet'>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css" rel="stylesheet">
+<style>.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}.admonition{padding:.1em .5em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>tensap.tensor_algebra.tensors.canonical_tensor</code></h1>
+</header>
+<section id="section-intro">
+<p>Module canonical_tensor.</p>
+<p>Copyright (c) 2020, Anthony Nouy, Erwan Grelier
+This file is part of tensap (tensor approximation package).</p>
+<p>tensap is free software: you can redistribute it and/or modify
+it under the terms of the GNU Lesser General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.</p>
+<p>tensap is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+See the
+GNU Lesser General Public License for more details.</p>
+<p>You should have received a copy of the GNU Lesser General Public License
+along with tensap.
+If not, see <a href="https://www.gnu.org/licenses/">https://www.gnu.org/licenses/</a>.</p>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">&#39;&#39;&#39;
+Module canonical_tensor.
+
+Copyright (c) 2020, Anthony Nouy, Erwan Grelier
+This file is part of tensap (tensor approximation package).
+
+tensap is free software: you can redistribute it and/or modify
+it under the terms of the GNU Lesser General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+tensap is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU Lesser General Public License for more details.
+
+You should have received a copy of the GNU Lesser General Public License
+along with tensap.  If not, see &lt;https://www.gnu.org/licenses/&gt;.
+
+&#39;&#39;&#39;
+from copy import deepcopy
+import numpy as np
+import tensap
+
+
+class CanonicalTensor:
+    &#39;&#39;&#39;
+    Class CanonicalTensor.
+
+    Attributes
+    ----------
+    core : tensap.DiagonalTensor
+        The core of the canonical tensor.
+    space : numpy.ndarray
+        The tensor space.
+    order : int
+        The order of the tensor.
+    shape : numpy.ndarray
+        The shape of the tensor.
+    is_orth : bool
+        Boolean indicating, if is_orth = True, the dimension mu for which
+        the mu-matricization of the tensor is orthogonal.
+
+    &#39;&#39;&#39;
+
+    def __init__(self, space, core):
+        &#39;&#39;&#39;
+        Constructor for the class CanonicalTensor
+
+        Parameters
+        ----------
+        space : numpy.ndarray or list
+        The tensor space.
+        core : tensap.DiagonalTensor or list or numpy.ndarray
+        The core of the canonical tensor.
+
+        Returns
+        -------
+        None.
+
+        &#39;&#39;&#39;
+        assert isinstance(space, (list, np.ndarray)), \
+            &#39;The input space must be a list or a numpy.ndarray.&#39;
+
+        assert isinstance(core, (list, np.ndarray, tensap.DiagonalTensor)), \
+            (&#39;The input core must be a list or a numpy.ndarray or a &#39; +
+             &#39;tensap.DiagonalTensor.&#39;)
+
+        if not isinstance(core, tensap.DiagonalTensor):
+            core = tensap.DiagonalTensor(core, len(space))
+
+        self.core = core
+        self.space = space
+        self.order = core.order
+        self.shape = np.array([x.shape[0] for x in self.space])
+        self.is_orth = False
+
+    def __add__(self, arg):
+        core = np.concatenate((self.core.data, arg.core.data))
+        space = [np.hstack((x, y)) for x, y in zip(list(self.space),
+                                                   list(arg.space))]
+        return CanonicalTensor(space, core)
+
+    def __radd__(self, arg):
+        return self + arg
+
+    def __sub__(self, arg):
+        return self + (-arg)
+
+    def __rsub__(self, arg):
+        return -self + arg
+
+    def __neg__(self):
+        return CanonicalTensor(list(self.space), -self.core.data)
+
+    def __repr__(self):
+        return (&#39;&lt;{} CanonicalTensor:{n}&#39; +
+                &#39;{t}order = {},{n}&#39; +
+                &#39;{t}shape = {},{n}&#39; +
+                &#39;{t}is_orth = {}&gt;&#39;).format(&#39;x&#39;.join(map(str, self.shape)),
+                                           self.order,
+                                           self.shape,
+                                           self.is_orth,
+                                           t=&#39;\t&#39;, n=&#39;\n&#39;)
+
+    @property
+    def ndim(self):
+        &#39;&#39;&#39;
+        Compute the order of the tensor. Equivalent to self.order.
+
+        Returns
+        -------
+        int
+            The order of the tensor.
+
+        &#39;&#39;&#39;
+        return self.order
+
+    def orth(self):
+        &#39;&#39;&#39;
+        Return an orthonormalized representation of the tensor.
+
+        Returns
+        -------
+        out : CanonicalTensor
+            The orthonormalized representation of the tensor.
+
+        &#39;&#39;&#39;
+        dims = range(self.order)
+        qr = [np.linalg.qr(x) for x in self.space]
+        space = [x[0] for x in qr]
+        M = [x[1] for x in qr]
+        core = self.core.tensor_matrix_product(M, dims)
+        core = core.orth()[0]
+        out = CanonicalTensor(space, self.core)
+        out.core = core
+        return out
+
+    def full(self):
+        &#39;&#39;&#39;
+        Convert the object to a tensap.FullTensor.
+
+        Returns
+        -------
+        tensap.FullTensor
+            The canonical tensor as a tensap.FullTensor.
+
+        &#39;&#39;&#39;
+        return self.core.full().tensor_matrix_product(self.space)
+
+    def numpy(self):
+        &#39;&#39;&#39;
+        Convert the CanonicalTensor to a numpy.ndarray.
+
+        Returns
+        -------
+        numpy.ndarray
+            The CanonicalTensor as a numpy.ndarray.
+
+        &#39;&#39;&#39;
+        return self.full().data
+
+    def tensor_matrix_product(self, matrices, dims=None):
+        &#39;&#39;&#39;
+        Contract a tensor with matrices.
+
+        The second dimension of the matrix matrices[k] is contracted with the
+        k-th dimension of self, with the indices k given in dims (if provided).
+
+        Parameters
+        ----------
+        matrices : numpy.ndarray or list of numpy.ndarray
+            The matrices to use in the product.
+        dims : list or numpy.ndarray, optional
+            Indices of the contractions. The default is None, indicating all
+            the dimensions.
+
+        Returns
+        -------
+        CanonicalTensor
+            The tensor after the contractions with the matrices.
+
+        &#39;&#39;&#39;
+        if dims is None:
+            assert isinstance(matrices, (list, np.ndarray)), \
+                &#39;matrices should be a list or a numpy.ndarray.&#39;
+            assert len(matrices) == self.order, \
+                &#39;len(matrices) must be self.order.&#39;
+            dims = range(self.order)
+        else:
+            dims = np.atleast_1d(dims)
+            if not isinstance(matrices, list):
+                matrices = [matrices]
+            assert len(matrices) == dims.size, \
+                &#39;len(matrices) must be equal to dims.size.&#39;
+
+        space = list(self.space)
+        for i, dim in enumerate(dims):
+            space[dim] = np.matmul(matrices[i], space[dim])
+        return CanonicalTensor(space, np.array(self.core.data))
+
+    def tensor_matrix_product_eval_diag(self, matrices, dims=None):
+        &#39;&#39;&#39;
+        Evaluate the diagonal of a tensor obtained by contraction with
+        matrices.
+
+        Provides the diagonal of the tensor obtained by contracting the tensor
+        with matrices H[k] along dimensions dims(k)+1, for k = 0, ...,
+        dims.size-1.
+
+        Parameters
+        ----------
+        matrices : list
+            The matrices to use in the product.
+        dims : list or numpy.ndarray, optional
+            Indices of the contractions. The default is None, indicating all
+            the dimensions.
+
+        Returns
+        -------
+        out : CanonicalTensor or tensap.FullTensor
+            The diagonal of the contractions of the tensor with the matrices.
+
+        &#39;&#39;&#39;
+        return self.tensor_matrix_product(matrices, dims).eval_diag(dims)
+
+    def eval_diag(self, dims=None):
+        &#39;&#39;&#39;
+        Extract the diagonal of the tensor.
+
+        The tensor must be such that self.shape[mu] = n for all mu (in dims if
+        provided).
+
+        Parameters
+        ----------
+        dims : list of numpy.ndarray, optional
+            The dimensions associated with the indices of the diagonal. The
+            default is None,indicating that the indices refer to all the
+            dimensions.
+
+        Returns
+        -------
+        data : CanonicalTensor or tensap.FullTensor
+            The evaluations of the diagonal of the tensor.
+
+        &#39;&#39;&#39;
+        if dims is None:
+            is_none = True
+            dims = np.arange(self.order)
+        else:
+            is_none = False
+            dims = np.atleast_1d(dims)
+            if dims.size == 1:
+                print(&#39;Only one dimension: degenerate case for eval_diag, &#39; +
+                      &#39;returning the tensor itself.&#39;)
+                return deepcopy(self)
+            dims = np.sort(dims)
+            new_dims = np.setdiff1d(range(self.order), dims[1:])
+
+        out = self.space[dims[0]]
+        for k in dims[1:]:
+            out *= self.space[k]
+
+        if is_none or dims.size == self.order:
+            out = tensap.FullTensor(np.matmul(out, self.core.data))
+        else:
+            space = list(self.space)
+            core = deepcopy(self.core)
+
+            space[dims[0]] = out
+            space = space[new_dims]
+            core.shape = core.shape[new_dims]
+            core.order = new_dims.size
+            out = CanonicalTensor(space, core)
+        return out
+
+    def dot(self, tensor_2):
+        &#39;&#39;&#39;
+        Return the inner product of two tensors.
+
+        Parameters
+        ----------
+        tensor2 : CanonicalTensor
+            The second tensor of the inner products.
+
+        Returns
+        -------
+        numpy.float
+            The inner product of the two tensors.
+
+        &#39;&#39;&#39;
+        assert isinstance(tensor_2, tensap.CanonicalTensor), \
+            &#39;The second argument must be a tensap.CanonicalTensor.&#39;
+        matrices = [np.matmul(np.transpose(x), y) for
+                    x, y in zip(self.space, tensor_2.space)]
+        out = tensor_2.core.full().tensor_matrix_product(matrices)
+        return self.core.full().dot(out)
+
+    def norm(self, matrix=None):
+        &#39;&#39;&#39;
+        Compute the canonical norm of the CanonicalTensor.
+
+        Returns
+        -------
+        numpy.float
+            The norm of the tensor.
+
+        &#39;&#39;&#39;
+        if matrix is None:
+            if self.is_orth:
+                norm = np.linalg.norm(self.core.data)
+            else:
+                norm = np.sqrt(np.abs(self.dot(self)))
+        else:
+            raise NotImplementedError(&#39;Method not implemented.&#39;)
+        return norm
+
+    def storage(self):
+        &#39;&#39;&#39;
+        Return the storage complexity of the CanonicalTensor.
+
+        Returns
+        -------
+        int
+            The storage complexity of the CanonicalTensor.
+
+        &#39;&#39;&#39;
+        return self.core.data.size + np.sum([x.size for x in self.space])
+
+    def sparse_storage(self):
+        &#39;&#39;&#39;
+        Return the sparse storage complexity of the CanonicalTensor.
+
+        Returns
+        -------
+        int
+            The sparse storage complexity of the CanonicalTensor.
+
+        &#39;&#39;&#39;
+        return np.count_nonzero(self.core.data) + \
+            np.sum([np.count_nonzero(x) for x in self.space])
+
+    def representation_rank(self):
+        &#39;&#39;&#39;
+        Return the representation rank of the tensor.
+
+        Returns
+        -------
+        int
+            The representation rank of the tensor.
+
+        &#39;&#39;&#39;
+        return self.core.data.size
+
+    def parameter_gradient_eval_diag(self, mu, matrices=None):
+        &#39;&#39;&#39;
+        Compute the diagonal of the gradient of the tensor with respect to a
+        given parameter.
+
+        Parameters
+        ----------
+        mu : int
+            Index of the parameter.
+        matrices : list or numpy.array, optional
+            Matrices with which to compute outer_product_eval_diag if alpha is
+            associated with some dimensions. Useful for evaluation the gradient
+            of a tensap.FunctionalTensor. The default is None, indicating
+            identity matrices.
+
+        Returns
+        -------
+        out : tensap.FullTensor
+            The diagonal of the gradient of the tensor with respect to
+            the parameter with index mu.
+
+        &#39;&#39;&#39;
+        rank = len(self.core.data)
+        if mu == self.order + 1:
+            N = self.space[0].shape[0]
+            out = np.ones((N, rank))
+            for nu in range(self.order):
+                out *= self.space[nu]
+            out = tensap.FullTensor(out)
+        else:
+            no_mu = np.setdiff1d(np.arange(1, self.order+1), mu)
+            N = self.space[no_mu[0]-1].shape[0]
+            f_mu = np.ones((N, rank))
+            for nu in no_mu:
+                f_mu *= self.space[nu-1]
+            if matrices is not None:
+                out = tensap.FullTensor(f_mu).outer_product_eval_diag(
+                    tensap.FullTensor(matrices[mu-1]), 0, 0)
+            else:
+                out = tensap.FullTensor(f_mu).outer_product_eval_diag(
+                    tensap.FullTensor(np.eye(self.shape[mu-1])), [], [], True)
+        return out
+
+    def tree_based_tensor(self, tree, is_active_node=None):
+        &#39;&#39;&#39;
+        Convert a CanonicalTensor to a tensap.TreeBasedTensor with given
+        dimension tree and active nodes.
+
+        Parameters
+        ----------
+        tree : tensap.DimensionTree
+            The dimension tree.
+        is_active_node : list or numpy.ndarray, optional
+            Booleans indicating if the nodes are active. The default is None,
+            settings all the nodes active.
+
+        Returns
+        -------
+        out : tensap.TreeBasedTensor
+            The canonical tensor converted into a tree-based tensor.
+
+        &#39;&#39;&#39;
+
+        rank = self.core.shape[0]
+        tensors = np.empty(tree.nb_nodes, dtype=object)
+        for nod in np.arange(1, tree.nb_nodes+1):
+            ch = tree.children(nod)
+            if tree.parent(nod) == 0:
+                order = ch.size
+                tensors[nod-1] = tensap.FullTensor.diag(self.core.data, order)
+            else:
+                order = ch.size + 1
+                tensors[nod-1] = tensap.FullTensor.diag(np.ones(rank), order)
+
+        tensors[tree.dim2ind-1] = self.space
+        out = tensap.TreeBasedTensor(tensors, tree)
+        if is_active_node is not None:
+            out = out.inactivate_nodes(
+                np.nonzero(np.logical_not(is_active_node))[0]+1)
+        return out
+
+    @staticmethod
+    def create(generator, rank, shape):
+        &#39;&#39;&#39;
+        Create a FullTensor of rank rank and shape shape using a given
+        generator.
+
+        Parameters
+        ----------
+        generator : function
+            Function generating a numpy.ndarray, given a shape.
+        rank : int
+            The rank of the tensor.
+        shape : numpy.ndarray or list
+            The shape of the tensor.
+
+        Returns
+        -------
+        CanonicalTensor
+            The created tensor.
+
+        &#39;&#39;&#39;
+        space = [generator([x, rank]) for x in shape]
+        return CanonicalTensor(space, np.ones(rank))
+
+    @staticmethod
+    def zeros(rank, shape):
+        &#39;&#39;&#39;
+        Create a FullTensor of rank rank and shape shape with entries equal to
+        0.
+
+        Parameters
+        ----------
+        rank : int
+            The rank of the tensor.
+        shape : numpy.ndarray or list
+            The shape of the tensor.
+
+        Returns
+        -------
+        CanonicalTensor
+            The created tensor.
+
+        &#39;&#39;&#39;
+        return CanonicalTensor.create(np.zeros, rank, shape)
+
+    @staticmethod
+    def ones(rank, shape):
+        &#39;&#39;&#39;
+        Create a FullTensor of rank rank and shape shape with entries equal to
+        1.
+
+        Parameters
+        ----------
+        rank : int
+            The rank of the tensor.
+        shape : numpy.ndarray or list
+            The shape of the tensor.
+
+        Returns
+        -------
+        CanonicalTensor
+            The created tensor.
+
+        &#39;&#39;&#39;
+        return CanonicalTensor.create(np.ones, rank, shape)
+
+    @staticmethod
+    def rand(rank, shape):
+        &#39;&#39;&#39;
+        Create a FullTensor of rank rank and shape shape with i.i.d. entries
+        drawn according to the uniform distribution on [0, 1].
+
+        Parameters
+        ----------
+        rank : int
+            The rank of the tensor.
+        shape : numpy.ndarray or list
+            The shape of the tensor.
+
+        Returns
+        -------
+        CanonicalTensor
+            The created tensor.
+
+        &#39;&#39;&#39;
+        return CanonicalTensor.create(lambda x: np.random.rand(*x), rank,
+                                      shape)
+
+    @staticmethod
+    def randn(rank, shape):
+        &#39;&#39;&#39;
+        Create a FullTensor of rank rank and shape shape with i.i.d. entries
+        drawn according to the standard gaussian distribution.
+
+        Parameters
+        ----------
+        rank : int
+            The rank of the tensor.
+        shape : numpy.ndarray or list
+            The shape of the tensor.
+
+        Returns
+        -------
+        CanonicalTensor
+            The created tensor.
+
+        &#39;&#39;&#39;
+        return CanonicalTensor.create(lambda x: np.random.randn(*x), rank,
+                                      shape)</code></pre>
+</details>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-classes">Classes</h2>
+<dl>
+<dt id="tensap.tensor_algebra.tensors.canonical_tensor.CanonicalTensor"><code class="flex name class">
+<span>class <span class="ident">CanonicalTensor</span></span>
+<span>(</span><span>space, core)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Class CanonicalTensor.</p>
+<h2 id="attributes">Attributes</h2>
+<dl>
+<dt><strong><code>core</code></strong> :&ensp;<code>tensap.DiagonalTensor</code></dt>
+<dd>The core of the canonical tensor.</dd>
+<dt><strong><code>space</code></strong> :&ensp;<code>numpy.ndarray</code></dt>
+<dd>The tensor space.</dd>
+<dt><strong><code>order</code></strong> :&ensp;<code>int</code></dt>
+<dd>The order of the tensor.</dd>
+<dt><strong><code>shape</code></strong> :&ensp;<code>numpy.ndarray</code></dt>
+<dd>The shape of the tensor.</dd>
+<dt><strong><code>is_orth</code></strong> :&ensp;<code>bool</code></dt>
+<dd>Boolean indicating, if is_orth = True, the dimension mu for which
+the mu-matricization of the tensor is orthogonal.</dd>
+</dl>
+<p>Constructor for the class CanonicalTensor</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>space</code></strong> :&ensp;<code>numpy.ndarray</code> or <code>list</code></dt>
+<dd>&nbsp;</dd>
+<dt>The tensor space.</dt>
+<dt><strong><code>core</code></strong> :&ensp;<code>tensap.DiagonalTensor</code> or <code>list</code> or <code>numpy.ndarray</code></dt>
+<dd>&nbsp;</dd>
+</dl>
+<p>The core of the canonical tensor.</p>
+<h2 id="returns">Returns</h2>
+<p>None.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class CanonicalTensor:
+    &#39;&#39;&#39;
+    Class CanonicalTensor.
+
+    Attributes
+    ----------
+    core : tensap.DiagonalTensor
+        The core of the canonical tensor.
+    space : numpy.ndarray
+        The tensor space.
+    order : int
+        The order of the tensor.
+    shape : numpy.ndarray
+        The shape of the tensor.
+    is_orth : bool
+        Boolean indicating, if is_orth = True, the dimension mu for which
+        the mu-matricization of the tensor is orthogonal.
+
+    &#39;&#39;&#39;
+
+    def __init__(self, space, core):
+        &#39;&#39;&#39;
+        Constructor for the class CanonicalTensor
+
+        Parameters
+        ----------
+        space : numpy.ndarray or list
+        The tensor space.
+        core : tensap.DiagonalTensor or list or numpy.ndarray
+        The core of the canonical tensor.
+
+        Returns
+        -------
+        None.
+
+        &#39;&#39;&#39;
+        assert isinstance(space, (list, np.ndarray)), \
+            &#39;The input space must be a list or a numpy.ndarray.&#39;
+
+        assert isinstance(core, (list, np.ndarray, tensap.DiagonalTensor)), \
+            (&#39;The input core must be a list or a numpy.ndarray or a &#39; +
+             &#39;tensap.DiagonalTensor.&#39;)
+
+        if not isinstance(core, tensap.DiagonalTensor):
+            core = tensap.DiagonalTensor(core, len(space))
+
+        self.core = core
+        self.space = space
+        self.order = core.order
+        self.shape = np.array([x.shape[0] for x in self.space])
+        self.is_orth = False
+
+    def __add__(self, arg):
+        core = np.concatenate((self.core.data, arg.core.data))
+        space = [np.hstack((x, y)) for x, y in zip(list(self.space),
+                                                   list(arg.space))]
+        return CanonicalTensor(space, core)
+
+    def __radd__(self, arg):
+        return self + arg
+
+    def __sub__(self, arg):
+        return self + (-arg)
+
+    def __rsub__(self, arg):
+        return -self + arg
+
+    def __neg__(self):
+        return CanonicalTensor(list(self.space), -self.core.data)
+
+    def __repr__(self):
+        return (&#39;&lt;{} CanonicalTensor:{n}&#39; +
+                &#39;{t}order = {},{n}&#39; +
+                &#39;{t}shape = {},{n}&#39; +
+                &#39;{t}is_orth = {}&gt;&#39;).format(&#39;x&#39;.join(map(str, self.shape)),
+                                           self.order,
+                                           self.shape,
+                                           self.is_orth,
+                                           t=&#39;\t&#39;, n=&#39;\n&#39;)
+
+    @property
+    def ndim(self):
+        &#39;&#39;&#39;
+        Compute the order of the tensor. Equivalent to self.order.
+
+        Returns
+        -------
+        int
+            The order of the tensor.
+
+        &#39;&#39;&#39;
+        return self.order
+
+    def orth(self):
+        &#39;&#39;&#39;
+        Return an orthonormalized representation of the tensor.
+
+        Returns
+        -------
+        out : CanonicalTensor
+            The orthonormalized representation of the tensor.
+
+        &#39;&#39;&#39;
+        dims = range(self.order)
+        qr = [np.linalg.qr(x) for x in self.space]
+        space = [x[0] for x in qr]
+        M = [x[1] for x in qr]
+        core = self.core.tensor_matrix_product(M, dims)
+        core = core.orth()[0]
+        out = CanonicalTensor(space, self.core)
+        out.core = core
+        return out
+
+    def full(self):
+        &#39;&#39;&#39;
+        Convert the object to a tensap.FullTensor.
+
+        Returns
+        -------
+        tensap.FullTensor
+            The canonical tensor as a tensap.FullTensor.
+
+        &#39;&#39;&#39;
+        return self.core.full().tensor_matrix_product(self.space)
+
+    def numpy(self):
+        &#39;&#39;&#39;
+        Convert the CanonicalTensor to a numpy.ndarray.
+
+        Returns
+        -------
+        numpy.ndarray
+            The CanonicalTensor as a numpy.ndarray.
+
+        &#39;&#39;&#39;
+        return self.full().data
+
+    def tensor_matrix_product(self, matrices, dims=None):
+        &#39;&#39;&#39;
+        Contract a tensor with matrices.
+
+        The second dimension of the matrix matrices[k] is contracted with the
+        k-th dimension of self, with the indices k given in dims (if provided).
+
+        Parameters
+        ----------
+        matrices : numpy.ndarray or list of numpy.ndarray
+            The matrices to use in the product.
+        dims : list or numpy.ndarray, optional
+            Indices of the contractions. The default is None, indicating all
+            the dimensions.
+
+        Returns
+        -------
+        CanonicalTensor
+            The tensor after the contractions with the matrices.
+
+        &#39;&#39;&#39;
+        if dims is None:
+            assert isinstance(matrices, (list, np.ndarray)), \
+                &#39;matrices should be a list or a numpy.ndarray.&#39;
+            assert len(matrices) == self.order, \
+                &#39;len(matrices) must be self.order.&#39;
+            dims = range(self.order)
+        else:
+            dims = np.atleast_1d(dims)
+            if not isinstance(matrices, list):
+                matrices = [matrices]
+            assert len(matrices) == dims.size, \
+                &#39;len(matrices) must be equal to dims.size.&#39;
+
+        space = list(self.space)
+        for i, dim in enumerate(dims):
+            space[dim] = np.matmul(matrices[i], space[dim])
+        return CanonicalTensor(space, np.array(self.core.data))
+
+    def tensor_matrix_product_eval_diag(self, matrices, dims=None):
+        &#39;&#39;&#39;
+        Evaluate the diagonal of a tensor obtained by contraction with
+        matrices.
+
+        Provides the diagonal of the tensor obtained by contracting the tensor
+        with matrices H[k] along dimensions dims(k)+1, for k = 0, ...,
+        dims.size-1.
+
+        Parameters
+        ----------
+        matrices : list
+            The matrices to use in the product.
+        dims : list or numpy.ndarray, optional
+            Indices of the contractions. The default is None, indicating all
+            the dimensions.
+
+        Returns
+        -------
+        out : CanonicalTensor or tensap.FullTensor
+            The diagonal of the contractions of the tensor with the matrices.
+
+        &#39;&#39;&#39;
+        return self.tensor_matrix_product(matrices, dims).eval_diag(dims)
+
+    def eval_diag(self, dims=None):
+        &#39;&#39;&#39;
+        Extract the diagonal of the tensor.
+
+        The tensor must be such that self.shape[mu] = n for all mu (in dims if
+        provided).
+
+        Parameters
+        ----------
+        dims : list of numpy.ndarray, optional
+            The dimensions associated with the indices of the diagonal. The
+            default is None,indicating that the indices refer to all the
+            dimensions.
+
+        Returns
+        -------
+        data : CanonicalTensor or tensap.FullTensor
+            The evaluations of the diagonal of the tensor.
+
+        &#39;&#39;&#39;
+        if dims is None:
+            is_none = True
+            dims = np.arange(self.order)
+        else:
+            is_none = False
+            dims = np.atleast_1d(dims)
+            if dims.size == 1:
+                print(&#39;Only one dimension: degenerate case for eval_diag, &#39; +
+                      &#39;returning the tensor itself.&#39;)
+                return deepcopy(self)
+            dims = np.sort(dims)
+            new_dims = np.setdiff1d(range(self.order), dims[1:])
+
+        out = self.space[dims[0]]
+        for k in dims[1:]:
+            out *= self.space[k]
+
+        if is_none or dims.size == self.order:
+            out = tensap.FullTensor(np.matmul(out, self.core.data))
+        else:
+            space = list(self.space)
+            core = deepcopy(self.core)
+
+            space[dims[0]] = out
+            space = space[new_dims]
+            core.shape = core.shape[new_dims]
+            core.order = new_dims.size
+            out = CanonicalTensor(space, core)
+        return out
+
+    def dot(self, tensor_2):
+        &#39;&#39;&#39;
+        Return the inner product of two tensors.
+
+        Parameters
+        ----------
+        tensor2 : CanonicalTensor
+            The second tensor of the inner products.
+
+        Returns
+        -------
+        numpy.float
+            The inner product of the two tensors.
+
+        &#39;&#39;&#39;
+        assert isinstance(tensor_2, tensap.CanonicalTensor), \
+            &#39;The second argument must be a tensap.CanonicalTensor.&#39;
+        matrices = [np.matmul(np.transpose(x), y) for
+                    x, y in zip(self.space, tensor_2.space)]
+        out = tensor_2.core.full().tensor_matrix_product(matrices)
+        return self.core.full().dot(out)
+
+    def norm(self, matrix=None):
+        &#39;&#39;&#39;
+        Compute the canonical norm of the CanonicalTensor.
+
+        Returns
+        -------
+        numpy.float
+            The norm of the tensor.
+
+        &#39;&#39;&#39;
+        if matrix is None:
+            if self.is_orth:
+                norm = np.linalg.norm(self.core.data)
+            else:
+                norm = np.sqrt(np.abs(self.dot(self)))
+        else:
+            raise NotImplementedError(&#39;Method not implemented.&#39;)
+        return norm
+
+    def storage(self):
+        &#39;&#39;&#39;
+        Return the storage complexity of the CanonicalTensor.
+
+        Returns
+        -------
+        int
+            The storage complexity of the CanonicalTensor.
+
+        &#39;&#39;&#39;
+        return self.core.data.size + np.sum([x.size for x in self.space])
+
+    def sparse_storage(self):
+        &#39;&#39;&#39;
+        Return the sparse storage complexity of the CanonicalTensor.
+
+        Returns
+        -------
+        int
+            The sparse storage complexity of the CanonicalTensor.
+
+        &#39;&#39;&#39;
+        return np.count_nonzero(self.core.data) + \
+            np.sum([np.count_nonzero(x) for x in self.space])
+
+    def representation_rank(self):
+        &#39;&#39;&#39;
+        Return the representation rank of the tensor.
+
+        Returns
+        -------
+        int
+            The representation rank of the tensor.
+
+        &#39;&#39;&#39;
+        return self.core.data.size
+
+    def parameter_gradient_eval_diag(self, mu, matrices=None):
+        &#39;&#39;&#39;
+        Compute the diagonal of the gradient of the tensor with respect to a
+        given parameter.
+
+        Parameters
+        ----------
+        mu : int
+            Index of the parameter.
+        matrices : list or numpy.array, optional
+            Matrices with which to compute outer_product_eval_diag if alpha is
+            associated with some dimensions. Useful for evaluation the gradient
+            of a tensap.FunctionalTensor. The default is None, indicating
+            identity matrices.
+
+        Returns
+        -------
+        out : tensap.FullTensor
+            The diagonal of the gradient of the tensor with respect to
+            the parameter with index mu.
+
+        &#39;&#39;&#39;
+        rank = len(self.core.data)
+        if mu == self.order + 1:
+            N = self.space[0].shape[0]
+            out = np.ones((N, rank))
+            for nu in range(self.order):
+                out *= self.space[nu]
+            out = tensap.FullTensor(out)
+        else:
+            no_mu = np.setdiff1d(np.arange(1, self.order+1), mu)
+            N = self.space[no_mu[0]-1].shape[0]
+            f_mu = np.ones((N, rank))
+            for nu in no_mu:
+                f_mu *= self.space[nu-1]
+            if matrices is not None:
+                out = tensap.FullTensor(f_mu).outer_product_eval_diag(
+                    tensap.FullTensor(matrices[mu-1]), 0, 0)
+            else:
+                out = tensap.FullTensor(f_mu).outer_product_eval_diag(
+                    tensap.FullTensor(np.eye(self.shape[mu-1])), [], [], True)
+        return out
+
+    def tree_based_tensor(self, tree, is_active_node=None):
+        &#39;&#39;&#39;
+        Convert a CanonicalTensor to a tensap.TreeBasedTensor with given
+        dimension tree and active nodes.
+
+        Parameters
+        ----------
+        tree : tensap.DimensionTree
+            The dimension tree.
+        is_active_node : list or numpy.ndarray, optional
+            Booleans indicating if the nodes are active. The default is None,
+            settings all the nodes active.
+
+        Returns
+        -------
+        out : tensap.TreeBasedTensor
+            The canonical tensor converted into a tree-based tensor.
+
+        &#39;&#39;&#39;
+
+        rank = self.core.shape[0]
+        tensors = np.empty(tree.nb_nodes, dtype=object)
+        for nod in np.arange(1, tree.nb_nodes+1):
+            ch = tree.children(nod)
+            if tree.parent(nod) == 0:
+                order = ch.size
+                tensors[nod-1] = tensap.FullTensor.diag(self.core.data, order)
+            else:
+                order = ch.size + 1
+                tensors[nod-1] = tensap.FullTensor.diag(np.ones(rank), order)
+
+        tensors[tree.dim2ind-1] = self.space
+        out = tensap.TreeBasedTensor(tensors, tree)
+        if is_active_node is not None:
+            out = out.inactivate_nodes(
+                np.nonzero(np.logical_not(is_active_node))[0]+1)
+        return out
+
+    @staticmethod
+    def create(generator, rank, shape):
+        &#39;&#39;&#39;
+        Create a FullTensor of rank rank and shape shape using a given
+        generator.
+
+        Parameters
+        ----------
+        generator : function
+            Function generating a numpy.ndarray, given a shape.
+        rank : int
+            The rank of the tensor.
+        shape : numpy.ndarray or list
+            The shape of the tensor.
+
+        Returns
+        -------
+        CanonicalTensor
+            The created tensor.
+
+        &#39;&#39;&#39;
+        space = [generator([x, rank]) for x in shape]
+        return CanonicalTensor(space, np.ones(rank))
+
+    @staticmethod
+    def zeros(rank, shape):
+        &#39;&#39;&#39;
+        Create a FullTensor of rank rank and shape shape with entries equal to
+        0.
+
+        Parameters
+        ----------
+        rank : int
+            The rank of the tensor.
+        shape : numpy.ndarray or list
+            The shape of the tensor.
+
+        Returns
+        -------
+        CanonicalTensor
+            The created tensor.
+
+        &#39;&#39;&#39;
+        return CanonicalTensor.create(np.zeros, rank, shape)
+
+    @staticmethod
+    def ones(rank, shape):
+        &#39;&#39;&#39;
+        Create a FullTensor of rank rank and shape shape with entries equal to
+        1.
+
+        Parameters
+        ----------
+        rank : int
+            The rank of the tensor.
+        shape : numpy.ndarray or list
+            The shape of the tensor.
+
+        Returns
+        -------
+        CanonicalTensor
+            The created tensor.
+
+        &#39;&#39;&#39;
+        return CanonicalTensor.create(np.ones, rank, shape)
+
+    @staticmethod
+    def rand(rank, shape):
+        &#39;&#39;&#39;
+        Create a FullTensor of rank rank and shape shape with i.i.d. entries
+        drawn according to the uniform distribution on [0, 1].
+
+        Parameters
+        ----------
+        rank : int
+            The rank of the tensor.
+        shape : numpy.ndarray or list
+            The shape of the tensor.
+
+        Returns
+        -------
+        CanonicalTensor
+            The created tensor.
+
+        &#39;&#39;&#39;
+        return CanonicalTensor.create(lambda x: np.random.rand(*x), rank,
+                                      shape)
+
+    @staticmethod
+    def randn(rank, shape):
+        &#39;&#39;&#39;
+        Create a FullTensor of rank rank and shape shape with i.i.d. entries
+        drawn according to the standard gaussian distribution.
+
+        Parameters
+        ----------
+        rank : int
+            The rank of the tensor.
+        shape : numpy.ndarray or list
+            The shape of the tensor.
+
+        Returns
+        -------
+        CanonicalTensor
+            The created tensor.
+
+        &#39;&#39;&#39;
+        return CanonicalTensor.create(lambda x: np.random.randn(*x), rank,
+                                      shape)</code></pre>
+</details>
+<h3>Static methods</h3>
+<dl>
+<dt id="tensap.tensor_algebra.tensors.canonical_tensor.CanonicalTensor.create"><code class="name flex">
+<span>def <span class="ident">create</span></span>(<span>generator, rank, shape)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Create a FullTensor of rank rank and shape shape using a given
+generator.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>generator</code></strong> :&ensp;<code>function</code></dt>
+<dd>Function generating a numpy.ndarray, given a shape.</dd>
+<dt><strong><code>rank</code></strong> :&ensp;<code>int</code></dt>
+<dd>The rank of the tensor.</dd>
+<dt><strong><code>shape</code></strong> :&ensp;<code>numpy.ndarray</code> or <code>list</code></dt>
+<dd>The shape of the tensor.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code><a title="tensap.tensor_algebra.tensors.canonical_tensor.CanonicalTensor" href="#tensap.tensor_algebra.tensors.canonical_tensor.CanonicalTensor">CanonicalTensor</a></code></dt>
+<dd>The created tensor.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@staticmethod
+def create(generator, rank, shape):
+    &#39;&#39;&#39;
+    Create a FullTensor of rank rank and shape shape using a given
+    generator.
+
+    Parameters
+    ----------
+    generator : function
+        Function generating a numpy.ndarray, given a shape.
+    rank : int
+        The rank of the tensor.
+    shape : numpy.ndarray or list
+        The shape of the tensor.
+
+    Returns
+    -------
+    CanonicalTensor
+        The created tensor.
+
+    &#39;&#39;&#39;
+    space = [generator([x, rank]) for x in shape]
+    return CanonicalTensor(space, np.ones(rank))</code></pre>
+</details>
+</dd>
+<dt id="tensap.tensor_algebra.tensors.canonical_tensor.CanonicalTensor.ones"><code class="name flex">
+<span>def <span class="ident">ones</span></span>(<span>rank, shape)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Create a FullTensor of rank rank and shape shape with entries equal to
+1.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>rank</code></strong> :&ensp;<code>int</code></dt>
+<dd>The rank of the tensor.</dd>
+<dt><strong><code>shape</code></strong> :&ensp;<code>numpy.ndarray</code> or <code>list</code></dt>
+<dd>The shape of the tensor.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code><a title="tensap.tensor_algebra.tensors.canonical_tensor.CanonicalTensor" href="#tensap.tensor_algebra.tensors.canonical_tensor.CanonicalTensor">CanonicalTensor</a></code></dt>
+<dd>The created tensor.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@staticmethod
+def ones(rank, shape):
+    &#39;&#39;&#39;
+    Create a FullTensor of rank rank and shape shape with entries equal to
+    1.
+
+    Parameters
+    ----------
+    rank : int
+        The rank of the tensor.
+    shape : numpy.ndarray or list
+        The shape of the tensor.
+
+    Returns
+    -------
+    CanonicalTensor
+        The created tensor.
+
+    &#39;&#39;&#39;
+    return CanonicalTensor.create(np.ones, rank, shape)</code></pre>
+</details>
+</dd>
+<dt id="tensap.tensor_algebra.tensors.canonical_tensor.CanonicalTensor.rand"><code class="name flex">
+<span>def <span class="ident">rand</span></span>(<span>rank, shape)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Create a FullTensor of rank rank and shape shape with i.i.d. entries
+drawn according to the uniform distribution on [0, 1].</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>rank</code></strong> :&ensp;<code>int</code></dt>
+<dd>The rank of the tensor.</dd>
+<dt><strong><code>shape</code></strong> :&ensp;<code>numpy.ndarray</code> or <code>list</code></dt>
+<dd>The shape of the tensor.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code><a title="tensap.tensor_algebra.tensors.canonical_tensor.CanonicalTensor" href="#tensap.tensor_algebra.tensors.canonical_tensor.CanonicalTensor">CanonicalTensor</a></code></dt>
+<dd>The created tensor.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@staticmethod
+def rand(rank, shape):
+    &#39;&#39;&#39;
+    Create a FullTensor of rank rank and shape shape with i.i.d. entries
+    drawn according to the uniform distribution on [0, 1].
+
+    Parameters
+    ----------
+    rank : int
+        The rank of the tensor.
+    shape : numpy.ndarray or list
+        The shape of the tensor.
+
+    Returns
+    -------
+    CanonicalTensor
+        The created tensor.
+
+    &#39;&#39;&#39;
+    return CanonicalTensor.create(lambda x: np.random.rand(*x), rank,
+                                  shape)</code></pre>
+</details>
+</dd>
+<dt id="tensap.tensor_algebra.tensors.canonical_tensor.CanonicalTensor.randn"><code class="name flex">
+<span>def <span class="ident">randn</span></span>(<span>rank, shape)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Create a FullTensor of rank rank and shape shape with i.i.d. entries
+drawn according to the standard gaussian distribution.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>rank</code></strong> :&ensp;<code>int</code></dt>
+<dd>The rank of the tensor.</dd>
+<dt><strong><code>shape</code></strong> :&ensp;<code>numpy.ndarray</code> or <code>list</code></dt>
+<dd>The shape of the tensor.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code><a title="tensap.tensor_algebra.tensors.canonical_tensor.CanonicalTensor" href="#tensap.tensor_algebra.tensors.canonical_tensor.CanonicalTensor">CanonicalTensor</a></code></dt>
+<dd>The created tensor.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@staticmethod
+def randn(rank, shape):
+    &#39;&#39;&#39;
+    Create a FullTensor of rank rank and shape shape with i.i.d. entries
+    drawn according to the standard gaussian distribution.
+
+    Parameters
+    ----------
+    rank : int
+        The rank of the tensor.
+    shape : numpy.ndarray or list
+        The shape of the tensor.
+
+    Returns
+    -------
+    CanonicalTensor
+        The created tensor.
+
+    &#39;&#39;&#39;
+    return CanonicalTensor.create(lambda x: np.random.randn(*x), rank,
+                                  shape)</code></pre>
+</details>
+</dd>
+<dt id="tensap.tensor_algebra.tensors.canonical_tensor.CanonicalTensor.zeros"><code class="name flex">
+<span>def <span class="ident">zeros</span></span>(<span>rank, shape)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Create a FullTensor of rank rank and shape shape with entries equal to
+0.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>rank</code></strong> :&ensp;<code>int</code></dt>
+<dd>The rank of the tensor.</dd>
+<dt><strong><code>shape</code></strong> :&ensp;<code>numpy.ndarray</code> or <code>list</code></dt>
+<dd>The shape of the tensor.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code><a title="tensap.tensor_algebra.tensors.canonical_tensor.CanonicalTensor" href="#tensap.tensor_algebra.tensors.canonical_tensor.CanonicalTensor">CanonicalTensor</a></code></dt>
+<dd>The created tensor.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@staticmethod
+def zeros(rank, shape):
+    &#39;&#39;&#39;
+    Create a FullTensor of rank rank and shape shape with entries equal to
+    0.
+
+    Parameters
+    ----------
+    rank : int
+        The rank of the tensor.
+    shape : numpy.ndarray or list
+        The shape of the tensor.
+
+    Returns
+    -------
+    CanonicalTensor
+        The created tensor.
+
+    &#39;&#39;&#39;
+    return CanonicalTensor.create(np.zeros, rank, shape)</code></pre>
+</details>
+</dd>
+</dl>
+<h3>Instance variables</h3>
+<dl>
+<dt id="tensap.tensor_algebra.tensors.canonical_tensor.CanonicalTensor.ndim"><code class="name">var <span class="ident">ndim</span></code></dt>
+<dd>
+<div class="desc"><p>Compute the order of the tensor. Equivalent to self.order.</p>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>int</code></dt>
+<dd>The order of the tensor.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def ndim(self):
+    &#39;&#39;&#39;
+    Compute the order of the tensor. Equivalent to self.order.
+
+    Returns
+    -------
+    int
+        The order of the tensor.
+
+    &#39;&#39;&#39;
+    return self.order</code></pre>
+</details>
+</dd>
+</dl>
+<h3>Methods</h3>
+<dl>
+<dt id="tensap.tensor_algebra.tensors.canonical_tensor.CanonicalTensor.dot"><code class="name flex">
+<span>def <span class="ident">dot</span></span>(<span>self, tensor_2)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Return the inner product of two tensors.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>tensor2</code></strong> :&ensp;<code><a title="tensap.tensor_algebra.tensors.canonical_tensor.CanonicalTensor" href="#tensap.tensor_algebra.tensors.canonical_tensor.CanonicalTensor">CanonicalTensor</a></code></dt>
+<dd>The second tensor of the inner products.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>numpy.float</code></dt>
+<dd>The inner product of the two tensors.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def dot(self, tensor_2):
+    &#39;&#39;&#39;
+    Return the inner product of two tensors.
+
+    Parameters
+    ----------
+    tensor2 : CanonicalTensor
+        The second tensor of the inner products.
+
+    Returns
+    -------
+    numpy.float
+        The inner product of the two tensors.
+
+    &#39;&#39;&#39;
+    assert isinstance(tensor_2, tensap.CanonicalTensor), \
+        &#39;The second argument must be a tensap.CanonicalTensor.&#39;
+    matrices = [np.matmul(np.transpose(x), y) for
+                x, y in zip(self.space, tensor_2.space)]
+    out = tensor_2.core.full().tensor_matrix_product(matrices)
+    return self.core.full().dot(out)</code></pre>
+</details>
+</dd>
+<dt id="tensap.tensor_algebra.tensors.canonical_tensor.CanonicalTensor.eval_diag"><code class="name flex">
+<span>def <span class="ident">eval_diag</span></span>(<span>self, dims=None)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Extract the diagonal of the tensor.</p>
+<p>The tensor must be such that self.shape[mu] = n for all mu (in dims if
+provided).</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>dims</code></strong> :&ensp;<code>list</code> of <code>numpy.ndarray</code>, optional</dt>
+<dd>The dimensions associated with the indices of the diagonal. The
+default is None,indicating that the indices refer to all the
+dimensions.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><strong><code>data</code></strong> :&ensp;<code><a title="tensap.tensor_algebra.tensors.canonical_tensor.CanonicalTensor" href="#tensap.tensor_algebra.tensors.canonical_tensor.CanonicalTensor">CanonicalTensor</a></code> or <code>tensap.FullTensor</code></dt>
+<dd>The evaluations of the diagonal of the tensor.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def eval_diag(self, dims=None):
+    &#39;&#39;&#39;
+    Extract the diagonal of the tensor.
+
+    The tensor must be such that self.shape[mu] = n for all mu (in dims if
+    provided).
+
+    Parameters
+    ----------
+    dims : list of numpy.ndarray, optional
+        The dimensions associated with the indices of the diagonal. The
+        default is None,indicating that the indices refer to all the
+        dimensions.
+
+    Returns
+    -------
+    data : CanonicalTensor or tensap.FullTensor
+        The evaluations of the diagonal of the tensor.
+
+    &#39;&#39;&#39;
+    if dims is None:
+        is_none = True
+        dims = np.arange(self.order)
+    else:
+        is_none = False
+        dims = np.atleast_1d(dims)
+        if dims.size == 1:
+            print(&#39;Only one dimension: degenerate case for eval_diag, &#39; +
+                  &#39;returning the tensor itself.&#39;)
+            return deepcopy(self)
+        dims = np.sort(dims)
+        new_dims = np.setdiff1d(range(self.order), dims[1:])
+
+    out = self.space[dims[0]]
+    for k in dims[1:]:
+        out *= self.space[k]
+
+    if is_none or dims.size == self.order:
+        out = tensap.FullTensor(np.matmul(out, self.core.data))
+    else:
+        space = list(self.space)
+        core = deepcopy(self.core)
+
+        space[dims[0]] = out
+        space = space[new_dims]
+        core.shape = core.shape[new_dims]
+        core.order = new_dims.size
+        out = CanonicalTensor(space, core)
+    return out</code></pre>
+</details>
+</dd>
+<dt id="tensap.tensor_algebra.tensors.canonical_tensor.CanonicalTensor.full"><code class="name flex">
+<span>def <span class="ident">full</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Convert the object to a tensap.FullTensor.</p>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>tensap.FullTensor</code></dt>
+<dd>The canonical tensor as a tensap.FullTensor.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def full(self):
+    &#39;&#39;&#39;
+    Convert the object to a tensap.FullTensor.
+
+    Returns
+    -------
+    tensap.FullTensor
+        The canonical tensor as a tensap.FullTensor.
+
+    &#39;&#39;&#39;
+    return self.core.full().tensor_matrix_product(self.space)</code></pre>
+</details>
+</dd>
+<dt id="tensap.tensor_algebra.tensors.canonical_tensor.CanonicalTensor.norm"><code class="name flex">
+<span>def <span class="ident">norm</span></span>(<span>self, matrix=None)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Compute the canonical norm of the CanonicalTensor.</p>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>numpy.float</code></dt>
+<dd>The norm of the tensor.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def norm(self, matrix=None):
+    &#39;&#39;&#39;
+    Compute the canonical norm of the CanonicalTensor.
+
+    Returns
+    -------
+    numpy.float
+        The norm of the tensor.
+
+    &#39;&#39;&#39;
+    if matrix is None:
+        if self.is_orth:
+            norm = np.linalg.norm(self.core.data)
+        else:
+            norm = np.sqrt(np.abs(self.dot(self)))
+    else:
+        raise NotImplementedError(&#39;Method not implemented.&#39;)
+    return norm</code></pre>
+</details>
+</dd>
+<dt id="tensap.tensor_algebra.tensors.canonical_tensor.CanonicalTensor.numpy"><code class="name flex">
+<span>def <span class="ident">numpy</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Convert the CanonicalTensor to a numpy.ndarray.</p>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>numpy.ndarray</code></dt>
+<dd>The CanonicalTensor as a numpy.ndarray.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def numpy(self):
+    &#39;&#39;&#39;
+    Convert the CanonicalTensor to a numpy.ndarray.
+
+    Returns
+    -------
+    numpy.ndarray
+        The CanonicalTensor as a numpy.ndarray.
+
+    &#39;&#39;&#39;
+    return self.full().data</code></pre>
+</details>
+</dd>
+<dt id="tensap.tensor_algebra.tensors.canonical_tensor.CanonicalTensor.orth"><code class="name flex">
+<span>def <span class="ident">orth</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Return an orthonormalized representation of the tensor.</p>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><strong><code>out</code></strong> :&ensp;<code><a title="tensap.tensor_algebra.tensors.canonical_tensor.CanonicalTensor" href="#tensap.tensor_algebra.tensors.canonical_tensor.CanonicalTensor">CanonicalTensor</a></code></dt>
+<dd>The orthonormalized representation of the tensor.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def orth(self):
+    &#39;&#39;&#39;
+    Return an orthonormalized representation of the tensor.
+
+    Returns
+    -------
+    out : CanonicalTensor
+        The orthonormalized representation of the tensor.
+
+    &#39;&#39;&#39;
+    dims = range(self.order)
+    qr = [np.linalg.qr(x) for x in self.space]
+    space = [x[0] for x in qr]
+    M = [x[1] for x in qr]
+    core = self.core.tensor_matrix_product(M, dims)
+    core = core.orth()[0]
+    out = CanonicalTensor(space, self.core)
+    out.core = core
+    return out</code></pre>
+</details>
+</dd>
+<dt id="tensap.tensor_algebra.tensors.canonical_tensor.CanonicalTensor.parameter_gradient_eval_diag"><code class="name flex">
+<span>def <span class="ident">parameter_gradient_eval_diag</span></span>(<span>self, mu, matrices=None)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Compute the diagonal of the gradient of the tensor with respect to a
+given parameter.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>mu</code></strong> :&ensp;<code>int</code></dt>
+<dd>Index of the parameter.</dd>
+<dt><strong><code>matrices</code></strong> :&ensp;<code>list</code> or <code>numpy.array</code>, optional</dt>
+<dd>Matrices with which to compute outer_product_eval_diag if alpha is
+associated with some dimensions. Useful for evaluation the gradient
+of a tensap.FunctionalTensor. The default is None, indicating
+identity matrices.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><strong><code>out</code></strong> :&ensp;<code>tensap.FullTensor</code></dt>
+<dd>The diagonal of the gradient of the tensor with respect to
+the parameter with index mu.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def parameter_gradient_eval_diag(self, mu, matrices=None):
+    &#39;&#39;&#39;
+    Compute the diagonal of the gradient of the tensor with respect to a
+    given parameter.
+
+    Parameters
+    ----------
+    mu : int
+        Index of the parameter.
+    matrices : list or numpy.array, optional
+        Matrices with which to compute outer_product_eval_diag if alpha is
+        associated with some dimensions. Useful for evaluation the gradient
+        of a tensap.FunctionalTensor. The default is None, indicating
+        identity matrices.
+
+    Returns
+    -------
+    out : tensap.FullTensor
+        The diagonal of the gradient of the tensor with respect to
+        the parameter with index mu.
+
+    &#39;&#39;&#39;
+    rank = len(self.core.data)
+    if mu == self.order + 1:
+        N = self.space[0].shape[0]
+        out = np.ones((N, rank))
+        for nu in range(self.order):
+            out *= self.space[nu]
+        out = tensap.FullTensor(out)
+    else:
+        no_mu = np.setdiff1d(np.arange(1, self.order+1), mu)
+        N = self.space[no_mu[0]-1].shape[0]
+        f_mu = np.ones((N, rank))
+        for nu in no_mu:
+            f_mu *= self.space[nu-1]
+        if matrices is not None:
+            out = tensap.FullTensor(f_mu).outer_product_eval_diag(
+                tensap.FullTensor(matrices[mu-1]), 0, 0)
+        else:
+            out = tensap.FullTensor(f_mu).outer_product_eval_diag(
+                tensap.FullTensor(np.eye(self.shape[mu-1])), [], [], True)
+    return out</code></pre>
+</details>
+</dd>
+<dt id="tensap.tensor_algebra.tensors.canonical_tensor.CanonicalTensor.representation_rank"><code class="name flex">
+<span>def <span class="ident">representation_rank</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Return the representation rank of the tensor.</p>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>int</code></dt>
+<dd>The representation rank of the tensor.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def representation_rank(self):
+    &#39;&#39;&#39;
+    Return the representation rank of the tensor.
+
+    Returns
+    -------
+    int
+        The representation rank of the tensor.
+
+    &#39;&#39;&#39;
+    return self.core.data.size</code></pre>
+</details>
+</dd>
+<dt id="tensap.tensor_algebra.tensors.canonical_tensor.CanonicalTensor.sparse_storage"><code class="name flex">
+<span>def <span class="ident">sparse_storage</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Return the sparse storage complexity of the CanonicalTensor.</p>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>int</code></dt>
+<dd>The sparse storage complexity of the CanonicalTensor.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def sparse_storage(self):
+    &#39;&#39;&#39;
+    Return the sparse storage complexity of the CanonicalTensor.
+
+    Returns
+    -------
+    int
+        The sparse storage complexity of the CanonicalTensor.
+
+    &#39;&#39;&#39;
+    return np.count_nonzero(self.core.data) + \
+        np.sum([np.count_nonzero(x) for x in self.space])</code></pre>
+</details>
+</dd>
+<dt id="tensap.tensor_algebra.tensors.canonical_tensor.CanonicalTensor.storage"><code class="name flex">
+<span>def <span class="ident">storage</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Return the storage complexity of the CanonicalTensor.</p>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>int</code></dt>
+<dd>The storage complexity of the CanonicalTensor.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def storage(self):
+    &#39;&#39;&#39;
+    Return the storage complexity of the CanonicalTensor.
+
+    Returns
+    -------
+    int
+        The storage complexity of the CanonicalTensor.
+
+    &#39;&#39;&#39;
+    return self.core.data.size + np.sum([x.size for x in self.space])</code></pre>
+</details>
+</dd>
+<dt id="tensap.tensor_algebra.tensors.canonical_tensor.CanonicalTensor.tensor_matrix_product"><code class="name flex">
+<span>def <span class="ident">tensor_matrix_product</span></span>(<span>self, matrices, dims=None)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Contract a tensor with matrices.</p>
+<p>The second dimension of the matrix matrices[k] is contracted with the
+k-th dimension of self, with the indices k given in dims (if provided).</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>matrices</code></strong> :&ensp;<code>numpy.ndarray</code> or <code>list</code> of <code>numpy.ndarray</code></dt>
+<dd>The matrices to use in the product.</dd>
+<dt><strong><code>dims</code></strong> :&ensp;<code>list</code> or <code>numpy.ndarray</code>, optional</dt>
+<dd>Indices of the contractions. The default is None, indicating all
+the dimensions.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code><a title="tensap.tensor_algebra.tensors.canonical_tensor.CanonicalTensor" href="#tensap.tensor_algebra.tensors.canonical_tensor.CanonicalTensor">CanonicalTensor</a></code></dt>
+<dd>The tensor after the contractions with the matrices.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def tensor_matrix_product(self, matrices, dims=None):
+    &#39;&#39;&#39;
+    Contract a tensor with matrices.
+
+    The second dimension of the matrix matrices[k] is contracted with the
+    k-th dimension of self, with the indices k given in dims (if provided).
+
+    Parameters
+    ----------
+    matrices : numpy.ndarray or list of numpy.ndarray
+        The matrices to use in the product.
+    dims : list or numpy.ndarray, optional
+        Indices of the contractions. The default is None, indicating all
+        the dimensions.
+
+    Returns
+    -------
+    CanonicalTensor
+        The tensor after the contractions with the matrices.
+
+    &#39;&#39;&#39;
+    if dims is None:
+        assert isinstance(matrices, (list, np.ndarray)), \
+            &#39;matrices should be a list or a numpy.ndarray.&#39;
+        assert len(matrices) == self.order, \
+            &#39;len(matrices) must be self.order.&#39;
+        dims = range(self.order)
+    else:
+        dims = np.atleast_1d(dims)
+        if not isinstance(matrices, list):
+            matrices = [matrices]
+        assert len(matrices) == dims.size, \
+            &#39;len(matrices) must be equal to dims.size.&#39;
+
+    space = list(self.space)
+    for i, dim in enumerate(dims):
+        space[dim] = np.matmul(matrices[i], space[dim])
+    return CanonicalTensor(space, np.array(self.core.data))</code></pre>
+</details>
+</dd>
+<dt id="tensap.tensor_algebra.tensors.canonical_tensor.CanonicalTensor.tensor_matrix_product_eval_diag"><code class="name flex">
+<span>def <span class="ident">tensor_matrix_product_eval_diag</span></span>(<span>self, matrices, dims=None)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Evaluate the diagonal of a tensor obtained by contraction with
+matrices.</p>
+<p>Provides the diagonal of the tensor obtained by contracting the tensor
+with matrices H[k] along dimensions dims(k)+1, for k = 0, &hellip;,
+dims.size-1.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>matrices</code></strong> :&ensp;<code>list</code></dt>
+<dd>The matrices to use in the product.</dd>
+<dt><strong><code>dims</code></strong> :&ensp;<code>list</code> or <code>numpy.ndarray</code>, optional</dt>
+<dd>Indices of the contractions. The default is None, indicating all
+the dimensions.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><strong><code>out</code></strong> :&ensp;<code><a title="tensap.tensor_algebra.tensors.canonical_tensor.CanonicalTensor" href="#tensap.tensor_algebra.tensors.canonical_tensor.CanonicalTensor">CanonicalTensor</a></code> or <code>tensap.FullTensor</code></dt>
+<dd>The diagonal of the contractions of the tensor with the matrices.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def tensor_matrix_product_eval_diag(self, matrices, dims=None):
+    &#39;&#39;&#39;
+    Evaluate the diagonal of a tensor obtained by contraction with
+    matrices.
+
+    Provides the diagonal of the tensor obtained by contracting the tensor
+    with matrices H[k] along dimensions dims(k)+1, for k = 0, ...,
+    dims.size-1.
+
+    Parameters
+    ----------
+    matrices : list
+        The matrices to use in the product.
+    dims : list or numpy.ndarray, optional
+        Indices of the contractions. The default is None, indicating all
+        the dimensions.
+
+    Returns
+    -------
+    out : CanonicalTensor or tensap.FullTensor
+        The diagonal of the contractions of the tensor with the matrices.
+
+    &#39;&#39;&#39;
+    return self.tensor_matrix_product(matrices, dims).eval_diag(dims)</code></pre>
+</details>
+</dd>
+<dt id="tensap.tensor_algebra.tensors.canonical_tensor.CanonicalTensor.tree_based_tensor"><code class="name flex">
+<span>def <span class="ident">tree_based_tensor</span></span>(<span>self, tree, is_active_node=None)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Convert a CanonicalTensor to a tensap.TreeBasedTensor with given
+dimension tree and active nodes.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>tree</code></strong> :&ensp;<code>tensap.DimensionTree</code></dt>
+<dd>The dimension tree.</dd>
+<dt><strong><code>is_active_node</code></strong> :&ensp;<code>list</code> or <code>numpy.ndarray</code>, optional</dt>
+<dd>Booleans indicating if the nodes are active. The default is None,
+settings all the nodes active.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><strong><code>out</code></strong> :&ensp;<code>tensap.TreeBasedTensor</code></dt>
+<dd>The canonical tensor converted into a tree-based tensor.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def tree_based_tensor(self, tree, is_active_node=None):
+    &#39;&#39;&#39;
+    Convert a CanonicalTensor to a tensap.TreeBasedTensor with given
+    dimension tree and active nodes.
+
+    Parameters
+    ----------
+    tree : tensap.DimensionTree
+        The dimension tree.
+    is_active_node : list or numpy.ndarray, optional
+        Booleans indicating if the nodes are active. The default is None,
+        settings all the nodes active.
+
+    Returns
+    -------
+    out : tensap.TreeBasedTensor
+        The canonical tensor converted into a tree-based tensor.
+
+    &#39;&#39;&#39;
+
+    rank = self.core.shape[0]
+    tensors = np.empty(tree.nb_nodes, dtype=object)
+    for nod in np.arange(1, tree.nb_nodes+1):
+        ch = tree.children(nod)
+        if tree.parent(nod) == 0:
+            order = ch.size
+            tensors[nod-1] = tensap.FullTensor.diag(self.core.data, order)
+        else:
+            order = ch.size + 1
+            tensors[nod-1] = tensap.FullTensor.diag(np.ones(rank), order)
+
+    tensors[tree.dim2ind-1] = self.space
+    out = tensap.TreeBasedTensor(tensors, tree)
+    if is_active_node is not None:
+        out = out.inactivate_nodes(
+            np.nonzero(np.logical_not(is_active_node))[0]+1)
+    return out</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+</dl>
+</section>
+</article>
+<nav id="sidebar">
+<h1>Index</h1>
+<div class="toc">
+<ul></ul>
+</div>
+<ul id="index">
+<li><h3>Super-module</h3>
+<ul>
+<li><code><a title="tensap.tensor_algebra.tensors" href="index.html">tensap.tensor_algebra.tensors</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-classes">Classes</a></h3>
+<ul>
+<li>
+<h4><code><a title="tensap.tensor_algebra.tensors.canonical_tensor.CanonicalTensor" href="#tensap.tensor_algebra.tensors.canonical_tensor.CanonicalTensor">CanonicalTensor</a></code></h4>
+<ul class="">
+<li><code><a title="tensap.tensor_algebra.tensors.canonical_tensor.CanonicalTensor.create" href="#tensap.tensor_algebra.tensors.canonical_tensor.CanonicalTensor.create">create</a></code></li>
+<li><code><a title="tensap.tensor_algebra.tensors.canonical_tensor.CanonicalTensor.dot" href="#tensap.tensor_algebra.tensors.canonical_tensor.CanonicalTensor.dot">dot</a></code></li>
+<li><code><a title="tensap.tensor_algebra.tensors.canonical_tensor.CanonicalTensor.eval_diag" href="#tensap.tensor_algebra.tensors.canonical_tensor.CanonicalTensor.eval_diag">eval_diag</a></code></li>
+<li><code><a title="tensap.tensor_algebra.tensors.canonical_tensor.CanonicalTensor.full" href="#tensap.tensor_algebra.tensors.canonical_tensor.CanonicalTensor.full">full</a></code></li>
+<li><code><a title="tensap.tensor_algebra.tensors.canonical_tensor.CanonicalTensor.ndim" href="#tensap.tensor_algebra.tensors.canonical_tensor.CanonicalTensor.ndim">ndim</a></code></li>
+<li><code><a title="tensap.tensor_algebra.tensors.canonical_tensor.CanonicalTensor.norm" href="#tensap.tensor_algebra.tensors.canonical_tensor.CanonicalTensor.norm">norm</a></code></li>
+<li><code><a title="tensap.tensor_algebra.tensors.canonical_tensor.CanonicalTensor.numpy" href="#tensap.tensor_algebra.tensors.canonical_tensor.CanonicalTensor.numpy">numpy</a></code></li>
+<li><code><a title="tensap.tensor_algebra.tensors.canonical_tensor.CanonicalTensor.ones" href="#tensap.tensor_algebra.tensors.canonical_tensor.CanonicalTensor.ones">ones</a></code></li>
+<li><code><a title="tensap.tensor_algebra.tensors.canonical_tensor.CanonicalTensor.orth" href="#tensap.tensor_algebra.tensors.canonical_tensor.CanonicalTensor.orth">orth</a></code></li>
+<li><code><a title="tensap.tensor_algebra.tensors.canonical_tensor.CanonicalTensor.parameter_gradient_eval_diag" href="#tensap.tensor_algebra.tensors.canonical_tensor.CanonicalTensor.parameter_gradient_eval_diag">parameter_gradient_eval_diag</a></code></li>
+<li><code><a title="tensap.tensor_algebra.tensors.canonical_tensor.CanonicalTensor.rand" href="#tensap.tensor_algebra.tensors.canonical_tensor.CanonicalTensor.rand">rand</a></code></li>
+<li><code><a title="tensap.tensor_algebra.tensors.canonical_tensor.CanonicalTensor.randn" href="#tensap.tensor_algebra.tensors.canonical_tensor.CanonicalTensor.randn">randn</a></code></li>
+<li><code><a title="tensap.tensor_algebra.tensors.canonical_tensor.CanonicalTensor.representation_rank" href="#tensap.tensor_algebra.tensors.canonical_tensor.CanonicalTensor.representation_rank">representation_rank</a></code></li>
+<li><code><a title="tensap.tensor_algebra.tensors.canonical_tensor.CanonicalTensor.sparse_storage" href="#tensap.tensor_algebra.tensors.canonical_tensor.CanonicalTensor.sparse_storage">sparse_storage</a></code></li>
+<li><code><a title="tensap.tensor_algebra.tensors.canonical_tensor.CanonicalTensor.storage" href="#tensap.tensor_algebra.tensors.canonical_tensor.CanonicalTensor.storage">storage</a></code></li>
+<li><code><a title="tensap.tensor_algebra.tensors.canonical_tensor.CanonicalTensor.tensor_matrix_product" href="#tensap.tensor_algebra.tensors.canonical_tensor.CanonicalTensor.tensor_matrix_product">tensor_matrix_product</a></code></li>
+<li><code><a title="tensap.tensor_algebra.tensors.canonical_tensor.CanonicalTensor.tensor_matrix_product_eval_diag" href="#tensap.tensor_algebra.tensors.canonical_tensor.CanonicalTensor.tensor_matrix_product_eval_diag">tensor_matrix_product_eval_diag</a></code></li>
+<li><code><a title="tensap.tensor_algebra.tensors.canonical_tensor.CanonicalTensor.tree_based_tensor" href="#tensap.tensor_algebra.tensors.canonical_tensor.CanonicalTensor.tree_based_tensor">tree_based_tensor</a></code></li>
+<li><code><a title="tensap.tensor_algebra.tensors.canonical_tensor.CanonicalTensor.zeros" href="#tensap.tensor_algebra.tensors.canonical_tensor.CanonicalTensor.zeros">zeros</a></code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.8.1</a>.</p>
+</footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad()</script>
+</body>
+</html>

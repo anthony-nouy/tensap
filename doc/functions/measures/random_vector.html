@@ -1,0 +1,1473 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+<meta name="generator" content="pdoc 0.8.1" />
+<title>tensap.functions.measures.random_vector API documentation</title>
+<meta name="description" content="Module random_vector …" />
+<link href='https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.min.css' rel='stylesheet'>
+<link href='https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/8.0.0/sanitize.min.css' rel='stylesheet'>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css" rel="stylesheet">
+<style>.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}.admonition{padding:.1em .5em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>tensap.functions.measures.random_vector</code></h1>
+</header>
+<section id="section-intro">
+<p>Module random_vector.</p>
+<p>Copyright (c) 2020, Anthony Nouy, Erwan Grelier
+This file is part of tensap (tensor approximation package).</p>
+<p>tensap is free software: you can redistribute it and/or modify
+it under the terms of the GNU Lesser General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.</p>
+<p>tensap is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+See the
+GNU Lesser General Public License for more details.</p>
+<p>You should have received a copy of the GNU Lesser General Public License
+along with tensap.
+If not, see <a href="https://www.gnu.org/licenses/">https://www.gnu.org/licenses/</a>.</p>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">&#39;&#39;&#39;
+Module random_vector.
+
+Copyright (c) 2020, Anthony Nouy, Erwan Grelier
+This file is part of tensap (tensor approximation package).
+
+tensap is free software: you can redistribute it and/or modify
+it under the terms of the GNU Lesser General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+tensap is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU Lesser General Public License for more details.
+
+You should have received a copy of the GNU Lesser General Public License
+along with tensap.  If not, see &lt;https://www.gnu.org/licenses/&gt;.
+
+&#39;&#39;&#39;
+
+from copy import deepcopy
+import numpy as np
+import tensap
+
+
+class RandomVector(tensap.ProbabilityMeasure):
+    &#39;&#39;&#39;
+    Class RandomVector.
+
+    Attributes
+    ----------
+    random_variables : numpy.ndarray
+        The RandomVariable objects constituting the random vector.
+    copula : tensap.Copula
+        The copula of the random vector.
+
+    &#39;&#39;&#39;
+
+    def __init__(self, random_variables, order=None,
+                 copula=tensap.IndependentCopula()):
+        if isinstance(random_variables, tensap.RandomVector):
+            random_variables = random_variables.random_variables
+
+        if order is not None and isinstance(random_variables,
+                                            tensap.RandomVariable):
+            random_variables = [random_variables] * order
+
+        self.random_variables = np.atleast_1d(deepcopy(random_variables))
+        self.copula = copula
+
+    def __repr__(self):
+        return (&#39;&lt;{}:{n}&#39; +
+                &#39;{t}random_variables = {},{n}&#39; +
+                &#39;{t}copula = {}&gt;&#39;).format(self.__class__.__name__,
+                                          self.random_variables,
+                                          self.copula.__class__.__name__,
+                                          t=&#39;\t&#39;, n=&#39;\n&#39;)
+
+    def marginal(self, ind):
+        if not isinstance(self.copula, tensap.IndependentCopula):
+            raise NotImplementedError(
+                &#39;Not implemented for non IndenpendentCopula.&#39;)
+        return RandomVector(self.random_variables[ind])
+
+    def ndim(self):
+        return np.sum([x.ndim() for x in self.random_variables])
+
+    @property
+    def size(self):
+        &#39;&#39;&#39;
+        Return the number of random variables constituting the RandomVector.
+
+        Returns
+        -------
+        int
+            The number of random variables constituting the RandomVector.
+
+        &#39;&#39;&#39;
+        return len(self.random_variables)
+
+    def __eq__(self, rv_2):
+        if not (isinstance(self, tensap.RandomVector) and
+                isinstance(rv_2, tensap.RandomVector)):
+            is_equal = False
+        elif len(self.random_variables) != len(rv_2.random_variables):
+            is_equal = False
+        else:
+            is_equal = True
+            for ind in zip(self.random_variables, rv_2.random_variables):
+                is_equal = is_equal and (ind[0] == ind[1])
+        return is_equal
+
+    def __neq__(self, rv_2):
+        return not (self == rv_2)
+
+    def support(self):
+        assert isinstance(self.copula, tensap.IndependentCopula), \
+            &#39;Not implemented for non IndenpendentCopula.&#39;
+        return [x.support() for x in self.random_variables]
+
+    def truncated_support(self):
+        &#39;&#39;&#39;
+        Return the truncated support of the random vector.
+
+        Raises
+        ------
+        NotImplementedError
+            If the copula is not an IndependentCopula.
+
+        Returns
+        -------
+        sup : numpy.ndarray
+            The truncated support of the random vector.
+
+        &#39;&#39;&#39;
+        assert isinstance(self.copula, tensap.IndependentCopula), \
+            &#39;Not implemented for non IndependentCopula.&#39;
+        return [x.truncated_support() for x in self.random_variables]
+
+    def get_standard_random_vector(self):
+        &#39;&#39;&#39;
+        Return the standard RandomVector associated with self.
+
+        Returns
+        -------
+        tensap.RandomVector
+            The standard RandomVector.
+
+        &#39;&#39;&#39;
+        return RandomVector([x.get_standard_random_variable() for x in
+                             self.random_variables])
+
+    def iso_probabilistic_grid(self, n):
+        &#39;&#39;&#39;
+        Generate a grid of (n[0]-1) x ... x (n[d-1]-1) points
+        (x_{i_1}^1, ..., x_{i_d}^d) such that the N = (n[0] x ... x(n[d-1]
+        sets [x_{i_1-1}^1, x_{i_1}^1] x ... x [x_{i_d-1}^1, x_{i_d}^1] have
+        the same probability p = 1/N.
+
+        Parameters
+        ----------
+        n : int
+            The number of points of the grid plus one in each or all the
+            dimensions.
+
+        Returns
+        -------
+        tensap.FullTensorGrid
+            The iso-probabilistic grid.
+
+        &#39;&#39;&#39;
+        assert isinstance(self.copula, tensap.IndependentCopula), \
+            &#39;The method only works for independent copulas.&#39;
+
+        d = self.size
+        if np.size(n) == 1 and n &lt; 1:
+            n = int(np.ceil(n**(-1/d)))
+
+        if np.size(n) != d:
+            n = np.full(d, n)
+
+        b = [x.iso_probabilistic_grid(y) for x, y in zip(self.random_variables,
+                                                         n)]
+        return tensap.FullTensorGrid(b)
+
+    def lhs_random(self, n):
+        &#39;&#39;&#39;
+        Latin Hypercube Sampling of the RandomVector of n points.
+
+        Requires the package pyDOE.
+
+        Parameters
+        ----------
+        n : int
+            Number of points.
+
+        Returns
+        -------
+        list
+            List containing the coordinates of the Latin Hypercube Sampling in
+            each dimension.
+
+        &#39;&#39;&#39;
+        from pyDOE import lhs
+        A = lhs(self.size, samples=n)
+        A = RandomVector(tensap.UniformRandomVariable(0, 1),
+                         self.size).transfer(self, A)
+        return [A[:, k] for k in range(self.size)]
+
+    def pdf(self, x):
+        &#39;&#39;&#39;
+        Compute the probability density function (pdf) of each RandomVariable
+        in self at points x, x must have self.ndim() columns.
+
+        Parameters
+        ----------
+        x : list or numpy.ndarray
+            The points at which the pdf is to be evaluated.
+
+        Returns
+        -------
+        numpy.ndarray
+            The evaluations of the pdf at points x.
+
+        &#39;&#39;&#39;
+        if isinstance(x, list):
+            x = np.hstack([np.reshape(y, [-1, 1]) for y in x])
+
+        x = np.atleast_2d(x)
+
+        p = np.zeros(x.shape)
+        for i in range(self.size):
+            p[:, i] = np.ravel(self.random_variables[i].pdf(x[:, i]))
+        p = np.prod(p, axis=1)
+
+        if not isinstance(self.copula, tensap.IndependentCopula):
+            u = np.zeros(x.shape)
+            for i in range(self.size):
+                u[:, i] = np.ravel(self.random_variables[i].cdf(x[:, i]))
+            p = p * self.copula.pdf(u)
+
+        return p
+
+    def cdf(self, x):
+        &#39;&#39;&#39;
+        Compute the cumulative distribution function (cdf) at points x, x must
+        have self.ndim() columns.
+
+        Parameters
+        ----------
+        x : list or numpy.ndarray
+            The points at which the cdf is to be evaluated.
+
+        Returns
+        -------
+        numpy.ndarray
+            The evaluations of the cdf at points x.
+
+        &#39;&#39;&#39;
+        if isinstance(x, list):
+            x = np.hstack([np.reshape(y, [-1, 1]) for y in x])
+
+        x = np.atleast_2d(x)
+
+        u = np.zeros(x.shape)
+        for i in range(self.size):
+            u[:, i] = np.ravel(self.random_variables[i].cdf(x[:, i]))
+        return self.copula.cdf(u)
+
+    def orthonormal_polynomials(self, max_degree=None):
+        &#39;&#39;&#39;
+        Return the max_degree-1 first orthonormal polynomials associated with
+        the RandomVector.
+
+        Parameters
+        ----------
+        max_degree : int, optional
+            The maximum degree of the returned polynomials. The default is
+            None, choosing the default maximum degree associated with the
+            constructor of the polynomials.
+
+        Returns
+        -------
+        poly : tensap.OrthonormalPolynomials
+            The generated orthonormal polynomials.
+
+        &#39;&#39;&#39;
+        if max_degree is None:
+            return [x.orthonormal_polynomials() for x in self.random_variables]
+
+        if np.isscalar(max_degree):
+            max_degree = np.full(self.size, max_degree)
+
+        assert len(max_degree) == self.size, &#39;Wrong size for max_degree.&#39;
+
+        return [x.orthonormal_polynomials(max_degree[ind]) for
+                ind, x in enumerate(self.random_variables)]
+
+    def mean(self):
+        &#39;&#39;&#39;
+        Return the mean of the random variable.
+
+        Returns
+        -------
+        float
+            The mean of the random variable.
+
+        &#39;&#39;&#39;
+        return np.atleast_1d([x.mean() for x in self.random_variables])
+
+    def std(self):
+        &#39;&#39;&#39;
+        Return the standard deviation of the random variable.
+
+        Returns
+        -------
+        float
+            The standard deviation of the random variable.
+
+        &#39;&#39;&#39;
+        return np.atleast_1d([x.std() for x in self.random_variables])
+
+    def variance(self):
+        &#39;&#39;&#39;
+        Return the variance of the random variable.
+
+        Returns
+        -------
+        float
+            The variance of the random variable.
+
+        &#39;&#39;&#39;
+        return np.atleast_1d([x.variance() for x in self.random_variables])
+
+    def transfer(self, Y, x):
+        &#39;&#39;&#39;
+        Transfer from the tensap.RandomVector X to the tensap.RandomVector Y,
+        at points x.
+
+        Parameters
+        ----------
+        Y : tensap.RandomVector
+            The target RandomVector of the transfer.
+        x : list or numpy.ndarray
+            The input points.
+
+        Returns
+        -------
+        y : numpy.ndarray
+            The transfered points.
+
+        &#39;&#39;&#39;
+        if isinstance(x, list):
+            x = np.hstack([np.reshape(y, [-1, 1]) for y in x])
+
+        x = np.atleast_2d(x)
+
+        if isinstance(Y, tensap.RandomVariable):
+            Y = RandomVector(Y, self.size)
+
+        assert self.size == Y.size, \
+            &#39;The two RandomVector must have the same dimension.&#39;
+
+        y = np.zeros((x.shape[0], Y.size))
+        for i in range(self.size):
+            y[:, i] = np.ravel(self.random_variables[i].transfer(
+                Y.random_variables[i], x[:, i]))
+        return y
+
+    def transpose(self, perm):
+        &#39;&#39;&#39;
+        Transpose (permute) the components of a random vector.
+
+        Parameters
+        ----------
+        perm : list or numpy.array
+            The permutation indices.
+
+        Returns
+        -------
+        tensap.RandomVector
+            The random vector with transposed (permuted) components.
+
+        &#39;&#39;&#39;
+        return RandomVector(self.random_variables[perm])
+
+    def random(self, n=1):
+        &#39;&#39;&#39;
+        Generate n random numbers according to the distribution of the
+        RandomVector.
+
+        Parameters
+        ----------
+        n : int
+            The number of random numbers generated.
+
+        Returns
+        -------
+        numpy.ndarray
+            The generated numbers.
+
+        &#39;&#39;&#39;
+        assert isinstance(self.copula, tensap.IndependentCopula), \
+            &#39;Not implemented for non IndenpendentCopula.&#39;
+        return np.transpose(np.array([x.random(n)
+                                      for x in self.random_variables]))</code></pre>
+</details>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-classes">Classes</h2>
+<dl>
+<dt id="tensap.functions.measures.random_vector.RandomVector"><code class="flex name class">
+<span>class <span class="ident">RandomVector</span></span>
+<span>(</span><span>random_variables, order=None, copula=&lt;tensap.functions.measures.copulas.IndependentCopula object&gt;)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Class RandomVector.</p>
+<h2 id="attributes">Attributes</h2>
+<dl>
+<dt><strong><code>random_variables</code></strong> :&ensp;<code>numpy.ndarray</code></dt>
+<dd>The RandomVariable objects constituting the random vector.</dd>
+<dt><strong><code>copula</code></strong> :&ensp;<code>tensap.Copula</code></dt>
+<dd>The copula of the random vector.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class RandomVector(tensap.ProbabilityMeasure):
+    &#39;&#39;&#39;
+    Class RandomVector.
+
+    Attributes
+    ----------
+    random_variables : numpy.ndarray
+        The RandomVariable objects constituting the random vector.
+    copula : tensap.Copula
+        The copula of the random vector.
+
+    &#39;&#39;&#39;
+
+    def __init__(self, random_variables, order=None,
+                 copula=tensap.IndependentCopula()):
+        if isinstance(random_variables, tensap.RandomVector):
+            random_variables = random_variables.random_variables
+
+        if order is not None and isinstance(random_variables,
+                                            tensap.RandomVariable):
+            random_variables = [random_variables] * order
+
+        self.random_variables = np.atleast_1d(deepcopy(random_variables))
+        self.copula = copula
+
+    def __repr__(self):
+        return (&#39;&lt;{}:{n}&#39; +
+                &#39;{t}random_variables = {},{n}&#39; +
+                &#39;{t}copula = {}&gt;&#39;).format(self.__class__.__name__,
+                                          self.random_variables,
+                                          self.copula.__class__.__name__,
+                                          t=&#39;\t&#39;, n=&#39;\n&#39;)
+
+    def marginal(self, ind):
+        if not isinstance(self.copula, tensap.IndependentCopula):
+            raise NotImplementedError(
+                &#39;Not implemented for non IndenpendentCopula.&#39;)
+        return RandomVector(self.random_variables[ind])
+
+    def ndim(self):
+        return np.sum([x.ndim() for x in self.random_variables])
+
+    @property
+    def size(self):
+        &#39;&#39;&#39;
+        Return the number of random variables constituting the RandomVector.
+
+        Returns
+        -------
+        int
+            The number of random variables constituting the RandomVector.
+
+        &#39;&#39;&#39;
+        return len(self.random_variables)
+
+    def __eq__(self, rv_2):
+        if not (isinstance(self, tensap.RandomVector) and
+                isinstance(rv_2, tensap.RandomVector)):
+            is_equal = False
+        elif len(self.random_variables) != len(rv_2.random_variables):
+            is_equal = False
+        else:
+            is_equal = True
+            for ind in zip(self.random_variables, rv_2.random_variables):
+                is_equal = is_equal and (ind[0] == ind[1])
+        return is_equal
+
+    def __neq__(self, rv_2):
+        return not (self == rv_2)
+
+    def support(self):
+        assert isinstance(self.copula, tensap.IndependentCopula), \
+            &#39;Not implemented for non IndenpendentCopula.&#39;
+        return [x.support() for x in self.random_variables]
+
+    def truncated_support(self):
+        &#39;&#39;&#39;
+        Return the truncated support of the random vector.
+
+        Raises
+        ------
+        NotImplementedError
+            If the copula is not an IndependentCopula.
+
+        Returns
+        -------
+        sup : numpy.ndarray
+            The truncated support of the random vector.
+
+        &#39;&#39;&#39;
+        assert isinstance(self.copula, tensap.IndependentCopula), \
+            &#39;Not implemented for non IndependentCopula.&#39;
+        return [x.truncated_support() for x in self.random_variables]
+
+    def get_standard_random_vector(self):
+        &#39;&#39;&#39;
+        Return the standard RandomVector associated with self.
+
+        Returns
+        -------
+        tensap.RandomVector
+            The standard RandomVector.
+
+        &#39;&#39;&#39;
+        return RandomVector([x.get_standard_random_variable() for x in
+                             self.random_variables])
+
+    def iso_probabilistic_grid(self, n):
+        &#39;&#39;&#39;
+        Generate a grid of (n[0]-1) x ... x (n[d-1]-1) points
+        (x_{i_1}^1, ..., x_{i_d}^d) such that the N = (n[0] x ... x(n[d-1]
+        sets [x_{i_1-1}^1, x_{i_1}^1] x ... x [x_{i_d-1}^1, x_{i_d}^1] have
+        the same probability p = 1/N.
+
+        Parameters
+        ----------
+        n : int
+            The number of points of the grid plus one in each or all the
+            dimensions.
+
+        Returns
+        -------
+        tensap.FullTensorGrid
+            The iso-probabilistic grid.
+
+        &#39;&#39;&#39;
+        assert isinstance(self.copula, tensap.IndependentCopula), \
+            &#39;The method only works for independent copulas.&#39;
+
+        d = self.size
+        if np.size(n) == 1 and n &lt; 1:
+            n = int(np.ceil(n**(-1/d)))
+
+        if np.size(n) != d:
+            n = np.full(d, n)
+
+        b = [x.iso_probabilistic_grid(y) for x, y in zip(self.random_variables,
+                                                         n)]
+        return tensap.FullTensorGrid(b)
+
+    def lhs_random(self, n):
+        &#39;&#39;&#39;
+        Latin Hypercube Sampling of the RandomVector of n points.
+
+        Requires the package pyDOE.
+
+        Parameters
+        ----------
+        n : int
+            Number of points.
+
+        Returns
+        -------
+        list
+            List containing the coordinates of the Latin Hypercube Sampling in
+            each dimension.
+
+        &#39;&#39;&#39;
+        from pyDOE import lhs
+        A = lhs(self.size, samples=n)
+        A = RandomVector(tensap.UniformRandomVariable(0, 1),
+                         self.size).transfer(self, A)
+        return [A[:, k] for k in range(self.size)]
+
+    def pdf(self, x):
+        &#39;&#39;&#39;
+        Compute the probability density function (pdf) of each RandomVariable
+        in self at points x, x must have self.ndim() columns.
+
+        Parameters
+        ----------
+        x : list or numpy.ndarray
+            The points at which the pdf is to be evaluated.
+
+        Returns
+        -------
+        numpy.ndarray
+            The evaluations of the pdf at points x.
+
+        &#39;&#39;&#39;
+        if isinstance(x, list):
+            x = np.hstack([np.reshape(y, [-1, 1]) for y in x])
+
+        x = np.atleast_2d(x)
+
+        p = np.zeros(x.shape)
+        for i in range(self.size):
+            p[:, i] = np.ravel(self.random_variables[i].pdf(x[:, i]))
+        p = np.prod(p, axis=1)
+
+        if not isinstance(self.copula, tensap.IndependentCopula):
+            u = np.zeros(x.shape)
+            for i in range(self.size):
+                u[:, i] = np.ravel(self.random_variables[i].cdf(x[:, i]))
+            p = p * self.copula.pdf(u)
+
+        return p
+
+    def cdf(self, x):
+        &#39;&#39;&#39;
+        Compute the cumulative distribution function (cdf) at points x, x must
+        have self.ndim() columns.
+
+        Parameters
+        ----------
+        x : list or numpy.ndarray
+            The points at which the cdf is to be evaluated.
+
+        Returns
+        -------
+        numpy.ndarray
+            The evaluations of the cdf at points x.
+
+        &#39;&#39;&#39;
+        if isinstance(x, list):
+            x = np.hstack([np.reshape(y, [-1, 1]) for y in x])
+
+        x = np.atleast_2d(x)
+
+        u = np.zeros(x.shape)
+        for i in range(self.size):
+            u[:, i] = np.ravel(self.random_variables[i].cdf(x[:, i]))
+        return self.copula.cdf(u)
+
+    def orthonormal_polynomials(self, max_degree=None):
+        &#39;&#39;&#39;
+        Return the max_degree-1 first orthonormal polynomials associated with
+        the RandomVector.
+
+        Parameters
+        ----------
+        max_degree : int, optional
+            The maximum degree of the returned polynomials. The default is
+            None, choosing the default maximum degree associated with the
+            constructor of the polynomials.
+
+        Returns
+        -------
+        poly : tensap.OrthonormalPolynomials
+            The generated orthonormal polynomials.
+
+        &#39;&#39;&#39;
+        if max_degree is None:
+            return [x.orthonormal_polynomials() for x in self.random_variables]
+
+        if np.isscalar(max_degree):
+            max_degree = np.full(self.size, max_degree)
+
+        assert len(max_degree) == self.size, &#39;Wrong size for max_degree.&#39;
+
+        return [x.orthonormal_polynomials(max_degree[ind]) for
+                ind, x in enumerate(self.random_variables)]
+
+    def mean(self):
+        &#39;&#39;&#39;
+        Return the mean of the random variable.
+
+        Returns
+        -------
+        float
+            The mean of the random variable.
+
+        &#39;&#39;&#39;
+        return np.atleast_1d([x.mean() for x in self.random_variables])
+
+    def std(self):
+        &#39;&#39;&#39;
+        Return the standard deviation of the random variable.
+
+        Returns
+        -------
+        float
+            The standard deviation of the random variable.
+
+        &#39;&#39;&#39;
+        return np.atleast_1d([x.std() for x in self.random_variables])
+
+    def variance(self):
+        &#39;&#39;&#39;
+        Return the variance of the random variable.
+
+        Returns
+        -------
+        float
+            The variance of the random variable.
+
+        &#39;&#39;&#39;
+        return np.atleast_1d([x.variance() for x in self.random_variables])
+
+    def transfer(self, Y, x):
+        &#39;&#39;&#39;
+        Transfer from the tensap.RandomVector X to the tensap.RandomVector Y,
+        at points x.
+
+        Parameters
+        ----------
+        Y : tensap.RandomVector
+            The target RandomVector of the transfer.
+        x : list or numpy.ndarray
+            The input points.
+
+        Returns
+        -------
+        y : numpy.ndarray
+            The transfered points.
+
+        &#39;&#39;&#39;
+        if isinstance(x, list):
+            x = np.hstack([np.reshape(y, [-1, 1]) for y in x])
+
+        x = np.atleast_2d(x)
+
+        if isinstance(Y, tensap.RandomVariable):
+            Y = RandomVector(Y, self.size)
+
+        assert self.size == Y.size, \
+            &#39;The two RandomVector must have the same dimension.&#39;
+
+        y = np.zeros((x.shape[0], Y.size))
+        for i in range(self.size):
+            y[:, i] = np.ravel(self.random_variables[i].transfer(
+                Y.random_variables[i], x[:, i]))
+        return y
+
+    def transpose(self, perm):
+        &#39;&#39;&#39;
+        Transpose (permute) the components of a random vector.
+
+        Parameters
+        ----------
+        perm : list or numpy.array
+            The permutation indices.
+
+        Returns
+        -------
+        tensap.RandomVector
+            The random vector with transposed (permuted) components.
+
+        &#39;&#39;&#39;
+        return RandomVector(self.random_variables[perm])
+
+    def random(self, n=1):
+        &#39;&#39;&#39;
+        Generate n random numbers according to the distribution of the
+        RandomVector.
+
+        Parameters
+        ----------
+        n : int
+            The number of random numbers generated.
+
+        Returns
+        -------
+        numpy.ndarray
+            The generated numbers.
+
+        &#39;&#39;&#39;
+        assert isinstance(self.copula, tensap.IndependentCopula), \
+            &#39;Not implemented for non IndenpendentCopula.&#39;
+        return np.transpose(np.array([x.random(n)
+                                      for x in self.random_variables]))</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="tensap.functions.measures.probability_measure.ProbabilityMeasure" href="probability_measure.html#tensap.functions.measures.probability_measure.ProbabilityMeasure">ProbabilityMeasure</a></li>
+<li><a title="tensap.functions.measures.measure.Measure" href="measure.html#tensap.functions.measures.measure.Measure">Measure</a></li>
+<li>abc.ABC</li>
+</ul>
+<h3>Instance variables</h3>
+<dl>
+<dt id="tensap.functions.measures.random_vector.RandomVector.size"><code class="name">var <span class="ident">size</span></code></dt>
+<dd>
+<div class="desc"><p>Return the number of random variables constituting the RandomVector.</p>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>int</code></dt>
+<dd>The number of random variables constituting the RandomVector.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def size(self):
+    &#39;&#39;&#39;
+    Return the number of random variables constituting the RandomVector.
+
+    Returns
+    -------
+    int
+        The number of random variables constituting the RandomVector.
+
+    &#39;&#39;&#39;
+    return len(self.random_variables)</code></pre>
+</details>
+</dd>
+</dl>
+<h3>Methods</h3>
+<dl>
+<dt id="tensap.functions.measures.random_vector.RandomVector.cdf"><code class="name flex">
+<span>def <span class="ident">cdf</span></span>(<span>self, x)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Compute the cumulative distribution function (cdf) at points x, x must
+have self.ndim() columns.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>x</code></strong> :&ensp;<code>list</code> or <code>numpy.ndarray</code></dt>
+<dd>The points at which the cdf is to be evaluated.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>numpy.ndarray</code></dt>
+<dd>The evaluations of the cdf at points x.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def cdf(self, x):
+    &#39;&#39;&#39;
+    Compute the cumulative distribution function (cdf) at points x, x must
+    have self.ndim() columns.
+
+    Parameters
+    ----------
+    x : list or numpy.ndarray
+        The points at which the cdf is to be evaluated.
+
+    Returns
+    -------
+    numpy.ndarray
+        The evaluations of the cdf at points x.
+
+    &#39;&#39;&#39;
+    if isinstance(x, list):
+        x = np.hstack([np.reshape(y, [-1, 1]) for y in x])
+
+    x = np.atleast_2d(x)
+
+    u = np.zeros(x.shape)
+    for i in range(self.size):
+        u[:, i] = np.ravel(self.random_variables[i].cdf(x[:, i]))
+    return self.copula.cdf(u)</code></pre>
+</details>
+</dd>
+<dt id="tensap.functions.measures.random_vector.RandomVector.get_standard_random_vector"><code class="name flex">
+<span>def <span class="ident">get_standard_random_vector</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Return the standard RandomVector associated with self.</p>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>tensap.RandomVector</code></dt>
+<dd>The standard RandomVector.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_standard_random_vector(self):
+    &#39;&#39;&#39;
+    Return the standard RandomVector associated with self.
+
+    Returns
+    -------
+    tensap.RandomVector
+        The standard RandomVector.
+
+    &#39;&#39;&#39;
+    return RandomVector([x.get_standard_random_variable() for x in
+                         self.random_variables])</code></pre>
+</details>
+</dd>
+<dt id="tensap.functions.measures.random_vector.RandomVector.iso_probabilistic_grid"><code class="name flex">
+<span>def <span class="ident">iso_probabilistic_grid</span></span>(<span>self, n)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Generate a grid of (n[0]-1) x &hellip; x (n[d-1]-1) points
+(x_{i_1}^1, &hellip;, x_{i_d}^d) such that the N = (n[0] x &hellip; x(n[d-1]
+sets [x_{i_1-1}^1, x_{i_1}^1] x &hellip; x [x_{i_d-1}^1, x_{i_d}^1] have
+the same probability p = 1/N.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>n</code></strong> :&ensp;<code>int</code></dt>
+<dd>The number of points of the grid plus one in each or all the
+dimensions.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>tensap.FullTensorGrid</code></dt>
+<dd>The iso-probabilistic grid.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def iso_probabilistic_grid(self, n):
+    &#39;&#39;&#39;
+    Generate a grid of (n[0]-1) x ... x (n[d-1]-1) points
+    (x_{i_1}^1, ..., x_{i_d}^d) such that the N = (n[0] x ... x(n[d-1]
+    sets [x_{i_1-1}^1, x_{i_1}^1] x ... x [x_{i_d-1}^1, x_{i_d}^1] have
+    the same probability p = 1/N.
+
+    Parameters
+    ----------
+    n : int
+        The number of points of the grid plus one in each or all the
+        dimensions.
+
+    Returns
+    -------
+    tensap.FullTensorGrid
+        The iso-probabilistic grid.
+
+    &#39;&#39;&#39;
+    assert isinstance(self.copula, tensap.IndependentCopula), \
+        &#39;The method only works for independent copulas.&#39;
+
+    d = self.size
+    if np.size(n) == 1 and n &lt; 1:
+        n = int(np.ceil(n**(-1/d)))
+
+    if np.size(n) != d:
+        n = np.full(d, n)
+
+    b = [x.iso_probabilistic_grid(y) for x, y in zip(self.random_variables,
+                                                     n)]
+    return tensap.FullTensorGrid(b)</code></pre>
+</details>
+</dd>
+<dt id="tensap.functions.measures.random_vector.RandomVector.lhs_random"><code class="name flex">
+<span>def <span class="ident">lhs_random</span></span>(<span>self, n)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Latin Hypercube Sampling of the RandomVector of n points.</p>
+<p>Requires the package pyDOE.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>n</code></strong> :&ensp;<code>int</code></dt>
+<dd>Number of points.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>list</code></dt>
+<dd>List containing the coordinates of the Latin Hypercube Sampling in
+each dimension.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def lhs_random(self, n):
+    &#39;&#39;&#39;
+    Latin Hypercube Sampling of the RandomVector of n points.
+
+    Requires the package pyDOE.
+
+    Parameters
+    ----------
+    n : int
+        Number of points.
+
+    Returns
+    -------
+    list
+        List containing the coordinates of the Latin Hypercube Sampling in
+        each dimension.
+
+    &#39;&#39;&#39;
+    from pyDOE import lhs
+    A = lhs(self.size, samples=n)
+    A = RandomVector(tensap.UniformRandomVariable(0, 1),
+                     self.size).transfer(self, A)
+    return [A[:, k] for k in range(self.size)]</code></pre>
+</details>
+</dd>
+<dt id="tensap.functions.measures.random_vector.RandomVector.marginal"><code class="name flex">
+<span>def <span class="ident">marginal</span></span>(<span>self, ind)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def marginal(self, ind):
+    if not isinstance(self.copula, tensap.IndependentCopula):
+        raise NotImplementedError(
+            &#39;Not implemented for non IndenpendentCopula.&#39;)
+    return RandomVector(self.random_variables[ind])</code></pre>
+</details>
+</dd>
+<dt id="tensap.functions.measures.random_vector.RandomVector.mean"><code class="name flex">
+<span>def <span class="ident">mean</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Return the mean of the random variable.</p>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>float</code></dt>
+<dd>The mean of the random variable.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def mean(self):
+    &#39;&#39;&#39;
+    Return the mean of the random variable.
+
+    Returns
+    -------
+    float
+        The mean of the random variable.
+
+    &#39;&#39;&#39;
+    return np.atleast_1d([x.mean() for x in self.random_variables])</code></pre>
+</details>
+</dd>
+<dt id="tensap.functions.measures.random_vector.RandomVector.orthonormal_polynomials"><code class="name flex">
+<span>def <span class="ident">orthonormal_polynomials</span></span>(<span>self, max_degree=None)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Return the max_degree-1 first orthonormal polynomials associated with
+the RandomVector.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>max_degree</code></strong> :&ensp;<code>int</code>, optional</dt>
+<dd>The maximum degree of the returned polynomials. The default is
+None, choosing the default maximum degree associated with the
+constructor of the polynomials.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><strong><code>poly</code></strong> :&ensp;<code>tensap.OrthonormalPolynomials</code></dt>
+<dd>The generated orthonormal polynomials.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def orthonormal_polynomials(self, max_degree=None):
+    &#39;&#39;&#39;
+    Return the max_degree-1 first orthonormal polynomials associated with
+    the RandomVector.
+
+    Parameters
+    ----------
+    max_degree : int, optional
+        The maximum degree of the returned polynomials. The default is
+        None, choosing the default maximum degree associated with the
+        constructor of the polynomials.
+
+    Returns
+    -------
+    poly : tensap.OrthonormalPolynomials
+        The generated orthonormal polynomials.
+
+    &#39;&#39;&#39;
+    if max_degree is None:
+        return [x.orthonormal_polynomials() for x in self.random_variables]
+
+    if np.isscalar(max_degree):
+        max_degree = np.full(self.size, max_degree)
+
+    assert len(max_degree) == self.size, &#39;Wrong size for max_degree.&#39;
+
+    return [x.orthonormal_polynomials(max_degree[ind]) for
+            ind, x in enumerate(self.random_variables)]</code></pre>
+</details>
+</dd>
+<dt id="tensap.functions.measures.random_vector.RandomVector.pdf"><code class="name flex">
+<span>def <span class="ident">pdf</span></span>(<span>self, x)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Compute the probability density function (pdf) of each RandomVariable
+in self at points x, x must have self.ndim() columns.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>x</code></strong> :&ensp;<code>list</code> or <code>numpy.ndarray</code></dt>
+<dd>The points at which the pdf is to be evaluated.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>numpy.ndarray</code></dt>
+<dd>The evaluations of the pdf at points x.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def pdf(self, x):
+    &#39;&#39;&#39;
+    Compute the probability density function (pdf) of each RandomVariable
+    in self at points x, x must have self.ndim() columns.
+
+    Parameters
+    ----------
+    x : list or numpy.ndarray
+        The points at which the pdf is to be evaluated.
+
+    Returns
+    -------
+    numpy.ndarray
+        The evaluations of the pdf at points x.
+
+    &#39;&#39;&#39;
+    if isinstance(x, list):
+        x = np.hstack([np.reshape(y, [-1, 1]) for y in x])
+
+    x = np.atleast_2d(x)
+
+    p = np.zeros(x.shape)
+    for i in range(self.size):
+        p[:, i] = np.ravel(self.random_variables[i].pdf(x[:, i]))
+    p = np.prod(p, axis=1)
+
+    if not isinstance(self.copula, tensap.IndependentCopula):
+        u = np.zeros(x.shape)
+        for i in range(self.size):
+            u[:, i] = np.ravel(self.random_variables[i].cdf(x[:, i]))
+        p = p * self.copula.pdf(u)
+
+    return p</code></pre>
+</details>
+</dd>
+<dt id="tensap.functions.measures.random_vector.RandomVector.random"><code class="name flex">
+<span>def <span class="ident">random</span></span>(<span>self, n=1)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Generate n random numbers according to the distribution of the
+RandomVector.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>n</code></strong> :&ensp;<code>int</code></dt>
+<dd>The number of random numbers generated.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>numpy.ndarray</code></dt>
+<dd>The generated numbers.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def random(self, n=1):
+    &#39;&#39;&#39;
+    Generate n random numbers according to the distribution of the
+    RandomVector.
+
+    Parameters
+    ----------
+    n : int
+        The number of random numbers generated.
+
+    Returns
+    -------
+    numpy.ndarray
+        The generated numbers.
+
+    &#39;&#39;&#39;
+    assert isinstance(self.copula, tensap.IndependentCopula), \
+        &#39;Not implemented for non IndenpendentCopula.&#39;
+    return np.transpose(np.array([x.random(n)
+                                  for x in self.random_variables]))</code></pre>
+</details>
+</dd>
+<dt id="tensap.functions.measures.random_vector.RandomVector.std"><code class="name flex">
+<span>def <span class="ident">std</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Return the standard deviation of the random variable.</p>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>float</code></dt>
+<dd>The standard deviation of the random variable.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def std(self):
+    &#39;&#39;&#39;
+    Return the standard deviation of the random variable.
+
+    Returns
+    -------
+    float
+        The standard deviation of the random variable.
+
+    &#39;&#39;&#39;
+    return np.atleast_1d([x.std() for x in self.random_variables])</code></pre>
+</details>
+</dd>
+<dt id="tensap.functions.measures.random_vector.RandomVector.transfer"><code class="name flex">
+<span>def <span class="ident">transfer</span></span>(<span>self, Y, x)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Transfer from the tensap.RandomVector X to the tensap.RandomVector Y,
+at points x.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>Y</code></strong> :&ensp;<code>tensap.RandomVector</code></dt>
+<dd>The target RandomVector of the transfer.</dd>
+<dt><strong><code>x</code></strong> :&ensp;<code>list</code> or <code>numpy.ndarray</code></dt>
+<dd>The input points.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><strong><code>y</code></strong> :&ensp;<code>numpy.ndarray</code></dt>
+<dd>The transfered points.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def transfer(self, Y, x):
+    &#39;&#39;&#39;
+    Transfer from the tensap.RandomVector X to the tensap.RandomVector Y,
+    at points x.
+
+    Parameters
+    ----------
+    Y : tensap.RandomVector
+        The target RandomVector of the transfer.
+    x : list or numpy.ndarray
+        The input points.
+
+    Returns
+    -------
+    y : numpy.ndarray
+        The transfered points.
+
+    &#39;&#39;&#39;
+    if isinstance(x, list):
+        x = np.hstack([np.reshape(y, [-1, 1]) for y in x])
+
+    x = np.atleast_2d(x)
+
+    if isinstance(Y, tensap.RandomVariable):
+        Y = RandomVector(Y, self.size)
+
+    assert self.size == Y.size, \
+        &#39;The two RandomVector must have the same dimension.&#39;
+
+    y = np.zeros((x.shape[0], Y.size))
+    for i in range(self.size):
+        y[:, i] = np.ravel(self.random_variables[i].transfer(
+            Y.random_variables[i], x[:, i]))
+    return y</code></pre>
+</details>
+</dd>
+<dt id="tensap.functions.measures.random_vector.RandomVector.transpose"><code class="name flex">
+<span>def <span class="ident">transpose</span></span>(<span>self, perm)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Transpose (permute) the components of a random vector.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>perm</code></strong> :&ensp;<code>list</code> or <code>numpy.array</code></dt>
+<dd>The permutation indices.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>tensap.RandomVector</code></dt>
+<dd>The random vector with transposed (permuted) components.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def transpose(self, perm):
+    &#39;&#39;&#39;
+    Transpose (permute) the components of a random vector.
+
+    Parameters
+    ----------
+    perm : list or numpy.array
+        The permutation indices.
+
+    Returns
+    -------
+    tensap.RandomVector
+        The random vector with transposed (permuted) components.
+
+    &#39;&#39;&#39;
+    return RandomVector(self.random_variables[perm])</code></pre>
+</details>
+</dd>
+<dt id="tensap.functions.measures.random_vector.RandomVector.truncated_support"><code class="name flex">
+<span>def <span class="ident">truncated_support</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Return the truncated support of the random vector.</p>
+<h2 id="raises">Raises</h2>
+<dl>
+<dt><code>NotImplementedError</code></dt>
+<dd>If the copula is not an IndependentCopula.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><strong><code>sup</code></strong> :&ensp;<code>numpy.ndarray</code></dt>
+<dd>The truncated support of the random vector.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def truncated_support(self):
+    &#39;&#39;&#39;
+    Return the truncated support of the random vector.
+
+    Raises
+    ------
+    NotImplementedError
+        If the copula is not an IndependentCopula.
+
+    Returns
+    -------
+    sup : numpy.ndarray
+        The truncated support of the random vector.
+
+    &#39;&#39;&#39;
+    assert isinstance(self.copula, tensap.IndependentCopula), \
+        &#39;Not implemented for non IndependentCopula.&#39;
+    return [x.truncated_support() for x in self.random_variables]</code></pre>
+</details>
+</dd>
+<dt id="tensap.functions.measures.random_vector.RandomVector.variance"><code class="name flex">
+<span>def <span class="ident">variance</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Return the variance of the random variable.</p>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>float</code></dt>
+<dd>The variance of the random variable.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def variance(self):
+    &#39;&#39;&#39;
+    Return the variance of the random variable.
+
+    Returns
+    -------
+    float
+        The variance of the random variable.
+
+    &#39;&#39;&#39;
+    return np.atleast_1d([x.variance() for x in self.random_variables])</code></pre>
+</details>
+</dd>
+</dl>
+<h3>Inherited members</h3>
+<ul class="hlist">
+<li><code><b><a title="tensap.functions.measures.probability_measure.ProbabilityMeasure" href="probability_measure.html#tensap.functions.measures.probability_measure.ProbabilityMeasure">ProbabilityMeasure</a></b></code>:
+<ul class="hlist">
+<li><code><a title="tensap.functions.measures.probability_measure.ProbabilityMeasure.mass" href="measure.html#tensap.functions.measures.measure.Measure.mass">mass</a></code></li>
+<li><code><a title="tensap.functions.measures.probability_measure.ProbabilityMeasure.ndim" href="measure.html#tensap.functions.measures.measure.Measure.ndim">ndim</a></code></li>
+<li><code><a title="tensap.functions.measures.probability_measure.ProbabilityMeasure.support" href="measure.html#tensap.functions.measures.measure.Measure.support">support</a></code></li>
+</ul>
+</li>
+</ul>
+</dd>
+</dl>
+</section>
+</article>
+<nav id="sidebar">
+<h1>Index</h1>
+<div class="toc">
+<ul></ul>
+</div>
+<ul id="index">
+<li><h3>Super-module</h3>
+<ul>
+<li><code><a title="tensap.functions.measures" href="index.html">tensap.functions.measures</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-classes">Classes</a></h3>
+<ul>
+<li>
+<h4><code><a title="tensap.functions.measures.random_vector.RandomVector" href="#tensap.functions.measures.random_vector.RandomVector">RandomVector</a></code></h4>
+<ul class="">
+<li><code><a title="tensap.functions.measures.random_vector.RandomVector.cdf" href="#tensap.functions.measures.random_vector.RandomVector.cdf">cdf</a></code></li>
+<li><code><a title="tensap.functions.measures.random_vector.RandomVector.get_standard_random_vector" href="#tensap.functions.measures.random_vector.RandomVector.get_standard_random_vector">get_standard_random_vector</a></code></li>
+<li><code><a title="tensap.functions.measures.random_vector.RandomVector.iso_probabilistic_grid" href="#tensap.functions.measures.random_vector.RandomVector.iso_probabilistic_grid">iso_probabilistic_grid</a></code></li>
+<li><code><a title="tensap.functions.measures.random_vector.RandomVector.lhs_random" href="#tensap.functions.measures.random_vector.RandomVector.lhs_random">lhs_random</a></code></li>
+<li><code><a title="tensap.functions.measures.random_vector.RandomVector.marginal" href="#tensap.functions.measures.random_vector.RandomVector.marginal">marginal</a></code></li>
+<li><code><a title="tensap.functions.measures.random_vector.RandomVector.mean" href="#tensap.functions.measures.random_vector.RandomVector.mean">mean</a></code></li>
+<li><code><a title="tensap.functions.measures.random_vector.RandomVector.orthonormal_polynomials" href="#tensap.functions.measures.random_vector.RandomVector.orthonormal_polynomials">orthonormal_polynomials</a></code></li>
+<li><code><a title="tensap.functions.measures.random_vector.RandomVector.pdf" href="#tensap.functions.measures.random_vector.RandomVector.pdf">pdf</a></code></li>
+<li><code><a title="tensap.functions.measures.random_vector.RandomVector.random" href="#tensap.functions.measures.random_vector.RandomVector.random">random</a></code></li>
+<li><code><a title="tensap.functions.measures.random_vector.RandomVector.size" href="#tensap.functions.measures.random_vector.RandomVector.size">size</a></code></li>
+<li><code><a title="tensap.functions.measures.random_vector.RandomVector.std" href="#tensap.functions.measures.random_vector.RandomVector.std">std</a></code></li>
+<li><code><a title="tensap.functions.measures.random_vector.RandomVector.transfer" href="#tensap.functions.measures.random_vector.RandomVector.transfer">transfer</a></code></li>
+<li><code><a title="tensap.functions.measures.random_vector.RandomVector.transpose" href="#tensap.functions.measures.random_vector.RandomVector.transpose">transpose</a></code></li>
+<li><code><a title="tensap.functions.measures.random_vector.RandomVector.truncated_support" href="#tensap.functions.measures.random_vector.RandomVector.truncated_support">truncated_support</a></code></li>
+<li><code><a title="tensap.functions.measures.random_vector.RandomVector.variance" href="#tensap.functions.measures.random_vector.RandomVector.variance">variance</a></code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.8.1</a>.</p>
+</footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad()</script>
+</body>
+</html>

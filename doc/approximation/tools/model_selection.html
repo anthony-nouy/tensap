@@ -1,0 +1,1070 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+<meta name="generator" content="pdoc 0.8.1" />
+<title>tensap.approximation.tools.model_selection API documentation</title>
+<meta name="description" content="Module model_selection …" />
+<link href='https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.min.css' rel='stylesheet'>
+<link href='https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/8.0.0/sanitize.min.css' rel='stylesheet'>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css" rel="stylesheet">
+<style>.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}.admonition{padding:.1em .5em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>tensap.approximation.tools.model_selection</code></h1>
+</header>
+<section id="section-intro">
+<p>Module model_selection.</p>
+<p>Copyright (c) 2020, Anthony Nouy, Erwan Grelier
+This file is part of tensap (tensor approximation package).</p>
+<p>tensap is free software: you can redistribute it and/or modify
+it under the terms of the GNU Lesser General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.</p>
+<p>tensap is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+See the
+GNU Lesser General Public License for more details.</p>
+<p>You should have received a copy of the GNU Lesser General Public License
+along with tensap.
+If not, see <a href="https://www.gnu.org/licenses/">https://www.gnu.org/licenses/</a>.</p>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">&#39;&#39;&#39;
+Module model_selection.
+
+Copyright (c) 2020, Anthony Nouy, Erwan Grelier
+This file is part of tensap (tensor approximation package).
+
+tensap is free software: you can redistribute it and/or modify
+it under the terms of the GNU Lesser General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+tensap is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU Lesser General Public License for more details.
+
+You should have received a copy of the GNU Lesser General Public License
+along with tensap.  If not, see &lt;https://www.gnu.org/licenses/&gt;.
+
+&#39;&#39;&#39;
+
+import numpy as np
+import tensap
+
+
+class ModelSelection:
+    &#39;&#39;&#39;
+    Class ModelSelection.
+
+    Attributes
+    ----------
+    pen_shape : function
+        Function specifying the penalization shape.
+    data : dict
+        Dictionnary containing the data used for the model selection.
+        data[&#39;complexity&#39;] contains the complexities of the models, and
+        data[&#39;empirical_risk&#39;] the associated empirical risk values.
+    gap_factor : int or float
+        Multiplicative factor used in the slope heuristic.
+
+    &#39;&#39;&#39;
+
+    def __init__(self):
+        &#39;&#39;&#39;
+        Constructor for the class ModelSelection.
+
+        Returns
+        -------
+        None.
+
+        &#39;&#39;&#39;
+        self.data = {&#39;complexity&#39;: [],
+                     &#39;empirical_risk&#39;: []}
+        self.pen_shape = lambda x: x
+        self.gap_factor = 2
+
+    def m_lambda(self, lbda):
+        &#39;&#39;&#39;
+        Compute the argument of the minimum of the penalized risk for given
+        values of the penalization factor lbda.
+
+        Parameters
+        ----------
+        lbda : list or numpy.ndarray
+            The values of the penalization factor.
+
+        Returns
+        -------
+        numpy.ndarray
+            The argument of the minimum of the penalized risk for the values of
+            the penalization factor.
+
+        &#39;&#39;&#39;
+        comp = np.array(self.data[&#39;complexity&#39;])
+        risk = np.array(self.data[&#39;empirical_risk&#39;])
+        return np.array([np.argmin(risk + l * self.pen_shape(comp)) for
+                         l in np.atleast_1d(lbda)])
+
+    def lambda_path(self):
+        &#39;&#39;&#39;
+        Return the path of possible values of lambda and associated arguments
+        of the minimum of the penalized risk.
+
+
+        Returns
+        -------
+        numpy.ndarray
+            The path of possible values of lambda.
+        numpy.ndarray
+            The path of the arguments of the minimum of the penalized risk
+            associated with the path of possible values of lambda.
+
+        &#39;&#39;&#39;
+        comp = np.array(self.data[&#39;complexity&#39;])
+        risk = np.array(self.data[&#39;empirical_risk&#39;])
+
+        path = []
+        m_path = []
+        lambda_0 = 0
+        lambda_current = 0
+        ind = np.argmin(risk)
+        ok = True
+
+        while ok:
+            with np.errstate(all=&#39;ignore&#39;):
+                lambda_current = (risk - risk[ind]) / \
+                    (self.pen_shape(comp[ind]) - self.pen_shape(comp))
+                lambda_current[lambda_current &lt;= lambda_0] = np.nan
+                lambda_current[lambda_current == np.inf] = np.nan
+
+            ok = not np.all(np.isnan(lambda_current))
+            if ok:
+                lambda_0 = np.nanmin(lambda_current)
+                if not np.isnan(lambda_0):
+                    ind = np.nanargmin(lambda_current)
+                    path.append(lambda_0)
+                    m_path.append(ind)
+
+        if path == []:
+            path = 0
+            m_path = 0
+        else:
+            path = np.atleast_1d(path)
+            m_path = np.atleast_1d(m_path)
+            ind_min = np.argmin(risk)
+            path = np.concatenate(([path[0]/2], path, [path[-1]*2]))
+            m_path = np.concatenate(([ind_min], m_path, [m_path[-1]]))
+        return np.array(path), np.array(m_path)
+
+    def slope_heuristic(self, lambda_path=None, m_path=None):
+        &#39;&#39;&#39;
+        Apply the slope heuristic to the path of possible values of lambda to
+        compute its optimal value lambda_hat and associated argument of the
+        minimum of the penalized risk m_hat.
+
+        Parameters
+        ----------
+        lambda_path : list or numpy.ndarray, optional
+            The path of possible values of lambda. The default is None,
+            indicating to compute it using the method lambda_path.
+        m_path : list or numpy.ndarray, optional
+            The path of the arguments of the minimum of the penalized risk
+            associated with the path of possible values of lambda. The default
+            is None, indicating to compute it using the method lambda_path.
+
+        Returns
+        -------
+        lambda_hat : float
+            The value of lambda determined using the slope heuristic.
+        m_hat : int
+            The model number associated with the value of lambda determined
+            using the slope heuristic.
+        lambda_path : numpy.ndarray
+            The path of possible values of lambda.
+        m_path : numpy.ndarray
+            The path of the arguments of the minimum of the penalized risk
+            associated with the path of possible values of lambda.
+
+        &#39;&#39;&#39;
+        comp = np.array(self.data[&#39;complexity&#39;])
+
+        # If all the complexities are equal, choose the first model
+        if np.all(np.diff(comp) == 0):
+            lambda_hat = 0
+            m_hat = 0
+            lambda_path = lambda_hat
+            m_path = m_hat
+            return lambda_hat, m_hat, lambda_path, m_path
+
+        if lambda_path is None and m_path is None:
+            lambda_path, m_path = self.lambda_path()
+        l_mid = (lambda_path[:-1] + lambda_path[1:]) / 2
+        gaps = comp[self.m_lambda(l_mid[:-1])] - comp[self.m_lambda(l_mid[1:])]
+        ind = np.argmax(gaps)
+        lambda_hat = self.gap_factor * lambda_path[ind+1]
+        m_hat = self.m_lambda(lambda_hat)
+        return lambda_hat, m_hat, lambda_path, m_path
+
+    @staticmethod
+    def complexity(x, *args, **kwargs):
+        &#39;&#39;&#39;
+        Return the complexity associated to the input argument&#39;s type.
+
+        See also complexity_functional_basis_array,
+        complexity_tree_based_tensor.
+
+        Parameters
+        ----------
+        x : list or numpy.ndarray or tensap.FunctionalBasisArray or
+        tensap.FunctionalTensor or tensap.TreeBasedTensor
+            The object(s) of which the complexity is computed.
+        *args, **kwargs : tuples
+            Additional parameters for the methods
+            complexity_functional_basis_array and complexity_tree_based_tensor.
+
+        Raises
+        ------
+        ValueError
+            If the argument x is not of correct type.
+
+        Returns
+        -------
+        float or list
+            The complexity(ies) associated with the object(s).
+
+        &#39;&#39;&#39;
+        if isinstance(x, (list, np.ndarray)):
+            return [ModelSelection.complexity(y, *args, **kwargs) for y in x]
+        if isinstance(x, tensap.FunctionalBasisArray):
+            return np.size(x.data)
+        if isinstance(x, tensap.FunctionalTensor):
+            return ModelSelection.complexity(x.tensor, *args, **kwargs)
+        if isinstance(x, tensap.TreeBasedTensor):
+            return ModelSelection.complexity_tree_based_tensor(x, *args,
+                                                               **kwargs)
+        raise ValueError(&#39;Wrong argument.&#39;)
+
+    @staticmethod
+    def complexity_functional_basis_array(x, fun=None):
+        &#39;&#39;&#39;
+        Return the complexity associated with a FunctionalBasisArray.
+
+        Parameters
+        ----------
+        x : tensap.FunctionalBasisArray
+            The FunctionalBasisArray of which the complexity is computed.
+        fun : str, optional
+            Name of the function applied to the array to extract the storage
+            complexity. The default is &#39;storage&#39;.
+
+        Returns
+        -------
+        float
+            The complexity associated with the FunctionalBasisArray.
+
+        &#39;&#39;&#39;
+        if fun is None:
+            fun = &#39;storage&#39;
+        return eval(&#39;x.&#39; + fun + &#39;()&#39;)
+
+    @staticmethod
+    def complexity_tree_based_tensor(x, fun=None, c_type=&#39;standard&#39;):
+        &#39;&#39;&#39;
+        Return the complexity associated with the TreeBasedTensor.
+
+        Parameters
+        ----------
+        x : tensap.TreeBasedTensor
+            The TreeBasedTensor of which the complexity is computed.
+        fun : str, optional
+            Name of the function applied to the array to extract the storage
+            complexity. The default is &#39;storage&#39;. Can also be &#39;sparse_storage&#39;
+            or &#39;sparse_leaves_storage&#39; for instance.
+        c_type : str, optional
+            The complexity type. The default is &#39;standard&#39;. Can also be
+            &#39;stiefel&#39; or &#39;grassman&#39;.
+
+        Raises
+        ------
+        ValueError
+            If the complexity type is neither &#39;standard&#39; nor &#39;stiefel&#39; nor
+            &#39;grassman&#39;.
+
+        Returns
+        -------
+        float or list
+            The complexity(ies) associated with the TreeBasedTensor(s).
+
+        &#39;&#39;&#39;
+        if fun is None:
+            fun = &#39;storage&#39;
+
+        if isinstance(x, (list, np.ndarray)):
+            return ModelSelection.complexity(x, fun, c_type)
+        if isinstance(x, tensap.FunctionalTensor):
+            return ModelSelection.complexity(x.tensor, fun, c_type)
+        assert isinstance(x, tensap.TreeBasedTensor), \
+            &#39;The first argument should be a TreeBasedTensor.&#39;
+
+        if c_type == &#39;standard&#39;:
+            comp = eval(&#39;x.&#39; + fun + &#39;()&#39;)
+        elif c_type == &#39;grassman&#39;:
+            comp = eval(&#39;x.&#39; + fun + &#39;()&#39;) - np.sum(x.ranks**2)
+        elif c_type == &#39;stiefel&#39;:
+            comp = eval(&#39;x.&#39; + fun + &#39;()&#39;) - np.sum(x.ranks*(x.ranks+1)/2)
+        else:
+            raise ValueError(&#39;Wrong argument.&#39;)
+        return comp</code></pre>
+</details>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-classes">Classes</h2>
+<dl>
+<dt id="tensap.approximation.tools.model_selection.ModelSelection"><code class="flex name class">
+<span>class <span class="ident">ModelSelection</span></span>
+</code></dt>
+<dd>
+<div class="desc"><p>Class ModelSelection.</p>
+<h2 id="attributes">Attributes</h2>
+<dl>
+<dt><strong><code>pen_shape</code></strong> :&ensp;<code>function</code></dt>
+<dd>Function specifying the penalization shape.</dd>
+<dt><strong><code>data</code></strong> :&ensp;<code>dict</code></dt>
+<dd>Dictionnary containing the data used for the model selection.
+data['complexity'] contains the complexities of the models, and
+data['empirical_risk'] the associated empirical risk values.</dd>
+<dt><strong><code>gap_factor</code></strong> :&ensp;<code>int</code> or <code>float</code></dt>
+<dd>Multiplicative factor used in the slope heuristic.</dd>
+</dl>
+<p>Constructor for the class ModelSelection.</p>
+<h2 id="returns">Returns</h2>
+<p>None.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class ModelSelection:
+    &#39;&#39;&#39;
+    Class ModelSelection.
+
+    Attributes
+    ----------
+    pen_shape : function
+        Function specifying the penalization shape.
+    data : dict
+        Dictionnary containing the data used for the model selection.
+        data[&#39;complexity&#39;] contains the complexities of the models, and
+        data[&#39;empirical_risk&#39;] the associated empirical risk values.
+    gap_factor : int or float
+        Multiplicative factor used in the slope heuristic.
+
+    &#39;&#39;&#39;
+
+    def __init__(self):
+        &#39;&#39;&#39;
+        Constructor for the class ModelSelection.
+
+        Returns
+        -------
+        None.
+
+        &#39;&#39;&#39;
+        self.data = {&#39;complexity&#39;: [],
+                     &#39;empirical_risk&#39;: []}
+        self.pen_shape = lambda x: x
+        self.gap_factor = 2
+
+    def m_lambda(self, lbda):
+        &#39;&#39;&#39;
+        Compute the argument of the minimum of the penalized risk for given
+        values of the penalization factor lbda.
+
+        Parameters
+        ----------
+        lbda : list or numpy.ndarray
+            The values of the penalization factor.
+
+        Returns
+        -------
+        numpy.ndarray
+            The argument of the minimum of the penalized risk for the values of
+            the penalization factor.
+
+        &#39;&#39;&#39;
+        comp = np.array(self.data[&#39;complexity&#39;])
+        risk = np.array(self.data[&#39;empirical_risk&#39;])
+        return np.array([np.argmin(risk + l * self.pen_shape(comp)) for
+                         l in np.atleast_1d(lbda)])
+
+    def lambda_path(self):
+        &#39;&#39;&#39;
+        Return the path of possible values of lambda and associated arguments
+        of the minimum of the penalized risk.
+
+
+        Returns
+        -------
+        numpy.ndarray
+            The path of possible values of lambda.
+        numpy.ndarray
+            The path of the arguments of the minimum of the penalized risk
+            associated with the path of possible values of lambda.
+
+        &#39;&#39;&#39;
+        comp = np.array(self.data[&#39;complexity&#39;])
+        risk = np.array(self.data[&#39;empirical_risk&#39;])
+
+        path = []
+        m_path = []
+        lambda_0 = 0
+        lambda_current = 0
+        ind = np.argmin(risk)
+        ok = True
+
+        while ok:
+            with np.errstate(all=&#39;ignore&#39;):
+                lambda_current = (risk - risk[ind]) / \
+                    (self.pen_shape(comp[ind]) - self.pen_shape(comp))
+                lambda_current[lambda_current &lt;= lambda_0] = np.nan
+                lambda_current[lambda_current == np.inf] = np.nan
+
+            ok = not np.all(np.isnan(lambda_current))
+            if ok:
+                lambda_0 = np.nanmin(lambda_current)
+                if not np.isnan(lambda_0):
+                    ind = np.nanargmin(lambda_current)
+                    path.append(lambda_0)
+                    m_path.append(ind)
+
+        if path == []:
+            path = 0
+            m_path = 0
+        else:
+            path = np.atleast_1d(path)
+            m_path = np.atleast_1d(m_path)
+            ind_min = np.argmin(risk)
+            path = np.concatenate(([path[0]/2], path, [path[-1]*2]))
+            m_path = np.concatenate(([ind_min], m_path, [m_path[-1]]))
+        return np.array(path), np.array(m_path)
+
+    def slope_heuristic(self, lambda_path=None, m_path=None):
+        &#39;&#39;&#39;
+        Apply the slope heuristic to the path of possible values of lambda to
+        compute its optimal value lambda_hat and associated argument of the
+        minimum of the penalized risk m_hat.
+
+        Parameters
+        ----------
+        lambda_path : list or numpy.ndarray, optional
+            The path of possible values of lambda. The default is None,
+            indicating to compute it using the method lambda_path.
+        m_path : list or numpy.ndarray, optional
+            The path of the arguments of the minimum of the penalized risk
+            associated with the path of possible values of lambda. The default
+            is None, indicating to compute it using the method lambda_path.
+
+        Returns
+        -------
+        lambda_hat : float
+            The value of lambda determined using the slope heuristic.
+        m_hat : int
+            The model number associated with the value of lambda determined
+            using the slope heuristic.
+        lambda_path : numpy.ndarray
+            The path of possible values of lambda.
+        m_path : numpy.ndarray
+            The path of the arguments of the minimum of the penalized risk
+            associated with the path of possible values of lambda.
+
+        &#39;&#39;&#39;
+        comp = np.array(self.data[&#39;complexity&#39;])
+
+        # If all the complexities are equal, choose the first model
+        if np.all(np.diff(comp) == 0):
+            lambda_hat = 0
+            m_hat = 0
+            lambda_path = lambda_hat
+            m_path = m_hat
+            return lambda_hat, m_hat, lambda_path, m_path
+
+        if lambda_path is None and m_path is None:
+            lambda_path, m_path = self.lambda_path()
+        l_mid = (lambda_path[:-1] + lambda_path[1:]) / 2
+        gaps = comp[self.m_lambda(l_mid[:-1])] - comp[self.m_lambda(l_mid[1:])]
+        ind = np.argmax(gaps)
+        lambda_hat = self.gap_factor * lambda_path[ind+1]
+        m_hat = self.m_lambda(lambda_hat)
+        return lambda_hat, m_hat, lambda_path, m_path
+
+    @staticmethod
+    def complexity(x, *args, **kwargs):
+        &#39;&#39;&#39;
+        Return the complexity associated to the input argument&#39;s type.
+
+        See also complexity_functional_basis_array,
+        complexity_tree_based_tensor.
+
+        Parameters
+        ----------
+        x : list or numpy.ndarray or tensap.FunctionalBasisArray or
+        tensap.FunctionalTensor or tensap.TreeBasedTensor
+            The object(s) of which the complexity is computed.
+        *args, **kwargs : tuples
+            Additional parameters for the methods
+            complexity_functional_basis_array and complexity_tree_based_tensor.
+
+        Raises
+        ------
+        ValueError
+            If the argument x is not of correct type.
+
+        Returns
+        -------
+        float or list
+            The complexity(ies) associated with the object(s).
+
+        &#39;&#39;&#39;
+        if isinstance(x, (list, np.ndarray)):
+            return [ModelSelection.complexity(y, *args, **kwargs) for y in x]
+        if isinstance(x, tensap.FunctionalBasisArray):
+            return np.size(x.data)
+        if isinstance(x, tensap.FunctionalTensor):
+            return ModelSelection.complexity(x.tensor, *args, **kwargs)
+        if isinstance(x, tensap.TreeBasedTensor):
+            return ModelSelection.complexity_tree_based_tensor(x, *args,
+                                                               **kwargs)
+        raise ValueError(&#39;Wrong argument.&#39;)
+
+    @staticmethod
+    def complexity_functional_basis_array(x, fun=None):
+        &#39;&#39;&#39;
+        Return the complexity associated with a FunctionalBasisArray.
+
+        Parameters
+        ----------
+        x : tensap.FunctionalBasisArray
+            The FunctionalBasisArray of which the complexity is computed.
+        fun : str, optional
+            Name of the function applied to the array to extract the storage
+            complexity. The default is &#39;storage&#39;.
+
+        Returns
+        -------
+        float
+            The complexity associated with the FunctionalBasisArray.
+
+        &#39;&#39;&#39;
+        if fun is None:
+            fun = &#39;storage&#39;
+        return eval(&#39;x.&#39; + fun + &#39;()&#39;)
+
+    @staticmethod
+    def complexity_tree_based_tensor(x, fun=None, c_type=&#39;standard&#39;):
+        &#39;&#39;&#39;
+        Return the complexity associated with the TreeBasedTensor.
+
+        Parameters
+        ----------
+        x : tensap.TreeBasedTensor
+            The TreeBasedTensor of which the complexity is computed.
+        fun : str, optional
+            Name of the function applied to the array to extract the storage
+            complexity. The default is &#39;storage&#39;. Can also be &#39;sparse_storage&#39;
+            or &#39;sparse_leaves_storage&#39; for instance.
+        c_type : str, optional
+            The complexity type. The default is &#39;standard&#39;. Can also be
+            &#39;stiefel&#39; or &#39;grassman&#39;.
+
+        Raises
+        ------
+        ValueError
+            If the complexity type is neither &#39;standard&#39; nor &#39;stiefel&#39; nor
+            &#39;grassman&#39;.
+
+        Returns
+        -------
+        float or list
+            The complexity(ies) associated with the TreeBasedTensor(s).
+
+        &#39;&#39;&#39;
+        if fun is None:
+            fun = &#39;storage&#39;
+
+        if isinstance(x, (list, np.ndarray)):
+            return ModelSelection.complexity(x, fun, c_type)
+        if isinstance(x, tensap.FunctionalTensor):
+            return ModelSelection.complexity(x.tensor, fun, c_type)
+        assert isinstance(x, tensap.TreeBasedTensor), \
+            &#39;The first argument should be a TreeBasedTensor.&#39;
+
+        if c_type == &#39;standard&#39;:
+            comp = eval(&#39;x.&#39; + fun + &#39;()&#39;)
+        elif c_type == &#39;grassman&#39;:
+            comp = eval(&#39;x.&#39; + fun + &#39;()&#39;) - np.sum(x.ranks**2)
+        elif c_type == &#39;stiefel&#39;:
+            comp = eval(&#39;x.&#39; + fun + &#39;()&#39;) - np.sum(x.ranks*(x.ranks+1)/2)
+        else:
+            raise ValueError(&#39;Wrong argument.&#39;)
+        return comp</code></pre>
+</details>
+<h3>Static methods</h3>
+<dl>
+<dt id="tensap.approximation.tools.model_selection.ModelSelection.complexity"><code class="name flex">
+<span>def <span class="ident">complexity</span></span>(<span>x, *args, **kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Return the complexity associated to the input argument's type.</p>
+<p>See also complexity_functional_basis_array,
+complexity_tree_based_tensor.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>x</code></strong> :&ensp;<code>list</code> or <code>numpy.ndarray</code> or <code>tensap.FunctionalBasisArray or</code></dt>
+<dd>&nbsp;</dd>
+<dt>tensap.FunctionalTensor or tensap.TreeBasedTensor</dt>
+<dt>The object(s) of which the complexity is computed.</dt>
+<dt><strong><code>*args</code></strong>, <strong><code>**kwargs</code></strong> :&ensp;<code>tuples</code></dt>
+<dd>Additional parameters for the methods
+complexity_functional_basis_array and complexity_tree_based_tensor.</dd>
+</dl>
+<h2 id="raises">Raises</h2>
+<dl>
+<dt><code>ValueError</code></dt>
+<dd>If the argument x is not of correct type.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>float</code> or <code>list</code></dt>
+<dd>The complexity(ies) associated with the object(s).</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@staticmethod
+def complexity(x, *args, **kwargs):
+    &#39;&#39;&#39;
+    Return the complexity associated to the input argument&#39;s type.
+
+    See also complexity_functional_basis_array,
+    complexity_tree_based_tensor.
+
+    Parameters
+    ----------
+    x : list or numpy.ndarray or tensap.FunctionalBasisArray or
+    tensap.FunctionalTensor or tensap.TreeBasedTensor
+        The object(s) of which the complexity is computed.
+    *args, **kwargs : tuples
+        Additional parameters for the methods
+        complexity_functional_basis_array and complexity_tree_based_tensor.
+
+    Raises
+    ------
+    ValueError
+        If the argument x is not of correct type.
+
+    Returns
+    -------
+    float or list
+        The complexity(ies) associated with the object(s).
+
+    &#39;&#39;&#39;
+    if isinstance(x, (list, np.ndarray)):
+        return [ModelSelection.complexity(y, *args, **kwargs) for y in x]
+    if isinstance(x, tensap.FunctionalBasisArray):
+        return np.size(x.data)
+    if isinstance(x, tensap.FunctionalTensor):
+        return ModelSelection.complexity(x.tensor, *args, **kwargs)
+    if isinstance(x, tensap.TreeBasedTensor):
+        return ModelSelection.complexity_tree_based_tensor(x, *args,
+                                                           **kwargs)
+    raise ValueError(&#39;Wrong argument.&#39;)</code></pre>
+</details>
+</dd>
+<dt id="tensap.approximation.tools.model_selection.ModelSelection.complexity_functional_basis_array"><code class="name flex">
+<span>def <span class="ident">complexity_functional_basis_array</span></span>(<span>x, fun=None)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Return the complexity associated with a FunctionalBasisArray.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>x</code></strong> :&ensp;<code>tensap.FunctionalBasisArray</code></dt>
+<dd>The FunctionalBasisArray of which the complexity is computed.</dd>
+<dt><strong><code>fun</code></strong> :&ensp;<code>str</code>, optional</dt>
+<dd>Name of the function applied to the array to extract the storage
+complexity. The default is 'storage'.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>float</code></dt>
+<dd>The complexity associated with the FunctionalBasisArray.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@staticmethod
+def complexity_functional_basis_array(x, fun=None):
+    &#39;&#39;&#39;
+    Return the complexity associated with a FunctionalBasisArray.
+
+    Parameters
+    ----------
+    x : tensap.FunctionalBasisArray
+        The FunctionalBasisArray of which the complexity is computed.
+    fun : str, optional
+        Name of the function applied to the array to extract the storage
+        complexity. The default is &#39;storage&#39;.
+
+    Returns
+    -------
+    float
+        The complexity associated with the FunctionalBasisArray.
+
+    &#39;&#39;&#39;
+    if fun is None:
+        fun = &#39;storage&#39;
+    return eval(&#39;x.&#39; + fun + &#39;()&#39;)</code></pre>
+</details>
+</dd>
+<dt id="tensap.approximation.tools.model_selection.ModelSelection.complexity_tree_based_tensor"><code class="name flex">
+<span>def <span class="ident">complexity_tree_based_tensor</span></span>(<span>x, fun=None, c_type='standard')</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Return the complexity associated with the TreeBasedTensor.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>x</code></strong> :&ensp;<code>tensap.TreeBasedTensor</code></dt>
+<dd>The TreeBasedTensor of which the complexity is computed.</dd>
+<dt><strong><code>fun</code></strong> :&ensp;<code>str</code>, optional</dt>
+<dd>Name of the function applied to the array to extract the storage
+complexity. The default is 'storage'. Can also be 'sparse_storage'
+or 'sparse_leaves_storage' for instance.</dd>
+<dt><strong><code>c_type</code></strong> :&ensp;<code>str</code>, optional</dt>
+<dd>The complexity type. The default is 'standard'. Can also be
+'stiefel' or 'grassman'.</dd>
+</dl>
+<h2 id="raises">Raises</h2>
+<dl>
+<dt><code>ValueError</code></dt>
+<dd>If the complexity type is neither 'standard' nor 'stiefel' nor
+'grassman'.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>float</code> or <code>list</code></dt>
+<dd>The complexity(ies) associated with the TreeBasedTensor(s).</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@staticmethod
+def complexity_tree_based_tensor(x, fun=None, c_type=&#39;standard&#39;):
+    &#39;&#39;&#39;
+    Return the complexity associated with the TreeBasedTensor.
+
+    Parameters
+    ----------
+    x : tensap.TreeBasedTensor
+        The TreeBasedTensor of which the complexity is computed.
+    fun : str, optional
+        Name of the function applied to the array to extract the storage
+        complexity. The default is &#39;storage&#39;. Can also be &#39;sparse_storage&#39;
+        or &#39;sparse_leaves_storage&#39; for instance.
+    c_type : str, optional
+        The complexity type. The default is &#39;standard&#39;. Can also be
+        &#39;stiefel&#39; or &#39;grassman&#39;.
+
+    Raises
+    ------
+    ValueError
+        If the complexity type is neither &#39;standard&#39; nor &#39;stiefel&#39; nor
+        &#39;grassman&#39;.
+
+    Returns
+    -------
+    float or list
+        The complexity(ies) associated with the TreeBasedTensor(s).
+
+    &#39;&#39;&#39;
+    if fun is None:
+        fun = &#39;storage&#39;
+
+    if isinstance(x, (list, np.ndarray)):
+        return ModelSelection.complexity(x, fun, c_type)
+    if isinstance(x, tensap.FunctionalTensor):
+        return ModelSelection.complexity(x.tensor, fun, c_type)
+    assert isinstance(x, tensap.TreeBasedTensor), \
+        &#39;The first argument should be a TreeBasedTensor.&#39;
+
+    if c_type == &#39;standard&#39;:
+        comp = eval(&#39;x.&#39; + fun + &#39;()&#39;)
+    elif c_type == &#39;grassman&#39;:
+        comp = eval(&#39;x.&#39; + fun + &#39;()&#39;) - np.sum(x.ranks**2)
+    elif c_type == &#39;stiefel&#39;:
+        comp = eval(&#39;x.&#39; + fun + &#39;()&#39;) - np.sum(x.ranks*(x.ranks+1)/2)
+    else:
+        raise ValueError(&#39;Wrong argument.&#39;)
+    return comp</code></pre>
+</details>
+</dd>
+</dl>
+<h3>Methods</h3>
+<dl>
+<dt id="tensap.approximation.tools.model_selection.ModelSelection.lambda_path"><code class="name flex">
+<span>def <span class="ident">lambda_path</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Return the path of possible values of lambda and associated arguments
+of the minimum of the penalized risk.</p>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>numpy.ndarray</code></dt>
+<dd>The path of possible values of lambda.</dd>
+<dt><code>numpy.ndarray</code></dt>
+<dd>The path of the arguments of the minimum of the penalized risk
+associated with the path of possible values of lambda.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def lambda_path(self):
+    &#39;&#39;&#39;
+    Return the path of possible values of lambda and associated arguments
+    of the minimum of the penalized risk.
+
+
+    Returns
+    -------
+    numpy.ndarray
+        The path of possible values of lambda.
+    numpy.ndarray
+        The path of the arguments of the minimum of the penalized risk
+        associated with the path of possible values of lambda.
+
+    &#39;&#39;&#39;
+    comp = np.array(self.data[&#39;complexity&#39;])
+    risk = np.array(self.data[&#39;empirical_risk&#39;])
+
+    path = []
+    m_path = []
+    lambda_0 = 0
+    lambda_current = 0
+    ind = np.argmin(risk)
+    ok = True
+
+    while ok:
+        with np.errstate(all=&#39;ignore&#39;):
+            lambda_current = (risk - risk[ind]) / \
+                (self.pen_shape(comp[ind]) - self.pen_shape(comp))
+            lambda_current[lambda_current &lt;= lambda_0] = np.nan
+            lambda_current[lambda_current == np.inf] = np.nan
+
+        ok = not np.all(np.isnan(lambda_current))
+        if ok:
+            lambda_0 = np.nanmin(lambda_current)
+            if not np.isnan(lambda_0):
+                ind = np.nanargmin(lambda_current)
+                path.append(lambda_0)
+                m_path.append(ind)
+
+    if path == []:
+        path = 0
+        m_path = 0
+    else:
+        path = np.atleast_1d(path)
+        m_path = np.atleast_1d(m_path)
+        ind_min = np.argmin(risk)
+        path = np.concatenate(([path[0]/2], path, [path[-1]*2]))
+        m_path = np.concatenate(([ind_min], m_path, [m_path[-1]]))
+    return np.array(path), np.array(m_path)</code></pre>
+</details>
+</dd>
+<dt id="tensap.approximation.tools.model_selection.ModelSelection.m_lambda"><code class="name flex">
+<span>def <span class="ident">m_lambda</span></span>(<span>self, lbda)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Compute the argument of the minimum of the penalized risk for given
+values of the penalization factor lbda.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>lbda</code></strong> :&ensp;<code>list</code> or <code>numpy.ndarray</code></dt>
+<dd>The values of the penalization factor.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>numpy.ndarray</code></dt>
+<dd>The argument of the minimum of the penalized risk for the values of
+the penalization factor.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def m_lambda(self, lbda):
+    &#39;&#39;&#39;
+    Compute the argument of the minimum of the penalized risk for given
+    values of the penalization factor lbda.
+
+    Parameters
+    ----------
+    lbda : list or numpy.ndarray
+        The values of the penalization factor.
+
+    Returns
+    -------
+    numpy.ndarray
+        The argument of the minimum of the penalized risk for the values of
+        the penalization factor.
+
+    &#39;&#39;&#39;
+    comp = np.array(self.data[&#39;complexity&#39;])
+    risk = np.array(self.data[&#39;empirical_risk&#39;])
+    return np.array([np.argmin(risk + l * self.pen_shape(comp)) for
+                     l in np.atleast_1d(lbda)])</code></pre>
+</details>
+</dd>
+<dt id="tensap.approximation.tools.model_selection.ModelSelection.slope_heuristic"><code class="name flex">
+<span>def <span class="ident">slope_heuristic</span></span>(<span>self, lambda_path=None, m_path=None)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Apply the slope heuristic to the path of possible values of lambda to
+compute its optimal value lambda_hat and associated argument of the
+minimum of the penalized risk m_hat.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>lambda_path</code></strong> :&ensp;<code>list</code> or <code>numpy.ndarray</code>, optional</dt>
+<dd>The path of possible values of lambda. The default is None,
+indicating to compute it using the method lambda_path.</dd>
+<dt><strong><code>m_path</code></strong> :&ensp;<code>list</code> or <code>numpy.ndarray</code>, optional</dt>
+<dd>The path of the arguments of the minimum of the penalized risk
+associated with the path of possible values of lambda. The default
+is None, indicating to compute it using the method lambda_path.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><strong><code>lambda_hat</code></strong> :&ensp;<code>float</code></dt>
+<dd>The value of lambda determined using the slope heuristic.</dd>
+<dt><strong><code>m_hat</code></strong> :&ensp;<code>int</code></dt>
+<dd>The model number associated with the value of lambda determined
+using the slope heuristic.</dd>
+<dt><strong><code>lambda_path</code></strong> :&ensp;<code>numpy.ndarray</code></dt>
+<dd>The path of possible values of lambda.</dd>
+<dt><strong><code>m_path</code></strong> :&ensp;<code>numpy.ndarray</code></dt>
+<dd>The path of the arguments of the minimum of the penalized risk
+associated with the path of possible values of lambda.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def slope_heuristic(self, lambda_path=None, m_path=None):
+    &#39;&#39;&#39;
+    Apply the slope heuristic to the path of possible values of lambda to
+    compute its optimal value lambda_hat and associated argument of the
+    minimum of the penalized risk m_hat.
+
+    Parameters
+    ----------
+    lambda_path : list or numpy.ndarray, optional
+        The path of possible values of lambda. The default is None,
+        indicating to compute it using the method lambda_path.
+    m_path : list or numpy.ndarray, optional
+        The path of the arguments of the minimum of the penalized risk
+        associated with the path of possible values of lambda. The default
+        is None, indicating to compute it using the method lambda_path.
+
+    Returns
+    -------
+    lambda_hat : float
+        The value of lambda determined using the slope heuristic.
+    m_hat : int
+        The model number associated with the value of lambda determined
+        using the slope heuristic.
+    lambda_path : numpy.ndarray
+        The path of possible values of lambda.
+    m_path : numpy.ndarray
+        The path of the arguments of the minimum of the penalized risk
+        associated with the path of possible values of lambda.
+
+    &#39;&#39;&#39;
+    comp = np.array(self.data[&#39;complexity&#39;])
+
+    # If all the complexities are equal, choose the first model
+    if np.all(np.diff(comp) == 0):
+        lambda_hat = 0
+        m_hat = 0
+        lambda_path = lambda_hat
+        m_path = m_hat
+        return lambda_hat, m_hat, lambda_path, m_path
+
+    if lambda_path is None and m_path is None:
+        lambda_path, m_path = self.lambda_path()
+    l_mid = (lambda_path[:-1] + lambda_path[1:]) / 2
+    gaps = comp[self.m_lambda(l_mid[:-1])] - comp[self.m_lambda(l_mid[1:])]
+    ind = np.argmax(gaps)
+    lambda_hat = self.gap_factor * lambda_path[ind+1]
+    m_hat = self.m_lambda(lambda_hat)
+    return lambda_hat, m_hat, lambda_path, m_path</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+</dl>
+</section>
+</article>
+<nav id="sidebar">
+<h1>Index</h1>
+<div class="toc">
+<ul></ul>
+</div>
+<ul id="index">
+<li><h3>Super-module</h3>
+<ul>
+<li><code><a title="tensap.approximation.tools" href="index.html">tensap.approximation.tools</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-classes">Classes</a></h3>
+<ul>
+<li>
+<h4><code><a title="tensap.approximation.tools.model_selection.ModelSelection" href="#tensap.approximation.tools.model_selection.ModelSelection">ModelSelection</a></code></h4>
+<ul class="">
+<li><code><a title="tensap.approximation.tools.model_selection.ModelSelection.complexity" href="#tensap.approximation.tools.model_selection.ModelSelection.complexity">complexity</a></code></li>
+<li><code><a title="tensap.approximation.tools.model_selection.ModelSelection.complexity_functional_basis_array" href="#tensap.approximation.tools.model_selection.ModelSelection.complexity_functional_basis_array">complexity_functional_basis_array</a></code></li>
+<li><code><a title="tensap.approximation.tools.model_selection.ModelSelection.complexity_tree_based_tensor" href="#tensap.approximation.tools.model_selection.ModelSelection.complexity_tree_based_tensor">complexity_tree_based_tensor</a></code></li>
+<li><code><a title="tensap.approximation.tools.model_selection.ModelSelection.lambda_path" href="#tensap.approximation.tools.model_selection.ModelSelection.lambda_path">lambda_path</a></code></li>
+<li><code><a title="tensap.approximation.tools.model_selection.ModelSelection.m_lambda" href="#tensap.approximation.tools.model_selection.ModelSelection.m_lambda">m_lambda</a></code></li>
+<li><code><a title="tensap.approximation.tools.model_selection.ModelSelection.slope_heuristic" href="#tensap.approximation.tools.model_selection.ModelSelection.slope_heuristic">slope_heuristic</a></code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.8.1</a>.</p>
+</footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad()</script>
+</body>
+</html>

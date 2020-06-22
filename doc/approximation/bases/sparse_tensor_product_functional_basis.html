@@ -1,0 +1,1233 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+<meta name="generator" content="pdoc 0.8.1" />
+<title>tensap.approximation.bases.sparse_tensor_product_functional_basis API documentation</title>
+<meta name="description" content="Module sparse_tensor_product_functional_basis …" />
+<link href='https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.min.css' rel='stylesheet'>
+<link href='https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/8.0.0/sanitize.min.css' rel='stylesheet'>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css" rel="stylesheet">
+<style>.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}.admonition{padding:.1em .5em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>tensap.approximation.bases.sparse_tensor_product_functional_basis</code></h1>
+</header>
+<section id="section-intro">
+<p>Module sparse_tensor_product_functional_basis.</p>
+<p>Copyright (c) 2020, Anthony Nouy, Erwan Grelier
+This file is part of tensap (tensor approximation package).</p>
+<p>tensap is free software: you can redistribute it and/or modify
+it under the terms of the GNU Lesser General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.</p>
+<p>tensap is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+See the
+GNU Lesser General Public License for more details.</p>
+<p>You should have received a copy of the GNU Lesser General Public License
+along with tensap.
+If not, see <a href="https://www.gnu.org/licenses/">https://www.gnu.org/licenses/</a>.</p>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">&#39;&#39;&#39;
+Module sparse_tensor_product_functional_basis.
+
+Copyright (c) 2020, Anthony Nouy, Erwan Grelier
+This file is part of tensap (tensor approximation package).
+
+tensap is free software: you can redistribute it and/or modify
+it under the terms of the GNU Lesser General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+tensap is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU Lesser General Public License for more details.
+
+You should have received a copy of the GNU Lesser General Public License
+along with tensap.  If not, see &lt;https://www.gnu.org/licenses/&gt;.
+
+&#39;&#39;&#39;
+
+from copy import deepcopy
+import numpy as np
+from scipy.sparse import eye as speye
+import tensap
+
+
+class SparseTensorProductFunctionalBasis(tensap.FunctionalBasis):
+    &#39;&#39;&#39;
+    Class SparseTensorProductFunctionalBasis.
+
+    Attributes
+    ----------
+    bases : list or tensap.FunctionalBases
+        The bases associated with the object.
+    indices : tensap.MultiIndices
+        The indices of the basis functions (the indices start at 0).
+
+    &#39;&#39;&#39;
+
+    def __init__(self, bases, indices):
+        &#39;&#39;&#39;
+        Constructor for the class SparseTensorProductFunctionalBasis.
+
+        Parameters
+        ----------
+        bases : list or tensap.FunctionalBases
+            The bases associated with the object.
+        indices : tensap.MultiIndices
+            The indices of the basis functions (the indices start at 0).
+
+        Returns
+        -------
+        None.
+
+        &#39;&#39;&#39;
+        tensap.FunctionalBasis.__init__(self)
+
+        assert isinstance(bases, tensap.FunctionalBases), \
+            &#39;The first argument must be a FunctionalBases.&#39;
+
+        assert isinstance(indices, tensap.MultiIndices), \
+            &#39;The second argument must be a MultiIndices.&#39;
+
+        self.bases = bases
+        self.indices = indices
+        self.measure = tensap.ProductMeasure([x.measure for x in bases.bases])
+        self.is_orthonormal = np.all([x.is_orthonormal for x in bases.bases])
+
+    def __eq__(self, G):
+        if not isinstance(G, SparseTensorProductFunctionalBasis):
+            out = False
+        else:
+            out = np.all(self.bases == G.bases) and \
+                np.all(self.indices == G.indices)
+        return out
+
+    def length(self):
+        &#39;&#39;&#39;
+        Return the number of bases in self.bases.
+
+        Returns
+        -------
+        int
+            The number of bases in self.bases.
+
+        &#39;&#39;&#39;
+        return len(self.bases)
+
+    def __len__(self):
+        return self.length()
+
+    def cardinal(self):
+        return self.indices.cardinal()
+
+    def ndim(self):
+        return self.indices.ndim()
+
+    def domain(self):
+        return self.bases.domain()
+
+    def remove_bases(self, ind):
+        &#39;&#39;&#39;
+        Remove bases of self of index ind.
+
+        Parameters
+        ----------
+        ind : int or list or numpy.ndarray
+            The indices of the bases to remove.
+
+        Returns
+        -------
+        tensap.SparseTensorProductFunctionalBasis
+            The SparseTensorProductFunctionalBasis with removed bases.
+
+        &#39;&#39;&#39;
+        out = deepcopy(self)
+        out.bases = out.bases.remove_bases(ind)
+        return out
+
+    def keep_bases(self, ind):
+        &#39;&#39;&#39;
+        Keep only the bases of self of index ind.
+
+        Parameters
+        ----------
+        ind : int or list or numpy.ndarray
+            The indices of the bases to keep.
+
+        Returns
+        -------
+        tensap.SparseTensorProductFunctionalBasis
+            The SparseTensorProductFunctionalBasis with kept bases.
+
+        &#39;&#39;&#39;
+        out = deepcopy(self)
+        out.bases = out.bases.keep_bases(ind)
+        return out
+
+    def remove_mapping(self, ind):
+        # TODO remove_mapping
+        return self
+
+    def keep_mapping(self, ind):
+        # TODO keep_mapping
+        return self
+
+    def transpose(self, perm):
+        &#39;&#39;&#39;
+        Return self with the basis permutation perm.
+
+        Parameters
+        ----------
+        perm : list or numpy.ndarray
+            The permutation of the bases.
+
+        Returns
+        -------
+        tensap.SparseTensorProductFunctionalBasis
+            The SparseTensorProductFunctionalBasis with permuted bases.
+
+        &#39;&#39;&#39;
+        out = deepcopy(self)
+        out.bases = out.bases.transpose(perm)
+        return out
+
+    def mean(self, *args):
+        M = self.bases.mean(None, *args)
+        m = M[0][self.indices.array[:, 0]]
+        for i in np.arange(1, len(M)):
+            m *= M[i][self.indices.array[:, i]]
+        return m
+
+    def conditional_expectation(self, dims, *args):
+        dims = np.atleast_1d(dims)
+        if np.all([isinstance(x, bool) for x in dims]):
+            dims = np.nonzero(dims)[0]
+
+        dims_C = np.setdiff1d(range(self.ndim()), dims)
+
+        if dims_C.size != 0:
+            M = self.bases.mean(dims_C, *args)
+            I = self.indices
+            J = I.keep_dims(dims)
+            m = M[0][I.array[:, dims_C[0]]]
+            for i in np.arange(1, len(M)):
+                m *= M[i][I.array[:, dims_C[i]]]
+
+            if dims.size == 0:
+                return m
+
+            ind = np.nonzero(np.all(J.array == I.array[:, dims][:, np.newaxis],
+                                    axis=2))[1]
+
+            d = np.zeros((J.cardinal(), I.cardinal()))
+            d[ind, range(I.cardinal())] = m
+
+            h = self.keep_bases(dims)
+            # TODO Uncomment when the mappings are implemented
+            # h = self.keep_mapping(dims)
+            h.indices = J
+            h = tensap.FunctionalBasisArray(d, h, I.cardinal())
+
+        else:
+            h = tensap.FunctionalBasisArray(np.eye(self.cardinal()), self,
+                                            [self.cardinal(), 1])
+        return h
+
+    def get_random_vector(self):
+        &#39;&#39;&#39;
+        Return the random vector associated with the basis functions of self.
+
+        Returns
+        -------
+        tensap.RandomVector
+            The random vector associated with the basis functions of self.
+
+        &#39;&#39;&#39;
+        return self.bases.get_random_vector()
+
+    def eval(self, x):
+        Hx = self.bases.eval(x)
+        return self.eval_with_functional_bases_evals(Hx)
+
+    def eval_with_functional_bases_evals(self, Hx):
+        y = Hx[0][:, self.indices.array[:, 0]]
+        for i in np.arange(1, len(Hx)):
+            y *= Hx[i][:, self.indices.array[:, i]]
+        return y
+
+    def eval_derivative(self, n, x):
+        dnHx = self.bases.eval_derivative(n, x)
+        return self.eval_with_functional_bases_evals(dnHx)
+
+    def derivative(self, n):
+        out = deepcopy(self)
+        out.bases = out.bases.derivative(n)
+        return out
+
+    def adaptation_path(self, p=1):
+        &#39;&#39;&#39;
+        Create an adaptation path associated with increasing p-norm of
+        multi-indices.
+
+        Parameters
+        ----------
+        p : float, optional
+            The positive real scalar p of the p-norm. The default is 1.
+
+        Returns
+        -------
+        P : numpy.ndarray
+            The adaptation path.
+
+        &#39;&#39;&#39;
+        n = self.indices.norm(p)
+        n_unique = np.sort(np.unique(n))
+        P = np.full((self.indices.cardinal(), n_unique.size), False)
+        for k in range(n_unique.size):
+            P[n &lt;= n_unique[k], k] = True
+        return P
+
+    def gram_matrix(self,):
+        &#39;&#39;&#39;
+        Return the gram matrix of the basis.
+
+        Returns
+        -------
+        numpy.ndarray
+            The gram matrix of the basis.
+
+        &#39;&#39;&#39;
+        if self.is_orthonormal:
+            M = speye(self.indices.cardinal())
+        else:
+            G = self.bases.gram_matrix()
+            ind = self.indices.array
+            M = G[0][np.ix_(ind[:, 0], ind[:, 0])]
+            for i in np.arange(1, ind.shape[1]):
+                M *= G[i][np.ix_(ind[:, i], ind[:, i])]
+        return M
+
+    def plot_multi_indices(self, *args):
+        &#39;&#39;&#39;
+        PLot the multi-index set of the object.
+
+        See also tensap.MultiIndices.plot.
+
+        Parameters
+        ----------
+        *args : tuple
+            Additional parameters for tensap.MultiIndices&#39; plot method.
+
+        Returns
+        -------
+        None.
+
+        &#39;&#39;&#39;
+        self.indices.plot(*args)
+
+    def tensor_product_interpolation(self, fun, *args):
+        &#39;&#39;&#39;
+        Return the interpolation of function fun on a sparse grid.
+
+        Parameters
+        ----------
+        fun : function or tensap.Function
+            The function to interpolate.
+        grid : list, optional
+            The grid of points used for the interpolation. If one grid has more
+            points than the dimension of the corresponding basis, use
+            magicPoints for the selection of a subset of points adapted to the
+            basis. The default is None, indicating to use the method
+            self.bases.interpolation_points().
+
+        Raises
+        ------
+        ValueError
+            If the argument fun is neither a tensap.Function, a function nor
+            a tensap.Tensor.
+
+        Returns
+        -------
+        tensap.FunctionalTensor
+            The interpolation of the function.
+        output : dict
+            A dictionnary of outputs of the method.
+
+        &#39;&#39;&#39;
+        grid = self.bases.interpolation_points(*args)
+        grid = tensap.SparseTensorGrid(grid, self.indices)
+        x_grid = grid.array()
+        f_interp = self.interpolate(fun, x_grid)
+        output = {&#39;number_of_evaluations&#39;: x_grid.shape[0], &#39;grid&#39;: grid}
+
+        return f_interp, output</code></pre>
+</details>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-classes">Classes</h2>
+<dl>
+<dt id="tensap.approximation.bases.sparse_tensor_product_functional_basis.SparseTensorProductFunctionalBasis"><code class="flex name class">
+<span>class <span class="ident">SparseTensorProductFunctionalBasis</span></span>
+<span>(</span><span>bases, indices)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Class SparseTensorProductFunctionalBasis.</p>
+<h2 id="attributes">Attributes</h2>
+<dl>
+<dt><strong><code>bases</code></strong> :&ensp;<code>list</code> or <code>tensap.FunctionalBases</code></dt>
+<dd>The bases associated with the object.</dd>
+<dt><strong><code>indices</code></strong> :&ensp;<code>tensap.MultiIndices</code></dt>
+<dd>The indices of the basis functions (the indices start at 0).</dd>
+</dl>
+<p>Constructor for the class SparseTensorProductFunctionalBasis.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>bases</code></strong> :&ensp;<code>list</code> or <code>tensap.FunctionalBases</code></dt>
+<dd>The bases associated with the object.</dd>
+<dt><strong><code>indices</code></strong> :&ensp;<code>tensap.MultiIndices</code></dt>
+<dd>The indices of the basis functions (the indices start at 0).</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<p>None.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class SparseTensorProductFunctionalBasis(tensap.FunctionalBasis):
+    &#39;&#39;&#39;
+    Class SparseTensorProductFunctionalBasis.
+
+    Attributes
+    ----------
+    bases : list or tensap.FunctionalBases
+        The bases associated with the object.
+    indices : tensap.MultiIndices
+        The indices of the basis functions (the indices start at 0).
+
+    &#39;&#39;&#39;
+
+    def __init__(self, bases, indices):
+        &#39;&#39;&#39;
+        Constructor for the class SparseTensorProductFunctionalBasis.
+
+        Parameters
+        ----------
+        bases : list or tensap.FunctionalBases
+            The bases associated with the object.
+        indices : tensap.MultiIndices
+            The indices of the basis functions (the indices start at 0).
+
+        Returns
+        -------
+        None.
+
+        &#39;&#39;&#39;
+        tensap.FunctionalBasis.__init__(self)
+
+        assert isinstance(bases, tensap.FunctionalBases), \
+            &#39;The first argument must be a FunctionalBases.&#39;
+
+        assert isinstance(indices, tensap.MultiIndices), \
+            &#39;The second argument must be a MultiIndices.&#39;
+
+        self.bases = bases
+        self.indices = indices
+        self.measure = tensap.ProductMeasure([x.measure for x in bases.bases])
+        self.is_orthonormal = np.all([x.is_orthonormal for x in bases.bases])
+
+    def __eq__(self, G):
+        if not isinstance(G, SparseTensorProductFunctionalBasis):
+            out = False
+        else:
+            out = np.all(self.bases == G.bases) and \
+                np.all(self.indices == G.indices)
+        return out
+
+    def length(self):
+        &#39;&#39;&#39;
+        Return the number of bases in self.bases.
+
+        Returns
+        -------
+        int
+            The number of bases in self.bases.
+
+        &#39;&#39;&#39;
+        return len(self.bases)
+
+    def __len__(self):
+        return self.length()
+
+    def cardinal(self):
+        return self.indices.cardinal()
+
+    def ndim(self):
+        return self.indices.ndim()
+
+    def domain(self):
+        return self.bases.domain()
+
+    def remove_bases(self, ind):
+        &#39;&#39;&#39;
+        Remove bases of self of index ind.
+
+        Parameters
+        ----------
+        ind : int or list or numpy.ndarray
+            The indices of the bases to remove.
+
+        Returns
+        -------
+        tensap.SparseTensorProductFunctionalBasis
+            The SparseTensorProductFunctionalBasis with removed bases.
+
+        &#39;&#39;&#39;
+        out = deepcopy(self)
+        out.bases = out.bases.remove_bases(ind)
+        return out
+
+    def keep_bases(self, ind):
+        &#39;&#39;&#39;
+        Keep only the bases of self of index ind.
+
+        Parameters
+        ----------
+        ind : int or list or numpy.ndarray
+            The indices of the bases to keep.
+
+        Returns
+        -------
+        tensap.SparseTensorProductFunctionalBasis
+            The SparseTensorProductFunctionalBasis with kept bases.
+
+        &#39;&#39;&#39;
+        out = deepcopy(self)
+        out.bases = out.bases.keep_bases(ind)
+        return out
+
+    def remove_mapping(self, ind):
+        # TODO remove_mapping
+        return self
+
+    def keep_mapping(self, ind):
+        # TODO keep_mapping
+        return self
+
+    def transpose(self, perm):
+        &#39;&#39;&#39;
+        Return self with the basis permutation perm.
+
+        Parameters
+        ----------
+        perm : list or numpy.ndarray
+            The permutation of the bases.
+
+        Returns
+        -------
+        tensap.SparseTensorProductFunctionalBasis
+            The SparseTensorProductFunctionalBasis with permuted bases.
+
+        &#39;&#39;&#39;
+        out = deepcopy(self)
+        out.bases = out.bases.transpose(perm)
+        return out
+
+    def mean(self, *args):
+        M = self.bases.mean(None, *args)
+        m = M[0][self.indices.array[:, 0]]
+        for i in np.arange(1, len(M)):
+            m *= M[i][self.indices.array[:, i]]
+        return m
+
+    def conditional_expectation(self, dims, *args):
+        dims = np.atleast_1d(dims)
+        if np.all([isinstance(x, bool) for x in dims]):
+            dims = np.nonzero(dims)[0]
+
+        dims_C = np.setdiff1d(range(self.ndim()), dims)
+
+        if dims_C.size != 0:
+            M = self.bases.mean(dims_C, *args)
+            I = self.indices
+            J = I.keep_dims(dims)
+            m = M[0][I.array[:, dims_C[0]]]
+            for i in np.arange(1, len(M)):
+                m *= M[i][I.array[:, dims_C[i]]]
+
+            if dims.size == 0:
+                return m
+
+            ind = np.nonzero(np.all(J.array == I.array[:, dims][:, np.newaxis],
+                                    axis=2))[1]
+
+            d = np.zeros((J.cardinal(), I.cardinal()))
+            d[ind, range(I.cardinal())] = m
+
+            h = self.keep_bases(dims)
+            # TODO Uncomment when the mappings are implemented
+            # h = self.keep_mapping(dims)
+            h.indices = J
+            h = tensap.FunctionalBasisArray(d, h, I.cardinal())
+
+        else:
+            h = tensap.FunctionalBasisArray(np.eye(self.cardinal()), self,
+                                            [self.cardinal(), 1])
+        return h
+
+    def get_random_vector(self):
+        &#39;&#39;&#39;
+        Return the random vector associated with the basis functions of self.
+
+        Returns
+        -------
+        tensap.RandomVector
+            The random vector associated with the basis functions of self.
+
+        &#39;&#39;&#39;
+        return self.bases.get_random_vector()
+
+    def eval(self, x):
+        Hx = self.bases.eval(x)
+        return self.eval_with_functional_bases_evals(Hx)
+
+    def eval_with_functional_bases_evals(self, Hx):
+        y = Hx[0][:, self.indices.array[:, 0]]
+        for i in np.arange(1, len(Hx)):
+            y *= Hx[i][:, self.indices.array[:, i]]
+        return y
+
+    def eval_derivative(self, n, x):
+        dnHx = self.bases.eval_derivative(n, x)
+        return self.eval_with_functional_bases_evals(dnHx)
+
+    def derivative(self, n):
+        out = deepcopy(self)
+        out.bases = out.bases.derivative(n)
+        return out
+
+    def adaptation_path(self, p=1):
+        &#39;&#39;&#39;
+        Create an adaptation path associated with increasing p-norm of
+        multi-indices.
+
+        Parameters
+        ----------
+        p : float, optional
+            The positive real scalar p of the p-norm. The default is 1.
+
+        Returns
+        -------
+        P : numpy.ndarray
+            The adaptation path.
+
+        &#39;&#39;&#39;
+        n = self.indices.norm(p)
+        n_unique = np.sort(np.unique(n))
+        P = np.full((self.indices.cardinal(), n_unique.size), False)
+        for k in range(n_unique.size):
+            P[n &lt;= n_unique[k], k] = True
+        return P
+
+    def gram_matrix(self,):
+        &#39;&#39;&#39;
+        Return the gram matrix of the basis.
+
+        Returns
+        -------
+        numpy.ndarray
+            The gram matrix of the basis.
+
+        &#39;&#39;&#39;
+        if self.is_orthonormal:
+            M = speye(self.indices.cardinal())
+        else:
+            G = self.bases.gram_matrix()
+            ind = self.indices.array
+            M = G[0][np.ix_(ind[:, 0], ind[:, 0])]
+            for i in np.arange(1, ind.shape[1]):
+                M *= G[i][np.ix_(ind[:, i], ind[:, i])]
+        return M
+
+    def plot_multi_indices(self, *args):
+        &#39;&#39;&#39;
+        PLot the multi-index set of the object.
+
+        See also tensap.MultiIndices.plot.
+
+        Parameters
+        ----------
+        *args : tuple
+            Additional parameters for tensap.MultiIndices&#39; plot method.
+
+        Returns
+        -------
+        None.
+
+        &#39;&#39;&#39;
+        self.indices.plot(*args)
+
+    def tensor_product_interpolation(self, fun, *args):
+        &#39;&#39;&#39;
+        Return the interpolation of function fun on a sparse grid.
+
+        Parameters
+        ----------
+        fun : function or tensap.Function
+            The function to interpolate.
+        grid : list, optional
+            The grid of points used for the interpolation. If one grid has more
+            points than the dimension of the corresponding basis, use
+            magicPoints for the selection of a subset of points adapted to the
+            basis. The default is None, indicating to use the method
+            self.bases.interpolation_points().
+
+        Raises
+        ------
+        ValueError
+            If the argument fun is neither a tensap.Function, a function nor
+            a tensap.Tensor.
+
+        Returns
+        -------
+        tensap.FunctionalTensor
+            The interpolation of the function.
+        output : dict
+            A dictionnary of outputs of the method.
+
+        &#39;&#39;&#39;
+        grid = self.bases.interpolation_points(*args)
+        grid = tensap.SparseTensorGrid(grid, self.indices)
+        x_grid = grid.array()
+        f_interp = self.interpolate(fun, x_grid)
+        output = {&#39;number_of_evaluations&#39;: x_grid.shape[0], &#39;grid&#39;: grid}
+
+        return f_interp, output</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="tensap.approximation.bases.functional_basis.FunctionalBasis" href="functional_basis.html#tensap.approximation.bases.functional_basis.FunctionalBasis">FunctionalBasis</a></li>
+</ul>
+<h3>Methods</h3>
+<dl>
+<dt id="tensap.approximation.bases.sparse_tensor_product_functional_basis.SparseTensorProductFunctionalBasis.adaptation_path"><code class="name flex">
+<span>def <span class="ident">adaptation_path</span></span>(<span>self, p=1)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Create an adaptation path associated with increasing p-norm of
+multi-indices.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>p</code></strong> :&ensp;<code>float</code>, optional</dt>
+<dd>The positive real scalar p of the p-norm. The default is 1.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><strong><code>P</code></strong> :&ensp;<code>numpy.ndarray</code></dt>
+<dd>The adaptation path.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def adaptation_path(self, p=1):
+    &#39;&#39;&#39;
+    Create an adaptation path associated with increasing p-norm of
+    multi-indices.
+
+    Parameters
+    ----------
+    p : float, optional
+        The positive real scalar p of the p-norm. The default is 1.
+
+    Returns
+    -------
+    P : numpy.ndarray
+        The adaptation path.
+
+    &#39;&#39;&#39;
+    n = self.indices.norm(p)
+    n_unique = np.sort(np.unique(n))
+    P = np.full((self.indices.cardinal(), n_unique.size), False)
+    for k in range(n_unique.size):
+        P[n &lt;= n_unique[k], k] = True
+    return P</code></pre>
+</details>
+</dd>
+<dt id="tensap.approximation.bases.sparse_tensor_product_functional_basis.SparseTensorProductFunctionalBasis.derivative"><code class="name flex">
+<span>def <span class="ident">derivative</span></span>(<span>self, n)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def derivative(self, n):
+    out = deepcopy(self)
+    out.bases = out.bases.derivative(n)
+    return out</code></pre>
+</details>
+</dd>
+<dt id="tensap.approximation.bases.sparse_tensor_product_functional_basis.SparseTensorProductFunctionalBasis.eval_derivative"><code class="name flex">
+<span>def <span class="ident">eval_derivative</span></span>(<span>self, n, x)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def eval_derivative(self, n, x):
+    dnHx = self.bases.eval_derivative(n, x)
+    return self.eval_with_functional_bases_evals(dnHx)</code></pre>
+</details>
+</dd>
+<dt id="tensap.approximation.bases.sparse_tensor_product_functional_basis.SparseTensorProductFunctionalBasis.eval_with_functional_bases_evals"><code class="name flex">
+<span>def <span class="ident">eval_with_functional_bases_evals</span></span>(<span>self, Hx)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def eval_with_functional_bases_evals(self, Hx):
+    y = Hx[0][:, self.indices.array[:, 0]]
+    for i in np.arange(1, len(Hx)):
+        y *= Hx[i][:, self.indices.array[:, i]]
+    return y</code></pre>
+</details>
+</dd>
+<dt id="tensap.approximation.bases.sparse_tensor_product_functional_basis.SparseTensorProductFunctionalBasis.get_random_vector"><code class="name flex">
+<span>def <span class="ident">get_random_vector</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Return the random vector associated with the basis functions of self.</p>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>tensap.RandomVector</code></dt>
+<dd>The random vector associated with the basis functions of self.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_random_vector(self):
+    &#39;&#39;&#39;
+    Return the random vector associated with the basis functions of self.
+
+    Returns
+    -------
+    tensap.RandomVector
+        The random vector associated with the basis functions of self.
+
+    &#39;&#39;&#39;
+    return self.bases.get_random_vector()</code></pre>
+</details>
+</dd>
+<dt id="tensap.approximation.bases.sparse_tensor_product_functional_basis.SparseTensorProductFunctionalBasis.gram_matrix"><code class="name flex">
+<span>def <span class="ident">gram_matrix</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Return the gram matrix of the basis.</p>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>numpy.ndarray</code></dt>
+<dd>The gram matrix of the basis.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def gram_matrix(self,):
+    &#39;&#39;&#39;
+    Return the gram matrix of the basis.
+
+    Returns
+    -------
+    numpy.ndarray
+        The gram matrix of the basis.
+
+    &#39;&#39;&#39;
+    if self.is_orthonormal:
+        M = speye(self.indices.cardinal())
+    else:
+        G = self.bases.gram_matrix()
+        ind = self.indices.array
+        M = G[0][np.ix_(ind[:, 0], ind[:, 0])]
+        for i in np.arange(1, ind.shape[1]):
+            M *= G[i][np.ix_(ind[:, i], ind[:, i])]
+    return M</code></pre>
+</details>
+</dd>
+<dt id="tensap.approximation.bases.sparse_tensor_product_functional_basis.SparseTensorProductFunctionalBasis.keep_bases"><code class="name flex">
+<span>def <span class="ident">keep_bases</span></span>(<span>self, ind)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Keep only the bases of self of index ind.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>ind</code></strong> :&ensp;<code>int</code> or <code>list</code> or <code>numpy.ndarray</code></dt>
+<dd>The indices of the bases to keep.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>tensap.SparseTensorProductFunctionalBasis</code></dt>
+<dd>The SparseTensorProductFunctionalBasis with kept bases.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def keep_bases(self, ind):
+    &#39;&#39;&#39;
+    Keep only the bases of self of index ind.
+
+    Parameters
+    ----------
+    ind : int or list or numpy.ndarray
+        The indices of the bases to keep.
+
+    Returns
+    -------
+    tensap.SparseTensorProductFunctionalBasis
+        The SparseTensorProductFunctionalBasis with kept bases.
+
+    &#39;&#39;&#39;
+    out = deepcopy(self)
+    out.bases = out.bases.keep_bases(ind)
+    return out</code></pre>
+</details>
+</dd>
+<dt id="tensap.approximation.bases.sparse_tensor_product_functional_basis.SparseTensorProductFunctionalBasis.keep_mapping"><code class="name flex">
+<span>def <span class="ident">keep_mapping</span></span>(<span>self, ind)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def keep_mapping(self, ind):
+    # TODO keep_mapping
+    return self</code></pre>
+</details>
+</dd>
+<dt id="tensap.approximation.bases.sparse_tensor_product_functional_basis.SparseTensorProductFunctionalBasis.length"><code class="name flex">
+<span>def <span class="ident">length</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Return the number of bases in self.bases.</p>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>int</code></dt>
+<dd>The number of bases in self.bases.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def length(self):
+    &#39;&#39;&#39;
+    Return the number of bases in self.bases.
+
+    Returns
+    -------
+    int
+        The number of bases in self.bases.
+
+    &#39;&#39;&#39;
+    return len(self.bases)</code></pre>
+</details>
+</dd>
+<dt id="tensap.approximation.bases.sparse_tensor_product_functional_basis.SparseTensorProductFunctionalBasis.plot_multi_indices"><code class="name flex">
+<span>def <span class="ident">plot_multi_indices</span></span>(<span>self, *args)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>PLot the multi-index set of the object.</p>
+<p>See also tensap.MultiIndices.plot.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>*args</code></strong> :&ensp;<code>tuple</code></dt>
+<dd>Additional parameters for tensap.MultiIndices' plot method.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<p>None.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def plot_multi_indices(self, *args):
+    &#39;&#39;&#39;
+    PLot the multi-index set of the object.
+
+    See also tensap.MultiIndices.plot.
+
+    Parameters
+    ----------
+    *args : tuple
+        Additional parameters for tensap.MultiIndices&#39; plot method.
+
+    Returns
+    -------
+    None.
+
+    &#39;&#39;&#39;
+    self.indices.plot(*args)</code></pre>
+</details>
+</dd>
+<dt id="tensap.approximation.bases.sparse_tensor_product_functional_basis.SparseTensorProductFunctionalBasis.remove_bases"><code class="name flex">
+<span>def <span class="ident">remove_bases</span></span>(<span>self, ind)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Remove bases of self of index ind.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>ind</code></strong> :&ensp;<code>int</code> or <code>list</code> or <code>numpy.ndarray</code></dt>
+<dd>The indices of the bases to remove.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>tensap.SparseTensorProductFunctionalBasis</code></dt>
+<dd>The SparseTensorProductFunctionalBasis with removed bases.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def remove_bases(self, ind):
+    &#39;&#39;&#39;
+    Remove bases of self of index ind.
+
+    Parameters
+    ----------
+    ind : int or list or numpy.ndarray
+        The indices of the bases to remove.
+
+    Returns
+    -------
+    tensap.SparseTensorProductFunctionalBasis
+        The SparseTensorProductFunctionalBasis with removed bases.
+
+    &#39;&#39;&#39;
+    out = deepcopy(self)
+    out.bases = out.bases.remove_bases(ind)
+    return out</code></pre>
+</details>
+</dd>
+<dt id="tensap.approximation.bases.sparse_tensor_product_functional_basis.SparseTensorProductFunctionalBasis.remove_mapping"><code class="name flex">
+<span>def <span class="ident">remove_mapping</span></span>(<span>self, ind)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def remove_mapping(self, ind):
+    # TODO remove_mapping
+    return self</code></pre>
+</details>
+</dd>
+<dt id="tensap.approximation.bases.sparse_tensor_product_functional_basis.SparseTensorProductFunctionalBasis.tensor_product_interpolation"><code class="name flex">
+<span>def <span class="ident">tensor_product_interpolation</span></span>(<span>self, fun, *args)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Return the interpolation of function fun on a sparse grid.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>fun</code></strong> :&ensp;<code>function</code> or <code>tensap.Function</code></dt>
+<dd>The function to interpolate.</dd>
+<dt><strong><code>grid</code></strong> :&ensp;<code>list</code>, optional</dt>
+<dd>The grid of points used for the interpolation. If one grid has more
+points than the dimension of the corresponding basis, use
+magicPoints for the selection of a subset of points adapted to the
+basis. The default is None, indicating to use the method
+self.bases.interpolation_points().</dd>
+</dl>
+<h2 id="raises">Raises</h2>
+<dl>
+<dt><code>ValueError</code></dt>
+<dd>If the argument fun is neither a tensap.Function, a function nor
+a tensap.Tensor.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>tensap.FunctionalTensor</code></dt>
+<dd>The interpolation of the function.</dd>
+<dt><strong><code>output</code></strong> :&ensp;<code>dict</code></dt>
+<dd>A dictionnary of outputs of the method.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def tensor_product_interpolation(self, fun, *args):
+    &#39;&#39;&#39;
+    Return the interpolation of function fun on a sparse grid.
+
+    Parameters
+    ----------
+    fun : function or tensap.Function
+        The function to interpolate.
+    grid : list, optional
+        The grid of points used for the interpolation. If one grid has more
+        points than the dimension of the corresponding basis, use
+        magicPoints for the selection of a subset of points adapted to the
+        basis. The default is None, indicating to use the method
+        self.bases.interpolation_points().
+
+    Raises
+    ------
+    ValueError
+        If the argument fun is neither a tensap.Function, a function nor
+        a tensap.Tensor.
+
+    Returns
+    -------
+    tensap.FunctionalTensor
+        The interpolation of the function.
+    output : dict
+        A dictionnary of outputs of the method.
+
+    &#39;&#39;&#39;
+    grid = self.bases.interpolation_points(*args)
+    grid = tensap.SparseTensorGrid(grid, self.indices)
+    x_grid = grid.array()
+    f_interp = self.interpolate(fun, x_grid)
+    output = {&#39;number_of_evaluations&#39;: x_grid.shape[0], &#39;grid&#39;: grid}
+
+    return f_interp, output</code></pre>
+</details>
+</dd>
+<dt id="tensap.approximation.bases.sparse_tensor_product_functional_basis.SparseTensorProductFunctionalBasis.transpose"><code class="name flex">
+<span>def <span class="ident">transpose</span></span>(<span>self, perm)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Return self with the basis permutation perm.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>perm</code></strong> :&ensp;<code>list</code> or <code>numpy.ndarray</code></dt>
+<dd>The permutation of the bases.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>tensap.SparseTensorProductFunctionalBasis</code></dt>
+<dd>The SparseTensorProductFunctionalBasis with permuted bases.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def transpose(self, perm):
+    &#39;&#39;&#39;
+    Return self with the basis permutation perm.
+
+    Parameters
+    ----------
+    perm : list or numpy.ndarray
+        The permutation of the bases.
+
+    Returns
+    -------
+    tensap.SparseTensorProductFunctionalBasis
+        The SparseTensorProductFunctionalBasis with permuted bases.
+
+    &#39;&#39;&#39;
+    out = deepcopy(self)
+    out.bases = out.bases.transpose(perm)
+    return out</code></pre>
+</details>
+</dd>
+</dl>
+<h3>Inherited members</h3>
+<ul class="hlist">
+<li><code><b><a title="tensap.approximation.bases.functional_basis.FunctionalBasis" href="functional_basis.html#tensap.approximation.bases.functional_basis.FunctionalBasis">FunctionalBasis</a></b></code>:
+<ul class="hlist">
+<li><code><a title="tensap.approximation.bases.functional_basis.FunctionalBasis.cardinal" href="functional_basis.html#tensap.approximation.bases.functional_basis.FunctionalBasis.cardinal">cardinal</a></code></li>
+<li><code><a title="tensap.approximation.bases.functional_basis.FunctionalBasis.conditional_expectation" href="functional_basis.html#tensap.approximation.bases.functional_basis.FunctionalBasis.conditional_expectation">conditional_expectation</a></code></li>
+<li><code><a title="tensap.approximation.bases.functional_basis.FunctionalBasis.domain" href="functional_basis.html#tensap.approximation.bases.functional_basis.FunctionalBasis.domain">domain</a></code></li>
+<li><code><a title="tensap.approximation.bases.functional_basis.FunctionalBasis.eval" href="functional_basis.html#tensap.approximation.bases.functional_basis.FunctionalBasis.eval">eval</a></code></li>
+<li><code><a title="tensap.approximation.bases.functional_basis.FunctionalBasis.expectation" href="functional_basis.html#tensap.approximation.bases.functional_basis.FunctionalBasis.expectation">expectation</a></code></li>
+<li><code><a title="tensap.approximation.bases.functional_basis.FunctionalBasis.interpolate" href="functional_basis.html#tensap.approximation.bases.functional_basis.FunctionalBasis.interpolate">interpolate</a></code></li>
+<li><code><a title="tensap.approximation.bases.functional_basis.FunctionalBasis.interpolation_points" href="functional_basis.html#tensap.approximation.bases.functional_basis.FunctionalBasis.interpolation_points">interpolation_points</a></code></li>
+<li><code><a title="tensap.approximation.bases.functional_basis.FunctionalBasis.kron" href="functional_basis.html#tensap.approximation.bases.functional_basis.FunctionalBasis.kron">kron</a></code></li>
+<li><code><a title="tensap.approximation.bases.functional_basis.FunctionalBasis.magic_points" href="functional_basis.html#tensap.approximation.bases.functional_basis.FunctionalBasis.magic_points">magic_points</a></code></li>
+<li><code><a title="tensap.approximation.bases.functional_basis.FunctionalBasis.mean" href="functional_basis.html#tensap.approximation.bases.functional_basis.FunctionalBasis.mean">mean</a></code></li>
+<li><code><a title="tensap.approximation.bases.functional_basis.FunctionalBasis.ndim" href="functional_basis.html#tensap.approximation.bases.functional_basis.FunctionalBasis.ndim">ndim</a></code></li>
+<li><code><a title="tensap.approximation.bases.functional_basis.FunctionalBasis.orthonormalize" href="functional_basis.html#tensap.approximation.bases.functional_basis.FunctionalBasis.orthonormalize">orthonormalize</a></code></li>
+<li><code><a title="tensap.approximation.bases.functional_basis.FunctionalBasis.plot" href="functional_basis.html#tensap.approximation.bases.functional_basis.FunctionalBasis.plot">plot</a></code></li>
+<li><code><a title="tensap.approximation.bases.functional_basis.FunctionalBasis.projection" href="functional_basis.html#tensap.approximation.bases.functional_basis.FunctionalBasis.projection">projection</a></code></li>
+<li><code><a title="tensap.approximation.bases.functional_basis.FunctionalBasis.random" href="functional_basis.html#tensap.approximation.bases.functional_basis.FunctionalBasis.random">random</a></code></li>
+<li><code><a title="tensap.approximation.bases.functional_basis.FunctionalBasis.storage" href="functional_basis.html#tensap.approximation.bases.functional_basis.FunctionalBasis.storage">storage</a></code></li>
+</ul>
+</li>
+</ul>
+</dd>
+</dl>
+</section>
+</article>
+<nav id="sidebar">
+<h1>Index</h1>
+<div class="toc">
+<ul></ul>
+</div>
+<ul id="index">
+<li><h3>Super-module</h3>
+<ul>
+<li><code><a title="tensap.approximation.bases" href="index.html">tensap.approximation.bases</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-classes">Classes</a></h3>
+<ul>
+<li>
+<h4><code><a title="tensap.approximation.bases.sparse_tensor_product_functional_basis.SparseTensorProductFunctionalBasis" href="#tensap.approximation.bases.sparse_tensor_product_functional_basis.SparseTensorProductFunctionalBasis">SparseTensorProductFunctionalBasis</a></code></h4>
+<ul class="">
+<li><code><a title="tensap.approximation.bases.sparse_tensor_product_functional_basis.SparseTensorProductFunctionalBasis.adaptation_path" href="#tensap.approximation.bases.sparse_tensor_product_functional_basis.SparseTensorProductFunctionalBasis.adaptation_path">adaptation_path</a></code></li>
+<li><code><a title="tensap.approximation.bases.sparse_tensor_product_functional_basis.SparseTensorProductFunctionalBasis.derivative" href="#tensap.approximation.bases.sparse_tensor_product_functional_basis.SparseTensorProductFunctionalBasis.derivative">derivative</a></code></li>
+<li><code><a title="tensap.approximation.bases.sparse_tensor_product_functional_basis.SparseTensorProductFunctionalBasis.eval_derivative" href="#tensap.approximation.bases.sparse_tensor_product_functional_basis.SparseTensorProductFunctionalBasis.eval_derivative">eval_derivative</a></code></li>
+<li><code><a title="tensap.approximation.bases.sparse_tensor_product_functional_basis.SparseTensorProductFunctionalBasis.eval_with_functional_bases_evals" href="#tensap.approximation.bases.sparse_tensor_product_functional_basis.SparseTensorProductFunctionalBasis.eval_with_functional_bases_evals">eval_with_functional_bases_evals</a></code></li>
+<li><code><a title="tensap.approximation.bases.sparse_tensor_product_functional_basis.SparseTensorProductFunctionalBasis.get_random_vector" href="#tensap.approximation.bases.sparse_tensor_product_functional_basis.SparseTensorProductFunctionalBasis.get_random_vector">get_random_vector</a></code></li>
+<li><code><a title="tensap.approximation.bases.sparse_tensor_product_functional_basis.SparseTensorProductFunctionalBasis.gram_matrix" href="#tensap.approximation.bases.sparse_tensor_product_functional_basis.SparseTensorProductFunctionalBasis.gram_matrix">gram_matrix</a></code></li>
+<li><code><a title="tensap.approximation.bases.sparse_tensor_product_functional_basis.SparseTensorProductFunctionalBasis.keep_bases" href="#tensap.approximation.bases.sparse_tensor_product_functional_basis.SparseTensorProductFunctionalBasis.keep_bases">keep_bases</a></code></li>
+<li><code><a title="tensap.approximation.bases.sparse_tensor_product_functional_basis.SparseTensorProductFunctionalBasis.keep_mapping" href="#tensap.approximation.bases.sparse_tensor_product_functional_basis.SparseTensorProductFunctionalBasis.keep_mapping">keep_mapping</a></code></li>
+<li><code><a title="tensap.approximation.bases.sparse_tensor_product_functional_basis.SparseTensorProductFunctionalBasis.length" href="#tensap.approximation.bases.sparse_tensor_product_functional_basis.SparseTensorProductFunctionalBasis.length">length</a></code></li>
+<li><code><a title="tensap.approximation.bases.sparse_tensor_product_functional_basis.SparseTensorProductFunctionalBasis.plot_multi_indices" href="#tensap.approximation.bases.sparse_tensor_product_functional_basis.SparseTensorProductFunctionalBasis.plot_multi_indices">plot_multi_indices</a></code></li>
+<li><code><a title="tensap.approximation.bases.sparse_tensor_product_functional_basis.SparseTensorProductFunctionalBasis.remove_bases" href="#tensap.approximation.bases.sparse_tensor_product_functional_basis.SparseTensorProductFunctionalBasis.remove_bases">remove_bases</a></code></li>
+<li><code><a title="tensap.approximation.bases.sparse_tensor_product_functional_basis.SparseTensorProductFunctionalBasis.remove_mapping" href="#tensap.approximation.bases.sparse_tensor_product_functional_basis.SparseTensorProductFunctionalBasis.remove_mapping">remove_mapping</a></code></li>
+<li><code><a title="tensap.approximation.bases.sparse_tensor_product_functional_basis.SparseTensorProductFunctionalBasis.tensor_product_interpolation" href="#tensap.approximation.bases.sparse_tensor_product_functional_basis.SparseTensorProductFunctionalBasis.tensor_product_interpolation">tensor_product_interpolation</a></code></li>
+<li><code><a title="tensap.approximation.bases.sparse_tensor_product_functional_basis.SparseTensorProductFunctionalBasis.transpose" href="#tensap.approximation.bases.sparse_tensor_product_functional_basis.SparseTensorProductFunctionalBasis.transpose">transpose</a></code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.8.1</a>.</p>
+</footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad()</script>
+</body>
+</html>

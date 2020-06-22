@@ -26,7 +26,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="tensap",
-    version="1.0",
+    version="1.1",
     author="Anthony Nouy, Erwan Grelier",
     author_email="anthony.nouy@ec-nantes.fr",
     description="Tensor Approximation Package: a Python package for the approximation of functions and tensors.",

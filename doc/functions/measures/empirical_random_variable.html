@@ -1,0 +1,601 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+<meta name="generator" content="pdoc 0.8.1" />
+<title>tensap.functions.measures.empirical_random_variable API documentation</title>
+<meta name="description" content="Module empirical_random_variable …" />
+<link href='https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.min.css' rel='stylesheet'>
+<link href='https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/8.0.0/sanitize.min.css' rel='stylesheet'>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css" rel="stylesheet">
+<style>.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}.admonition{padding:.1em .5em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>tensap.functions.measures.empirical_random_variable</code></h1>
+</header>
+<section id="section-intro">
+<p>Module empirical_random_variable.</p>
+<p>Copyright (c) 2020, Anthony Nouy, Erwan Grelier
+This file is part of tensap (tensor approximation package).</p>
+<p>tensap is free software: you can redistribute it and/or modify
+it under the terms of the GNU Lesser General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.</p>
+<p>tensap is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+See the
+GNU Lesser General Public License for more details.</p>
+<p>You should have received a copy of the GNU Lesser General Public License
+along with tensap.
+If not, see <a href="https://www.gnu.org/licenses/">https://www.gnu.org/licenses/</a>.</p>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">&#39;&#39;&#39;
+Module empirical_random_variable.
+
+Copyright (c) 2020, Anthony Nouy, Erwan Grelier
+This file is part of tensap (tensor approximation package).
+
+tensap is free software: you can redistribute it and/or modify
+it under the terms of the GNU Lesser General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+tensap is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU Lesser General Public License for more details.
+
+You should have received a copy of the GNU Lesser General Public License
+along with tensap.  If not, see &lt;https://www.gnu.org/licenses/&gt;.
+
+&#39;&#39;&#39;
+
+import scipy
+import numpy as np
+import tensap
+
+
+class EmpiricalRandomVariable(tensap.RandomVariable):
+    &#39;&#39;&#39;
+    Class EmpiricalRandomVariable. A random variable fitted using gaussian
+    kernel smoothing, this class gives best results in the case of normal
+    distributions.
+
+    Attributes
+    ----------
+    sample : numpy.array
+        The sample used to generate the random variable.
+    bandwidth : float
+        The computed bandwidth for the kernel density estimator.
+
+    &#39;&#39;&#39;
+
+    def __init__(self, sample):
+        &#39;&#39;&#39;
+        Constructor for the class EmpiricalRandomVariable.
+
+        A sample must be provided, which is used to fit a probability density
+        function using Scott&#39;s rule.
+
+        Parameters
+        ----------
+        sample : numpy.ndarray or list
+            The sample used used to fit the probability density function using
+            Scott&#39;s rule.
+
+        Returns
+        -------
+        None.
+
+        &#39;&#39;&#39;
+        tensap.RandomVariable.__init__(self)
+
+        self.sample = sample
+        #  Scott&#39;s rule [Scott, D.W. (1992) Multivariate Density Estimation.
+        # Theory, Practice and Visualization. New York: Wiley.]
+        self.bandwidth = 3.5 * np.std(sample) * np.size(sample) ** (-1/3)
+
+    def shift(self, b, s):
+        &#39;&#39;&#39;
+        Shift the random variable using the provided bias and scaling factor.
+
+        Parameters
+        ----------
+        bias : float
+            The bias.
+        scaling : float
+            The scaling factor.
+
+        Returns
+        -------
+        tensap.EmpiricalRandomVariable
+            The shifted random variable.
+
+        &#39;&#39;&#39;
+        return EmpiricalRandomVariable(s*self.sample+b)
+
+    def transfer(self, Y, x):
+        assert isinstance(Y, tensap.RandomVariable), \
+            &#39;The first argument must be a RandomVariable.&#39;
+
+        # If Y is the standard random variable associated to X
+        if isinstance(Y, (EmpiricalRandomVariable,
+                      tensap.EmpiricalRandomVariable)) and \
+            np.linalg.norm(Y.sample - (self.sample - np.mean(self.sample)) /
+                           np.std(self.sample)) / np.linalg.norm(Y.sample) &lt; \
+                np.finfo(float).eps:
+            y = (x - np.mean(self.sample)) / np.std(self.sample)
+        else:
+            y = Y.icdf(self.cdf(x))
+        return y
+
+    def get_standard_random_variable(self):
+        &#39;&#39;&#39;
+        Return the standard empirical random variable with zero mean and
+        unit standard deviation.
+
+        Returns
+        -------
+        tensap.EmpiricalRandomVariable
+            The standard empirical random variable.
+
+        &#39;&#39;&#39;
+        x = np.reshape(self.sample, [-1, 1])
+        x = (x - np.tile(np.mean(x, 0), (x.shape[0], 1))) / \
+            np.tile(np.std(x, 0), (x.shape[0], 1))
+        return EmpiricalRandomVariable(np.ravel(x))
+
+    def support(self):
+        return np.array([-np.inf, np.inf])
+
+    def orthonormal_polynomials(self, *args):
+        p = tensap.EmpiricalPolynomials(self, *args)
+        m = np.mean(self.sample)
+        s = np.std(self.sample)
+        if np.abs(m) &gt; np.finfo(float).eps or \
+                np.abs(s-1) &gt; np.finfo(float).eps:
+            p = tensap.ShiftedOrthonormalPolynomials(p, m, s)
+        return p
+
+    def get_parameters(self):
+        return self.sample, self.bandwidth
+
+    def cdf(self, x):
+        kde = scipy.stats.gaussian_kde(self.sample, self.bandwidth)
+        return np.vectorize(lambda z: kde.integrate_box_1d(-np.inf, z))(x)
+
+    def icdf(self, x, *args, **kwargs):
+        &#39;&#39;&#39;
+        Compute the inverse cumulative distribution function (icdf) of the
+        RandomVariable at points x.
+
+        Parameters
+        ----------
+        x : float or list or numpy.ndarray
+            The points at which the icdf is to be evaluated.
+        *args, **kwargs : tuples
+            Additional parameters for scipy.optimize&#39;s function brentq.
+
+        Returns
+        -------
+        numpy.ndarray
+            The evaluations of the icdf at points x.
+
+        &#39;&#39;&#39;
+        # TODO Optimize the method
+        sup = self.truncated_support()
+        return np.vectorize(lambda p: scipy.optimize.brentq(
+            lambda y: self.cdf(y)-p, sup[0], sup[1], *args, **kwargs))(x)
+
+    def pdf(self, x):
+        xi, h = self.get_parameters()
+        n = xi.size
+
+        X = np.tile(np.reshape(x, [1, -1]), (n, 1))
+        XI = np.tile(np.reshape(xi, [-1, 1]), (1, np.size(x)))
+        return np.ravel(1/(n*h*np.sqrt(2*np.pi)) *
+                        np.sum(np.exp(-0.5*(X-XI)**2/h**2), 0))
+
+    def random_variable_statistics(self):
+        return np.mean(self.sample), np.var(self.sample)
+
+    def random(self, n=1):
+        return self.icdf(np.random.rand(int(n)))</code></pre>
+</details>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-classes">Classes</h2>
+<dl>
+<dt id="tensap.functions.measures.empirical_random_variable.EmpiricalRandomVariable"><code class="flex name class">
+<span>class <span class="ident">EmpiricalRandomVariable</span></span>
+<span>(</span><span>sample)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Class EmpiricalRandomVariable. A random variable fitted using gaussian
+kernel smoothing, this class gives best results in the case of normal
+distributions.</p>
+<h2 id="attributes">Attributes</h2>
+<dl>
+<dt><strong><code>sample</code></strong> :&ensp;<code>numpy.array</code></dt>
+<dd>The sample used to generate the random variable.</dd>
+<dt><strong><code>bandwidth</code></strong> :&ensp;<code>float</code></dt>
+<dd>The computed bandwidth for the kernel density estimator.</dd>
+</dl>
+<p>Constructor for the class EmpiricalRandomVariable.</p>
+<p>A sample must be provided, which is used to fit a probability density
+function using Scott's rule.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>sample</code></strong> :&ensp;<code>numpy.ndarray</code> or <code>list</code></dt>
+<dd>The sample used used to fit the probability density function using
+Scott's rule.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<p>None.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class EmpiricalRandomVariable(tensap.RandomVariable):
+    &#39;&#39;&#39;
+    Class EmpiricalRandomVariable. A random variable fitted using gaussian
+    kernel smoothing, this class gives best results in the case of normal
+    distributions.
+
+    Attributes
+    ----------
+    sample : numpy.array
+        The sample used to generate the random variable.
+    bandwidth : float
+        The computed bandwidth for the kernel density estimator.
+
+    &#39;&#39;&#39;
+
+    def __init__(self, sample):
+        &#39;&#39;&#39;
+        Constructor for the class EmpiricalRandomVariable.
+
+        A sample must be provided, which is used to fit a probability density
+        function using Scott&#39;s rule.
+
+        Parameters
+        ----------
+        sample : numpy.ndarray or list
+            The sample used used to fit the probability density function using
+            Scott&#39;s rule.
+
+        Returns
+        -------
+        None.
+
+        &#39;&#39;&#39;
+        tensap.RandomVariable.__init__(self)
+
+        self.sample = sample
+        #  Scott&#39;s rule [Scott, D.W. (1992) Multivariate Density Estimation.
+        # Theory, Practice and Visualization. New York: Wiley.]
+        self.bandwidth = 3.5 * np.std(sample) * np.size(sample) ** (-1/3)
+
+    def shift(self, b, s):
+        &#39;&#39;&#39;
+        Shift the random variable using the provided bias and scaling factor.
+
+        Parameters
+        ----------
+        bias : float
+            The bias.
+        scaling : float
+            The scaling factor.
+
+        Returns
+        -------
+        tensap.EmpiricalRandomVariable
+            The shifted random variable.
+
+        &#39;&#39;&#39;
+        return EmpiricalRandomVariable(s*self.sample+b)
+
+    def transfer(self, Y, x):
+        assert isinstance(Y, tensap.RandomVariable), \
+            &#39;The first argument must be a RandomVariable.&#39;
+
+        # If Y is the standard random variable associated to X
+        if isinstance(Y, (EmpiricalRandomVariable,
+                      tensap.EmpiricalRandomVariable)) and \
+            np.linalg.norm(Y.sample - (self.sample - np.mean(self.sample)) /
+                           np.std(self.sample)) / np.linalg.norm(Y.sample) &lt; \
+                np.finfo(float).eps:
+            y = (x - np.mean(self.sample)) / np.std(self.sample)
+        else:
+            y = Y.icdf(self.cdf(x))
+        return y
+
+    def get_standard_random_variable(self):
+        &#39;&#39;&#39;
+        Return the standard empirical random variable with zero mean and
+        unit standard deviation.
+
+        Returns
+        -------
+        tensap.EmpiricalRandomVariable
+            The standard empirical random variable.
+
+        &#39;&#39;&#39;
+        x = np.reshape(self.sample, [-1, 1])
+        x = (x - np.tile(np.mean(x, 0), (x.shape[0], 1))) / \
+            np.tile(np.std(x, 0), (x.shape[0], 1))
+        return EmpiricalRandomVariable(np.ravel(x))
+
+    def support(self):
+        return np.array([-np.inf, np.inf])
+
+    def orthonormal_polynomials(self, *args):
+        p = tensap.EmpiricalPolynomials(self, *args)
+        m = np.mean(self.sample)
+        s = np.std(self.sample)
+        if np.abs(m) &gt; np.finfo(float).eps or \
+                np.abs(s-1) &gt; np.finfo(float).eps:
+            p = tensap.ShiftedOrthonormalPolynomials(p, m, s)
+        return p
+
+    def get_parameters(self):
+        return self.sample, self.bandwidth
+
+    def cdf(self, x):
+        kde = scipy.stats.gaussian_kde(self.sample, self.bandwidth)
+        return np.vectorize(lambda z: kde.integrate_box_1d(-np.inf, z))(x)
+
+    def icdf(self, x, *args, **kwargs):
+        &#39;&#39;&#39;
+        Compute the inverse cumulative distribution function (icdf) of the
+        RandomVariable at points x.
+
+        Parameters
+        ----------
+        x : float or list or numpy.ndarray
+            The points at which the icdf is to be evaluated.
+        *args, **kwargs : tuples
+            Additional parameters for scipy.optimize&#39;s function brentq.
+
+        Returns
+        -------
+        numpy.ndarray
+            The evaluations of the icdf at points x.
+
+        &#39;&#39;&#39;
+        # TODO Optimize the method
+        sup = self.truncated_support()
+        return np.vectorize(lambda p: scipy.optimize.brentq(
+            lambda y: self.cdf(y)-p, sup[0], sup[1], *args, **kwargs))(x)
+
+    def pdf(self, x):
+        xi, h = self.get_parameters()
+        n = xi.size
+
+        X = np.tile(np.reshape(x, [1, -1]), (n, 1))
+        XI = np.tile(np.reshape(xi, [-1, 1]), (1, np.size(x)))
+        return np.ravel(1/(n*h*np.sqrt(2*np.pi)) *
+                        np.sum(np.exp(-0.5*(X-XI)**2/h**2), 0))
+
+    def random_variable_statistics(self):
+        return np.mean(self.sample), np.var(self.sample)
+
+    def random(self, n=1):
+        return self.icdf(np.random.rand(int(n)))</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="tensap.functions.measures.random_variable.RandomVariable" href="random_variable.html#tensap.functions.measures.random_variable.RandomVariable">RandomVariable</a></li>
+<li><a title="tensap.functions.measures.probability_measure.ProbabilityMeasure" href="probability_measure.html#tensap.functions.measures.probability_measure.ProbabilityMeasure">ProbabilityMeasure</a></li>
+<li><a title="tensap.functions.measures.measure.Measure" href="measure.html#tensap.functions.measures.measure.Measure">Measure</a></li>
+<li>abc.ABC</li>
+</ul>
+<h3>Methods</h3>
+<dl>
+<dt id="tensap.functions.measures.empirical_random_variable.EmpiricalRandomVariable.get_standard_random_variable"><code class="name flex">
+<span>def <span class="ident">get_standard_random_variable</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Return the standard empirical random variable with zero mean and
+unit standard deviation.</p>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>tensap.EmpiricalRandomVariable</code></dt>
+<dd>The standard empirical random variable.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_standard_random_variable(self):
+    &#39;&#39;&#39;
+    Return the standard empirical random variable with zero mean and
+    unit standard deviation.
+
+    Returns
+    -------
+    tensap.EmpiricalRandomVariable
+        The standard empirical random variable.
+
+    &#39;&#39;&#39;
+    x = np.reshape(self.sample, [-1, 1])
+    x = (x - np.tile(np.mean(x, 0), (x.shape[0], 1))) / \
+        np.tile(np.std(x, 0), (x.shape[0], 1))
+    return EmpiricalRandomVariable(np.ravel(x))</code></pre>
+</details>
+</dd>
+<dt id="tensap.functions.measures.empirical_random_variable.EmpiricalRandomVariable.icdf"><code class="name flex">
+<span>def <span class="ident">icdf</span></span>(<span>self, x, *args, **kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Compute the inverse cumulative distribution function (icdf) of the
+RandomVariable at points x.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>x</code></strong> :&ensp;<code>float</code> or <code>list</code> or <code>numpy.ndarray</code></dt>
+<dd>The points at which the icdf is to be evaluated.</dd>
+<dt><strong><code>*args</code></strong>, <strong><code>**kwargs</code></strong> :&ensp;<code>tuples</code></dt>
+<dd>Additional parameters for scipy.optimize's function brentq.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>numpy.ndarray</code></dt>
+<dd>The evaluations of the icdf at points x.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def icdf(self, x, *args, **kwargs):
+    &#39;&#39;&#39;
+    Compute the inverse cumulative distribution function (icdf) of the
+    RandomVariable at points x.
+
+    Parameters
+    ----------
+    x : float or list or numpy.ndarray
+        The points at which the icdf is to be evaluated.
+    *args, **kwargs : tuples
+        Additional parameters for scipy.optimize&#39;s function brentq.
+
+    Returns
+    -------
+    numpy.ndarray
+        The evaluations of the icdf at points x.
+
+    &#39;&#39;&#39;
+    # TODO Optimize the method
+    sup = self.truncated_support()
+    return np.vectorize(lambda p: scipy.optimize.brentq(
+        lambda y: self.cdf(y)-p, sup[0], sup[1], *args, **kwargs))(x)</code></pre>
+</details>
+</dd>
+<dt id="tensap.functions.measures.empirical_random_variable.EmpiricalRandomVariable.shift"><code class="name flex">
+<span>def <span class="ident">shift</span></span>(<span>self, b, s)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Shift the random variable using the provided bias and scaling factor.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>bias</code></strong> :&ensp;<code>float</code></dt>
+<dd>The bias.</dd>
+<dt><strong><code>scaling</code></strong> :&ensp;<code>float</code></dt>
+<dd>The scaling factor.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>tensap.EmpiricalRandomVariable</code></dt>
+<dd>The shifted random variable.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def shift(self, b, s):
+    &#39;&#39;&#39;
+    Shift the random variable using the provided bias and scaling factor.
+
+    Parameters
+    ----------
+    bias : float
+        The bias.
+    scaling : float
+        The scaling factor.
+
+    Returns
+    -------
+    tensap.EmpiricalRandomVariable
+        The shifted random variable.
+
+    &#39;&#39;&#39;
+    return EmpiricalRandomVariable(s*self.sample+b)</code></pre>
+</details>
+</dd>
+</dl>
+<h3>Inherited members</h3>
+<ul class="hlist">
+<li><code><b><a title="tensap.functions.measures.random_variable.RandomVariable" href="random_variable.html#tensap.functions.measures.random_variable.RandomVariable">RandomVariable</a></b></code>:
+<ul class="hlist">
+<li><code><a title="tensap.functions.measures.random_variable.RandomVariable.cdf" href="random_variable.html#tensap.functions.measures.random_variable.RandomVariable.cdf">cdf</a></code></li>
+<li><code><a title="tensap.functions.measures.random_variable.RandomVariable.cdf_plot" href="random_variable.html#tensap.functions.measures.random_variable.RandomVariable.cdf_plot">cdf_plot</a></code></li>
+<li><code><a title="tensap.functions.measures.random_variable.RandomVariable.discretize" href="random_variable.html#tensap.functions.measures.random_variable.RandomVariable.discretize">discretize</a></code></li>
+<li><code><a title="tensap.functions.measures.random_variable.RandomVariable.gauss_integration_rule" href="random_variable.html#tensap.functions.measures.random_variable.RandomVariable.gauss_integration_rule">gauss_integration_rule</a></code></li>
+<li><code><a title="tensap.functions.measures.random_variable.RandomVariable.get_parameters" href="random_variable.html#tensap.functions.measures.random_variable.RandomVariable.get_parameters">get_parameters</a></code></li>
+<li><code><a title="tensap.functions.measures.random_variable.RandomVariable.icdf_plot" href="random_variable.html#tensap.functions.measures.random_variable.RandomVariable.icdf_plot">icdf_plot</a></code></li>
+<li><code><a title="tensap.functions.measures.random_variable.RandomVariable.iso_probabilistic_grid" href="random_variable.html#tensap.functions.measures.random_variable.RandomVariable.iso_probabilistic_grid">iso_probabilistic_grid</a></code></li>
+<li><code><a title="tensap.functions.measures.random_variable.RandomVariable.lhs_random" href="random_variable.html#tensap.functions.measures.random_variable.RandomVariable.lhs_random">lhs_random</a></code></li>
+<li><code><a title="tensap.functions.measures.random_variable.RandomVariable.likelihood" href="random_variable.html#tensap.functions.measures.random_variable.RandomVariable.likelihood">likelihood</a></code></li>
+<li><code><a title="tensap.functions.measures.random_variable.RandomVariable.mass" href="measure.html#tensap.functions.measures.measure.Measure.mass">mass</a></code></li>
+<li><code><a title="tensap.functions.measures.random_variable.RandomVariable.max" href="random_variable.html#tensap.functions.measures.random_variable.RandomVariable.max">max</a></code></li>
+<li><code><a title="tensap.functions.measures.random_variable.RandomVariable.mean" href="random_variable.html#tensap.functions.measures.random_variable.RandomVariable.mean">mean</a></code></li>
+<li><code><a title="tensap.functions.measures.random_variable.RandomVariable.min" href="random_variable.html#tensap.functions.measures.random_variable.RandomVariable.min">min</a></code></li>
+<li><code><a title="tensap.functions.measures.random_variable.RandomVariable.moment" href="random_variable.html#tensap.functions.measures.random_variable.RandomVariable.moment">moment</a></code></li>
+<li><code><a title="tensap.functions.measures.random_variable.RandomVariable.ndim" href="random_variable.html#tensap.functions.measures.random_variable.RandomVariable.ndim">ndim</a></code></li>
+<li><code><a title="tensap.functions.measures.random_variable.RandomVariable.number_of_parameters" href="random_variable.html#tensap.functions.measures.random_variable.RandomVariable.number_of_parameters">number_of_parameters</a></code></li>
+<li><code><a title="tensap.functions.measures.random_variable.RandomVariable.orthonormal_polynomials" href="random_variable.html#tensap.functions.measures.random_variable.RandomVariable.orthonormal_polynomials">orthonormal_polynomials</a></code></li>
+<li><code><a title="tensap.functions.measures.random_variable.RandomVariable.pdf" href="random_variable.html#tensap.functions.measures.random_variable.RandomVariable.pdf">pdf</a></code></li>
+<li><code><a title="tensap.functions.measures.random_variable.RandomVariable.pdf_plot" href="random_variable.html#tensap.functions.measures.random_variable.RandomVariable.pdf_plot">pdf_plot</a></code></li>
+<li><code><a title="tensap.functions.measures.random_variable.RandomVariable.plot" href="random_variable.html#tensap.functions.measures.random_variable.RandomVariable.plot">plot</a></code></li>
+<li><code><a title="tensap.functions.measures.random_variable.RandomVariable.random" href="random_variable.html#tensap.functions.measures.random_variable.RandomVariable.random">random</a></code></li>
+<li><code><a title="tensap.functions.measures.random_variable.RandomVariable.random_variable_statistics" href="random_variable.html#tensap.functions.measures.random_variable.RandomVariable.random_variable_statistics">random_variable_statistics</a></code></li>
+<li><code><a title="tensap.functions.measures.random_variable.RandomVariable.std" href="random_variable.html#tensap.functions.measures.random_variable.RandomVariable.std">std</a></code></li>
+<li><code><a title="tensap.functions.measures.random_variable.RandomVariable.support" href="measure.html#tensap.functions.measures.measure.Measure.support">support</a></code></li>
+<li><code><a title="tensap.functions.measures.random_variable.RandomVariable.transfer" href="random_variable.html#tensap.functions.measures.random_variable.RandomVariable.transfer">transfer</a></code></li>
+<li><code><a title="tensap.functions.measures.random_variable.RandomVariable.truncated_support" href="random_variable.html#tensap.functions.measures.random_variable.RandomVariable.truncated_support">truncated_support</a></code></li>
+<li><code><a title="tensap.functions.measures.random_variable.RandomVariable.variance" href="random_variable.html#tensap.functions.measures.random_variable.RandomVariable.variance">variance</a></code></li>
+</ul>
+</li>
+</ul>
+</dd>
+</dl>
+</section>
+</article>
+<nav id="sidebar">
+<h1>Index</h1>
+<div class="toc">
+<ul></ul>
+</div>
+<ul id="index">
+<li><h3>Super-module</h3>
+<ul>
+<li><code><a title="tensap.functions.measures" href="index.html">tensap.functions.measures</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-classes">Classes</a></h3>
+<ul>
+<li>
+<h4><code><a title="tensap.functions.measures.empirical_random_variable.EmpiricalRandomVariable" href="#tensap.functions.measures.empirical_random_variable.EmpiricalRandomVariable">EmpiricalRandomVariable</a></code></h4>
+<ul class="">
+<li><code><a title="tensap.functions.measures.empirical_random_variable.EmpiricalRandomVariable.get_standard_random_variable" href="#tensap.functions.measures.empirical_random_variable.EmpiricalRandomVariable.get_standard_random_variable">get_standard_random_variable</a></code></li>
+<li><code><a title="tensap.functions.measures.empirical_random_variable.EmpiricalRandomVariable.icdf" href="#tensap.functions.measures.empirical_random_variable.EmpiricalRandomVariable.icdf">icdf</a></code></li>
+<li><code><a title="tensap.functions.measures.empirical_random_variable.EmpiricalRandomVariable.shift" href="#tensap.functions.measures.empirical_random_variable.EmpiricalRandomVariable.shift">shift</a></code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.8.1</a>.</p>
+</footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad()</script>
+</body>
+</html>

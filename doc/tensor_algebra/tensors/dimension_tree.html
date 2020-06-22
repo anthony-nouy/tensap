@@ -1,0 +1,2576 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+<meta name="generator" content="pdoc 0.8.1" />
+<title>tensap.tensor_algebra.tensors.dimension_tree API documentation</title>
+<meta name="description" content="Module dimension_tree …" />
+<link href='https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.min.css' rel='stylesheet'>
+<link href='https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/8.0.0/sanitize.min.css' rel='stylesheet'>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css" rel="stylesheet">
+<style>.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}.admonition{padding:.1em .5em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>tensap.tensor_algebra.tensors.dimension_tree</code></h1>
+</header>
+<section id="section-intro">
+<p>Module dimension_tree.</p>
+<p>Copyright (c) 2020, Anthony Nouy, Erwan Grelier
+This file is part of tensap (tensor approximation package).</p>
+<p>tensap is free software: you can redistribute it and/or modify
+it under the terms of the GNU Lesser General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.</p>
+<p>tensap is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+See the
+GNU Lesser General Public License for more details.</p>
+<p>You should have received a copy of the GNU Lesser General Public License
+along with tensap.
+If not, see <a href="https://www.gnu.org/licenses/">https://www.gnu.org/licenses/</a>.</p>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">&#39;&#39;&#39;
+Module dimension_tree.
+
+Copyright (c) 2020, Anthony Nouy, Erwan Grelier
+This file is part of tensap (tensor approximation package).
+
+tensap is free software: you can redistribute it and/or modify
+it under the terms of the GNU Lesser General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+tensap is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU Lesser General Public License for more details.
+
+You should have received a copy of the GNU Lesser General Public License
+along with tensap.  If not, see &lt;https://www.gnu.org/licenses/&gt;.
+
+&#39;&#39;&#39;
+
+import numpy as np
+
+
+class DimensionTree:
+    &#39;&#39;&#39;
+    Class DimensionTree.
+
+    Attributes
+    ----------
+    adjacency_matrix : numpy.ndarray
+        Adjacency matrix. The nth row indicates the sons of the (n+1)th node.
+        The nth column indicates the parents of the (n+1)th node.
+    arity : int
+        Maximal number of children.
+    _child_number : numpy.ndarray
+        _child_number[n] = k means that (n+1)th node is the kth child of its
+        parent.
+    _children : numpy.ndarray
+        _children[:,n] is the set of indices of the children of (n+1)th node.
+    dim2ind : numpy.ndarray
+        dim2ind[k] is the index of the node (leaf) corresponding to
+        dimension k.
+    dims : list
+        dims[n] is the set of dimensions associated with node n+1.
+    internal_nodes : numpy.ndarray
+        Indices of internal (non leaf) nodes.
+    is_leaf : numpy.ndarray
+        is_leaf[n] = True if the (n+1)th node is a leaf and False otherwise.
+    level : numpy.ndarray
+        level[n] is the level of the (n+1)th node.
+    nb_nodes : int
+        Number of nodes.
+    nodes_parent_of_leaves : numpy.ndarray
+        Indices of nodes which are parents of leaves.
+    _parent : numpy.ndarray
+        _parent[n] is the index of the parent of the (n+1)th node.
+    root : numpy.int64
+        Index of the root node.
+    sibling : numpy.ndarray
+        sibling[:,n] contains the indices of the children of the parent of
+        the (n+1)th node.
+    nodes_indices : numpy.ndarray
+        Indices of the nodes of the tree.
+    plot_options : dict
+        Options for plotting the tree.
+
+    &#39;&#39;&#39;
+
+    def __init__(self, dim2ind, adjacency_matrix):
+        &#39;&#39;&#39;
+        Constructor of the class DimensionTree.
+
+        Create a dimension partition tree over D = {1,...,d} from an
+        adjacency matrix.
+
+        Parameters
+        ----------
+        dim2ind : numpy.ndarray or list
+            dim2ind[k] is the index of the node (leaf) corresponding to
+            dimension k.
+        adjacency_matrix : numpy.ndarray or list of a list
+            The nth row indicates the sons of the (n+1)th node. The nth column
+            indicates the parents of the (n+1)th node.
+
+        Returns
+        -------
+        None.
+
+        &#39;&#39;&#39;
+        self.dim2ind = np.array(dim2ind)
+        self.adjacency_matrix = np.array(adjacency_matrix)
+        self.plot_options = {&#39;level_alignment&#39;: False}
+
+        self._precompute_attributes()
+        self.update_dims_from_leaves()
+
+    def __repr__(self):
+        return (&#39;&lt;DimensionTree:{n}&#39; +
+                &#39;{t}nb_nodes = {},{n}&#39; +
+                &#39;{t}arity = {},{n}&#39; +
+                &#39;{t}dim2ind = {},{n}&#39; +
+                &#39;{t}is_leaf = {},{n}&#39;).format(self.nb_nodes,
+                                              self.arity,
+                                              self.dim2ind,
+                                              self.is_leaf,
+                                              t=&#39;\t&#39;, n=&#39;\n&#39;)
+
+    def permute(self, sigma):
+        &#39;&#39;&#39;
+        Permute the dimensions of the DimensionTree.
+
+        Parameters
+        ----------
+        sigma : list
+            Indicates the permutation of the dimensions.
+
+        Returns
+        -------
+        DimensionTree
+            A DimensionTree with permuted dimensions.
+
+        &#39;&#39;&#39;
+        dim2ind = np.copy(self.dim2ind)
+        dim2ind[sigma] = dim2ind.flatten()
+        return DimensionTree(dim2ind, np.copy(self.adjacency_matrix))
+
+    def ipermute(self, sigma):
+        &#39;&#39;&#39;
+        Inverse permutation of the dimensions of the DimensionTree.
+
+        Parameters
+        ----------
+        sigma : list
+            Indicates the permutation of the dimensions.
+
+        Returns
+        -------
+        DimensionTree
+            A DimensionTree with permuted dimensions.
+
+        &#39;&#39;&#39;
+        dim2ind = np.copy(self.dim2ind)
+        dim2ind = dim2ind[sigma].flatten()
+        return DimensionTree(dim2ind, np.copy(self.adjacency_matrix))
+
+    def __eq__(self, T):
+        is_equal = (len(self.dim2ind) == len(T.dim2ind)) and \
+            (self.nb_nodes == T.nb_nodes) and \
+            (np.max(self.level) == np.max(T.level))
+
+        if is_equal:
+            for level in np.arange(1, np.max(self.level)+1):
+                nodes1 = self.nodes_with_level(level)
+                nodes2 = T.nodes_with_level(level)
+                if len(nodes1) != len(nodes2):
+                    return is_equal
+                dims1 = [self.dims[i] for i in nodes1-1]
+                dims2 = [T.dims[i] for i in nodes2-1]
+                for i, dim1 in enumerate(dims1):
+                    for dim2 in dims2:
+                        if np.array_equal(np.sort(dim1),
+                                          np.sort(dim2)):
+                            nodes1[i] = 0
+                            break
+                if any(nodes1 != 0):
+                    is_equal = False
+                    return is_equal
+        return is_equal
+
+    def __ne__(self, T):
+        return not self == T
+
+    def children(self, nod):
+        &#39;&#39;&#39;
+        Return the children of a given node.
+
+        Parameters
+        ----------
+        nod : int
+            Node for which to compute the children.
+
+        Returns
+        -------
+        list
+            List of children of nod.
+
+        &#39;&#39;&#39;
+        children = self._children[:, nod-1]
+        return children[children != 0]
+
+    def child_number(self, nod):
+        &#39;&#39;&#39;
+        Return the child number of nod.
+
+        Parameters
+        ----------
+        nod : int
+            Node for which to compute the child number.
+
+        Returns
+        -------
+        int
+            The child number.
+
+        &#39;&#39;&#39;
+        return self._child_number[nod-1]
+
+    def parent(self, nod):
+        &#39;&#39;&#39;
+        Return the parent of a given node.
+
+        Parameters
+        ----------
+        nod : int
+            Node for which to compute the parent.
+
+        Returns
+        -------
+        int
+            The parent of nod.
+
+        &#39;&#39;&#39;
+        return self._parent[nod-1]
+
+    def ascendants(self, nod):
+        &#39;&#39;&#39;
+        Return the ascendants of a given node.
+
+        Parameters
+        ----------
+        nod : int
+            Node for which to compute the ascendants.
+
+        Returns
+        -------
+        anod : list
+            List of ascendants of nod.
+
+        &#39;&#39;&#39;
+        anod = []
+        pnod = self.parent(nod)
+        while pnod:
+            anod.append(pnod)
+            pnod = self.parent(pnod)
+        return np.array(anod)
+
+    def descendants(self, nod):
+        &#39;&#39;&#39;
+        Return the descendants of a given node.
+
+        Parameters
+        ----------
+        nod : int
+            Node for which to compute the descendants.
+
+        Returns
+        -------
+        dnod : list
+            List of descendants of nod.
+
+        &#39;&#39;&#39;
+        dnod = np.array([], dtype=int)
+        chnod = self.children(nod)
+        chnod = chnod[chnod != 0]
+        if len(chnod) != 0:
+            for children in chnod:
+                dnod = np.concatenate((dnod, [children],
+                                       self.descendants(children)))
+        return np.array(dnod)
+
+    def sub_dimension_tree(self, root):
+        &#39;&#39;&#39;
+        Extract a sub dimension tree.
+
+        The attribute dim2ind of the sub dimension tree gives the nodes indices
+        corresponding to the dimensions in T.dims[r] (not sorted).
+
+        Parameters
+        ----------
+        root : int
+            Index of the node which is the root of the sub dimension tree.
+
+        Returns
+        -------
+        DimensionTree
+            Sub dimension tree.
+        nod : np.array
+            Extracted nodes from T.
+
+        &#39;&#39;&#39;
+        dims = self.dims[root-1]
+        nod = np.concatenate(([root], self.descendants(root)))
+        adj_mat = np.copy(self.adjacency_matrix[nod[:, None]-1, nod-1])
+        dim2ind = np.nonzero(np.isin(nod, self.dim2ind[dims]))[0] + 1
+        return DimensionTree(dim2ind, adj_mat), nod
+
+    def node_with_dims(self, dims):
+        &#39;&#39;&#39;
+        Return the index of the node with given set of dimensions.
+
+        Return the index of the node corresponding to dimensions dims or an
+        empty array if no node contains these dimensions.
+
+        Parameters
+        ----------
+        dims : list or numpy.ndarray
+            List of dimensions.
+
+        Returns
+        -------
+        numpy.ndarray
+            Index of the node with the given set of dimensions dims.
+
+        &#39;&#39;&#39;
+        dims = np.sort(dims)
+        nod = [np.array_equal(dims, np.sort(x)) for x in self.dims]
+        return np.nonzero(nod)[0]+1
+
+    def update_dims_from_leaves(self):
+        &#39;&#39;&#39;
+        Update the dimensions of all nodes from the dimensions of the leaves
+        given in T.dim2ind.
+
+        Returns
+        -------
+        DimensionTree
+            The DimensionTree object with updated attribute dims.
+
+        &#39;&#39;&#39;
+        _dims = np.zeros(self.nb_nodes, dtype=int)
+        _dims[self.dim2ind-1] = np.arange(len(self.dim2ind))
+        _dims = np.split(_dims, len(_dims))
+
+        for level in np.arange(np.max(self.level), -1, -1):
+            nod_level = self.nodes_with_level(level)
+            for nod in nod_level:
+                if not self.is_leaf[nod-1]:
+                    children = self._children[:, nod-1]
+                    _dims[nod-1] = np.hstack([_dims[i-1] for i in
+                                              children[children != 0]])
+
+        self.dims = _dims
+        return self
+
+    def nodes_with_level(self, level):
+        &#39;&#39;&#39;
+        Return the indices of the nodes at a given level.
+
+        Parameters
+        ----------
+        level : int
+            Level.
+
+        Returns
+        -------
+        numpy.ndarray
+            Nodes with given level.
+
+        &#39;&#39;&#39;
+        ind_lvl = np.repeat(False, self.nb_nodes)
+        ind_lvl[self.level == level] = True
+        return np.nonzero(ind_lvl)[0]+1
+
+    def tree_layout(self):
+        &#39;&#39;&#39;
+        Return the layout of a tree.
+
+        Returns
+        -------
+        dict
+            The layout of the tree, used for plotting.
+
+        &#39;&#39;&#39;
+        def post_order(T, root=None):
+            &#39;&#39;&#39;
+            Return the post-ordering of a tree.
+
+            Parameters
+            ----------
+            T : tensap.DimensionTree
+            The dimension tree.
+            root : int, optional
+                The root of the current subtree. The default is None,
+                indicating to use T.root.
+
+            Returns
+            -------
+            post : numpy.ndarray
+                The post-ordering of the tree or of one of its subtrees.
+
+            &#39;&#39;&#39;
+            if root is None:
+                root = T.root
+            post = np.array([], dtype=int)
+
+            ch = T.children(root)
+            if ch.size:
+                for nod in ch:
+                    post = np.concatenate((post, post_order(T, nod)))
+            post = np.concatenate((post, ch))
+            return post
+
+        post = post_order(self)
+
+        xmin = np.full(self.nb_nodes, self.nb_nodes)
+        xmax = np.zeros(self.nb_nodes)
+        y = np.zeros(self.nb_nodes)
+        n_leaves = 0
+        for nod in post:
+            if self.is_leaf[nod-1]:
+                n_leaves += 1
+                xmin[nod-1] = n_leaves
+                xmax[nod-1] = n_leaves
+                y[nod-1] = 0
+            pa = self.parent(nod)
+            xmin[pa-1] = np.min((xmin[pa-1], xmin[nod-1]))
+            xmax[pa-1] = np.max((xmax[pa-1], xmax[nod-1]))
+            y[pa-1] = np.max((y[pa-1], y[nod-1]+1))
+
+        x = (xmin + xmax) / 2
+
+        x /= (self.dim2ind.size + 1)
+        y = (y+1) / (np.max(y)+2)
+
+        if self.plot_options[&#39;level_alignment&#39;]:
+            height = np.max(y) - np.min(y)
+            for alpha in np.arange(1, self.nb_nodes+1):
+                y[alpha-1] = np.max(y) - self.level[alpha-1] * \
+                    height / np.max(self.level)
+
+        pos = [np.array([xx, yy]) for xx, yy in zip(x, y)]
+        return dict(zip(range(self.nb_nodes), pos))
+
+    def plot(self, **args):
+        &#39;&#39;&#39;
+        Plot the tree with the nodes indices.
+
+        This method requires the package igraph.
+
+        Parameters
+        ----------
+        node_color : str, optional
+            Color for the colored nodes. The default is &#39;red&#39;.
+        colored_nodes : list or numpy.ndarray, optional
+            Colored nodes. The default is [].
+
+        Returns
+        -------
+        None.
+
+        &#39;&#39;&#39;
+        self.plot_with_labels_at_nodes(self.nodes_indices, **args)
+
+    def plot_with_labels_at_nodes(self, labels, node_color=&#39;red&#39;,
+                                  colored_nodes=None, title=None):
+        &#39;&#39;&#39;
+        Plot the tree with labels at nodes.
+
+        This method requires the package igraph.
+
+        Parameters
+        ----------
+        labels : list or numpy.ndarray
+            Nodes labels.
+        node_color : str, optional
+            Color for the colored nodes. The default is &#39;red&#39;.
+        colored_nodes : list or numpy.ndarray, optional
+            Colored nodes. The default is [].
+        title : str, optional
+            The title of the plot. The default is None.
+
+        Returns
+        -------
+        None.
+
+        &#39;&#39;&#39;
+        import networkx as nx
+        import matplotlib.pyplot as plt
+
+        plt.figure()
+        g = nx.convert_matrix.from_numpy_matrix(self.adjacency_matrix)
+        pos = self.tree_layout()
+        nx.draw_networkx_nodes(g, pos,
+                               nodelist=np.setdiff1d(
+                                   np.arange(1, self.nb_nodes+1),
+                                   colored_nodes)-1,
+                               node_color=&#39;w&#39;,
+                               edgecolors=&#39;k&#39;,
+                               node_size=100)
+
+        if colored_nodes is not None:
+            nx.draw_networkx_nodes(g, pos,
+                                   nodelist=colored_nodes-1,
+                                   node_color=node_color,
+                                   edgecolors=&#39;k&#39;,
+                                   node_size=100)
+
+        nx.draw_networkx_edges(g, pos)
+        labels = dict(zip(range(self.nb_nodes), [x if x is not None
+                                                 else &#39;&#39; for x in labels]))
+        y = [x[1] for x in pos.values()]
+        min_height = np.min(y)
+        shift = (np.max(y)-np.min(y))/np.max(self.level)/2
+        pos_labels = {}
+        for k, v in pos.items():
+            if v[1] == min_height:
+                pos_labels[k] = (v[0], v[1]-shift)
+            else:
+                pos_labels[k] = (v[0], v[1]+shift)
+        nx.draw_networkx_labels(g, pos_labels, labels)
+
+        plt.axis(&#39;off&#39;)
+        plt.title(title)
+        axes = plt.gca()
+        axes.set_ylim([0, 1])
+        plt.show()
+
+    def plot_dims(self, nodes=None, **args):
+        &#39;&#39;&#39;
+        Plot the dimensions associated with the nodes of the tree.
+
+        This method requires the package igraph.
+
+        Parameters
+        ----------
+        nodes : list or numpy.ndarray, optional
+            List of leaf nodes for which to display the dimensions. The
+            default is None, the dimensions of all the leaf nodes are
+            displayed.
+        Returns
+        -------
+        None.
+
+        &#39;&#39;&#39;
+        if nodes is None:
+            nodes = self.dim2ind
+        labels = [np.nonzero(nodes == i+1)[0][0] if self.is_leaf[i] else None
+                  for i in range(self.nb_nodes)]
+        self.plot_with_labels_at_nodes(labels=labels, **args)
+
+    def _precompute_attributes(self):
+        &#39;&#39;&#39;
+        Precompute the attributes of the DimensionTree from the attributes
+        adjacency_matrix and dim2ind.
+
+        Returns
+        -------
+        DimensionTree
+            A DimensionTree with updated attributes.
+
+        &#39;&#39;&#39;
+        self.nb_nodes = self.adjacency_matrix.shape[0]
+        self.nodes_indices = np.arange(1, self.nb_nodes+1)
+        self.arity = np.max(np.sum(self.adjacency_matrix, 1))
+        self._parent = np.matmul(range(1, self.nb_nodes+1),
+                                 self.adjacency_matrix)
+        self.root = self.nodes_indices[self._parent == 0][0]
+        self.is_leaf = np.repeat(False, self.nb_nodes)
+        self.is_leaf[self.dim2ind-1] = True
+
+        _children = np.zeros([self.arity, self.nb_nodes], dtype=int)
+        for i in range(self.nb_nodes):
+            ind = np.nonzero(self.adjacency_matrix[i, :])[0]
+            _children[0:len(ind), i] = ind+1
+        self._children = _children
+
+        _child_number = np.zeros(self.nb_nodes, dtype=int)
+        for i in range(self.nb_nodes):
+            if self._parent[i]:
+                ind1 = self._children[:, self._parent[i]-1]
+                ind2 = np.nonzero(ind1 == i+1)
+                if ind2[0].size:
+                    _child_number[i] = ind2[0][0]+1
+        self._child_number = _child_number
+
+        _sibling = np.zeros([self.arity, self.nb_nodes], dtype=int)
+        for i in range(self.nb_nodes):
+            if self._parent[i]:
+                _sibling[:, i] = self._children[:, self._parent[i]-1]
+        self.sibling = _sibling
+
+        _level = np.zeros(self.nb_nodes, dtype=int)
+        ind = self._children[:, self.root-1]
+        ind = ind[ind != 0]
+        level = 1
+        while ind.size:
+            _level[ind-1] = level
+            ind = np.reshape(self._children[:, ind-1], [1, -1])
+            ind = ind[np.nonzero(ind)]
+            level += 1
+        self.level = _level
+
+        self.internal_nodes = np.setdiff1d(self.nodes_indices, self.dim2ind)
+        self.nodes_parent_of_leaves = np.unique(self._parent[self.dim2ind-1])
+        return self
+
+    @staticmethod
+    def trivial(order):
+        &#39;&#39;&#39;
+        Create a dimension tree with one level.
+
+        Parameters
+        ----------
+        order : int
+            Order of the tensor (dimension).
+
+        Returns
+        -------
+        DimensionTree
+            Trivial dimension tree.
+
+        &#39;&#39;&#39;
+        d2i = np.arange(2, order+2)
+        adj_mat = np.zeros([order+1]*2, dtype=int)
+        adj_mat[0, 1:] = 1
+        return DimensionTree(d2i, adj_mat)
+
+    @staticmethod
+    def linear(order):
+        &#39;&#39;&#39;
+        Create a linear dimension tree.
+
+        Parameters
+        ----------
+        order : int
+            Order of the tensor (dimension).
+
+        Returns
+        -------
+        DimensionTree
+            Linear dimension tree.
+
+        &#39;&#39;&#39;
+        order = np.array(order)
+        if order.size == 1:
+            dim = order
+            order = np.arange(dim)
+        else:
+            dim = order.size
+            order -= 1
+
+        d2i = np.concatenate(([2*dim-2], 2*np.arange(dim-1, 0, -1)+1))
+        adj_mat = np.zeros([2*dim-1]*2, dtype=int)
+        adj_mat[0, 1:3] = 1
+        for level in range(dim-2):
+            adj_mat[2*level+1, 2*level+3] = 1
+            adj_mat[2*level+1, 2*level+4] = 1
+        d2i[order] = d2i.flatten()
+        return DimensionTree(d2i, adj_mat)
+
+    @staticmethod
+    def balanced(order):
+        &#39;&#39;&#39;
+        Create a balanced dimension tree.
+
+        Parameters
+        ----------
+        order : int
+            Order of the tensor (dimension).
+
+        Returns
+        -------
+        DimensionTree
+            Balanced dimension tree.
+
+        &#39;&#39;&#39;
+        order = np.array(order)
+        if order.size == 1:
+            dim = order
+            order = range(dim)
+        else:
+            dim = order.size
+            order -= 1
+
+        d2i = np.arange(dim, 2*dim)
+        adj_mat = np.zeros([2*dim-1]*2, dtype=int)
+        adj_mat[0, 1:3] = 1
+        for i in range(1, dim-1):
+            adj_mat[i, 2*i+1:2*i+3] = 1
+        d2i[order] = d2i.flatten()
+        return DimensionTree(d2i, adj_mat)
+
+    @staticmethod
+    def random(order, arity=2):
+        &#39;&#39;&#39;
+        Create a random dimension tree over {1,...,order}.
+
+        If arity is an interval [amin,amin], then the number of children of a
+        node is randomly drawn from the uniform distribution over
+        {amin,...,amax}.
+
+        Parameters
+        ----------
+        order : int
+            Order of the tensor (dimension).
+        arity : int, list or numpy.ndarray, optional
+            Arity or interval for the arity. The default is 2.
+
+        Returns
+        -------
+        DimensionTree
+            Random dimension tree.
+
+        &#39;&#39;&#39;
+        arity = np.array(arity)
+        if arity.size == 1:
+            arity = np.repeat(arity, 2)
+        arity[1] += 1
+        dims_nodes = [np.arange(order)]
+        nb_nodes = 1
+        new_nodes = [1]
+        adj_mat = np.zeros([2*order]*2, dtype=int)
+        dim2ind = np.zeros(order, dtype=int)
+
+        while len(new_nodes) != 0:
+            parent_nodes = new_nodes
+            new_nodes = []
+            for pnod in parent_nodes:
+                dims = dims_nodes[pnod-1]
+                if len(dims) == 1:
+                    dim2ind[dims-1] = pnod
+                else:
+                    pnod_arity = np.min(np.append(np.random.randint(*arity),
+                                                  dims.size))
+                    for k in range(pnod_arity):
+                        nb_nodes += 1
+                        new_nodes.append(nb_nodes)
+                        adj_mat[pnod-1, nb_nodes-1] = 1
+                        if k == pnod_arity-1:
+                            dims_nodes.append(dims)
+                            dims = []
+                        else:
+                            n_children = np.max(np.append(np.random.randint(
+                                len(dims)-pnod_arity+k+2), 1))
+                            perm = np.random.\
+                                permutation(len(dims))[:n_children]
+                            dims_nodes.append(dims[perm])
+                            dims = np.delete(dims, perm)
+                        if len(dims) == 0:
+                            break
+        adj_mat = adj_mat[:nb_nodes, :nb_nodes]
+        return DimensionTree(dim2ind, adj_mat)</code></pre>
+</details>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-classes">Classes</h2>
+<dl>
+<dt id="tensap.tensor_algebra.tensors.dimension_tree.DimensionTree"><code class="flex name class">
+<span>class <span class="ident">DimensionTree</span></span>
+<span>(</span><span>dim2ind, adjacency_matrix)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Class DimensionTree.</p>
+<h2 id="attributes">Attributes</h2>
+<dl>
+<dt><strong><code>adjacency_matrix</code></strong> :&ensp;<code>numpy.ndarray</code></dt>
+<dd>Adjacency matrix. The nth row indicates the sons of the (n+1)th node.
+The nth column indicates the parents of the (n+1)th node.</dd>
+<dt><strong><code>arity</code></strong> :&ensp;<code>int</code></dt>
+<dd>Maximal number of children.</dd>
+<dt><strong><code>_child_number</code></strong> :&ensp;<code>numpy.ndarray</code></dt>
+<dd>_child_number[n] = k means that (n+1)th node is the kth child of its
+parent.</dd>
+<dt><strong><code>_children</code></strong> :&ensp;<code>numpy.ndarray</code></dt>
+<dd>_children[:,n] is the set of indices of the children of (n+1)th node.</dd>
+<dt><strong><code>dim2ind</code></strong> :&ensp;<code>numpy.ndarray</code></dt>
+<dd>dim2ind[k] is the index of the node (leaf) corresponding to
+dimension k.</dd>
+<dt><strong><code>dims</code></strong> :&ensp;<code>list</code></dt>
+<dd>dims[n] is the set of dimensions associated with node n+1.</dd>
+<dt><strong><code>internal_nodes</code></strong> :&ensp;<code>numpy.ndarray</code></dt>
+<dd>Indices of internal (non leaf) nodes.</dd>
+<dt><strong><code>is_leaf</code></strong> :&ensp;<code>numpy.ndarray</code></dt>
+<dd>is_leaf[n] = True if the (n+1)th node is a leaf and False otherwise.</dd>
+<dt><strong><code>level</code></strong> :&ensp;<code>numpy.ndarray</code></dt>
+<dd>level[n] is the level of the (n+1)th node.</dd>
+<dt><strong><code>nb_nodes</code></strong> :&ensp;<code>int</code></dt>
+<dd>Number of nodes.</dd>
+<dt><strong><code>nodes_parent_of_leaves</code></strong> :&ensp;<code>numpy.ndarray</code></dt>
+<dd>Indices of nodes which are parents of leaves.</dd>
+<dt><strong><code>_parent</code></strong> :&ensp;<code>numpy.ndarray</code></dt>
+<dd>_parent[n] is the index of the parent of the (n+1)th node.</dd>
+<dt><strong><code>root</code></strong> :&ensp;<code>numpy.int64</code></dt>
+<dd>Index of the root node.</dd>
+<dt><strong><code>sibling</code></strong> :&ensp;<code>numpy.ndarray</code></dt>
+<dd>sibling[:,n] contains the indices of the children of the parent of
+the (n+1)th node.</dd>
+<dt><strong><code>nodes_indices</code></strong> :&ensp;<code>numpy.ndarray</code></dt>
+<dd>Indices of the nodes of the tree.</dd>
+<dt><strong><code>plot_options</code></strong> :&ensp;<code>dict</code></dt>
+<dd>Options for plotting the tree.</dd>
+</dl>
+<p>Constructor of the class DimensionTree.</p>
+<p>Create a dimension partition tree over D = {1,&hellip;,d} from an
+adjacency matrix.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>dim2ind</code></strong> :&ensp;<code>numpy.ndarray</code> or <code>list</code></dt>
+<dd>dim2ind[k] is the index of the node (leaf) corresponding to
+dimension k.</dd>
+<dt><strong><code>adjacency_matrix</code></strong> :&ensp;<code>numpy.ndarray</code> or <code>list</code> of <code>a list</code></dt>
+<dd>The nth row indicates the sons of the (n+1)th node. The nth column
+indicates the parents of the (n+1)th node.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<p>None.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class DimensionTree:
+    &#39;&#39;&#39;
+    Class DimensionTree.
+
+    Attributes
+    ----------
+    adjacency_matrix : numpy.ndarray
+        Adjacency matrix. The nth row indicates the sons of the (n+1)th node.
+        The nth column indicates the parents of the (n+1)th node.
+    arity : int
+        Maximal number of children.
+    _child_number : numpy.ndarray
+        _child_number[n] = k means that (n+1)th node is the kth child of its
+        parent.
+    _children : numpy.ndarray
+        _children[:,n] is the set of indices of the children of (n+1)th node.
+    dim2ind : numpy.ndarray
+        dim2ind[k] is the index of the node (leaf) corresponding to
+        dimension k.
+    dims : list
+        dims[n] is the set of dimensions associated with node n+1.
+    internal_nodes : numpy.ndarray
+        Indices of internal (non leaf) nodes.
+    is_leaf : numpy.ndarray
+        is_leaf[n] = True if the (n+1)th node is a leaf and False otherwise.
+    level : numpy.ndarray
+        level[n] is the level of the (n+1)th node.
+    nb_nodes : int
+        Number of nodes.
+    nodes_parent_of_leaves : numpy.ndarray
+        Indices of nodes which are parents of leaves.
+    _parent : numpy.ndarray
+        _parent[n] is the index of the parent of the (n+1)th node.
+    root : numpy.int64
+        Index of the root node.
+    sibling : numpy.ndarray
+        sibling[:,n] contains the indices of the children of the parent of
+        the (n+1)th node.
+    nodes_indices : numpy.ndarray
+        Indices of the nodes of the tree.
+    plot_options : dict
+        Options for plotting the tree.
+
+    &#39;&#39;&#39;
+
+    def __init__(self, dim2ind, adjacency_matrix):
+        &#39;&#39;&#39;
+        Constructor of the class DimensionTree.
+
+        Create a dimension partition tree over D = {1,...,d} from an
+        adjacency matrix.
+
+        Parameters
+        ----------
+        dim2ind : numpy.ndarray or list
+            dim2ind[k] is the index of the node (leaf) corresponding to
+            dimension k.
+        adjacency_matrix : numpy.ndarray or list of a list
+            The nth row indicates the sons of the (n+1)th node. The nth column
+            indicates the parents of the (n+1)th node.
+
+        Returns
+        -------
+        None.
+
+        &#39;&#39;&#39;
+        self.dim2ind = np.array(dim2ind)
+        self.adjacency_matrix = np.array(adjacency_matrix)
+        self.plot_options = {&#39;level_alignment&#39;: False}
+
+        self._precompute_attributes()
+        self.update_dims_from_leaves()
+
+    def __repr__(self):
+        return (&#39;&lt;DimensionTree:{n}&#39; +
+                &#39;{t}nb_nodes = {},{n}&#39; +
+                &#39;{t}arity = {},{n}&#39; +
+                &#39;{t}dim2ind = {},{n}&#39; +
+                &#39;{t}is_leaf = {},{n}&#39;).format(self.nb_nodes,
+                                              self.arity,
+                                              self.dim2ind,
+                                              self.is_leaf,
+                                              t=&#39;\t&#39;, n=&#39;\n&#39;)
+
+    def permute(self, sigma):
+        &#39;&#39;&#39;
+        Permute the dimensions of the DimensionTree.
+
+        Parameters
+        ----------
+        sigma : list
+            Indicates the permutation of the dimensions.
+
+        Returns
+        -------
+        DimensionTree
+            A DimensionTree with permuted dimensions.
+
+        &#39;&#39;&#39;
+        dim2ind = np.copy(self.dim2ind)
+        dim2ind[sigma] = dim2ind.flatten()
+        return DimensionTree(dim2ind, np.copy(self.adjacency_matrix))
+
+    def ipermute(self, sigma):
+        &#39;&#39;&#39;
+        Inverse permutation of the dimensions of the DimensionTree.
+
+        Parameters
+        ----------
+        sigma : list
+            Indicates the permutation of the dimensions.
+
+        Returns
+        -------
+        DimensionTree
+            A DimensionTree with permuted dimensions.
+
+        &#39;&#39;&#39;
+        dim2ind = np.copy(self.dim2ind)
+        dim2ind = dim2ind[sigma].flatten()
+        return DimensionTree(dim2ind, np.copy(self.adjacency_matrix))
+
+    def __eq__(self, T):
+        is_equal = (len(self.dim2ind) == len(T.dim2ind)) and \
+            (self.nb_nodes == T.nb_nodes) and \
+            (np.max(self.level) == np.max(T.level))
+
+        if is_equal:
+            for level in np.arange(1, np.max(self.level)+1):
+                nodes1 = self.nodes_with_level(level)
+                nodes2 = T.nodes_with_level(level)
+                if len(nodes1) != len(nodes2):
+                    return is_equal
+                dims1 = [self.dims[i] for i in nodes1-1]
+                dims2 = [T.dims[i] for i in nodes2-1]
+                for i, dim1 in enumerate(dims1):
+                    for dim2 in dims2:
+                        if np.array_equal(np.sort(dim1),
+                                          np.sort(dim2)):
+                            nodes1[i] = 0
+                            break
+                if any(nodes1 != 0):
+                    is_equal = False
+                    return is_equal
+        return is_equal
+
+    def __ne__(self, T):
+        return not self == T
+
+    def children(self, nod):
+        &#39;&#39;&#39;
+        Return the children of a given node.
+
+        Parameters
+        ----------
+        nod : int
+            Node for which to compute the children.
+
+        Returns
+        -------
+        list
+            List of children of nod.
+
+        &#39;&#39;&#39;
+        children = self._children[:, nod-1]
+        return children[children != 0]
+
+    def child_number(self, nod):
+        &#39;&#39;&#39;
+        Return the child number of nod.
+
+        Parameters
+        ----------
+        nod : int
+            Node for which to compute the child number.
+
+        Returns
+        -------
+        int
+            The child number.
+
+        &#39;&#39;&#39;
+        return self._child_number[nod-1]
+
+    def parent(self, nod):
+        &#39;&#39;&#39;
+        Return the parent of a given node.
+
+        Parameters
+        ----------
+        nod : int
+            Node for which to compute the parent.
+
+        Returns
+        -------
+        int
+            The parent of nod.
+
+        &#39;&#39;&#39;
+        return self._parent[nod-1]
+
+    def ascendants(self, nod):
+        &#39;&#39;&#39;
+        Return the ascendants of a given node.
+
+        Parameters
+        ----------
+        nod : int
+            Node for which to compute the ascendants.
+
+        Returns
+        -------
+        anod : list
+            List of ascendants of nod.
+
+        &#39;&#39;&#39;
+        anod = []
+        pnod = self.parent(nod)
+        while pnod:
+            anod.append(pnod)
+            pnod = self.parent(pnod)
+        return np.array(anod)
+
+    def descendants(self, nod):
+        &#39;&#39;&#39;
+        Return the descendants of a given node.
+
+        Parameters
+        ----------
+        nod : int
+            Node for which to compute the descendants.
+
+        Returns
+        -------
+        dnod : list
+            List of descendants of nod.
+
+        &#39;&#39;&#39;
+        dnod = np.array([], dtype=int)
+        chnod = self.children(nod)
+        chnod = chnod[chnod != 0]
+        if len(chnod) != 0:
+            for children in chnod:
+                dnod = np.concatenate((dnod, [children],
+                                       self.descendants(children)))
+        return np.array(dnod)
+
+    def sub_dimension_tree(self, root):
+        &#39;&#39;&#39;
+        Extract a sub dimension tree.
+
+        The attribute dim2ind of the sub dimension tree gives the nodes indices
+        corresponding to the dimensions in T.dims[r] (not sorted).
+
+        Parameters
+        ----------
+        root : int
+            Index of the node which is the root of the sub dimension tree.
+
+        Returns
+        -------
+        DimensionTree
+            Sub dimension tree.
+        nod : np.array
+            Extracted nodes from T.
+
+        &#39;&#39;&#39;
+        dims = self.dims[root-1]
+        nod = np.concatenate(([root], self.descendants(root)))
+        adj_mat = np.copy(self.adjacency_matrix[nod[:, None]-1, nod-1])
+        dim2ind = np.nonzero(np.isin(nod, self.dim2ind[dims]))[0] + 1
+        return DimensionTree(dim2ind, adj_mat), nod
+
+    def node_with_dims(self, dims):
+        &#39;&#39;&#39;
+        Return the index of the node with given set of dimensions.
+
+        Return the index of the node corresponding to dimensions dims or an
+        empty array if no node contains these dimensions.
+
+        Parameters
+        ----------
+        dims : list or numpy.ndarray
+            List of dimensions.
+
+        Returns
+        -------
+        numpy.ndarray
+            Index of the node with the given set of dimensions dims.
+
+        &#39;&#39;&#39;
+        dims = np.sort(dims)
+        nod = [np.array_equal(dims, np.sort(x)) for x in self.dims]
+        return np.nonzero(nod)[0]+1
+
+    def update_dims_from_leaves(self):
+        &#39;&#39;&#39;
+        Update the dimensions of all nodes from the dimensions of the leaves
+        given in T.dim2ind.
+
+        Returns
+        -------
+        DimensionTree
+            The DimensionTree object with updated attribute dims.
+
+        &#39;&#39;&#39;
+        _dims = np.zeros(self.nb_nodes, dtype=int)
+        _dims[self.dim2ind-1] = np.arange(len(self.dim2ind))
+        _dims = np.split(_dims, len(_dims))
+
+        for level in np.arange(np.max(self.level), -1, -1):
+            nod_level = self.nodes_with_level(level)
+            for nod in nod_level:
+                if not self.is_leaf[nod-1]:
+                    children = self._children[:, nod-1]
+                    _dims[nod-1] = np.hstack([_dims[i-1] for i in
+                                              children[children != 0]])
+
+        self.dims = _dims
+        return self
+
+    def nodes_with_level(self, level):
+        &#39;&#39;&#39;
+        Return the indices of the nodes at a given level.
+
+        Parameters
+        ----------
+        level : int
+            Level.
+
+        Returns
+        -------
+        numpy.ndarray
+            Nodes with given level.
+
+        &#39;&#39;&#39;
+        ind_lvl = np.repeat(False, self.nb_nodes)
+        ind_lvl[self.level == level] = True
+        return np.nonzero(ind_lvl)[0]+1
+
+    def tree_layout(self):
+        &#39;&#39;&#39;
+        Return the layout of a tree.
+
+        Returns
+        -------
+        dict
+            The layout of the tree, used for plotting.
+
+        &#39;&#39;&#39;
+        def post_order(T, root=None):
+            &#39;&#39;&#39;
+            Return the post-ordering of a tree.
+
+            Parameters
+            ----------
+            T : tensap.DimensionTree
+            The dimension tree.
+            root : int, optional
+                The root of the current subtree. The default is None,
+                indicating to use T.root.
+
+            Returns
+            -------
+            post : numpy.ndarray
+                The post-ordering of the tree or of one of its subtrees.
+
+            &#39;&#39;&#39;
+            if root is None:
+                root = T.root
+            post = np.array([], dtype=int)
+
+            ch = T.children(root)
+            if ch.size:
+                for nod in ch:
+                    post = np.concatenate((post, post_order(T, nod)))
+            post = np.concatenate((post, ch))
+            return post
+
+        post = post_order(self)
+
+        xmin = np.full(self.nb_nodes, self.nb_nodes)
+        xmax = np.zeros(self.nb_nodes)
+        y = np.zeros(self.nb_nodes)
+        n_leaves = 0
+        for nod in post:
+            if self.is_leaf[nod-1]:
+                n_leaves += 1
+                xmin[nod-1] = n_leaves
+                xmax[nod-1] = n_leaves
+                y[nod-1] = 0
+            pa = self.parent(nod)
+            xmin[pa-1] = np.min((xmin[pa-1], xmin[nod-1]))
+            xmax[pa-1] = np.max((xmax[pa-1], xmax[nod-1]))
+            y[pa-1] = np.max((y[pa-1], y[nod-1]+1))
+
+        x = (xmin + xmax) / 2
+
+        x /= (self.dim2ind.size + 1)
+        y = (y+1) / (np.max(y)+2)
+
+        if self.plot_options[&#39;level_alignment&#39;]:
+            height = np.max(y) - np.min(y)
+            for alpha in np.arange(1, self.nb_nodes+1):
+                y[alpha-1] = np.max(y) - self.level[alpha-1] * \
+                    height / np.max(self.level)
+
+        pos = [np.array([xx, yy]) for xx, yy in zip(x, y)]
+        return dict(zip(range(self.nb_nodes), pos))
+
+    def plot(self, **args):
+        &#39;&#39;&#39;
+        Plot the tree with the nodes indices.
+
+        This method requires the package igraph.
+
+        Parameters
+        ----------
+        node_color : str, optional
+            Color for the colored nodes. The default is &#39;red&#39;.
+        colored_nodes : list or numpy.ndarray, optional
+            Colored nodes. The default is [].
+
+        Returns
+        -------
+        None.
+
+        &#39;&#39;&#39;
+        self.plot_with_labels_at_nodes(self.nodes_indices, **args)
+
+    def plot_with_labels_at_nodes(self, labels, node_color=&#39;red&#39;,
+                                  colored_nodes=None, title=None):
+        &#39;&#39;&#39;
+        Plot the tree with labels at nodes.
+
+        This method requires the package igraph.
+
+        Parameters
+        ----------
+        labels : list or numpy.ndarray
+            Nodes labels.
+        node_color : str, optional
+            Color for the colored nodes. The default is &#39;red&#39;.
+        colored_nodes : list or numpy.ndarray, optional
+            Colored nodes. The default is [].
+        title : str, optional
+            The title of the plot. The default is None.
+
+        Returns
+        -------
+        None.
+
+        &#39;&#39;&#39;
+        import networkx as nx
+        import matplotlib.pyplot as plt
+
+        plt.figure()
+        g = nx.convert_matrix.from_numpy_matrix(self.adjacency_matrix)
+        pos = self.tree_layout()
+        nx.draw_networkx_nodes(g, pos,
+                               nodelist=np.setdiff1d(
+                                   np.arange(1, self.nb_nodes+1),
+                                   colored_nodes)-1,
+                               node_color=&#39;w&#39;,
+                               edgecolors=&#39;k&#39;,
+                               node_size=100)
+
+        if colored_nodes is not None:
+            nx.draw_networkx_nodes(g, pos,
+                                   nodelist=colored_nodes-1,
+                                   node_color=node_color,
+                                   edgecolors=&#39;k&#39;,
+                                   node_size=100)
+
+        nx.draw_networkx_edges(g, pos)
+        labels = dict(zip(range(self.nb_nodes), [x if x is not None
+                                                 else &#39;&#39; for x in labels]))
+        y = [x[1] for x in pos.values()]
+        min_height = np.min(y)
+        shift = (np.max(y)-np.min(y))/np.max(self.level)/2
+        pos_labels = {}
+        for k, v in pos.items():
+            if v[1] == min_height:
+                pos_labels[k] = (v[0], v[1]-shift)
+            else:
+                pos_labels[k] = (v[0], v[1]+shift)
+        nx.draw_networkx_labels(g, pos_labels, labels)
+
+        plt.axis(&#39;off&#39;)
+        plt.title(title)
+        axes = plt.gca()
+        axes.set_ylim([0, 1])
+        plt.show()
+
+    def plot_dims(self, nodes=None, **args):
+        &#39;&#39;&#39;
+        Plot the dimensions associated with the nodes of the tree.
+
+        This method requires the package igraph.
+
+        Parameters
+        ----------
+        nodes : list or numpy.ndarray, optional
+            List of leaf nodes for which to display the dimensions. The
+            default is None, the dimensions of all the leaf nodes are
+            displayed.
+        Returns
+        -------
+        None.
+
+        &#39;&#39;&#39;
+        if nodes is None:
+            nodes = self.dim2ind
+        labels = [np.nonzero(nodes == i+1)[0][0] if self.is_leaf[i] else None
+                  for i in range(self.nb_nodes)]
+        self.plot_with_labels_at_nodes(labels=labels, **args)
+
+    def _precompute_attributes(self):
+        &#39;&#39;&#39;
+        Precompute the attributes of the DimensionTree from the attributes
+        adjacency_matrix and dim2ind.
+
+        Returns
+        -------
+        DimensionTree
+            A DimensionTree with updated attributes.
+
+        &#39;&#39;&#39;
+        self.nb_nodes = self.adjacency_matrix.shape[0]
+        self.nodes_indices = np.arange(1, self.nb_nodes+1)
+        self.arity = np.max(np.sum(self.adjacency_matrix, 1))
+        self._parent = np.matmul(range(1, self.nb_nodes+1),
+                                 self.adjacency_matrix)
+        self.root = self.nodes_indices[self._parent == 0][0]
+        self.is_leaf = np.repeat(False, self.nb_nodes)
+        self.is_leaf[self.dim2ind-1] = True
+
+        _children = np.zeros([self.arity, self.nb_nodes], dtype=int)
+        for i in range(self.nb_nodes):
+            ind = np.nonzero(self.adjacency_matrix[i, :])[0]
+            _children[0:len(ind), i] = ind+1
+        self._children = _children
+
+        _child_number = np.zeros(self.nb_nodes, dtype=int)
+        for i in range(self.nb_nodes):
+            if self._parent[i]:
+                ind1 = self._children[:, self._parent[i]-1]
+                ind2 = np.nonzero(ind1 == i+1)
+                if ind2[0].size:
+                    _child_number[i] = ind2[0][0]+1
+        self._child_number = _child_number
+
+        _sibling = np.zeros([self.arity, self.nb_nodes], dtype=int)
+        for i in range(self.nb_nodes):
+            if self._parent[i]:
+                _sibling[:, i] = self._children[:, self._parent[i]-1]
+        self.sibling = _sibling
+
+        _level = np.zeros(self.nb_nodes, dtype=int)
+        ind = self._children[:, self.root-1]
+        ind = ind[ind != 0]
+        level = 1
+        while ind.size:
+            _level[ind-1] = level
+            ind = np.reshape(self._children[:, ind-1], [1, -1])
+            ind = ind[np.nonzero(ind)]
+            level += 1
+        self.level = _level
+
+        self.internal_nodes = np.setdiff1d(self.nodes_indices, self.dim2ind)
+        self.nodes_parent_of_leaves = np.unique(self._parent[self.dim2ind-1])
+        return self
+
+    @staticmethod
+    def trivial(order):
+        &#39;&#39;&#39;
+        Create a dimension tree with one level.
+
+        Parameters
+        ----------
+        order : int
+            Order of the tensor (dimension).
+
+        Returns
+        -------
+        DimensionTree
+            Trivial dimension tree.
+
+        &#39;&#39;&#39;
+        d2i = np.arange(2, order+2)
+        adj_mat = np.zeros([order+1]*2, dtype=int)
+        adj_mat[0, 1:] = 1
+        return DimensionTree(d2i, adj_mat)
+
+    @staticmethod
+    def linear(order):
+        &#39;&#39;&#39;
+        Create a linear dimension tree.
+
+        Parameters
+        ----------
+        order : int
+            Order of the tensor (dimension).
+
+        Returns
+        -------
+        DimensionTree
+            Linear dimension tree.
+
+        &#39;&#39;&#39;
+        order = np.array(order)
+        if order.size == 1:
+            dim = order
+            order = np.arange(dim)
+        else:
+            dim = order.size
+            order -= 1
+
+        d2i = np.concatenate(([2*dim-2], 2*np.arange(dim-1, 0, -1)+1))
+        adj_mat = np.zeros([2*dim-1]*2, dtype=int)
+        adj_mat[0, 1:3] = 1
+        for level in range(dim-2):
+            adj_mat[2*level+1, 2*level+3] = 1
+            adj_mat[2*level+1, 2*level+4] = 1
+        d2i[order] = d2i.flatten()
+        return DimensionTree(d2i, adj_mat)
+
+    @staticmethod
+    def balanced(order):
+        &#39;&#39;&#39;
+        Create a balanced dimension tree.
+
+        Parameters
+        ----------
+        order : int
+            Order of the tensor (dimension).
+
+        Returns
+        -------
+        DimensionTree
+            Balanced dimension tree.
+
+        &#39;&#39;&#39;
+        order = np.array(order)
+        if order.size == 1:
+            dim = order
+            order = range(dim)
+        else:
+            dim = order.size
+            order -= 1
+
+        d2i = np.arange(dim, 2*dim)
+        adj_mat = np.zeros([2*dim-1]*2, dtype=int)
+        adj_mat[0, 1:3] = 1
+        for i in range(1, dim-1):
+            adj_mat[i, 2*i+1:2*i+3] = 1
+        d2i[order] = d2i.flatten()
+        return DimensionTree(d2i, adj_mat)
+
+    @staticmethod
+    def random(order, arity=2):
+        &#39;&#39;&#39;
+        Create a random dimension tree over {1,...,order}.
+
+        If arity is an interval [amin,amin], then the number of children of a
+        node is randomly drawn from the uniform distribution over
+        {amin,...,amax}.
+
+        Parameters
+        ----------
+        order : int
+            Order of the tensor (dimension).
+        arity : int, list or numpy.ndarray, optional
+            Arity or interval for the arity. The default is 2.
+
+        Returns
+        -------
+        DimensionTree
+            Random dimension tree.
+
+        &#39;&#39;&#39;
+        arity = np.array(arity)
+        if arity.size == 1:
+            arity = np.repeat(arity, 2)
+        arity[1] += 1
+        dims_nodes = [np.arange(order)]
+        nb_nodes = 1
+        new_nodes = [1]
+        adj_mat = np.zeros([2*order]*2, dtype=int)
+        dim2ind = np.zeros(order, dtype=int)
+
+        while len(new_nodes) != 0:
+            parent_nodes = new_nodes
+            new_nodes = []
+            for pnod in parent_nodes:
+                dims = dims_nodes[pnod-1]
+                if len(dims) == 1:
+                    dim2ind[dims-1] = pnod
+                else:
+                    pnod_arity = np.min(np.append(np.random.randint(*arity),
+                                                  dims.size))
+                    for k in range(pnod_arity):
+                        nb_nodes += 1
+                        new_nodes.append(nb_nodes)
+                        adj_mat[pnod-1, nb_nodes-1] = 1
+                        if k == pnod_arity-1:
+                            dims_nodes.append(dims)
+                            dims = []
+                        else:
+                            n_children = np.max(np.append(np.random.randint(
+                                len(dims)-pnod_arity+k+2), 1))
+                            perm = np.random.\
+                                permutation(len(dims))[:n_children]
+                            dims_nodes.append(dims[perm])
+                            dims = np.delete(dims, perm)
+                        if len(dims) == 0:
+                            break
+        adj_mat = adj_mat[:nb_nodes, :nb_nodes]
+        return DimensionTree(dim2ind, adj_mat)</code></pre>
+</details>
+<h3>Static methods</h3>
+<dl>
+<dt id="tensap.tensor_algebra.tensors.dimension_tree.DimensionTree.balanced"><code class="name flex">
+<span>def <span class="ident">balanced</span></span>(<span>order)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Create a balanced dimension tree.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>order</code></strong> :&ensp;<code>int</code></dt>
+<dd>Order of the tensor (dimension).</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code><a title="tensap.tensor_algebra.tensors.dimension_tree.DimensionTree" href="#tensap.tensor_algebra.tensors.dimension_tree.DimensionTree">DimensionTree</a></code></dt>
+<dd>Balanced dimension tree.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@staticmethod
+def balanced(order):
+    &#39;&#39;&#39;
+    Create a balanced dimension tree.
+
+    Parameters
+    ----------
+    order : int
+        Order of the tensor (dimension).
+
+    Returns
+    -------
+    DimensionTree
+        Balanced dimension tree.
+
+    &#39;&#39;&#39;
+    order = np.array(order)
+    if order.size == 1:
+        dim = order
+        order = range(dim)
+    else:
+        dim = order.size
+        order -= 1
+
+    d2i = np.arange(dim, 2*dim)
+    adj_mat = np.zeros([2*dim-1]*2, dtype=int)
+    adj_mat[0, 1:3] = 1
+    for i in range(1, dim-1):
+        adj_mat[i, 2*i+1:2*i+3] = 1
+    d2i[order] = d2i.flatten()
+    return DimensionTree(d2i, adj_mat)</code></pre>
+</details>
+</dd>
+<dt id="tensap.tensor_algebra.tensors.dimension_tree.DimensionTree.linear"><code class="name flex">
+<span>def <span class="ident">linear</span></span>(<span>order)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Create a linear dimension tree.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>order</code></strong> :&ensp;<code>int</code></dt>
+<dd>Order of the tensor (dimension).</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code><a title="tensap.tensor_algebra.tensors.dimension_tree.DimensionTree" href="#tensap.tensor_algebra.tensors.dimension_tree.DimensionTree">DimensionTree</a></code></dt>
+<dd>Linear dimension tree.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@staticmethod
+def linear(order):
+    &#39;&#39;&#39;
+    Create a linear dimension tree.
+
+    Parameters
+    ----------
+    order : int
+        Order of the tensor (dimension).
+
+    Returns
+    -------
+    DimensionTree
+        Linear dimension tree.
+
+    &#39;&#39;&#39;
+    order = np.array(order)
+    if order.size == 1:
+        dim = order
+        order = np.arange(dim)
+    else:
+        dim = order.size
+        order -= 1
+
+    d2i = np.concatenate(([2*dim-2], 2*np.arange(dim-1, 0, -1)+1))
+    adj_mat = np.zeros([2*dim-1]*2, dtype=int)
+    adj_mat[0, 1:3] = 1
+    for level in range(dim-2):
+        adj_mat[2*level+1, 2*level+3] = 1
+        adj_mat[2*level+1, 2*level+4] = 1
+    d2i[order] = d2i.flatten()
+    return DimensionTree(d2i, adj_mat)</code></pre>
+</details>
+</dd>
+<dt id="tensap.tensor_algebra.tensors.dimension_tree.DimensionTree.random"><code class="name flex">
+<span>def <span class="ident">random</span></span>(<span>order, arity=2)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Create a random dimension tree over {1,&hellip;,order}.</p>
+<p>If arity is an interval [amin,amin], then the number of children of a
+node is randomly drawn from the uniform distribution over
+{amin,&hellip;,amax}.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>order</code></strong> :&ensp;<code>int</code></dt>
+<dd>Order of the tensor (dimension).</dd>
+<dt><strong><code>arity</code></strong> :&ensp;<code>int, list</code> or <code>numpy.ndarray</code>, optional</dt>
+<dd>Arity or interval for the arity. The default is 2.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code><a title="tensap.tensor_algebra.tensors.dimension_tree.DimensionTree" href="#tensap.tensor_algebra.tensors.dimension_tree.DimensionTree">DimensionTree</a></code></dt>
+<dd>Random dimension tree.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@staticmethod
+def random(order, arity=2):
+    &#39;&#39;&#39;
+    Create a random dimension tree over {1,...,order}.
+
+    If arity is an interval [amin,amin], then the number of children of a
+    node is randomly drawn from the uniform distribution over
+    {amin,...,amax}.
+
+    Parameters
+    ----------
+    order : int
+        Order of the tensor (dimension).
+    arity : int, list or numpy.ndarray, optional
+        Arity or interval for the arity. The default is 2.
+
+    Returns
+    -------
+    DimensionTree
+        Random dimension tree.
+
+    &#39;&#39;&#39;
+    arity = np.array(arity)
+    if arity.size == 1:
+        arity = np.repeat(arity, 2)
+    arity[1] += 1
+    dims_nodes = [np.arange(order)]
+    nb_nodes = 1
+    new_nodes = [1]
+    adj_mat = np.zeros([2*order]*2, dtype=int)
+    dim2ind = np.zeros(order, dtype=int)
+
+    while len(new_nodes) != 0:
+        parent_nodes = new_nodes
+        new_nodes = []
+        for pnod in parent_nodes:
+            dims = dims_nodes[pnod-1]
+            if len(dims) == 1:
+                dim2ind[dims-1] = pnod
+            else:
+                pnod_arity = np.min(np.append(np.random.randint(*arity),
+                                              dims.size))
+                for k in range(pnod_arity):
+                    nb_nodes += 1
+                    new_nodes.append(nb_nodes)
+                    adj_mat[pnod-1, nb_nodes-1] = 1
+                    if k == pnod_arity-1:
+                        dims_nodes.append(dims)
+                        dims = []
+                    else:
+                        n_children = np.max(np.append(np.random.randint(
+                            len(dims)-pnod_arity+k+2), 1))
+                        perm = np.random.\
+                            permutation(len(dims))[:n_children]
+                        dims_nodes.append(dims[perm])
+                        dims = np.delete(dims, perm)
+                    if len(dims) == 0:
+                        break
+    adj_mat = adj_mat[:nb_nodes, :nb_nodes]
+    return DimensionTree(dim2ind, adj_mat)</code></pre>
+</details>
+</dd>
+<dt id="tensap.tensor_algebra.tensors.dimension_tree.DimensionTree.trivial"><code class="name flex">
+<span>def <span class="ident">trivial</span></span>(<span>order)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Create a dimension tree with one level.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>order</code></strong> :&ensp;<code>int</code></dt>
+<dd>Order of the tensor (dimension).</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code><a title="tensap.tensor_algebra.tensors.dimension_tree.DimensionTree" href="#tensap.tensor_algebra.tensors.dimension_tree.DimensionTree">DimensionTree</a></code></dt>
+<dd>Trivial dimension tree.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@staticmethod
+def trivial(order):
+    &#39;&#39;&#39;
+    Create a dimension tree with one level.
+
+    Parameters
+    ----------
+    order : int
+        Order of the tensor (dimension).
+
+    Returns
+    -------
+    DimensionTree
+        Trivial dimension tree.
+
+    &#39;&#39;&#39;
+    d2i = np.arange(2, order+2)
+    adj_mat = np.zeros([order+1]*2, dtype=int)
+    adj_mat[0, 1:] = 1
+    return DimensionTree(d2i, adj_mat)</code></pre>
+</details>
+</dd>
+</dl>
+<h3>Methods</h3>
+<dl>
+<dt id="tensap.tensor_algebra.tensors.dimension_tree.DimensionTree.ascendants"><code class="name flex">
+<span>def <span class="ident">ascendants</span></span>(<span>self, nod)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Return the ascendants of a given node.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>nod</code></strong> :&ensp;<code>int</code></dt>
+<dd>Node for which to compute the ascendants.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><strong><code>anod</code></strong> :&ensp;<code>list</code></dt>
+<dd>List of ascendants of nod.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def ascendants(self, nod):
+    &#39;&#39;&#39;
+    Return the ascendants of a given node.
+
+    Parameters
+    ----------
+    nod : int
+        Node for which to compute the ascendants.
+
+    Returns
+    -------
+    anod : list
+        List of ascendants of nod.
+
+    &#39;&#39;&#39;
+    anod = []
+    pnod = self.parent(nod)
+    while pnod:
+        anod.append(pnod)
+        pnod = self.parent(pnod)
+    return np.array(anod)</code></pre>
+</details>
+</dd>
+<dt id="tensap.tensor_algebra.tensors.dimension_tree.DimensionTree.child_number"><code class="name flex">
+<span>def <span class="ident">child_number</span></span>(<span>self, nod)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Return the child number of nod.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>nod</code></strong> :&ensp;<code>int</code></dt>
+<dd>Node for which to compute the child number.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>int</code></dt>
+<dd>The child number.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def child_number(self, nod):
+    &#39;&#39;&#39;
+    Return the child number of nod.
+
+    Parameters
+    ----------
+    nod : int
+        Node for which to compute the child number.
+
+    Returns
+    -------
+    int
+        The child number.
+
+    &#39;&#39;&#39;
+    return self._child_number[nod-1]</code></pre>
+</details>
+</dd>
+<dt id="tensap.tensor_algebra.tensors.dimension_tree.DimensionTree.children"><code class="name flex">
+<span>def <span class="ident">children</span></span>(<span>self, nod)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Return the children of a given node.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>nod</code></strong> :&ensp;<code>int</code></dt>
+<dd>Node for which to compute the children.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>list</code></dt>
+<dd>List of children of nod.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def children(self, nod):
+    &#39;&#39;&#39;
+    Return the children of a given node.
+
+    Parameters
+    ----------
+    nod : int
+        Node for which to compute the children.
+
+    Returns
+    -------
+    list
+        List of children of nod.
+
+    &#39;&#39;&#39;
+    children = self._children[:, nod-1]
+    return children[children != 0]</code></pre>
+</details>
+</dd>
+<dt id="tensap.tensor_algebra.tensors.dimension_tree.DimensionTree.descendants"><code class="name flex">
+<span>def <span class="ident">descendants</span></span>(<span>self, nod)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Return the descendants of a given node.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>nod</code></strong> :&ensp;<code>int</code></dt>
+<dd>Node for which to compute the descendants.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><strong><code>dnod</code></strong> :&ensp;<code>list</code></dt>
+<dd>List of descendants of nod.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def descendants(self, nod):
+    &#39;&#39;&#39;
+    Return the descendants of a given node.
+
+    Parameters
+    ----------
+    nod : int
+        Node for which to compute the descendants.
+
+    Returns
+    -------
+    dnod : list
+        List of descendants of nod.
+
+    &#39;&#39;&#39;
+    dnod = np.array([], dtype=int)
+    chnod = self.children(nod)
+    chnod = chnod[chnod != 0]
+    if len(chnod) != 0:
+        for children in chnod:
+            dnod = np.concatenate((dnod, [children],
+                                   self.descendants(children)))
+    return np.array(dnod)</code></pre>
+</details>
+</dd>
+<dt id="tensap.tensor_algebra.tensors.dimension_tree.DimensionTree.ipermute"><code class="name flex">
+<span>def <span class="ident">ipermute</span></span>(<span>self, sigma)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Inverse permutation of the dimensions of the DimensionTree.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>sigma</code></strong> :&ensp;<code>list</code></dt>
+<dd>Indicates the permutation of the dimensions.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code><a title="tensap.tensor_algebra.tensors.dimension_tree.DimensionTree" href="#tensap.tensor_algebra.tensors.dimension_tree.DimensionTree">DimensionTree</a></code></dt>
+<dd>A DimensionTree with permuted dimensions.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def ipermute(self, sigma):
+    &#39;&#39;&#39;
+    Inverse permutation of the dimensions of the DimensionTree.
+
+    Parameters
+    ----------
+    sigma : list
+        Indicates the permutation of the dimensions.
+
+    Returns
+    -------
+    DimensionTree
+        A DimensionTree with permuted dimensions.
+
+    &#39;&#39;&#39;
+    dim2ind = np.copy(self.dim2ind)
+    dim2ind = dim2ind[sigma].flatten()
+    return DimensionTree(dim2ind, np.copy(self.adjacency_matrix))</code></pre>
+</details>
+</dd>
+<dt id="tensap.tensor_algebra.tensors.dimension_tree.DimensionTree.node_with_dims"><code class="name flex">
+<span>def <span class="ident">node_with_dims</span></span>(<span>self, dims)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Return the index of the node with given set of dimensions.</p>
+<p>Return the index of the node corresponding to dimensions dims or an
+empty array if no node contains these dimensions.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>dims</code></strong> :&ensp;<code>list</code> or <code>numpy.ndarray</code></dt>
+<dd>List of dimensions.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>numpy.ndarray</code></dt>
+<dd>Index of the node with the given set of dimensions dims.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def node_with_dims(self, dims):
+    &#39;&#39;&#39;
+    Return the index of the node with given set of dimensions.
+
+    Return the index of the node corresponding to dimensions dims or an
+    empty array if no node contains these dimensions.
+
+    Parameters
+    ----------
+    dims : list or numpy.ndarray
+        List of dimensions.
+
+    Returns
+    -------
+    numpy.ndarray
+        Index of the node with the given set of dimensions dims.
+
+    &#39;&#39;&#39;
+    dims = np.sort(dims)
+    nod = [np.array_equal(dims, np.sort(x)) for x in self.dims]
+    return np.nonzero(nod)[0]+1</code></pre>
+</details>
+</dd>
+<dt id="tensap.tensor_algebra.tensors.dimension_tree.DimensionTree.nodes_with_level"><code class="name flex">
+<span>def <span class="ident">nodes_with_level</span></span>(<span>self, level)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Return the indices of the nodes at a given level.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>level</code></strong> :&ensp;<code>int</code></dt>
+<dd>Level.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>numpy.ndarray</code></dt>
+<dd>Nodes with given level.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def nodes_with_level(self, level):
+    &#39;&#39;&#39;
+    Return the indices of the nodes at a given level.
+
+    Parameters
+    ----------
+    level : int
+        Level.
+
+    Returns
+    -------
+    numpy.ndarray
+        Nodes with given level.
+
+    &#39;&#39;&#39;
+    ind_lvl = np.repeat(False, self.nb_nodes)
+    ind_lvl[self.level == level] = True
+    return np.nonzero(ind_lvl)[0]+1</code></pre>
+</details>
+</dd>
+<dt id="tensap.tensor_algebra.tensors.dimension_tree.DimensionTree.parent"><code class="name flex">
+<span>def <span class="ident">parent</span></span>(<span>self, nod)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Return the parent of a given node.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>nod</code></strong> :&ensp;<code>int</code></dt>
+<dd>Node for which to compute the parent.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>int</code></dt>
+<dd>The parent of nod.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def parent(self, nod):
+    &#39;&#39;&#39;
+    Return the parent of a given node.
+
+    Parameters
+    ----------
+    nod : int
+        Node for which to compute the parent.
+
+    Returns
+    -------
+    int
+        The parent of nod.
+
+    &#39;&#39;&#39;
+    return self._parent[nod-1]</code></pre>
+</details>
+</dd>
+<dt id="tensap.tensor_algebra.tensors.dimension_tree.DimensionTree.permute"><code class="name flex">
+<span>def <span class="ident">permute</span></span>(<span>self, sigma)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Permute the dimensions of the DimensionTree.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>sigma</code></strong> :&ensp;<code>list</code></dt>
+<dd>Indicates the permutation of the dimensions.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code><a title="tensap.tensor_algebra.tensors.dimension_tree.DimensionTree" href="#tensap.tensor_algebra.tensors.dimension_tree.DimensionTree">DimensionTree</a></code></dt>
+<dd>A DimensionTree with permuted dimensions.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def permute(self, sigma):
+    &#39;&#39;&#39;
+    Permute the dimensions of the DimensionTree.
+
+    Parameters
+    ----------
+    sigma : list
+        Indicates the permutation of the dimensions.
+
+    Returns
+    -------
+    DimensionTree
+        A DimensionTree with permuted dimensions.
+
+    &#39;&#39;&#39;
+    dim2ind = np.copy(self.dim2ind)
+    dim2ind[sigma] = dim2ind.flatten()
+    return DimensionTree(dim2ind, np.copy(self.adjacency_matrix))</code></pre>
+</details>
+</dd>
+<dt id="tensap.tensor_algebra.tensors.dimension_tree.DimensionTree.plot"><code class="name flex">
+<span>def <span class="ident">plot</span></span>(<span>self, **args)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Plot the tree with the nodes indices.</p>
+<p>This method requires the package igraph.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>node_color</code></strong> :&ensp;<code>str</code>, optional</dt>
+<dd>Color for the colored nodes. The default is 'red'.</dd>
+<dt><strong><code>colored_nodes</code></strong> :&ensp;<code>list</code> or <code>numpy.ndarray</code>, optional</dt>
+<dd>Colored nodes. The default is [].</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<p>None.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def plot(self, **args):
+    &#39;&#39;&#39;
+    Plot the tree with the nodes indices.
+
+    This method requires the package igraph.
+
+    Parameters
+    ----------
+    node_color : str, optional
+        Color for the colored nodes. The default is &#39;red&#39;.
+    colored_nodes : list or numpy.ndarray, optional
+        Colored nodes. The default is [].
+
+    Returns
+    -------
+    None.
+
+    &#39;&#39;&#39;
+    self.plot_with_labels_at_nodes(self.nodes_indices, **args)</code></pre>
+</details>
+</dd>
+<dt id="tensap.tensor_algebra.tensors.dimension_tree.DimensionTree.plot_dims"><code class="name flex">
+<span>def <span class="ident">plot_dims</span></span>(<span>self, nodes=None, **args)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Plot the dimensions associated with the nodes of the tree.</p>
+<p>This method requires the package igraph.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>nodes</code></strong> :&ensp;<code>list</code> or <code>numpy.ndarray</code>, optional</dt>
+<dd>List of leaf nodes for which to display the dimensions. The
+default is None, the dimensions of all the leaf nodes are
+displayed.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<p>None.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def plot_dims(self, nodes=None, **args):
+    &#39;&#39;&#39;
+    Plot the dimensions associated with the nodes of the tree.
+
+    This method requires the package igraph.
+
+    Parameters
+    ----------
+    nodes : list or numpy.ndarray, optional
+        List of leaf nodes for which to display the dimensions. The
+        default is None, the dimensions of all the leaf nodes are
+        displayed.
+    Returns
+    -------
+    None.
+
+    &#39;&#39;&#39;
+    if nodes is None:
+        nodes = self.dim2ind
+    labels = [np.nonzero(nodes == i+1)[0][0] if self.is_leaf[i] else None
+              for i in range(self.nb_nodes)]
+    self.plot_with_labels_at_nodes(labels=labels, **args)</code></pre>
+</details>
+</dd>
+<dt id="tensap.tensor_algebra.tensors.dimension_tree.DimensionTree.plot_with_labels_at_nodes"><code class="name flex">
+<span>def <span class="ident">plot_with_labels_at_nodes</span></span>(<span>self, labels, node_color='red', colored_nodes=None, title=None)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Plot the tree with labels at nodes.</p>
+<p>This method requires the package igraph.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>labels</code></strong> :&ensp;<code>list</code> or <code>numpy.ndarray</code></dt>
+<dd>Nodes labels.</dd>
+<dt><strong><code>node_color</code></strong> :&ensp;<code>str</code>, optional</dt>
+<dd>Color for the colored nodes. The default is 'red'.</dd>
+<dt><strong><code>colored_nodes</code></strong> :&ensp;<code>list</code> or <code>numpy.ndarray</code>, optional</dt>
+<dd>Colored nodes. The default is [].</dd>
+<dt><strong><code>title</code></strong> :&ensp;<code>str</code>, optional</dt>
+<dd>The title of the plot. The default is None.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<p>None.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def plot_with_labels_at_nodes(self, labels, node_color=&#39;red&#39;,
+                              colored_nodes=None, title=None):
+    &#39;&#39;&#39;
+    Plot the tree with labels at nodes.
+
+    This method requires the package igraph.
+
+    Parameters
+    ----------
+    labels : list or numpy.ndarray
+        Nodes labels.
+    node_color : str, optional
+        Color for the colored nodes. The default is &#39;red&#39;.
+    colored_nodes : list or numpy.ndarray, optional
+        Colored nodes. The default is [].
+    title : str, optional
+        The title of the plot. The default is None.
+
+    Returns
+    -------
+    None.
+
+    &#39;&#39;&#39;
+    import networkx as nx
+    import matplotlib.pyplot as plt
+
+    plt.figure()
+    g = nx.convert_matrix.from_numpy_matrix(self.adjacency_matrix)
+    pos = self.tree_layout()
+    nx.draw_networkx_nodes(g, pos,
+                           nodelist=np.setdiff1d(
+                               np.arange(1, self.nb_nodes+1),
+                               colored_nodes)-1,
+                           node_color=&#39;w&#39;,
+                           edgecolors=&#39;k&#39;,
+                           node_size=100)
+
+    if colored_nodes is not None:
+        nx.draw_networkx_nodes(g, pos,
+                               nodelist=colored_nodes-1,
+                               node_color=node_color,
+                               edgecolors=&#39;k&#39;,
+                               node_size=100)
+
+    nx.draw_networkx_edges(g, pos)
+    labels = dict(zip(range(self.nb_nodes), [x if x is not None
+                                             else &#39;&#39; for x in labels]))
+    y = [x[1] for x in pos.values()]
+    min_height = np.min(y)
+    shift = (np.max(y)-np.min(y))/np.max(self.level)/2
+    pos_labels = {}
+    for k, v in pos.items():
+        if v[1] == min_height:
+            pos_labels[k] = (v[0], v[1]-shift)
+        else:
+            pos_labels[k] = (v[0], v[1]+shift)
+    nx.draw_networkx_labels(g, pos_labels, labels)
+
+    plt.axis(&#39;off&#39;)
+    plt.title(title)
+    axes = plt.gca()
+    axes.set_ylim([0, 1])
+    plt.show()</code></pre>
+</details>
+</dd>
+<dt id="tensap.tensor_algebra.tensors.dimension_tree.DimensionTree.sub_dimension_tree"><code class="name flex">
+<span>def <span class="ident">sub_dimension_tree</span></span>(<span>self, root)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Extract a sub dimension tree.</p>
+<p>The attribute dim2ind of the sub dimension tree gives the nodes indices
+corresponding to the dimensions in T.dims[r] (not sorted).</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>root</code></strong> :&ensp;<code>int</code></dt>
+<dd>Index of the node which is the root of the sub dimension tree.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code><a title="tensap.tensor_algebra.tensors.dimension_tree.DimensionTree" href="#tensap.tensor_algebra.tensors.dimension_tree.DimensionTree">DimensionTree</a></code></dt>
+<dd>Sub dimension tree.</dd>
+<dt><strong><code>nod</code></strong> :&ensp;<code>np.array</code></dt>
+<dd>Extracted nodes from T.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def sub_dimension_tree(self, root):
+    &#39;&#39;&#39;
+    Extract a sub dimension tree.
+
+    The attribute dim2ind of the sub dimension tree gives the nodes indices
+    corresponding to the dimensions in T.dims[r] (not sorted).
+
+    Parameters
+    ----------
+    root : int
+        Index of the node which is the root of the sub dimension tree.
+
+    Returns
+    -------
+    DimensionTree
+        Sub dimension tree.
+    nod : np.array
+        Extracted nodes from T.
+
+    &#39;&#39;&#39;
+    dims = self.dims[root-1]
+    nod = np.concatenate(([root], self.descendants(root)))
+    adj_mat = np.copy(self.adjacency_matrix[nod[:, None]-1, nod-1])
+    dim2ind = np.nonzero(np.isin(nod, self.dim2ind[dims]))[0] + 1
+    return DimensionTree(dim2ind, adj_mat), nod</code></pre>
+</details>
+</dd>
+<dt id="tensap.tensor_algebra.tensors.dimension_tree.DimensionTree.tree_layout"><code class="name flex">
+<span>def <span class="ident">tree_layout</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Return the layout of a tree.</p>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>dict</code></dt>
+<dd>The layout of the tree, used for plotting.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def tree_layout(self):
+    &#39;&#39;&#39;
+    Return the layout of a tree.
+
+    Returns
+    -------
+    dict
+        The layout of the tree, used for plotting.
+
+    &#39;&#39;&#39;
+    def post_order(T, root=None):
+        &#39;&#39;&#39;
+        Return the post-ordering of a tree.
+
+        Parameters
+        ----------
+        T : tensap.DimensionTree
+        The dimension tree.
+        root : int, optional
+            The root of the current subtree. The default is None,
+            indicating to use T.root.
+
+        Returns
+        -------
+        post : numpy.ndarray
+            The post-ordering of the tree or of one of its subtrees.
+
+        &#39;&#39;&#39;
+        if root is None:
+            root = T.root
+        post = np.array([], dtype=int)
+
+        ch = T.children(root)
+        if ch.size:
+            for nod in ch:
+                post = np.concatenate((post, post_order(T, nod)))
+        post = np.concatenate((post, ch))
+        return post
+
+    post = post_order(self)
+
+    xmin = np.full(self.nb_nodes, self.nb_nodes)
+    xmax = np.zeros(self.nb_nodes)
+    y = np.zeros(self.nb_nodes)
+    n_leaves = 0
+    for nod in post:
+        if self.is_leaf[nod-1]:
+            n_leaves += 1
+            xmin[nod-1] = n_leaves
+            xmax[nod-1] = n_leaves
+            y[nod-1] = 0
+        pa = self.parent(nod)
+        xmin[pa-1] = np.min((xmin[pa-1], xmin[nod-1]))
+        xmax[pa-1] = np.max((xmax[pa-1], xmax[nod-1]))
+        y[pa-1] = np.max((y[pa-1], y[nod-1]+1))
+
+    x = (xmin + xmax) / 2
+
+    x /= (self.dim2ind.size + 1)
+    y = (y+1) / (np.max(y)+2)
+
+    if self.plot_options[&#39;level_alignment&#39;]:
+        height = np.max(y) - np.min(y)
+        for alpha in np.arange(1, self.nb_nodes+1):
+            y[alpha-1] = np.max(y) - self.level[alpha-1] * \
+                height / np.max(self.level)
+
+    pos = [np.array([xx, yy]) for xx, yy in zip(x, y)]
+    return dict(zip(range(self.nb_nodes), pos))</code></pre>
+</details>
+</dd>
+<dt id="tensap.tensor_algebra.tensors.dimension_tree.DimensionTree.update_dims_from_leaves"><code class="name flex">
+<span>def <span class="ident">update_dims_from_leaves</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Update the dimensions of all nodes from the dimensions of the leaves
+given in T.dim2ind.</p>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code><a title="tensap.tensor_algebra.tensors.dimension_tree.DimensionTree" href="#tensap.tensor_algebra.tensors.dimension_tree.DimensionTree">DimensionTree</a></code></dt>
+<dd>The DimensionTree object with updated attribute dims.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def update_dims_from_leaves(self):
+    &#39;&#39;&#39;
+    Update the dimensions of all nodes from the dimensions of the leaves
+    given in T.dim2ind.
+
+    Returns
+    -------
+    DimensionTree
+        The DimensionTree object with updated attribute dims.
+
+    &#39;&#39;&#39;
+    _dims = np.zeros(self.nb_nodes, dtype=int)
+    _dims[self.dim2ind-1] = np.arange(len(self.dim2ind))
+    _dims = np.split(_dims, len(_dims))
+
+    for level in np.arange(np.max(self.level), -1, -1):
+        nod_level = self.nodes_with_level(level)
+        for nod in nod_level:
+            if not self.is_leaf[nod-1]:
+                children = self._children[:, nod-1]
+                _dims[nod-1] = np.hstack([_dims[i-1] for i in
+                                          children[children != 0]])
+
+    self.dims = _dims
+    return self</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+</dl>
+</section>
+</article>
+<nav id="sidebar">
+<h1>Index</h1>
+<div class="toc">
+<ul></ul>
+</div>
+<ul id="index">
+<li><h3>Super-module</h3>
+<ul>
+<li><code><a title="tensap.tensor_algebra.tensors" href="index.html">tensap.tensor_algebra.tensors</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-classes">Classes</a></h3>
+<ul>
+<li>
+<h4><code><a title="tensap.tensor_algebra.tensors.dimension_tree.DimensionTree" href="#tensap.tensor_algebra.tensors.dimension_tree.DimensionTree">DimensionTree</a></code></h4>
+<ul class="">
+<li><code><a title="tensap.tensor_algebra.tensors.dimension_tree.DimensionTree.ascendants" href="#tensap.tensor_algebra.tensors.dimension_tree.DimensionTree.ascendants">ascendants</a></code></li>
+<li><code><a title="tensap.tensor_algebra.tensors.dimension_tree.DimensionTree.balanced" href="#tensap.tensor_algebra.tensors.dimension_tree.DimensionTree.balanced">balanced</a></code></li>
+<li><code><a title="tensap.tensor_algebra.tensors.dimension_tree.DimensionTree.child_number" href="#tensap.tensor_algebra.tensors.dimension_tree.DimensionTree.child_number">child_number</a></code></li>
+<li><code><a title="tensap.tensor_algebra.tensors.dimension_tree.DimensionTree.children" href="#tensap.tensor_algebra.tensors.dimension_tree.DimensionTree.children">children</a></code></li>
+<li><code><a title="tensap.tensor_algebra.tensors.dimension_tree.DimensionTree.descendants" href="#tensap.tensor_algebra.tensors.dimension_tree.DimensionTree.descendants">descendants</a></code></li>
+<li><code><a title="tensap.tensor_algebra.tensors.dimension_tree.DimensionTree.ipermute" href="#tensap.tensor_algebra.tensors.dimension_tree.DimensionTree.ipermute">ipermute</a></code></li>
+<li><code><a title="tensap.tensor_algebra.tensors.dimension_tree.DimensionTree.linear" href="#tensap.tensor_algebra.tensors.dimension_tree.DimensionTree.linear">linear</a></code></li>
+<li><code><a title="tensap.tensor_algebra.tensors.dimension_tree.DimensionTree.node_with_dims" href="#tensap.tensor_algebra.tensors.dimension_tree.DimensionTree.node_with_dims">node_with_dims</a></code></li>
+<li><code><a title="tensap.tensor_algebra.tensors.dimension_tree.DimensionTree.nodes_with_level" href="#tensap.tensor_algebra.tensors.dimension_tree.DimensionTree.nodes_with_level">nodes_with_level</a></code></li>
+<li><code><a title="tensap.tensor_algebra.tensors.dimension_tree.DimensionTree.parent" href="#tensap.tensor_algebra.tensors.dimension_tree.DimensionTree.parent">parent</a></code></li>
+<li><code><a title="tensap.tensor_algebra.tensors.dimension_tree.DimensionTree.permute" href="#tensap.tensor_algebra.tensors.dimension_tree.DimensionTree.permute">permute</a></code></li>
+<li><code><a title="tensap.tensor_algebra.tensors.dimension_tree.DimensionTree.plot" href="#tensap.tensor_algebra.tensors.dimension_tree.DimensionTree.plot">plot</a></code></li>
+<li><code><a title="tensap.tensor_algebra.tensors.dimension_tree.DimensionTree.plot_dims" href="#tensap.tensor_algebra.tensors.dimension_tree.DimensionTree.plot_dims">plot_dims</a></code></li>
+<li><code><a title="tensap.tensor_algebra.tensors.dimension_tree.DimensionTree.plot_with_labels_at_nodes" href="#tensap.tensor_algebra.tensors.dimension_tree.DimensionTree.plot_with_labels_at_nodes">plot_with_labels_at_nodes</a></code></li>
+<li><code><a title="tensap.tensor_algebra.tensors.dimension_tree.DimensionTree.random" href="#tensap.tensor_algebra.tensors.dimension_tree.DimensionTree.random">random</a></code></li>
+<li><code><a title="tensap.tensor_algebra.tensors.dimension_tree.DimensionTree.sub_dimension_tree" href="#tensap.tensor_algebra.tensors.dimension_tree.DimensionTree.sub_dimension_tree">sub_dimension_tree</a></code></li>
+<li><code><a title="tensap.tensor_algebra.tensors.dimension_tree.DimensionTree.tree_layout" href="#tensap.tensor_algebra.tensors.dimension_tree.DimensionTree.tree_layout">tree_layout</a></code></li>
+<li><code><a title="tensap.tensor_algebra.tensors.dimension_tree.DimensionTree.trivial" href="#tensap.tensor_algebra.tensors.dimension_tree.DimensionTree.trivial">trivial</a></code></li>
+<li><code><a title="tensap.tensor_algebra.tensors.dimension_tree.DimensionTree.update_dims_from_leaves" href="#tensap.tensor_algebra.tensors.dimension_tree.DimensionTree.update_dims_from_leaves">update_dims_from_leaves</a></code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.8.1</a>.</p>
+</footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad()</script>
+</body>
+</html>
