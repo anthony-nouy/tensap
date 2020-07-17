@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/anthony-nouy/tensap.svg?branch=master)](https://travis-ci.org/anthony-nouy/tensap)
+
 # tensap (Tensor Approximation Package)
 
 A Python package for the approximation of functions and tensors. 
