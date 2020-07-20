@@ -1,0 +1,19 @@
+language: generic
+sudo: false
+
+addons:
+  apt:
+    packages:
+      - python3-pip
+      - python3-scipy
+      - texlive-latex-recommended
+      - texlive-fonts-recommended
+      - texlive-latex-extra
+
+install:
+  - pip3 install tensorflow scipy --user --upgrade
+
+script:
+  - python3 setup.py install --user
+  - python3 tutorials/tools/tutorial_MultiIndices.py
+
