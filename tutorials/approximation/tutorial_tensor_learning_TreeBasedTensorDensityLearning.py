@@ -91,7 +91,7 @@ SOLVER.test_data = X_TEST
 # SOLVER.bases_eval_test = BASES.eval(X_TEST)
 
 SOLVER.rank_adaptation = True
-SOLVER.rank_adaptation_options['max_iterations'] = 20
+SOLVER.rank_adaptation_options['max_iterations'] = 10
 SOLVER.rank_adaptation_options['theta'] = 0.8
 SOLVER.rank_adaptation_options['early_stopping'] = True
 # early_stopping_factor < 1 because we the risk is negative

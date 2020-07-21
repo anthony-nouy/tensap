@@ -1,19 +1,13 @@
 language: generic
 sudo: false
 
-addons:
-  apt:
-    packages:
-      - python3-pip
-      - python3-scipy
-      - texlive-latex-recommended
-      - texlive-fonts-recommended
-      - texlive-latex-extra
-
 install:
-  - pip3 install tensorflow scipy --user --upgrade
+  # conda
+  - wget -c --no-check-certificate https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh -P /tmp
+  - bash /tmp/Miniconda3-latest-Linux-x86_64.sh -b -p $HOME/miniconda
+  - export PATH="$HOME/miniconda/bin:$PATH"
+  - conda install -y tensorflow scikit-learn pytest networkx matplotlib
 
 script:
-  - python3 setup.py install --user
-  - python3 tutorials/tools/tutorial_MultiIndices.py
-
+  - python setup.py install --user
+  - pytest test/ -s
