@@ -462,7 +462,7 @@ class MultiIndices:
         -------
         env : numpy.ndarray
             The monotone envelope corresponding to the sequence defined by
-            env_i = max_{j >= i} |u_j|
+            :math:`env_i = max_{j >= i} |u_j|`
 
         '''
         array = self.array
@@ -644,8 +644,8 @@ class MultiIndices:
             The bound of the norm, a positive real scalar.
         w : list or numpy.ndarray
             The d weights defining the weighted p-norm of a multi-index i.
-            |i|_{p, w} = (sum_{k=1}^d w_k^p i_k^p)^(1/p) for 0 < p < inf
-            |i|_{Inf, w} = max_k w_k i_k
+            :math:`|i|_{p, w} = (sum_{k=1}^d w_k^p i_k^p)^(1/p) for 0 < p < inf`
+            :math:`|i|_{Inf, w} = max_k w_k i_k`
 
         Returns
         -------

@@ -35,11 +35,11 @@ def magic_indices(F, n=None, option='left_right'):
 
     If option is 'left':
         jk is equal to k and
-        ik = arg max_{i} max_{1 <= j <= M} | F_ij - I_[k-1](F)_ij |.
+        :math:`ik = arg max_{i} max_{1 <= j <= M} | F_ij - I_[k-1](F)_ij |`.
 
     If option is 'right':
         ik is equal to k and
-        jk = arg max_{j} max_{1 <= i <= N} | F_ij - I[k-1](F)_ij |
+        :math:`jk = arg max_{j} max_{1 <= i <= N} | F_ij - I[k-1](F)_ij |`
 
     Parameters
     ----------
