@@ -555,7 +555,7 @@ class FunctionalBasisArray(tensap.Function):
         Parameters
         ----------
         basis : tensap.FunctionalBasis (tensap.FullTensorProductFunctionalBasis
-                or tensap.SparseTensorProductFunctionalBasis)
+            or tensap.SparseTensorProductFunctionalBasis)
             The basis used for the projection.
         indices : tensap.MultiIndices, optional
             The multi-indices used for the projection. The default is None,
@@ -563,7 +563,7 @@ class FunctionalBasisArray(tensap.Function):
 
         Returns
         -------
-        FunctionalBasisArray
+        g : FunctionalBasisArray
             The obtained projection.
 
         '''

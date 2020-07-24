@@ -36,17 +36,18 @@ class LinearModelLearningCustomLoss(tensap.LinearModelLearning):
     Attributes
     ----------
     optimizer : tensorflow.keras.optimizers.Optimizer
-        The optimizer used to solve the learning problem. The default is Adam.
+          The optimizer used to solve the learning problem. The default is Adam.
     initial_guess : numpy.ndarray or tensorflow.Tensor
-        The initial guess used as a starting point of the optimization
-        algorithm. The default is a tensor with components drawn according
-        to a standard normal random variable.
+          The initial guess used as a starting point of the optimization
+          algorithm. The default is a tensor with components drawn according
+          to a standard normal random variable.
     options : dict
         Options for the optimizer:
-            - max_iter: the maximum number of iterations of an iterative
-            minimization algorithm,
-            - stagnation: the value of a stopping criterion based on the
-            relative stagnation between two iterates,
+
+        - max_iter: the maximum number of iterations of an iterative
+          minimization algorithm,
+        - stagnation: the value of a stopping criterion based on the
+          relative stagnation between two iterates
 
     '''
 
@@ -58,11 +59,6 @@ class LinearModelLearningCustomLoss(tensap.LinearModelLearning):
         ----------
         custom_loss : tap.CustomLossFunction
             The loss function.
-
-        Returns
-        -------
-        None.
-
         '''
         if not cond:
             raise ImportError('Package tensorflow must be installed to ' +
@@ -80,9 +76,9 @@ class LinearModelLearningCustomLoss(tensap.LinearModelLearning):
 
         Returns
         -------
-        numpy.ndarray or tensap.FunctionalBasisArray
+        sol : numpy.ndarray or tensap.FunctionalBasisArray
             The solution of the minimization problem.
-        dict
+        output : dict
             Outputs of the algorithm.
         '''
         self.initialize()

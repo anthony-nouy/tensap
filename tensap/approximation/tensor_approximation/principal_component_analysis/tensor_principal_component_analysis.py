@@ -36,8 +36,10 @@ class TensorPrincipalComponentAnalysis:
     pca_sampling_factor : int
         A factor to determine the number of samples N for the estimation of
         the principal components (1 by default):
-            - if prescribed precision, N = pca_sampling_factor*N_alpha,
-            - if prescribed rank, N = pca_sampling_factor*t.
+
+        - if prescribed precision, N = pca_sampling_factor*N_alpha,
+        - if prescribed rank, N = pca_sampling_factor*t.
+
     pca_adaptive_sampling : bool
         Adaptive sampling to determine the principal components with prescribed
         precision.
