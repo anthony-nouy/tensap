@@ -1,5 +1,6 @@
 language: generic
 os: linux
+dist: xenial
 
 install:
   # conda
