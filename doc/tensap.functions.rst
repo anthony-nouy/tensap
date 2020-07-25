@@ -7,6 +7,10 @@ Subpackages
 .. toctree::
    :maxdepth: 4
 
+   tensap.functions.measures
+   tensap.functions.polynomials
+   tensap.functions.sets
+
 Submodules
 ----------
 

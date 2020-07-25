@@ -1,21 +1,21 @@
+# Copyright (c) 2020, Anthony Nouy, Erwan Grelier
+# This file is part of tensap (tensor approximation package).
+
+# tensap is free software: you can redistribute it and/or modify
+# it under the terms of the GNU Lesser General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+
+# tensap is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU Lesser General Public License for more details.
+
+# You should have received a copy of the GNU Lesser General Public License
+# along with tensap.  If not, see <https://www.gnu.org/licenses/>.
+
 '''
 Module linear_model_learning_custom_loss.
-
-Copyright (c) 2020, Anthony Nouy, Erwan Grelier
-This file is part of tensap (tensor approximation package).
-
-tensap is free software: you can redistribute it and/or modify
-it under the terms of the GNU Lesser General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-tensap is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU Lesser General Public License for more details.
-
-You should have received a copy of the GNU Lesser General Public License
-along with tensap.  If not, see <https://www.gnu.org/licenses/>.
 
 '''
 
@@ -36,17 +36,18 @@ class LinearModelLearningCustomLoss(tensap.LinearModelLearning):
     Attributes
     ----------
     optimizer : tensorflow.keras.optimizers.Optimizer
-        The optimizer used to solve the learning problem. The default is Adam.
+          The optimizer used to solve the learning problem. The default is Adam.
     initial_guess : numpy.ndarray or tensorflow.Tensor
-        The initial guess used as a starting point of the optimization
-        algorithm. The default is a tensor with components drawn according
-        to a standard normal random variable.
+          The initial guess used as a starting point of the optimization
+          algorithm. The default is a tensor with components drawn according
+          to a standard normal random variable.
     options : dict
         Options for the optimizer:
-            - max_iter: the maximum number of iterations of an iterative
-            minimization algorithm,
-            - stagnation: the value of a stopping criterion based on the
-            relative stagnation between two iterates,
+
+        - max_iter: the maximum number of iterations of an iterative
+          minimization algorithm,
+        - stagnation: the value of a stopping criterion based on the
+          relative stagnation between two iterates
 
     '''
 
@@ -58,11 +59,6 @@ class LinearModelLearningCustomLoss(tensap.LinearModelLearning):
         ----------
         custom_loss : tap.CustomLossFunction
             The loss function.
-
-        Returns
-        -------
-        None.
-
         '''
         if not cond:
             raise ImportError('Package tensorflow must be installed to ' +
@@ -80,9 +76,9 @@ class LinearModelLearningCustomLoss(tensap.LinearModelLearning):
 
         Returns
         -------
-        numpy.ndarray or tensap.FunctionalBasisArray
+        sol : numpy.ndarray or tensap.FunctionalBasisArray
             The solution of the minimization problem.
-        dict
+        output : dict
             Outputs of the algorithm.
         '''
         self.initialize()
