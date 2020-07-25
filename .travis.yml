@@ -7,12 +7,12 @@ install:
   - wget -c --no-check-certificate https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh -P /tmp
   - bash /tmp/Miniconda3-latest-Linux-x86_64.sh -b -p $HOME/miniconda
   - export PATH="$HOME/miniconda/bin:$PATH"
-  - conda install -y tensorflow scikit-learn pytest networkx matplotlib sphinx numpydoc
+  - conda install -y tensorflow scikit-learn pytest networkx matplotlib sphinx numpydoc pytest-cov codecov
 
 script:
   - python setup.py install --user
   - make html -C doc
-  - pytest test/ -s
+  - mv tensap tensap_code && pytest --cov-report=xml --cov=tensap --capture=no test && mv tensap_code tensap
 
 after_success:
   - test "$TRAVIS_PULL_REQUEST" = "false" -a "$TRAVIS_BRANCH" = "master" || exit 0
@@ -26,6 +26,8 @@ after_success:
   - git add -A .
   - git commit -a -m "Travis build ${REPO_NAME} ${TRAVIS_BUILD_NUMBER}"
   - git push --quiet origin master > /dev/null 2>&1
+  # Push the results back to codecov
+  - codecov
 
 env:
     global:
