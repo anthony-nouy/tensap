@@ -1,2 +1,8 @@
 *.pyc
 __pycache__
+build
+dist
+tensap.egg-info
+coverage.xml
+.coverage
+.pytest_cache

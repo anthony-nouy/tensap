@@ -1,16 +1,27 @@
-import subprocess
-import sys
 import glob
 import pytest
-import os
 import time
+import matplotlib
+import matplotlib.pyplot as plt
+matplotlib.use('Agg')
+
+
+def execfile(filepath, globals=None, locals=None):
+    if globals is None:
+        globals = {}
+    globals.update({
+        "__file__": filepath,
+        "__name__": "__main__",
+    })
+    with open(filepath, 'rb') as file:
+        exec(compile(file.read(), filepath, 'exec'), globals, locals)
+
 
 @pytest.mark.parametrize("f", glob.glob('tutorials/**/*.py', recursive=True))
 def test_tutorial(f):
     print(f"-- running {f}")
-    mpl_env = os.environ.copy()
-    mpl_env["MPLBACKEND"] = "agg"
     t0 = time.time()
-    subprocess.run([sys.executable, f], check=True, env=mpl_env)
+    execfile(f)
     dt = time.time() - t0
     print(f"-- {f} ran in {dt:.2f} s")
+    plt.close("all")
