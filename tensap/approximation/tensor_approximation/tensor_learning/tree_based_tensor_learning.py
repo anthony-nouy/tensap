@@ -571,7 +571,7 @@ class TreeBasedTensorLearning(tensap.TensorLearning):
     def adaptation_display(self, f, enriched_nodes):
         print('\tEnriched nodes: [%s]\n\tRanks = [%s]' %
               (', '.join(map(str, enriched_nodes)),
-               ', '.join(map(str, f.tensor.ranks))))
+               ', '.join(map(str, f.tensor.ranks))), flush=True)
 
     def adapt_tree(self, f, cv_error, test_error, output, *args):
         if not self.tree_adaptation:
