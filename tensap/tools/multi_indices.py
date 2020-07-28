@@ -89,8 +89,14 @@ class MultiIndices:
     def __add__(self, m):
         return MultiIndices(self.array+m)
 
+    def __radd__(self, m):
+        self.array +=m
+
     def __sub__(self, m):
         return MultiIndices(self.array-m)
+
+    def __rsub__(self, m):
+        self.array -=m
 
     def cardinal(self):
         '''
