@@ -534,7 +534,7 @@ class TensorLearning(tensap.Learning):
                     print('')
                 print('\nRank adaptation, iteration %i:' % (iteration))
                 self.adaptation_display(f, enriched_nodes)
-                print('\tStorage complexity = %i' % f.tensor.storage())
+                print('\tStorage complexity = %i' % f.tensor.storage(), flush=True)
 
                 if errors[iteration] != 0:
                     print('\tError      = %2.5e' % errors[iteration])
@@ -864,10 +864,5 @@ class TensorLearning(tensap.Learning):
             The current approximation.
         enriched_nodes : numpy.ndarray
             The enriched parameters.
-
-        Returns
-        -------
-        None.
-
         '''
-        return
+        pass

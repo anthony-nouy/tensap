@@ -300,7 +300,7 @@ class CanonicalTensorLearning(tensap.TensorLearning):
         return s_local
 
     def adaptation_display(self, f, *args):
-        print('\tRank = %i' % len(f.tensor.core.data))
+        print('\tRank = %i' % len(f.tensor.core.data), flush=True)
 
 # %% Greedy solver
     def _solve_greedy(self):
