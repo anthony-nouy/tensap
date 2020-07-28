@@ -75,6 +75,7 @@ from .approximation.bases.full_tensor_product_functional_basis import \
         FullTensorProductFunctionalBasis
 from .approximation.bases.sparse_tensor_product_functional_basis import \
         SparseTensorProductFunctionalBasis
+from .approximation.bases.delta_functional_basis import DeltaFunctionalBasis
 
 from .approximation.learning.loss_functions import *
 from .approximation.learning.learning import Learning
