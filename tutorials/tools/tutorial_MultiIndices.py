@@ -46,11 +46,11 @@ I2 = tensap.MultiIndices.bounded_by([3, 1])
 I = I1.add_indices(I2)
 print('I1.add_indices(I2).array = \n%s\n' % I.array)
 
-# Substracting a set
+# Subtracting a set
 I = I1.remove_indices(I2)
 print('I1.remove_indices(I2).array = \n%s\n' % I.array)
 
-# Adding (or substracting) an integer
+# Adding (or subtracting) an integer
 I = I+2
 print('(I+2).array = \n%s\n' % I.array)
 

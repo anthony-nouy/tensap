@@ -89,8 +89,14 @@ class MultiIndices:
     def __add__(self, m):
         return MultiIndices(self.array+m)
 
+    def __radd__(self, m):
+        self.array +=m
+
     def __sub__(self, m):
         return MultiIndices(self.array-m)
+
+    def __rsub__(self, m):
+        self.array -=m
 
     def cardinal(self):
         '''
@@ -611,7 +617,7 @@ class MultiIndices:
             ind = MultiIndices.product_set(np.arange(m+1), d)
         elif p == 1:
             ind = MultiIndices(np.zeros(d, dtype=int))
-            for i in range(m):
+            for _ in range(m):
                 ind = ind.add_indices(ind.get_margin())
         else:
             ind = MultiIndices(np.zeros(d, dtype=int))
