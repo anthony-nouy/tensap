@@ -1,5 +1,6 @@
 [![Build Status](https://travis-ci.org/anthony-nouy/tensap.svg?branch=master)](https://travis-ci.org/anthony-nouy/tensap)
-[![codecov](https://codecov.io/gh/Gjacquenot/tensap/branch/master/graph/badge.svg)](https://codecov.io/gh/Gjacquenot/tensap)
+[![codecov](https://codecov.io/gh/anthony-nouy/tensap/branch/master/graph/badge.svg)](https://codecov.io/gh/anthony-nouy/tensap)
+
 
 # tensap (Tensor Approximation Package)
 
