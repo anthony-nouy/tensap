@@ -16,7 +16,7 @@ script:
 
 after_success:
   - test "$TRAVIS_PULL_REQUEST" = "false" -a "$TRAVIS_BRANCH" = "master" || exit 0
-  - git clone https://${GH_TOKEN}github.com/anthony-nouy/anthony-nouy.github.io.git
+  - git clone https://${GH_TOKEN}@github.com/anthony-nouy/anthony-nouy.github.io.git
   - mkdir -p anthony-nouy.github.io/sphinx/${REPO_NAME}/${TRAVIS_BRANCH}
   - cp -r doc/_build/html/* anthony-nouy.github.io/sphinx/${REPO_NAME}/${TRAVIS_BRANCH}
   - cd anthony-nouy.github.io
