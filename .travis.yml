@@ -17,10 +17,11 @@ script:
 after_success:
   - test "$TRAVIS_PULL_REQUEST" = "false" -a "$TRAVIS_BRANCH" = "master" || exit 0
   - git clone https://${GH_TOKEN}@github.com/anthony-nouy/anthony-nouy.github.io.git
+  - REPO_NAME=`echo "${TRAVIS_REPO_SLUG}" | cut -d "/" -f 2`
   - mkdir -p anthony-nouy.github.io/sphinx/${REPO_NAME}/${TRAVIS_BRANCH}
   - cp -r doc/_build/html/* anthony-nouy.github.io/sphinx/${REPO_NAME}/${TRAVIS_BRANCH}
   - cd anthony-nouy.github.io
-  #- touch .nojekyll
+  - touch .nojekyll
   - git config user.email "support@travis-ci.com"
   - git config user.name "Travis CI"
   - git add -A .
