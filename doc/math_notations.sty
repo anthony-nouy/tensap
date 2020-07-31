@@ -1,0 +1,163 @@
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{math_notations}
+
+\documentclass[11pt, oneside]{article}   	% use "amsart" instead of "article" for AMSLaTeX format
+\usepackage{geometry}                		% See geometry.pdf to learn the layout options. There are lots.
+\geometry{letterpaper}                   		% ... or a4paper or a5paper or ... 
+%\geometry{landscape}                		% Activate for for rotated page geometry
+%\usepackage[parfill]{parskip}    		% Activate to begin paragraphs with an empty line rather than an indent
+\usepackage{graphicx}				% Use pdf, png, jpg, or epsﾃつｧ with pdflatex; use eps in DVI mode
+\usepackage{amsmath,amssymb}
+
+\usepackage{bm}
+
+\usepackage{hyperref}
+\usepackage{cleveref}
+\usepackage{setspace}
+\usepackage{verbatim}
+\usepackage{ifthen}
+\usepackage{xcolor}
+\usepackage{synttree}
+\usepackage{tikz}
+\usepackage{subcaption}
+\usepackage{algorithm}
+\usepackage{algorithmic}
+\usepackage{multirow}
+\usepackage{hhline}
+\usepackage{mathtools}
+\usepackage{booktabs}
+\usepackage{stackengine}
+\usepackage{listings}
+\usepackage{graphicx}
+\usepackage{amsthm}
+\usepackage{sectsty}
+\paragraphfont{\normalfont\bfseries\underline}
+
+
+\definecolor{commentgreen}{RGB}{2,112,10}
+\definecolor{eminence}{RGB}{108,48,130}
+\definecolor{weborange}{RGB}{255,165,0}
+\definecolor{frenchplum}{RGB}{129,20,83}
+\lstset{
+	language=python,
+	frame=tb,
+	breaklines=true,
+	postbreak=\mbox{\textcolor{red}{$\hookrightarrow$}\space},
+	tabsize=4,
+	showstringspaces=false,
+	numbers=left,
+	commentstyle=\color{commentgreen},
+	keywordstyle=\color{eminence},
+	stringstyle=\color{red},
+	basicstyle=\small\ttfamily, % basic font setting
+	emph={int,char,double,float,unsigned,void,bool},
+	emphstyle={\color{blue}},
+	% keyword highlighting
+	classoffset=1, % starting new class
+	otherkeywords={>,<,.,;,-,!,=,~},
+	morekeywords={>,<,.,;,-,!,=,~},
+	keywordstyle=\color{weborange},
+	classoffset=0,
+}
+\stackMath
+\DeclareMathOperator*{\argmax}{argmax}
+\DeclareMathOperator*{\bigtimes}{\times}
+
+% Increase line spacing in algorithms, to increase readability
+\usepackage{setspace}
+\usepackage{etoolbox}
+\AtBeginEnvironment{algorithmic}{\setstretch{1.25}}
+
+\renewcommand{\algorithmicrequire}{\textbf{Input:}}
+\renewcommand{\algorithmicensure}{\textbf{Output:}}
+
+\newcommand{\todo}[1]{{\color{red} #1}}
+\newcommand{\blue}[1]{{\color{blue} #1}}
+\newcommand{\red}[1]{{\color{red} #1}}
+
+\usepackage[normalem]{ulem}
+
+\newcommand{\Bc}{\mathcal{B}}
+\newcommand{\Hc}{\mathcal{H}}
+\newcommand{\Lc}{\mathcal{L}}
+\newcommand{\Mc}{\mathcal{M}}
+\newcommand{\Nc}{\mathcal{N}}
+\newcommand{\Pc}{\mathcal{P}}
+\newcommand{\Rc}{\mathcal{R}}
+\newcommand{\Tc}{\mathcal{T}}
+\newcommand{\Uc}{\mathcal{U}}
+\newcommand{\Yc}{\mathcal{Y}}
+\newcommand{\Xc}{\mathcal{X}}
+\newcommand{\Rbb}{\mathbb{R}}
+\newcommand{\Ebb}{\mathbb{E}}
+\newcommand{\Nbb}{\mathbb{N}}
+\newcommand{\Pbb}{\mathbb{P}}
+
+\emergencystretch 5em% % To try to force long commands to break line (use \textbfn if not enough)
+\newcommand{\textbf}[1]{\texttt{\detokenize{#1}}}			% Write code on the same line
+\newcommand{\textbfn}[1]{\newline\texttt{\detokenize{#1}}}	% Write code on a new line
+
+\newcommand{\rank}{\mathrm{rank}}
+\DeclareMathOperator{\depth}{depth}
+\DeclareMathOperator{\level}{level}
+
+\newtheorem{theorem}{Theorem}[section]
+%\newtheorem{remark}[theorem]{Remark}
+\newtheorem{example}[theorem]{Example}
+\newtheorem{conjecture}[theorem]{Conjecture}
+\newtheorem{assumption}[theorem]{Assumption}
+%\newtheorem{algorithm}[theorem]{Algorithm}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{lemma}[theorem]{Lemma}\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{question}{Question}
+\newtheorem{corollary}{Corollary}
+
+%\usepackage{color}
+\usepackage{colortbl}
+%\usepackage{multirow}
+\definecolor{Gray}{gray}{0.90}
+
+\tikzstyle{active}=[circle,fill=black]
+
+%\setlength{\parindent}{0pt} % No indent
+
+%\onehalfspacing
+
+\newcommand{\showdetails}{show}  % comment this line to hide the details
+\theoremstyle{definition}
+\makeatletter
+\newtheoremstyle{indented}
+  {2pt}% space before
+  {2pt}% space after
+  {\addtolength{\@totalleftmargin}{2.5em}
+   \addtolength{\linewidth}{-2.5em}
+   \parshape 1 2.5em \linewidth}% body font
+  {}% indent
+  {\bfseries}% header font
+  {.}% punctuation
+  {.5em}% after theorem header
+  {}% header specification (empty for default)
+\makeatother
+
+\theoremstyle{indented}
+
+\newtheorem*{details}{Note}
+\newtheorem*{note}{Note}
+\newtheorem*{remark}{Remark}
+%\newenvironment{details}{}{}
+%\newenvironment{details}%
+%{%
+%	\ifthenelse{\isundefined{\showdetails}}%
+%	{\expandafter\comment}%
+%	{}%
+%	\color{gray}%
+%}%
+%{%
+%	\ifthenelse{\isundefined{\showdetails}}%
+%	{\expandafter\endcomment}%
+%	{}%
+%}
+
+\newcommand{\erwan}[1]{\textcolor{gray}{#1}}
+\newcommand{\anthony}[1]{\textcolor{magenta}{#1}}
+
