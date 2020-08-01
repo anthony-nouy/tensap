@@ -55,16 +55,14 @@ print(FTBT)
 FEATURES_TRAIN = []
 for i in range(ORDER):
     M = np.zeros((NUM_TRAIN,sz[i]))
-    for k in range(NUM_TRAIN):
-        M[k,indices_TRAIN.array[k,i]] = 1.0
+    np.put_along_axis(M, indices_TRAIN.array[:, i:i+1], 1.0, axis=1)
     FEATURES_TRAIN.append(M)
 
 
 FEATURES_TEST = []
 for i in range(ORDER):
     M = np.zeros((NUM_TEST,sz[i]))
-    for k in range(NUM_TEST):
-        M[k,indices_TEST.array[k,i]] = 1.0
+    np.put_along_axis(M, indices_TEST.array[:, i:i+1], 1.0, axis=1)
     FEATURES_TEST.append(M)
 
 
