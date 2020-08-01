@@ -56,7 +56,7 @@ FEATURES_TRAIN = []
 for i in range(ORDER):
     M = np.zeros((NUM_TRAIN,sz[i]))
     for k in range(NUM_TRAIN):
-            M[k,indices_TRAIN.array[k,i]] = 1.0
+        M[k,indices_TRAIN.array[k,i]] = 1.0
     FEATURES_TRAIN.append(M)
 
 
@@ -64,7 +64,7 @@ FEATURES_TEST = []
 for i in range(ORDER):
     M = np.zeros((NUM_TEST,sz[i]))
     for k in range(NUM_TEST):
-            M[k,indices_TEST.array[k,i]] = 1.0
+        M[k,indices_TEST.array[k,i]] = 1.0
     FEATURES_TEST.append(M)
 
 
