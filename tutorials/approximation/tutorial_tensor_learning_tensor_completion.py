@@ -19,6 +19,7 @@ Tutorial on tensor completion with tree-based tensor format.
 
 '''
 
+from enum import Enum
 from time import time
 import numpy as np
 import tensap
@@ -69,27 +70,31 @@ for i in range(ORDER):
 
 # %% Tree-based tensor format
 # Tensor format
-# 1 - Random tree and active nodes
-# 2 - Tensor-Train
-# 3 - Hierarchial Tensor-Train
-# 4 - Binary tree
-CHOICE = 3
-if CHOICE == 1:
+
+class TensorFormat(str, Enum):
+    RANDON_TREE_AND_ACTIVE_NODES = 'Random tree and active nodes'
+    TENSOR_TRAIN = 'Tensor-Train'
+    HIERARCHICAL_TENSOR_TRAIN = 'Hierarchial Tensor-Train'
+    BINARY_TREE = 'Binary tree'
+
+
+CHOICE = TensorFormat.HIERARCHICAL_TENSOR_TRAIN
+if CHOICE == TensorFormat.RANDON_TREE_AND_ACTIVE_NODES:
     print('Random tree with active nodes')
     ARITY = [2, 4]
     TREE = tensap.DimensionTree.random(ORDER, ARITY)
     IS_ACTIVE_NODE = np.full(TREE.nb_nodes, True)
     SOLVER = tensap.TreeBasedTensorLearning(TREE, IS_ACTIVE_NODE,
                                             tensap.SquareLossFunction())
-elif CHOICE == 2:
+elif CHOICE == TensorFormat.TENSOR_TRAIN:
     print('Tensor-train format')
     SOLVER = tensap.TreeBasedTensorLearning.tensor_train(
         ORDER, tensap.SquareLossFunction())
-elif CHOICE == 3:
+elif CHOICE == TensorFormat.HIERARCHICAL_TENSOR_TRAIN:
     print('Tensor Train Tucker')
     SOLVER = tensap.TreeBasedTensorLearning.tensor_train_tucker(
         ORDER, tensap.SquareLossFunction())
-elif CHOICE == 4:
+elif CHOICE == TensorFormat.BINARY_TREE:
     print('Binary tree')
     TREE = tensap.DimensionTree.balanced(ORDER)
     IS_ACTIVE_NODE = np.full(TREE.nb_nodes, True)
