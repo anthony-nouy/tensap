@@ -61,8 +61,8 @@ class UserDefinedFunction(tensap.Function):
 
         if isinstance(fun, str):
             for i in np.arange(dim-1, -1, -1):
-                s = ('x' + str(i))
-                s_new = ('x[:, ' + str(i) + ']')
+                s = f'x{i}'
+                s_new = f'x[:, {i}]'
                 fun = fun.replace(s, s_new)
             self.fun = lambda x: eval(fun)
         else:
