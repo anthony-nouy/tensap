@@ -19,6 +19,7 @@ Tutorial on tensor completion with tree-based tensor format.
 
 '''
 
+from enum import Enum
 from time import time
 import numpy as np
 import tensap
@@ -26,70 +27,72 @@ import tensap
 np.random.seed(0)
 
 # %% Generation of the tensor to recover
-sz = [5, 8, 4, 3, 6]; # Size of the tensor
-ORDER = len(sz); # Order of the tensor
+sz = [5, 8, 4, 3, 6]  # Size of the tensor
+ORDER = len(sz)  # Order of the tensor
 T = tensap.DimensionTree.linear(ORDER)
 ranks = [1, 3, 3, 4, 3, 6, 3, 2, 4]
 np.random.seed(0)
 FTBT = tensap.TreeBasedTensor.randn(T, ranks, sz)
-F = FTBT.full();
+F = FTBT.full()
 
 # %% Training and test samples
-p = 0.3; # Proportion of known entries of the tensor
+p = 0.3  # Proportion of known entries of the tensor
 
 N = np.prod(sz)
 NUM_TRAIN = np.int64(np.round(p*N))
-loc_TRAIN = np.random.choice(N,NUM_TRAIN,replace=False) # Random selection of n entries
+loc_TRAIN = np.random.choice(N,NUM_TRAIN,replace=False)  # Random selection of n entries
 indices_TRAIN = tensap.MultiIndices.ind2sub(sz, loc_TRAIN)
-Y_TRAIN = F.eval_at_indices(indices_TRAIN.array);
+Y_TRAIN = F.eval_at_indices(indices_TRAIN.array)
 
 NUM_TEST = N
-loc_TEST = range(N) 
+loc_TEST = range(N)
 indices_TEST = tensap.MultiIndices.ind2sub(sz, loc_TEST)
-Y_TEST = F.eval_at_indices(indices_TEST.array);
+Y_TEST = F.eval_at_indices(indices_TEST.array)
 print('Tensor to recover with ',p*100,'% of its entries known (',NUM_TRAIN,' entries):')
 print(FTBT)
 
 # %% Features creation: matrices containing non zero entries if the relative entry is known
-FEATURES_TRAIN = [];
+FEATURES_TRAIN = []
 for i in range(ORDER):
     M = np.zeros((NUM_TRAIN,sz[i]))
-    for k in range(NUM_TRAIN):
-            M[k,indices_TRAIN.array[k,i]] = 1.0
+    np.put_along_axis(M, indices_TRAIN.array[:, i:i+1], 1.0, axis=1)
     FEATURES_TRAIN.append(M)
-        
+
 
 FEATURES_TEST = []
 for i in range(ORDER):
     M = np.zeros((NUM_TEST,sz[i]))
-    for k in range(NUM_TEST):
-            M[k,indices_TEST.array[k,i]] = 1.0
+    np.put_along_axis(M, indices_TEST.array[:, i:i+1], 1.0, axis=1)
     FEATURES_TEST.append(M)
 
 
 # %% Tree-based tensor format
 # Tensor format
-# 1 - Random tree and active nodes
-# 2 - Tensor-Train
-# 3 - Hierarchial Tensor-Train
-# 4 - Binary tree
-CHOICE = 3
-if CHOICE == 1:
+
+class TensorFormat(str, Enum):
+    RANDON_TREE_AND_ACTIVE_NODES = 'Random tree and active nodes'
+    TENSOR_TRAIN = 'Tensor-Train'
+    HIERARCHICAL_TENSOR_TRAIN = 'Hierarchial Tensor-Train'
+    BINARY_TREE = 'Binary tree'
+
+
+CHOICE = TensorFormat.HIERARCHICAL_TENSOR_TRAIN
+if CHOICE == TensorFormat.RANDON_TREE_AND_ACTIVE_NODES:
     print('Random tree with active nodes')
     ARITY = [2, 4]
     TREE = tensap.DimensionTree.random(ORDER, ARITY)
     IS_ACTIVE_NODE = np.full(TREE.nb_nodes, True)
     SOLVER = tensap.TreeBasedTensorLearning(TREE, IS_ACTIVE_NODE,
                                             tensap.SquareLossFunction())
-elif CHOICE == 2:
+elif CHOICE == TensorFormat.TENSOR_TRAIN:
     print('Tensor-train format')
     SOLVER = tensap.TreeBasedTensorLearning.tensor_train(
         ORDER, tensap.SquareLossFunction())
-elif CHOICE == 3:
+elif CHOICE == TensorFormat.HIERARCHICAL_TENSOR_TRAIN:
     print('Tensor Train Tucker')
     SOLVER = tensap.TreeBasedTensorLearning.tensor_train_tucker(
         ORDER, tensap.SquareLossFunction())
-elif CHOICE == 4:
+elif CHOICE == TensorFormat.BINARY_TREE:
     print('Binary tree')
     TREE = tensap.DimensionTree.balanced(ORDER)
     IS_ACTIVE_NODE = np.full(TREE.nb_nodes, True)
