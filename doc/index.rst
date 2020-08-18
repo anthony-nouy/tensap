@@ -7,14 +7,12 @@ Welcome to tensap's documentation!
 ==================================
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 1
    :caption: Contents:
 
-   tensap.approximation
-   tensap.functions
-   tensap.linear_algebra
-   tensap.tensor_algebra
-   tensap.tools
+   intro
+   bibliography
+   api
 
 Indices and tables
 ==================

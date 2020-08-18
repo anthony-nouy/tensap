@@ -10,8 +10,9 @@
 # add these directories to sys.path here. If the directory is relative to the
 # documentation root, use os.path.abspath to make it absolute, like shown here.
 #
-# import os
-# import sys
+#import os
+#import sys
+#import subprocess
 # sys.path.insert(0, os.path.abspath('.'))
 
 
@@ -33,6 +34,24 @@ release = '1.1'
 extensions = ['sphinx.ext.autodoc',
               'numpydoc',
               ]
+
+#try:
+    #import sphinx.ext.imgmath
+    #extensions.append('sphinx.ext.imgmath')
+    #imgmath_latex_preamble = r'\usepackage{{{0}math_notations}}'.format(
+        #os.path.dirname(__file__) + os.sep)
+    #imgmath_use_preview = True
+    #if subprocess.call('dvisvgm -V', shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE) == 0:
+        #imgmath_image_format = 'svg'
+#except ImportError:
+    #extensions.append('sphinx.ext.pngmath')
+    #pngmath_latex_preamble = r'\usepackage{{{0}math_notations}}'.format(
+        #os.path.dirname(__file__) + os.sep)
+    ## The next option is used for smart-alignment of math images on the text.
+    ## It only works when the preview-latex package is installed.
+    ## See http://sphinx-doc.org/latest/ext/math.html#confval-pngmath_use_preview
+    #pngmath_use_preview = True
+
 
 autodoc_default_flags = ['members', 'inherited-members']
 autosummary_generate = True
@@ -59,3 +78,17 @@ html_theme = 'alabaster'
 # relative to this directory. They are copied after the builtin static files,
 # so a file named "default.css" will overwrite the builtin "default.css".
 #html_static_path = ['_static']
+
+# -- Options for LATEX -------------------------------------------------
+
+latex_elements = {
+    # The paper size ('letterpaper' or 'a4paper').
+    'papersize': 'a4paper',
+    # The font size ('10pt', '11pt' or '12pt').
+    'pointsize': '10pt',
+    # Additional stuff for the LaTeX preamble.
+    'preamble': r'\usepackage{math_notations}',
+}
+
+latex_additional_files = ['math_notations.sty']
+
