@@ -48,7 +48,7 @@ class TensorizedFunction(tensap.Function):
         g(x) = f(i_1, ..., i_d, y) with y in [0,1] and i_k in {0, ..., b-1}
         where x = (i + y)b^(-d) with i in {0, ..., b^d-1} having the following
         representation in base b:
-        i = sum_{k=1}^d i_k b^(k-1) in [0,b^d-1].
+        i = sum_{k=1}^d i_k b^(d-k) in [0,b^d-1].
 
         For a bivariate function g(x1, x2) (dim=2)
             - if t.ordering_type == 1 then
