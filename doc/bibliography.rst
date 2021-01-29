@@ -4,9 +4,11 @@
 Bibliography
 ============
 .. [nouy:2017_morbook] A. Nouy, *Chapter 4: Low-Rank Methods for High-Dimensional Approximation and Model Order Reduction*. Model Reduction and Approximation. 
-    SIAM, Philadelphia, PA, p 171-226, 2017.
+    SIAM, Philadelphia, PA, p 171-226, 2017. 
+    `pdf <https://arxiv.org/pdf/1511.01554.pdf>`__
 .. [Falco2018SEMA] A. Falco, W. Hackbusch, and A. Nouy, *Tree-based tensor formats*
     SeMA Journal, Oct 2018.
+    `pdf <https://arxiv.org/pdf/1810.01262.pdf>`__
 .. [grelier:2018] E. Grelier, A. Nouy, and M. Chevreuil, *Learning with tree-based tensor formats*, November 2018.
     `pdf <https://arxiv.org/pdf/1811.04455.pdf>`__
 .. [grelier2019learning] E. Grelier, A. Nouy, and R. Lebrun,
