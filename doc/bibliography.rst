@@ -25,5 +25,5 @@ Bibliography
 .. [Nouy2017hopca] A. Nouy,
     *Higher-order principal component analysis for the approximation of tensors in tree-based low-rank formats*. Numerische Mathematik, 2019, vol. 141, no 3, p. 743-789, 2019.
     `pdf <https://arxiv.org/pdf/1705.00880.pdf>`__
-.. [hackbusch2019] W. Hackbusch, *Tensor Spaces and Numerical Tensor Calculus*,
+.. [Hackbusch2019] W. Hackbusch, *Tensor Spaces and Numerical Tensor Calculus*,
     Springer Nature, 2019, volume~56.

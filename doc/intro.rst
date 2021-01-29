@@ -299,7 +299,7 @@ formats of tensors in :math:`\mathbb{R}^{N_1\times \ldots \times N_d}.`
 For a detailed description of methods, see the description of the
 corresponding methods for **FullTensor** in . For an introduction to
 tensor formats, we refer to the monograph [Hackbusch2019]_ and the survey
-[Nouy2017]_.
+[Nouy2017book]_.
 
 **CanonicalTensor**
 -------------------
@@ -759,7 +759,7 @@ parameterize the representation of :math:`X`.
   node :math:`\alpha = \{1,\ldots,\nu\}`.
 
 | For a more detailed presentation of tree-based formats (possibly
-  degenerate) and more examples, see [Nouy2017b]_.
+  degenerate) and more examples, see [Nouy2017book]_.
 | If the rank :math:`r_D` associated with the root node is different
   from :math:`1`, a **TreeBasedTensor** **X** represents a tensor of
   order :math:`d+1` with entries :math:`X_{i_1,\ldots,i_d,k_D}`,
@@ -1361,7 +1361,7 @@ The objects **TensorPrincipalComponentAnalysis** (resp.
 **FunctionalTensorPrincipalComponentAnalysis**) implements approximation
 methods for algebraic (resp. functional) tensors based on principal
 component analysis, using an adaptive sampling of the entries of the
-tensor (or the function). See [Nouy2017]_ for a
+tensor (or the function). See [Nouy2017hopca]_ for a
 description of the algorithms, and for examples of use, see the tutorial
 files ``tutorials\approximation\tutorial_TensorPrincipalComponentAnalysis.py``
 and ``tutorials\approximation\tutorial_FunctionalTensorPrincipalComponentAnalysis.py``.
