@@ -40,7 +40,7 @@ The entries of :math:`X` are :math:`X_{i_1, \ldots, i_d}`, with
 
 We present in this section how to create a **FullTensor** using tensap,
 and several possible operations with such an object. For an introduction
-to tensor calculus, we refer to the monograph [hackbusch2019tensor]_.
+to tensor calculus, we refer to the monograph [Hackbusch2019]_.
 
 For examples of use, see the tutorial file
 ``tutorials\tensor_algebra\tutorial_FullTensor.py``.
@@ -298,8 +298,8 @@ Here we present tensor formats available in tensap, which are structured
 formats of tensors in :math:`\mathbb{R}^{N_1\times \ldots \times N_d}.`
 For a detailed description of methods, see the description of the
 corresponding methods for **FullTensor** in . For an introduction to
-tensor formats, we refer to the monograph [hackbusch2019tensor]_ and the survey
-[nouy:2017_morbook]_.
+tensor formats, we refer to the monograph [Hackbusch2019]_ and the survey
+[Nouy2017]_.
 
 **CanonicalTensor**
 -------------------
@@ -715,7 +715,7 @@ The leaf nodes :math:`\alpha \in {\mathcal{L}}(T)` are such that
 
 | Given a dimension tree :math:`T`, a **TreeBasedTensor** **X** is a
   tensor in *tree-based format* (see
-  [Falco2018SEMA]_, [hackbusch2019tensor]_). It represents
+  [Falco2018]_, [Hackbusch2019]_). It represents
   an order :math:`d` tensor
   :math:`X \in {\mathbb{R}}^{N_1 \times \cdots \times N_d}` in the set
   of tensors with :math:`\alpha`-ranks bounded by some integer
@@ -759,7 +759,7 @@ parameterize the representation of :math:`X`.
   node :math:`\alpha = \{1,\ldots,\nu\}`.
 
 | For a more detailed presentation of tree-based formats (possibly
-  degenerate) and more examples, see [nouy:2017hopca]_.
+  degenerate) and more examples, see [Nouy2017b]_.
 | If the rank :math:`r_D` associated with the root node is different
   from :math:`1`, a **TreeBasedTensor** **X** represents a tensor of
   order :math:`d+1` with entries :math:`X_{i_1,\ldots,i_d,k_D}`,
@@ -890,7 +890,7 @@ random permutations and returns a **TreeBasedTensor** **Y** which is
 such that **Y.storage()** is less or equal than **X.storage()**. The
 nodes to permute are drawn according to probability measures favoring
 high decreases of the ranks while maintaining a permutation cost as low
-as possible (see [grelier2019learning]_).
+as possible (see [Grelier2019]_).
 
 The similar method **optimize\_leaves\_permutations** focuses on the
 permutation of the leaf nodes to try to reduce the storage complexity of
@@ -1258,7 +1258,7 @@ command **f.eval(x)**, and one can obtain its derivatives with
 -----------------------------------------
 
 | For an introduction to tensorization of functions, see
-  [Ali2020ApproximationWTpartI]_, [Ali2020ApproximationWTpartII]_.
+  [Ali2020I]_, [Ali2020II]_, [Ali2021III]_.
 | We consider functions defined on the interval :math:`I = [0,1)`. For a
   given :math:`b \in \{2,3,\ldots, \}` and :math:`d\in {\mathbb{N}}`, an
   element :math:`x \in I` can be identified with the tuple
@@ -1361,7 +1361,7 @@ The objects **TensorPrincipalComponentAnalysis** (resp.
 **FunctionalTensorPrincipalComponentAnalysis**) implements approximation
 methods for algebraic (resp. functional) tensors based on principal
 component analysis, using an adaptive sampling of the entries of the
-tensor (or the function). See [nouy:2017hopca]_ for a
+tensor (or the function). See [Nouy2017]_ for a
 description of the algorithms, and for examples of use, see the tutorial
 files ``tutorials\approximation\tutorial_TensorPrincipalComponentAnalysis.py``
 and ``tutorials\approximation\tutorial_FunctionalTensorPrincipalComponentAnalysis.py``.
@@ -1589,8 +1589,8 @@ The algorithm requires a starting point, provided in
 ------------------
 
 The package tensap implements algorithms to perform statistical learning
-with canonical and tree-based tensor formats. See [grelier:2018]_,
-[grelier2019learning]_, [2020arXiv200701165M]_ for a detailed presentation
+with canonical and tree-based tensor formats. See [Grelier2018]_,
+[Grelier2019]_, [Michel2020]_ for a detailed presentation
 of algorithms and related theory.
 
 For examples, see the tutorial files
@@ -1639,7 +1639,7 @@ One can also provide the **TensorLearning** **s** with a test sample in
 Rank adaptation.
 ^^^^^^^^^^^^^^^^
 
-(See [grelier:2018]_) The rank adaptation
+(See [Grelier2018]_) The rank adaptation
 is enabled by setting **s.rank\_adaptation** to **True**.
 
 For tensors in canonical format, the algorithm returns a sequence of
@@ -1658,7 +1658,7 @@ each iteration. The default value of :math:`0.8`.
 Tree adaptation.
 ^^^^^^^^^^^^^^^^
 
-(See [grelier:2018]_) For tree-based
+(See [Grelier2018]_) For tree-based
 tensor formats, the tree can be adapted at each iteration using the
 algorithm mentioned in Section [sec:TreeBasedTensor], by setting
 **s.tree\_adaptation** to **True**. The tolerance for the tree
@@ -1669,7 +1669,7 @@ and the maximal number of tried trees by
 Model selection.
 ^^^^^^^^^^^^^^^^
 
-(See [2020arXiv200701165M]_) At the end of the adaptive
+(See [Michel2020]_) At the end of the adaptive
 procedure, a model can be selected by setting **s.model\_selection** to
 **True**, using either a test error (specified by
 **s.model\_selection\_options[’type’] = ’test\_error’**) or a
