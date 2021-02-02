@@ -51,6 +51,7 @@ tensap.functions.measures.normal\_random\_variable module
    :members:
    :undoc-members:
    :show-inheritance:
+   :exclude-members: randn
 
 tensap.functions.measures.probability\_measure module
 -----------------------------------------------------
