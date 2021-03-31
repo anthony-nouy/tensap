@@ -38,6 +38,7 @@ from .approximation.integration.integration_rules import *
 
 from .functions.measures.copulas import *
 from .functions.measures.measure import Measure
+from .functions.measures.lebesgue_measure import LebesgueMeasure
 from .functions.measures.product_measure import ProductMeasure
 from .functions.measures.probability_measure import ProbabilityMeasure
 from .functions.measures.random_variable import RandomVariable

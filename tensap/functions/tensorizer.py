@@ -73,7 +73,8 @@ class Tensorizer:
             Random vector used for the map. The default is None a uniform
             random vector on [0, 1]^dim.
         ordering_type : int
-            Integer specifying the ordering type of the variables.
+            Integer specifying the ordering type of the variables. 
+            The default is 1. 
 
         Returns
         -------
@@ -142,6 +143,8 @@ class Tensorizer:
             for k in range(self.d):
                 j.append(i[:, np.arange(k, i.shape[1], self.d)])
             i = np.hstack(j)
+        elif self.ordering_type != 1:
+            raise ValueError('Wrong ordering_type')
 
         if nargout == 2:
             return y, i
@@ -170,6 +173,9 @@ class Tensorizer:
                 ik = z[:, np.arange(self.d)+k*self.d]
             elif self.ordering_type == 2:
                 ik = z[:, np.arange(k, self.dim*self.d, self.dim)]
+            else:
+                raise ValueError('Wrong ordering_type')
+                
             zk = z[:, -self.dim+k]
             zk = self.Y.random_variables[k].cdf(zk)
             u.append(Tensorizer.z2u(np.hstack((ik, np.reshape(zk, [-1, 1]))),
@@ -205,9 +211,11 @@ class Tensorizer:
 
         if not isinstance(fun, tensap.Function) and hasattr(fun, '__call__'):
             fun = tensap.UserDefinedFunction(fun, self.dim)
+            fun.evaluation_at_multiple_points = True            
 
         f = tensap.UserDefinedFunction(lambda z: fun(self.inverse_map(z)),
                                        (self.d+1)*self.dim)
+        f.evaluation_at_multiple_points = fun.evaluation_at_multiple_points 
         return tensap.TensorizedFunction(f, self)
 
     def tensorized_function_functional_bases(self, h=1):
@@ -228,8 +236,10 @@ class Tensorizer:
             The functional bases.
 
         '''
-        if isinstance(h, (np.ndarray, list)) or np.isscalar(h):
-            h = lambda y, h=h: h*np.ones(np.shape(y))
+        #if isinstance(h, (np.ndarray, list)) or np.isscalar(h):
+        #    h = lambda y, h=h: h*np.ones(np.shape(y))
+        
+        
 
         if hasattr(h, '__call__'):
             h = tensap.UserDefinedFunctionalBasis([h])
@@ -237,6 +247,11 @@ class Tensorizer:
 
         if isinstance(h, tensap.FunctionalBasis):
             h = tensap.FunctionalBases.duplicate(h, self.dim)
+            
+        if np.isscalar(h):
+            h = [tensap.PolynomialFunctionalBasis(y.orthonormal_polynomials(),
+                                      range(h+1)) for y in self.Y.random_variables]
+            h = tensap.FunctionalBases(h)    
 
         assert isinstance(h, tensap.FunctionalBases), \
             'Wrong type of argument for h.'
