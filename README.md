@@ -17,8 +17,11 @@ Install from PyPi:
 pip install tensap
 ```
 
-Alternatively, you can install tensap directly from github:
+
+Install from conda:
 
 ```
-pip install git+git://github.com/anthony-nouy/tensap@master
+conda config --add channels conda-forge
+conda config --set channel_priority strict
+conda install tensap
 ```
