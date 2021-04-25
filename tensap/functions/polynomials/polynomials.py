@@ -182,21 +182,22 @@ class UnivariatePolynomials(ABC):
 
     def moment(self, ind, measure=None):
         '''
-        Return the moments of the family of polynomials p_i(X), i in ind,
-        of a random variable X, using a gauss integration rule.
+        Return the integral of products of polynomials p_i, i in ind, using a gauss integration rule.
+        
+        The integral is with respect to a measure mu which is taken as the measure to the polynomials if not provided in input
 
         Assuming ind is a numpy.ndarray:
-            - if ind.ndim == 1, return the float
-                m = E(p_ind[0](X)...p_ind[-1](X)),
-            - else if ind.ndim == 2, return the vector
-                m = (E(p_ind[j, 0](X)...p_ind[j, -1](X)) :
-                    j = 1, ..., ind.shape[0]).
+            - if ind.ndim == 1, and ind is of length N,  return the float
+                m = int p_ind[0](x)...p_ind[N-1](x) dmu(x),
+            - else if ind.ndim == 2, and ind is N-by-M,
+                return the vector m of length N such that
+                m[j] = int p_ind[j, 0](x)...p_ind[j, M-1](x) dmu(x)
+                    
 
         Parameters
         ----------
         ind : list or numpy.ndarray
-            The degrees of the polynomials for which the moments are to be
-            computed.
+            Contains the degrees of the considered polynomials.
         measure : tensap.Measure, optional
             The measure used for the computation of the moments. The default is
             None, indicating to use self.measure.
@@ -204,7 +205,7 @@ class UnivariatePolynomials(ABC):
         Returns
         -------
         numpy.ndarray
-            The moments of the family of polynomials.
+            Contains the integrals of products of polynomials.
 
         '''
         if measure is None:
