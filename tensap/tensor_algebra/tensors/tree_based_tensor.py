@@ -492,7 +492,7 @@ class TreeBasedTensor:
             The TreeBasedTensor as a numpy.ndarray.
 
         '''
-        return self.full().data.numpy()
+        return self.full().data
 
     def sub_tensor(self, *indices):
         '''
