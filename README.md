@@ -1,4 +1,4 @@
-[![Build Status](https://github.com/openturns/otpod/actions/workflows/build.yml/badge.svg?branch=master)](https://github.com/openturns/otpod/actions/workflows/build.yml)
+[![Build Status](https://github.com/anthony-nouy/tensap/actions/workflows/build.yml/badge.svg?branch=master)](https://github.com/anthony-nouy/tensap/actions/workflows/build.yml)
 [![codecov](https://codecov.io/gh/anthony-nouy/tensap/branch/master/graph/badge.svg)](https://codecov.io/gh/anthony-nouy/tensap)
 [![Doc](https://readthedocs.org/projects/spack/badge/?version=latest)](https://anthony-nouy.github.io/sphinx/tensap/master/)
 
