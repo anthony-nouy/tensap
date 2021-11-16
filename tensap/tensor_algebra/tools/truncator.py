@@ -190,8 +190,8 @@ class Truncator:
 
         if isinstance(tensor, np.ndarray):
             out = self.trunc_svd(tensor)
-        elif hasattr(tensor, 'numpy'):
-            out = self.trunc_svd(tensor.numpy())
+        elif isinstance(tensor, tensap.FullTensor):
+            out = self.trunc_svd(tensor.data)
         elif isinstance(tensor, tensap.TreeBasedTensor):
             out = self.hsvd(tensor)
         elif isinstance(tensor, tensap.CanonicalTensor):

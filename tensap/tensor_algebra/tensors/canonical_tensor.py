@@ -293,8 +293,7 @@ class CanonicalTensor:
             'The second argument must be a tensap.CanonicalTensor.'
         matrices = [np.matmul(np.transpose(x), y) for
                     x, y in zip(self.space, tensor_2.space)]
-        out = tensor_2.core.full().tensor_matrix_product(matrices)
-        return self.core.full().dot(out)
+        return self.core.dot_with_rank_one_metric(tensor_2.core, matrices)
 
     def norm(self, matrix=None):
         '''
