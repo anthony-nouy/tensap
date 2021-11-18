@@ -38,8 +38,10 @@ jobs:
       - uses: conda-incubator/setup-miniconda@v2
         with:
           miniforge-version: latest
+          python-version: 3.9
       - name: Build
         run: |
-          conda install -y tensorflow scikit-learn pytest networkx matplotlib
+          conda install -y scikit-learn pytest networkx matplotlib pip
+          pip install tensorflow
           python setup.py install
           pytest -s
