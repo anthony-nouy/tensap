@@ -161,7 +161,8 @@ class FullTensorProductIntegrationRule(IntegrationRule):
                 f_x = fun(points)
             except Exception:
                 raise ValueError('The function must be evaluable.')
-        return np.sum(weights * f_x)
+
+        return np.dot(weights.T , f_x)
 
     def weights_on_grid(self):
         '''
