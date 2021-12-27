@@ -101,8 +101,8 @@ print(P.data)
 SIN_VAL = TENSOR_3.singular_values()
 
 ORDER = TENSOR_3.order
-SIZE_2 = np.floor(np.sqrt(ORDER))
-SIZE_1 = np.ceil(ORDER/SIZE_2)
+SIZE_2 = int(np.floor(np.sqrt(ORDER)))
+SIZE_1 = int(np.ceil(ORDER/SIZE_2))
 for nb_plot in np.arange(1, ORDER+1):
     plt.subplot(SIZE_1, SIZE_2, nb_plot)
     plt.bar(range(SIN_VAL[nb_plot-1].size), SIN_VAL[nb_plot-1])
