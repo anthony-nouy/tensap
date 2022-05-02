@@ -24,9 +24,16 @@ import setuptools
 with open("README.md", "r") as fh:
     long_description = fh.read()
 
+# Get the version from __init__.py
+with open('tensap/__init__.py') as fid:
+    for line in fid:
+        if line.startswith('__version__'):
+            version = line.strip().split()[-1][1:-1]
+            break
+
 setuptools.setup(
     name="tensap",
-    version="1.1",
+    version=version,
     author="Anthony Nouy, Erwan Grelier",
     author_email="anthony.nouy@ec-nantes.fr",
     description="Tensor Approximation Package: a Python package for the approximation of functions and tensors.",

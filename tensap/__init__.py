@@ -18,6 +18,7 @@
 Initialization file for tensap (tensor approximation package).
 
 '''
+__version__ = "1.2"
 
 from .linear_algebra.magic_indices import magic_indices
 
