@@ -49,9 +49,9 @@ class LossFunction(ABC):
 
         Returns
         -------
-        np.float
+        float
             The estimated risk.
-        np.float
+        float
             The estimated reference risk.
 
         '''
@@ -104,7 +104,7 @@ class LossFunction(ABC):
 
         Returns
         -------
-        np.float
+        float
             The relative test error.
 
         '''
@@ -126,7 +126,7 @@ class LossFunction(ABC):
 
         Returns
         -------
-        np.float
+        float
             The relative test error.
 
         '''

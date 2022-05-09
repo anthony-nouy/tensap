@@ -479,7 +479,7 @@ class HermitePolynomials(OrthonormalPolynomials):
 
         '''
         recurr = np.vstack((np.zeros((1, n+1)), range(n+1)))
-        norms = np.array([np.sqrt(np.float(np.math.factorial(x)))
+        norms = np.array([np.sqrt(float(np.math.factorial(x)))
                           for x in range(n+1)])
         return recurr, norms
 

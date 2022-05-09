@@ -150,14 +150,14 @@ class Truncator:
         else:
             ind = np.min(ind) + 1
 
-        ind = np.int(np.min([ind, self.max_rank]))
+        ind = int(np.min([ind, self.max_rank]))
         if self.thresholding_parameter is not None and \
                 self.thresholding_parameter != 0:
             if self.thresholding_type == 'soft':
                 sin_val -= self.thresholding_parameter
-                ind = np.int(np.min([ind, np.nonzero(sin_val >= 0)[0][-1]+1]))
+                ind = int(np.min([ind, np.nonzero(sin_val >= 0)[0][-1]+1]))
             elif self.thresholding_type == 'hard':
-                ind = np.int(np.min([ind, np.nonzero(
+                ind = int(np.min([ind, np.nonzero(
                     sin_val >= self.thresholding_parameter)[0][-1]+1]))
         left = np.atleast_2d(left[:, :ind])
         sin_val = np.atleast_1d(sin_val[:ind])
