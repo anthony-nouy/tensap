@@ -164,7 +164,7 @@ class FullTensor:
         dat = np.reshape(self.data, -1, order='F')
         ind = np.nonzero(dat)[0]
         indices = tensap.MultiIndices.ind2sub(self.shape, ind)
-        return tensap.SparseTensor(dat, indices, self.shape)
+        return tensap.SparseTensor(dat[ind], indices, self.shape)
 
     def __repr__(self):
         return ('<{} FullTensor:{n}' +
