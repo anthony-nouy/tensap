@@ -479,7 +479,7 @@ class DimensionTree:
         import matplotlib.pyplot as plt
 
         plt.figure()
-        g = nx.convert_matrix.from_numpy_matrix(self.adjacency_matrix)
+        g = nx.convert_matrix.from_numpy_array(self.adjacency_matrix)
         pos = self.tree_layout()
         nx.draw_networkx_nodes(g, pos,
                                nodelist=np.setdiff1d(
