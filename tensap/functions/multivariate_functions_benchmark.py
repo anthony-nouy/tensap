@@ -297,13 +297,13 @@ def multivariate_functions_benchmark(case, *args):
     elif case == "sobol":
         if len(args) == 0:
             d = 8
-            a = [1, 2, 5, 10, 20, 50, 100, 500]
+            a = np.array([1, 2, 5, 10, 20, 50, 100, 500])
         else:
             d = args[0]
             if len(args) <= 1:
                 a = 2 ** np.arange(0, d)
             else:
-                a = args[1]
+                a = np.array(args[1])
 
         X = tensap.RandomVector(tensap.UniformRandomVariable(0, 1), d)
 
