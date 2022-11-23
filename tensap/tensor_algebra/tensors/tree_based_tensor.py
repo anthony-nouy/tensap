@@ -2007,7 +2007,7 @@ class TreeBasedTensor:
         if nodes_labels is None:
             nodes_labels = self.tree.nodes_indices
         self.tree.plot_with_labels_at_nodes(
-            nodes_labels, colored_nodes=self.active_nodes, title=title
+            nodes_labels, colored_nodes=self.active_nodes, title=title, fname=fname
         )
 
     def eval_diag_below(self, alpha=None, except_nodes=[]):
