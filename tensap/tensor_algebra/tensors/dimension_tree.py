@@ -617,7 +617,8 @@ class DimensionTree:
         axes.set_ylim([0, 1])
         if fname:
             plt.savefig(fname, transparent=True)
-        plt.show()
+        else:
+            plt.show()
 
     def plot_dims(self, nodes=None, **args):
         """
