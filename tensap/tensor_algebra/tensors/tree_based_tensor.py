@@ -1737,7 +1737,7 @@ class TreeBasedTensor:
         tensor = self.orth()
         gramians, _ = tensor.gramians()
         return np.array([np.sqrt(np.linalg.svd(gram, compute_uv=False))
-                         if gram is not None else None for gram in gramians])
+                         if gram is not None else None for gram in gramians], dtype=object)
 
     def plot(self, nodes_labels=None, title=None):
         '''

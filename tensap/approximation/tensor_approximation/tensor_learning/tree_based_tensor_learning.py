@@ -480,7 +480,7 @@ class TreeBasedTensorLearning(tensap.TensorLearning):
         # root, the leaf nodes with a rank equal to the dimension of the basis
         # associated to it, and the nodes for  which the smallest singular
         # value is almost zero.
-        sin_val = np.array([np.nan if x is None else x for x in sin_val])
+        sin_val = np.array([np.nan if x is None else x for x in sin_val], dtype=object)
         sin_val[f.tensor.tree.root-1] = np.nan
         dim2ind = np.intersect1d(f.tensor.tree.dim2ind, f.tensor.active_nodes)
         ind = [len(set(x.size)) == 1 for x in f.tensor.tensors[dim2ind-1]]
