@@ -2183,13 +2183,20 @@ class TreeBasedTensor:
             ranks[tree.root-1] = 1
         else:
             ranks = np.atleast_1d(ranks)
+        
+        ranks = np.int_(ranks)   
 
+        if ranks.size==1:
+            ranks = np.tile(ranks,tree.nb_nodes)
+            
         if shape is None:
             shape = ranks[tree.dim2ind-1]
         elif isinstance(shape, str) and shape == 'random':
             shape = np.random.randint(1, 11, tree.dim2ind.size)
         else:
             shape = np.atleast_1d(shape)
+        
+        shape = np.int_(shape)    
 
         if is_active_node is None:
             is_active_node = np.full(tree.nb_nodes, True)

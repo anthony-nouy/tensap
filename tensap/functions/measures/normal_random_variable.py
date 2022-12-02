@@ -176,25 +176,13 @@ class NormalRandomVariable(tensap.RandomVariable):
         '''
         return array([-inf, inf])
 
-    def orthonormal_polynomials(self, *max_degree):
+    def orthonormal_polynomials(self):
         '''
-        Return the max_degree-1 first orthonormal polynomials associated with
+        Return orthonormal polynomials associated with
         the NormalRandomVariable.
 
-        Parameters
-        ----------
-        max_degree : int, optional
-            The maximum degree of the returned polynomials. The default is
-            None, choosing the default maximum degree associated with the
-            constructor of the polynomials.
-
-        Returns
-        -------
-        poly : tensap.OrthonormalPolynomials
-            The generated orthonormal polynomials.
-
         '''
-        poly = tensap.HermitePolynomials(*max_degree)
+        poly = tensap.HermitePolynomials()
         if self != NormalRandomVariable(0, 1):
             # print('ShiftedOrthonormalPolynomials are created.')
             poly = tensap.ShiftedOrthonormalPolynomials(poly, self.mu,

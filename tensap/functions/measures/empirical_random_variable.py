@@ -117,6 +117,30 @@ class EmpiricalRandomVariable(tensap.RandomVariable):
     def support(self):
         return np.array([-np.inf, np.inf])
 
+    def integration_rule(self,n):
+        '''
+        Return the integration rule object associated with the empirical random
+        variable, using a sum of n-point gauss quadrature rules.
+
+        Returns
+        -------
+        tensap.IntegrationRule
+            The integration rule object associated with the discrete random
+            variable.
+
+        '''
+        G = tensap.NormalRandomVariable().gauss_integration_rule(
+            int(n))
+        xi = self.sample
+        weights = np.tile(np.reshape(G.weights, [1, -1]) ,  (xi.size, 1)) / xi.size
+        
+
+        points = self.bandwidth * np.tile(np.reshape(G.points, [1, -1]),(xi.size, 1)) + \
+            np.tile(np.reshape(xi, [-1, 1]), (1, G.points.size))
+            
+
+        return tensap.IntegrationRule(np.ravel(points), np.ravel(weights))
+
     def orthonormal_polynomials(self, *args):
         p = tensap.EmpiricalPolynomials(self, *args)
         m = np.mean(self.sample)
@@ -163,7 +187,7 @@ class EmpiricalRandomVariable(tensap.RandomVariable):
         X = np.tile(np.reshape(x, [1, -1]), (n, 1))
         XI = np.tile(np.reshape(xi, [-1, 1]), (1, np.size(x)))
         return np.ravel(1/(n*h*np.sqrt(2*np.pi)) *
-                        np.sum(np.exp(-0.5*(X-XI)**2/h**2), 0))
+                        np.sum(np.exp(-0.5*(X-XI)**2/h**2), axis = 0))
 
     def random_variable_statistics(self):
         return np.mean(self.sample), np.var(self.sample)

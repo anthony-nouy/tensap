@@ -64,9 +64,12 @@ class DiscreteMeasure(tensap.Measure):
         '''
         tensap.Measure.__init__(self)
 
-        self.values = np.array(values)
-        if values.ndim == 1:
-            values = np.reshape(values, [-1, 1])
+        values = np.array(values)
+
+        if np.ndim(values) == 1:
+            values = np.reshape(values, (-1, 1))
+
+        self.values = values 
         N = values.shape[0]
         if weights is None:
             weights = np.ones(N)
@@ -86,7 +89,20 @@ class DiscreteMeasure(tensap.Measure):
             np.array_equal(self.weights, Y.weights)
 
     def support(self):
-        return [np.min(self.values, 0), np.max(self.values, 0)]
+        return np.vstack((np.min(self.values, 0), np.max(self.values, 0)))
+
+    def truncated_support(self):
+        return self.support()
+
+    def orthonormal_polynomials(self):
+        '''
+        Return orthonormal polynomials associated with
+        the DiscreteMeasure.
+
+        '''
+        poly = tensap.DiscretePolynomials(self)
+
+        return poly
 
     def plot(self, *args):
         '''
@@ -144,4 +160,4 @@ class DiscreteMeasure(tensap.Measure):
             np.arange(self.weights.size), [-1, 1]),
             self.weights/np.sum(self.weights))
         ind = Y.icdf(np.random.rand(n)).astype(int)
-        return self.values[ind, :]
+        return np.squeeze(self.values[ind, :],1)

@@ -64,6 +64,7 @@ class DiscreteRandomVariable(tensap.RandomVariable):
 
         '''
         tensap.RandomVariable.__init__(self)
+        values = np.array(values)
 
         if np.ndim(values) == 1:
             values = np.reshape(values, (-1, 1))
@@ -162,6 +163,16 @@ class DiscreteRandomVariable(tensap.RandomVariable):
 
         '''
         return tensap.IntegrationRule(self.values, self.probabilities)
+
+    def orthonormal_polynomials(self):
+        '''
+        Return orthonormal polynomials associated with
+        the DiscreteRandomVariable.
+
+        '''
+        poly = tensap.DiscretePolynomials(self)
+
+        return poly
 
     def get_parameters(self):
         return self.values, self.probabilities

@@ -177,23 +177,11 @@ class UniformRandomVariable(tensap.RandomVariable):
 
     def orthonormal_polynomials(self, *max_degree):
         '''
-        Return the max_degree-1 first orthonormal polynomials associated with
+        Return the orthonormal polynomials associated with
         the UniformRandomVariable.
 
-        Parameters
-        ----------
-        max_degree : int, optional
-            The maximum degree of the returned polynomials. The default is
-            None, choosing the default maximum degree associated with the
-            constructor of the polynomials.
-
-        Returns
-        -------
-        poly : tensap.OrthonormalPolynomials
-            The generated orthonormal polynomials.
-
         '''
-        poly = tensap.LegendrePolynomials(*max_degree)
+        poly = tensap.LegendrePolynomials()
         if self != UniformRandomVariable(-1, 1):
             # print('ShiftedOrthonormalPolynomials are created.')
             poly = tensap.ShiftedOrthonormalPolynomials(poly,

@@ -46,8 +46,8 @@ class OrthonormalPolynomials(tensap.UnivariatePolynomials):
 
         '''
         self.measure = None
-        self._recurrence_coefficients = np.array([])
-        self._orthogonal_polynomials_norms = np.array([])
+#        self._recurrence_coefficients = np.array([])
+#        self._orthogonal_polynomials_norms = np.array([])
 
     def __repr__(self):
         return '<{}>'.format(self.__class__.__name__)
@@ -112,51 +112,42 @@ class OrthonormalPolynomials(tensap.UnivariatePolynomials):
 
     def poly_coeff(self, ind):
         max_ind = np.max(ind)
-        recurr = self._recurrence_coefficients
-
-        if max_ind >= recurr.shape[1]:
-            raise ValueError('Can generate polynomials up to degree{}.'
-                             .format(recurr.shape[1]-1))
+        recurr = self.recurrence_monic(max_ind)[0]
+        a = recurr[0, :max_ind+1]
+        b = recurr[1, :max_ind+1]
 
         coef = np.zeros([max_ind+1]*2)
         coef[0, 0] = 1
 
         if max_ind > 0:
             coef[1, 1:] = coef[0, :-1]
-            coef[1, :] -= recurr[0, 0] * coef[0, :]
+            coef[1, :] = (coef[1, :] - a[0] * coef[0, :])/np.sqrt(b[1])
 
         if max_ind > 1:
             for deg in np.arange(1, max_ind):
                 coef[deg+1, 1:] = coef[deg, :-1]
-                coef[deg+1, :] -= recurr[0, deg] * coef[deg, :] + \
-                    recurr[1, deg] * coef[deg-1, :]
+                coef[deg+1, :] = (coef[deg+1, :] -  a[deg] * coef[deg, :] - \
+                    np.sqrt(b[deg]) * coef[deg-1, :])/np.sqrt(b[deg+1])
 
-        coef /= np.tile(np.expand_dims(
-            self._orthogonal_polynomials_norms[:max_ind+1], axis=1),
-                        (1, coef.shape[0]))
         return coef[ind, :]
 
     def polyval(self, ind, x):
         x = np.ravel(x)
         max_ind = np.max(ind)
-        recurr = self._recurrence_coefficients
+        recurr = self.recurrence_monic(max_ind)[0]
 
-        if max_ind >= recurr.shape[1]:
-            raise ValueError('Can generate polynomials up to degree {}.'
-                             .format(recurr.shape[1]-1))
 
-        recurr_1 = recurr[0, :max_ind+1]
-        recurr_2 = recurr[1, :max_ind+1]
-        norms = self._orthogonal_polynomials_norms[:max_ind+1]
+        a = recurr[0, :max_ind+1]
+        b = recurr[1, :max_ind+1]
 
         out = np.zeros((x.size, max_ind+1))
         out[:, 0] = 1
         if max_ind > 0:
-            out[:, 1] = x - recurr_1[0]
+            out[:, 1] = (x - a[0])/np.sqrt(b[1])
             for deg in np.arange(2, max_ind+1):
-                out[:, deg] = (x - recurr_1[deg-1]) * out[:, deg-1] - \
-                    recurr_2[deg-1] * out[:, deg-2]
-        out /= np.tile(norms[:max_ind+1], (x.size, 1))
+                out[:, deg] = (x - a[deg-1]) * out[:, deg-1] - np.sqrt(b[deg-1]) * out[:, deg-2]
+                out[:, deg] /= np.sqrt(b[deg])
+        out/=np.sqrt(self.measure.mass())
         return out[:, ind]
 
     def d_polyval(self, ind, x):
@@ -165,28 +156,26 @@ class OrthonormalPolynomials(tensap.UnivariatePolynomials):
     def dn_polyval(self, n, ind, x):
         x = np.ravel(x)
         max_ind = np.max(ind)
-        recurr = self._recurrence_coefficients
-        recurr_1 = recurr[0, :max_ind+1]
-        recurr_2 = recurr[1, :max_ind+1]
-        norms = self._orthogonal_polynomials_norms[:max_ind+1]
+        recurr = self.recurrence_monic(max_ind)[0]
+        a = recurr[0, :max_ind+1]
+        b = recurr[1, :max_ind+1]
 
-        out = self.polyval(np.arange(max_ind+1), x) * np.tile(norms,
-                                                              (x.size, 1))
+        out = self.polyval(np.arange(max_ind+1), x)
 
-        for n_tmp in np.arange(1, n+1):
+        for k in np.arange(1, n+1):
             out_0 = np.array(out)
 
             out = np.zeros((x.size, max_ind+1))
             out[:, 0] = 0
-            if n_tmp == 1:
-                out[:, 1] = 1
-            else:
-                out[:, 1] = 0
+            if max_ind > 0:
+                if k == 1:
+                    out[:, 1] = 1/np.sqrt(b[1])
+                else:
+                    out[:, 1] = 0
             for deg in np.arange(2, max_ind+1):
-                out[:, deg] = n_tmp * out_0[:, deg-1] + \
-                    (x - recurr_1[deg-1]) * out[:, deg-1] - \
-                    recurr_2[deg-1] * out[:, deg-2]
-        out /= np.tile(norms[:max_ind+1], (x.size, 1))
+                out[:, deg] = (k * out_0[:, deg-1] + \
+                    (x - a[deg-1]) * out[:, deg-1] - \
+                    np.sqrt(b[deg-1]) * out[:, deg-2])/np.sqrt(b[deg])
         return out[:, ind]
 
     def random(self, ind, n=1, measure=None):
@@ -246,18 +235,17 @@ class OrthonormalPolynomials(tensap.UnivariatePolynomials):
             The roots of the polynomial of degree deg.
 
         '''
-        try:
-            coef = self._recurrence_coefficients[:, :deg]
-        except AttributeError:
-            coef = self.recurrence(self.measure, deg-1)
+        reccur = self.recurrence_monic(deg-1)[0]
+        a = reccur[0]
+        b = reccur[1]
 
         # Jacobi matrix
         if deg == 1:
-            jacobi_matrix = np.diag(coef[0, :])
+            jacobi_matrix = np.diag(a)
         else:
-            jacobi_matrix = np.diag(coef[0, :]) + \
-                np.diag(np.sqrt(coef[1, 1:]), -1) + \
-                np.diag(np.sqrt(coef[1, 1:]), 1)
+            jacobi_matrix = np.diag(a) + \
+                np.diag(np.sqrt(b[1:]), -1) + \
+                np.diag(np.sqrt(b[1:]), 1)
         return np.sort(np.linalg.eig(jacobi_matrix)[0])
 
 
@@ -426,15 +414,16 @@ class ShiftedOrthonormalPolynomials(tensap.UnivariatePolynomials):
 
 
 class HermitePolynomials(OrthonormalPolynomials):
+    
     '''
     Class HermitePolynomials.
 
     Polynomials defined on R and orthonormal with respect to the standard
     gaussian measure 1/sqrt(2*pi)*exp(-x^2/2).
-
+ 
     '''
 
-    def __init__(self, n=50):
+    def __init__(self):
         '''
         Constructor for the class HermitePolynomials.
 
@@ -450,37 +439,32 @@ class HermitePolynomials(OrthonormalPolynomials):
 
         '''
         self.measure = tensap.NormalRandomVariable(0, 1)
-
-        self._recurrence_coefficients, self._orthogonal_polynomials_norms = \
-            self._recurrence(n)
-
-    @staticmethod
-    def _recurrence(n):
+        
+    
+    def recurrence_monic(self,n):
         '''
-        Compute the coefficients of the three-term recurrence used to construct
-        the Hermite polynomials, and the norms of the polynomials.
-
-        The three-term recurrence writes:
-        p_{n+1}(x) = (x-a_n)p_n(x) - b_n p_{n-1}(x), a_n and b_n are
+        Computes the coefficients of the three-term recurrence used to construct the monic polynomials
+        :math::`p_{n+1}(x) = (x-a_n)p_n(x) - b_n p_{n-1}(x)`, an and bn are
         the three-term recurrence coefficients
+            % p : HermitePolynomials
+            % n: integer
+            % recurr: 2-by-(n+1) double
+            % norms: 1-by-(n+1) double
 
         Parameters
         ----------
         n : int
-            The highest degree for which a polynomial can be computed with the
-            returned recurrence coefficients.
 
         Returns
         -------
         recurr : numpy.ndarray
-            The recurrence coefficients.
-        norms : numpy.ndarray
-            The norms of the polynomials.
+            recurr[0] contains [a_0 , ..., a_n] 
+            recurr[1] contains [b_0 , ..., b_n] 
 
         '''
-        recurr = np.vstack((np.zeros((1, n+1)), range(n+1)))
-        norms = np.array([np.sqrt(float(np.math.factorial(x)))
-                          for x in range(n+1)])
+        recurr = np.zeros((2,n+1))
+        recurr[1,:] = np.arange(n+1)
+        norms = np.array([np.sqrt(float(np.math.factorial(x))) for x in range(n+1)])
         return recurr, norms
 
 
@@ -493,7 +477,7 @@ class LegendrePolynomials(OrthonormalPolynomials):
 
     '''
 
-    def __init__(self, n=50):
+    def __init__(self):
         '''
         Constructor for the class LegendrePolynomials.
 
@@ -510,38 +494,88 @@ class LegendrePolynomials(OrthonormalPolynomials):
         '''
         self.measure = tensap.UniformRandomVariable(-1, 1)
 
-        self._recurrence_coefficients, self._orthogonal_polynomials_norms = \
-            self._recurrence(n)
 
-    @staticmethod
-    def _recurrence(n):
+    def recurrence_monic(self,n):
         '''
-        Compute the coefficients of the three-term recurrence used to construct
-        the Legendre polynomials, and the norms of the polynomials.
-
-        The three-term recurrence writes:
-        p_{n+1}(x) = (x-a_n)p_n(x) - b_n p_{n-1}(x), a_n and b_n are
+        Computes the coefficients of the three-term recurrence used to construct the monic polynomials
+        :math::`p_{n+1}(x) = (x-a_n)p_n(x) - b_n p_{n-1}(x)`, an and bn are
         the three-term recurrence coefficients
+            % p : Legendreolynomials
+            % n: integer
+            % recurr: 2-by-(n+1) double
+            % norms: 1-by-(n+1) double
+ 
+        Parameters
+        ----------
+        n : int
+ 
+        Returns
+        -------
+        recurr : numpy.ndarray
+            recurr[0] contains [a_0 , ..., a_n] 
+            recurr[1] contains [b_0 , ..., b_n] 
+        '''
+        recurr = np.zeros((2,n+1))
+        recurr[1,:] = np.arange(n+1)**2 / (4*np.arange(n+1)**2 - 1)
+        norms = np.array([np.sqrt(1/(2*x+1)) * 2**x * np.math.factorial(x)**2 / np.math.factorial(2*x) for x in range(n+1)])
+        return recurr, norms
+
+
+class LegendrePolynomialsLebesgue(OrthonormalPolynomials):
+    '''
+    Class LegendrePolynomialsLebesgue.
+
+    Polynomials defined on [-1,1], orthonormal with respect to the Lebesgue
+      measure.
+
+    '''
+
+    def __init__(self, n):
+        '''
+        Constructor for the class LegendrePolynomialsLebesgue.
+
+        Parameters
+        ----------
+        n : int, optional
+            The highest degree for which a polynomial can be computed with the
+            stored recurrence coefficients. The default is 50.
+
+        Returns
+        -------
+        None.
+
+        '''
+        self.measure = tensap.LebesgueMeasure(-1, 1)
+
+
+    def recurrence_monic(self,n):       
+        '''
+        Computes the coefficients of the three-term recurrence used to construct the monic polynomials
+        :math::`p_{n+1}(x) = (x-a_n)p_n(x) - b_n p_{n-1}(x)`, an and bn are
+        the three-term recurrence coefficients
+            % p : LegendrePolynomialsLebesgue
+            % n: integer
+            % recurr: 2-by-(n+1) double
+            % norms: 1-by-(n+1) double
 
         Parameters
         ----------
         n : int
-            The highest degree for which a polynomial can be computed with the
-            returned recurrence coefficients.
 
         Returns
         -------
         recurr : numpy.ndarray
-            The recurrence coefficients.
-        norms : numpy.ndarray
-            The norms of the polynomials.
+            recurr[0] contains [a_0 , ..., a_n] 
+            recurr[1] contains [b_0 , ..., b_n] 
 
         '''
-        recurr = np.vstack((np.zeros((1, n+1)),
-                            np.arange(n+1)**2 / (4*np.arange(n+1)**2 - 1)))
-        norms = np.array([np.sqrt(1/(2*x+1)) * 2**x * np.math.factorial(x)**2 /
-                          np.math.factorial(2*x) for x in range(n+1)])
+        recurr = np.zeros((2,n+1))
+        recurr[1,:] = np.arange(n+1)**2 / (4*np.arange(n+1)**2 - 1)
+
+        norms = np.array([np.sqrt(1/(2*x+1)) * 2**x * np.math.factorial(x)**2 / np.math.factorial(2*x)*np.sqrt(2) for x in range(n+1)])
         return recurr, norms
+
+
 
 
 class EmpiricalPolynomials(OrthonormalPolynomials):
@@ -582,35 +616,36 @@ class EmpiricalPolynomials(OrthonormalPolynomials):
             self.measure = tensap.EmpiricalRandomVariable(np.ravel(x))
 
         self._recurrence_coefficients, self._orthogonal_polynomials_norms = \
-            self._recurrence(self.measure, n)
+            self._precompute_recurrence_monic(self.measure, n)
+
+    def recurrence_monic(self,n):
+        recurr = self._recurrence_coefficients[:,np.arange(n+1)]
+        norms = self._orthogonal_polynomials_norms[np.arange(n+1)]
+        return recurr, norms
 
     @staticmethod
-    def _recurrence(measure, n):
+    def _precompute_recurrence_monic(measure,n):
         '''
-        Compute the coefficients of the three-term recurrence used to construct
-        the empirical polynomials, and the norms of the polynomials.
-
-        The three-term recurrence writes:
+        Computes the coefficients of the three-term recurrence used to construct the monic polynomials
         p_{n+1}(x) = (x-a_n)p_n(x) - b_n p_{n-1}(x), a_n and b_n are
         the three-term recurrence coefficients
-
+            % p : EmpiricalPolynomials
+            % n: integer
+            % recurr: 2-by-(n+1) double
+            % norms: 1-by-(n+1) double
+        
         Parameters
         ----------
-        measure : tensap.EmpiricalRandomVariable
-            The empirical random variable associated with the orthonormal
-            polynomials.
         n : int
-            The highest degree for which a polynomial can be computed with the
-            returned recurrence coefficients.
-
+        
         Returns
         -------
         recurr : numpy.ndarray
-            The recurrence coefficients.
-        norms : numpy.ndarray
-            The norms of the polynomials.
-
-        '''
+            recurr[0] contains [a_0 , ..., a_n] 
+            recurr[1] contains [b_0 , ..., b_n] 
+        
+'''
+      
 
         def is_orth(pnp1, pn, pnm1, weights):
             '''
@@ -703,7 +738,7 @@ class EmpiricalPolynomials(OrthonormalPolynomials):
         i = 0
         cond = True
         norms[0] = 1
-        a[0] = np.sum(np.matmul(x_ij, weights)) / xi.size
+        a[0] = np.sum(np.matmul(x_ij, weights)) 
         b[0] = 0
 
         while cond and i <= n:
@@ -745,7 +780,7 @@ class DiscretePolynomials(OrthonormalPolynomials):
 
         Parameters
         ----------
-        measure : tensap.DiscreteRandomVariable
+        measure : tensap.DiscreteRandomVariable or tensap.DiscreteMeaasure
             The discrete measure with respect to which the polynomials form an
             orthonormal basis.
 
@@ -754,41 +789,42 @@ class DiscretePolynomials(OrthonormalPolynomials):
         None.
 
         '''
-        assert isinstance(measure, tensap.DiscreteRandomVariable), \
-            'Must specify a DiscreteRandomVariable.'
+        assert (isinstance(measure, tensap.DiscreteRandomVariable) or \
+                isinstance(measure, tensap.DiscreteMeasure)), \
+            'Must specify a DiscreteRandomVariable or DiscreteMeasure.'
 
         self.measure = measure
         n = np.size(measure.values)-1
         self._recurrence_coefficients, self._orthogonal_polynomials_norms = \
-            self._recurrence(measure, n)
+            tensap.DiscretePolynomials._precompute_recurrence_monic(measure,n)
 
+    def recurrence_monic(self,n):
+        recurr = self._recurrence_coefficients[:,np.arange(n+1)]
+        norms = self._orthogonal_polynomials_norms[np.arange(n+1)]
+        return recurr, norms
+    
     @staticmethod
-    def _recurrence(measure, n):
+    def _precompute_recurrence_monic(measure,n):        
         '''
-        Compute the coefficients of the three-term recurrence used to construct
-        the discrete polynomials, and the norms of the polynomials.
-
-        The three-term recurrence writes:
+        Precompute the coefficients of the three-term recurrence used to construct the monic polynomials
         p_{n+1}(x) = (x-a_n)p_n(x) - b_n p_{n-1}(x), a_n and b_n are
         the three-term recurrence coefficients
-
+        % p : DiscretePolynomials
+        % n: integer
+        % recurr: 2-by-(n+1) double
+        % norms: 1-by-(n+1) double
+        
         Parameters
         ----------
-        measure : tensap.DiscreteRandomVariable
-            The discrete measure with respect to which the polynomials form an
-            orthonormal basis.
         n : int
-            The highest degree for which a polynomial can be computed with the
-            returned recurrence coefficients.
-
+        
         Returns
         -------
         recurr : numpy.ndarray
-            The recurrence coefficients.
-        norms : numpy.ndarray
-            The norms of the polynomials.
-
-        '''
+        recurr[0] contains [a_0 , ..., a_n] 
+        recurr[1] contains [b_0 , ..., b_n] 
+        
+        '''         
         def dot_product(p1, p2, r):
             '''
             Compute the inner product between two polynomials p1 and p2,
@@ -850,8 +886,8 @@ class DiscretePolynomials(OrthonormalPolynomials):
 
         i = 0
         cond = True
-        norms[0] = 1
-        a[0] = dot_product(lambda x: x**0, lambda x: x, measure)
+        norms[0] = dot_product(lambda x: x**0, lambda x: x**0, measure)
+        a[0] = dot_product(lambda x: x**0, lambda x: x, measure)/norms[0]
         b[0] = 0
         pnm1 = []
         pn = [lambda x: 1]

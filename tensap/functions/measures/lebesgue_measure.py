@@ -162,26 +162,13 @@ class LebesgueMeasure(tensap.Measure):
         return I
     
     
-    def orthonormal_polynomials(self, *max_degree):
+    def orthonormal_polynomials(self):
         '''
-        Return the max_degree-1 first orthonormal polynomials associated with
+        Return orthonormal polynomials associated with
         the LebesgueMeasure on [a,b].
 
-        Parameters
-        ----------
-        max_degree : int, optional
-            The maximum degree of the returned polynomials. The default is
-            None, choosing the default maximum degree associated with the
-            constructor of the polynomials.
-
-        Returns
-        -------
-        poly : tensap.OrthonormalPolynomials
-            The generated orthonormal polynomials.
-
         '''
-        poly = tensap.LegendrePolynomials(*max_degree)
-        poly._orthogonal_polynomials_norms = poly._orthogonal_polynomials_norms*np.sqrt(self.mass())
+        poly = tensap.LegendrePolynomialsLebesgue()
         
         if self != LebesgueMeasure(-1, 1):
             poly = tensap.ShiftedOrthonormalPolynomials(poly,

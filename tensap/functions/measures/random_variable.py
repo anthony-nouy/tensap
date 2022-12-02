@@ -211,7 +211,7 @@ class RandomVariable(tensap.ProbabilityMeasure):
             The integration rule associated with the measure of self.
 
         '''
-        poly = self.orthonormal_polynomials(nb_pts+1)
+        poly = self.orthonormal_polynomials()
         if isinstance(poly, tensap.ShiftedOrthonormalPolynomials):
             shift = poly.shift
             scaling = poly.scaling
@@ -220,11 +220,7 @@ class RandomVariable(tensap.ProbabilityMeasure):
         else:
             flag = False
 
-        coef = poly._recurrence_coefficients
-        if coef.shape[1] < nb_pts:
-            coef = poly.recurrence(poly.measure, nb_pts-1)
-        else:
-            coef = coef[:, :nb_pts]
+        coef = poly.recurrence_monic(nb_pts-1)[0]
 
         # Jacobi matrix
         if nb_pts == 1:
