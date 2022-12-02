@@ -46,9 +46,7 @@ class OrthonormalPolynomials(tensap.UnivariatePolynomials):
 
         '''
         self.measure = None
-#        self._recurrence_coefficients = np.array([])
-#        self._orthogonal_polynomials_norms = np.array([])
-
+#
     def __repr__(self):
         return '<{}>'.format(self.__class__.__name__)
 
