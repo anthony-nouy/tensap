@@ -23,6 +23,8 @@ import numpy as np
 import matplotlib.pyplot as plt
 import tensap
 
+numpy.random.seed(0)
+
 # %% Creation of random FullTensor with precribed shapes
 # Order-4 full tensor with i.i.d. entries drawn according to the uniform
 # distribution on (0, 1)
@@ -108,3 +110,13 @@ for nb_plot in np.arange(1, ORDER+1):
     plt.bar(range(SIN_VAL[nb_plot-1].size), SIN_VAL[nb_plot-1])
     plt.title('%i-singular values' % (nb_plot-1))
 plt.show()
+
+# %% Conversion of a FullTensor into a SparseTensor
+# The TENSOR_8 is a tensor of order 3 and shape (3,4,2) containing only 0's and 1's.
+# It is filled randomly with proba 2/3 for 0's and 1/3 for 1's.
+# This tensor is then converted into a SparseTensor using the method sparse().
+TENSOR_8 = tensap.FullTensor(np.random.choice([0,1],
+                             size=24,
+                             p=[2/3, 1/3]).reshape((3,4,2)))
+print(f'\nTENSOR_8 has a storage complexity of {TENSOR_8.storage()}')
+print(f'Its sparse conversion has a storage complexity of {TENSOR_8.sparse().storage()}')
