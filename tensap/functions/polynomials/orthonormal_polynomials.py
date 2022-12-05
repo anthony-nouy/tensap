@@ -444,10 +444,6 @@ class HermitePolynomials(OrthonormalPolynomials):
         Computes the coefficients of the three-term recurrence used to construct the monic polynomials
         :math::`p_{n+1}(x) = (x-a_n)p_n(x) - b_n p_{n-1}(x)`, an and bn are
         the three-term recurrence coefficients
-            % p : HermitePolynomials
-            % n: integer
-            % recurr: 2-by-(n+1) double
-            % norms: 1-by-(n+1) double
 
         Parameters
         ----------
@@ -455,10 +451,11 @@ class HermitePolynomials(OrthonormalPolynomials):
 
         Returns
         -------
-        recurr : numpy.ndarray
+        recurr : 2-by-(n+1) numpy.ndarray
             recurr[0] contains [a_0 , ..., a_n] 
-            recurr[1] contains [b_0 , ..., b_n] 
-
+            recurr[1] contains [b_0 , ..., b_n]
+        norms : 1-by-(n+1) numpy.ndarray
+            norms array
         '''
         recurr = np.zeros((2,n+1))
         recurr[1,:] = np.arange(n+1)
@@ -498,20 +495,18 @@ class LegendrePolynomials(OrthonormalPolynomials):
         Computes the coefficients of the three-term recurrence used to construct the monic polynomials
         :math::`p_{n+1}(x) = (x-a_n)p_n(x) - b_n p_{n-1}(x)`, an and bn are
         the three-term recurrence coefficients
-            % p : Legendreolynomials
-            % n: integer
-            % recurr: 2-by-(n+1) double
-            % norms: 1-by-(n+1) double
- 
+
         Parameters
         ----------
         n : int
- 
+
         Returns
         -------
-        recurr : numpy.ndarray
+        recurr : 2-by-(n+1) numpy.ndarray
             recurr[0] contains [a_0 , ..., a_n] 
-            recurr[1] contains [b_0 , ..., b_n] 
+            recurr[1] contains [b_0 , ..., b_n]
+        norms : 1-by-(n+1) numpy.ndarray
+            norms array
         '''
         recurr = np.zeros((2,n+1))
         recurr[1,:] = np.arange(n+1)**2 / (4*np.arange(n+1)**2 - 1)
@@ -551,10 +546,6 @@ class LegendrePolynomialsLebesgue(OrthonormalPolynomials):
         Computes the coefficients of the three-term recurrence used to construct the monic polynomials
         :math::`p_{n+1}(x) = (x-a_n)p_n(x) - b_n p_{n-1}(x)`, an and bn are
         the three-term recurrence coefficients
-            % p : LegendrePolynomialsLebesgue
-            % n: integer
-            % recurr: 2-by-(n+1) double
-            % norms: 1-by-(n+1) double
 
         Parameters
         ----------
@@ -562,10 +553,11 @@ class LegendrePolynomialsLebesgue(OrthonormalPolynomials):
 
         Returns
         -------
-        recurr : numpy.ndarray
+        recurr : 2-by-(n+1) numpy.ndarray
             recurr[0] contains [a_0 , ..., a_n] 
-            recurr[1] contains [b_0 , ..., b_n] 
-
+            recurr[1] contains [b_0 , ..., b_n]
+        norms : 1-by-(n+1) numpy.ndarray
+            norms array
         '''
         recurr = np.zeros((2,n+1))
         recurr[1,:] = np.arange(n+1)**2 / (4*np.arange(n+1)**2 - 1)
@@ -627,22 +619,19 @@ class EmpiricalPolynomials(OrthonormalPolynomials):
         Computes the coefficients of the three-term recurrence used to construct the monic polynomials
         p_{n+1}(x) = (x-a_n)p_n(x) - b_n p_{n-1}(x), a_n and b_n are
         the three-term recurrence coefficients
-            % p : EmpiricalPolynomials
-            % n: integer
-            % recurr: 2-by-(n+1) double
-            % norms: 1-by-(n+1) double
-        
+
         Parameters
         ----------
         n : int
         
         Returns
         -------
-        recurr : numpy.ndarray
+        recurr : 2-by-(n+1) numpy.ndarray
             recurr[0] contains [a_0 , ..., a_n] 
             recurr[1] contains [b_0 , ..., b_n] 
-        
-'''
+        norms : 1-by-(n+1) numpy.ndarray
+            norms array
+        '''
       
 
         def is_orth(pnp1, pn, pnm1, weights):
@@ -807,22 +796,19 @@ class DiscretePolynomials(OrthonormalPolynomials):
         Precompute the coefficients of the three-term recurrence used to construct the monic polynomials
         p_{n+1}(x) = (x-a_n)p_n(x) - b_n p_{n-1}(x), a_n and b_n are
         the three-term recurrence coefficients
-        % p : DiscretePolynomials
-        % n: integer
-        % recurr: 2-by-(n+1) double
-        % norms: 1-by-(n+1) double
-        
+
         Parameters
         ----------
         n : int
         
         Returns
         -------
-        recurr : numpy.ndarray
-        recurr[0] contains [a_0 , ..., a_n] 
-        recurr[1] contains [b_0 , ..., b_n] 
-        
-        '''         
+        recurr : 2-by-(n+1) numpy.ndarray
+            recurr[0] contains [a_0 , ..., a_n] 
+            recurr[1] contains [b_0 , ..., b_n] 
+        norms : 1-by-(n+1) numpy.ndarray
+            norms array
+        '''
         def dot_product(p1, p2, r):
             '''
             Compute the inner product between two polynomials p1 and p2,

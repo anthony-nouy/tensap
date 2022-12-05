@@ -23,7 +23,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import tensap
 
-numpy.random.seed(0)
+np.random.seed(0)
 
 # %% Creation of random FullTensor with precribed shapes
 # Order-4 full tensor with i.i.d. entries drawn according to the uniform
