@@ -353,7 +353,7 @@ class ShiftedOrthonormalPolynomials(tensap.UnivariatePolynomials):
 
     def dn_polyval(self, n, ind, x):
         x = (x - self.shift) / self.scaling
-        return self.polynomials.dn_polyval(ind, x) / (self.scaling**n)
+        return self.polynomials.dn_polyval(n,ind, x) / (self.scaling**n)
 
     def random(self, ind, n=1, measure=None):
         '''
@@ -523,7 +523,7 @@ class LegendrePolynomialsLebesgue(OrthonormalPolynomials):
 
     '''
 
-    def __init__(self, n):
+    def __init__(self):
         '''
         Constructor for the class LegendrePolynomialsLebesgue.
 
@@ -589,7 +589,7 @@ class EmpiricalPolynomials(OrthonormalPolynomials):
             Scott's rule.
         n : int, optional
             The highest degree for which a polynomial can be computed with the
-            stored recurrence coefficients. The default is 50.
+            stored recurrence coefficients. The default is the size of the sample.
 
         Returns
         -------
@@ -604,6 +604,8 @@ class EmpiricalPolynomials(OrthonormalPolynomials):
             x = (x - np.tile(np.mean(x, 0), (x.shape[0], 1))) / \
                 np.tile(np.std(x, 0), (x.shape[0], 1))
             self.measure = tensap.EmpiricalRandomVariable(np.ravel(x))
+        if n is None: 
+            n =self.measure.sample.shape[0]-1
 
         self._recurrence_coefficients, self._orthogonal_polynomials_norms = \
             self._precompute_recurrence_monic(self.measure, n)
