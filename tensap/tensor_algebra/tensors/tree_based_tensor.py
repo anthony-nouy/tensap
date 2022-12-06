@@ -290,9 +290,17 @@ class TreeBasedTensor:
         return tensor
 
     def __mul__(self, arg):
-        assert np.isscalar(arg), 'The second argument must be a scalar.'
-        tensor = copy.deepcopy(self)
-        tensor.tensors[tensor.tree.root-1] *= arg
+
+        if np.isscalar(arg): #'The second argument must be a scalar.'
+            tensor = copy.deepcopy(self)
+            tensor.tensors[tensor.tree.root-1] *= arg
+        elif isinstance(arg, tensap.TreeBasedTensor):
+            arg = self.kron(arg)  
+            I = [np.arange(0,n**2,n+1) for n in self.shape];
+            tensor = arg.sub_tensor(*I)
+        else:
+            raise NotImplementedError('Method not implemented.')
+            
         return tensor
 
     def __rmul__(self, arg):
@@ -330,7 +338,7 @@ class TreeBasedTensor:
 
         Returns
         -------
-        tensap.FullTensor
+        tensap.TreeBasedTensor
             The tensor resulting from the Hadamard product.
 
         '''
@@ -520,6 +528,10 @@ class TreeBasedTensor:
             The subtensor.
 
         '''
+
+        if isinstance(indices,tuple) and len(indices)==1:
+            indices = indices[0]
+
         assert len(indices) == self.order, 'Wrong number of input arguments.'
         tree = self.tree
         tensors = np.array(self.tensors)
