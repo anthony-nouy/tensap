@@ -113,3 +113,42 @@ TENSOR = tensap.TreeBasedTensor.rand(TREE, RANKS, SIZE, ACTIVE_NODES)
 
 TENSOR.plot(title='Nodes indices')
 TENSOR.tree.plot_dims(title='Nodes dimensions')
+
+# %% Algebraic operations
+ORDER = 8
+TREE = tensap.DimensionTree.linear(ORDER)
+SZ = np.full(ORDER, 5)
+T1 = tensap.TreeBasedTensor.rand(TREE, shape = SZ)
+T2 = tensap.TreeBasedTensor.rand(TREE, shape = SZ)
+print('ranks of T1   :', T1.ranks)
+print('ranks of T2   :', T2.ranks)
+print('\nAddition of tensors:\n--------------------')
+Tplus = T1+T2;
+print('ranks of T1+T2:', Tplus.ranks)
+print('\nSubstraction of tensors:\n----------------------')
+Tminus= T1-T2;
+print('ranks of T1-T2:', Tminus.ranks)
+print('\nHadamard product of tensors:\n-------------------------')
+Ttimes = T1*T2
+print('ranks of T1*T2:', Ttimes.ranks)
+print('\nNorm of tensors:\n--------------------')
+print('norm of T1',T1.norm())
+print('norm of T1*T2',Ttimes.norm())
+
+# %% Changing root node of a tree based tensor
+
+ORDER = 5
+TREE = tensap.DimensionTree.balanced(ORDER)
+RANKS = np.hstack((1, np.random.randint(2, 3, TREE.nb_nodes-1)))
+SZ = np.random.randint(2, 4, ORDER)
+T1 = tensap.TreeBasedTensor.rand(TREE, ranks = RANKS , shape = SZ)
+T1.plot(title='Nodes indices with root 1')
+num2 = 2
+T2 = T1.change_root(num2) 
+T2.plot(title='Nodes indices with root ' + str(num2))
+num3 = 9
+T3 = T1.change_root(num3) 
+T3.plot(title='Nodes indices with root' + str(num3))
+T3bis = T2.change_root(num3)
+T3bis.plot(title='Nodes indices with root ' + str(num3) + ' from format with root ' + str(num2))
+print((T3-T3bis).norm()/(T3.norm()+T3bis.norm())*2)
