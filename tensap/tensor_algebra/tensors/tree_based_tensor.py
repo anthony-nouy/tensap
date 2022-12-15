@@ -89,6 +89,7 @@ class TreeBasedTensor:
         None.
 
         '''
+ 
         if (tree is None) and isinstance(cores, TreeBasedTensor):
             # Create a copy of the TreeBasedTensor
             self.tensors = np.array(cores.tensors)
@@ -100,7 +101,7 @@ class TreeBasedTensor:
             self.is_active_node = np.array(cores.is_active_node)
             self.orth_node = np.array(cores.orth_node)
         elif isinstance(cores, (list, np.ndarray)) and \
-                isinstance(tree, tensap.DimensionTree):
+                isinstance(tree,tensap.DimensionTree):
             self.tree = copy.deepcopy(tree)
             self.tensors = np.array([tensap.FullTensor(x) for x in cores])
             self.order = self.tree.dim2ind.size
@@ -108,7 +109,7 @@ class TreeBasedTensor:
             self.orth_node = None
             self.update_attributes()
         else:
-            raise NotImplementedError('Constructor not implemented for the '
+            raise NotImplementedError('Constructor not implemented for the ' \
                                       'provided arguments.')
 
     @property
@@ -286,7 +287,7 @@ class TreeBasedTensor:
 
     def __neg__(self):
         tensor = copy.deepcopy(self)
-        tensor.tensors[tensor.tree.root] = -tensor.tensors[tensor.tree.root]
+        tensor.tensors[tensor.tree.root-1] = -tensor.tensors[tensor.tree.root-1]
         return tensor
 
     def __mul__(self, arg):
@@ -294,7 +295,7 @@ class TreeBasedTensor:
         if np.isscalar(arg): #'The second argument must be a scalar.'
             tensor = copy.deepcopy(self)
             tensor.tensors[tensor.tree.root-1] *= arg
-        elif isinstance(arg, tensap.TreeBasedTensor):
+        elif isinstance(arg, TreeBasedTensor):
             arg = self.kron(arg)  
             I = [np.arange(0,n**2,n+1) for n in self.shape];
             tensor = arg.sub_tensor(*I)
@@ -502,6 +503,81 @@ class TreeBasedTensor:
         '''
         return self.full().data
 
+    def change_root(self,nod):
+        '''
+        Convert the TreeBasedTensor to a numpy.ndarray.
+        
+        Returns a new tensor associated with the 
+        dimension tree T = self.tree.change_root(nod)
+        with nod as the new root
+        
+        nod should be an active node
+                     
+        If nod is an active leaf node of self.tree, then T has 
+        a new node associated with dimension self.tree.dims[nod-1], 
+        that is a new child of nod in the new tree T
+    
+        If the rank of the initial root node self.tree.root is greater
+        than one, then a new dimension is created 
+        and the resulting tensor has order 
+        self.order + 1
+            
+        Parameters
+        ----------
+        nod : int
+            The node which becomes the new root.
+        
+        Returns
+        -------
+        x : tensap.TreeBasedTensor
+            The new TreeBasedTensor with root nod
+
+        '''
+        x = copy.deepcopy(self)
+        
+        if nod==x.tree.root:
+            return x
+        
+        assert x.is_active_node[nod-1], 'Can not make an inactive node the root node.'
+        
+        if x.ranks[x.tree.root-1]>1:
+            x.tree = x.tree.addChild(x.tree.root)
+            x.tensors = np.concatenate((x.tensors , []))
+            x = x.update_attributes()
+            x = x.change_root(nod)
+        else:
+            t = x.tree
+            tnew, modifNod = t.change_root(nod)
+            for k in modifNod:
+                if x.is_active_node[k-1] and not t.is_leaf[k-1]:
+                    p = t.parent(k)
+                    p = p[p!=0]
+                    ch = t.children(k)
+                    chp = np.concatenate((ch,p))
+                    pnew = tnew.parent(k)
+                    pnew = pnew[pnew!=0]
+                    chnew = tnew.children(k)
+                    chpnew = np.concatenate((chnew,pnew))
+                    r = np.concatenate([np.where(chp == l)[0] for l in chpnew])
+                    x.tensors[k-1] = x.tensors[k-1].transpose(r)
+            if t.is_leaf[nod-1]:
+                tensors = np.empty(tnew.nb_nodes,dtype=object)
+                tensors[:tnew.nb_nodes-1] = x.tensors
+                tensors[-1]=tensap.FullTensor([])
+                x.tensors = tensors
+                x.is_active_node = np.concatenate((x.is_active_node,[False]))
+                p = t.parent(nod)
+                p = p[p!=0]
+                ch = np.array([t.nb_nodes+1])
+                chp = np.concatenate((ch,p))
+                chnew = tnew.children(nod)
+                r = np.concatenate([np.where(chp == l)[0] for l in chnew])
+                x.tensors[nod-1] = x.tensors[nod-1].transpose(r)
+            x.tree = tnew
+            x = x.update_attributes()
+        return x
+
+    
     def sub_tensor(self, *indices):
         '''
         Extract a subtensor of the tensor.
@@ -1578,6 +1654,7 @@ class TreeBasedTensor:
                 s_svd = np.linalg.pinv(l_svd)
             else:
                 s_svd = np.linalg.inv(l_svd)
+
             tensor.tensors[nod-1] = tensor.tensors[nod-1].\
                 tensor_matrix_product(np.transpose(l_svd),
                                       tensor.tensors[nod-1].order-1)
@@ -2245,6 +2322,7 @@ class TreeBasedTensor:
                 raise ValueError('Inactive nodes should be leaves.')
             else:
                 tensors[nod] = []
+                
         return TreeBasedTensor(tensors, tree)
 
     @staticmethod

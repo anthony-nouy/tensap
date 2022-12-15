@@ -269,6 +269,103 @@ class DimensionTree:
                                        self.descendants(children)))
         return np.array(dnod)
 
+    def change_root(self, nod):
+        '''
+        Change the root node of a dimension tree T.
+        
+        The function returns a new dimension tree whose root is the node nod,  
+        along with the modified nodes in the tree T 
+        
+        If nod is a leaf node of T, a new node is created, associated with 
+        dimension T.dims{nod}
+
+
+        Parameters
+        ----------
+        nod : int
+            Number of the node which becomes the new root
+            
+        Returns
+        -------
+        Tnew : DimensionTree
+            New dimension tree with root nod
+        mnodes : list
+            List of modified nodes.
+
+        '''
+
+        
+        if nod == self.root:
+            return self, np.array([])
+        
+        A = np.copy(self.adjacency_matrix)
+
+        a = self.ascendants(nod)
+        a = np.concatenate(([nod],a))
+
+        chnod = self.children(nod)         
+        modifiedNodes = np.concatenate(([nod],chnod))
+        for i in np.arange(a.size-1):
+            A[a[i]-1,a[i+1]-1] = 1
+            A[a[i+1]-1,a[i]-1] = 0
+            chnod = self.children(a[i+1])
+            modifiedNodes = np.concatenate((modifiedNodes,[a[i+1]],chnod))
+        modifiedNodes = np.unique(modifiedNodes)
+        if self.is_leaf[nod-1]:
+            n = np.copy(self.nb_nodes)
+            Anew = np.zeros([n+1]*2, dtype=int)
+            Anew[:n,:n]=A
+            Anew[nod-1,n] = 1               
+            dim2ind = np.copy(self.dim2ind)
+            dim2ind[self.dims[nod-1]]=n+1
+        else:
+            Anew = A
+            dim2ind = np.copy(self.dim2ind)
+ 
+        return DimensionTree(dim2ind,Anew),modifiedNodes
+
+
+    def add_child(self, nod):
+        '''
+        Add a child node to the node nod of a dimension tree T and returns 
+        a new dimension tree. 
+        
+        If nod is not leaf node, the new node is associated 
+        with a new dimension length(T.dim2ind)+1 
+            
+        If nod is a leaf node, the new node is associated 
+        with the dimension of node nod
+
+
+        Parameters
+        ----------
+        nod : int
+            Number of the node to which we add a child
+            
+        Returns
+        -------
+        Tnew : DimensionTree
+            New dimension tree 
+
+        '''
+
+ 
+        A = np.copy(self.adjacency_matrix)
+        n = self.nb_nodes
+        Anew = np.zeros([n+1]*2, dtype=int)
+        Anew[:n,:n]=A
+        Anew[nod-1,n]=1
+        if self.is_leaf[nod-1]:
+            dim2ind = np.copy(self.dim2ind)
+            dim2ind[dim2ind==nod]=n+1
+        else:
+            dim2ind = np.copy(self.dim2ind)
+            dim2ind = np.concatenate((dim2ind,[n+1]))
+            
+        return DimensionTree(dim2ind,Anew)  
+
+
+
     def sub_dimension_tree(self, root):
         '''
         Extract a sub dimension tree.

@@ -20,6 +20,7 @@ Tutorial on DimensionTree.
 '''
 
 import tensap
+import matplotlib as plt
 
 # %% Linear dimension tree
 ORDER = 5
@@ -59,3 +60,28 @@ TREE.plot_options['level_alignment'] = False
 TREE.plot_with_labels_at_nodes(TREE.level, title='No level alignment')
 TREE.plot_options['level_alignment'] = True
 TREE.plot_with_labels_at_nodes(TREE.level, title='Level alignment')
+
+# %% Change the root of a tree
+ORDER = 8
+TREE = tensap.DimensionTree.balanced(ORDER)
+TREE.plot(title='Nodes indices before changing the root')
+TREE.plot_dims(title='Nodes dimensions before changing the root')
+NEWTREE,modified_nodes  = TREE.change_root(5)
+NEWTREE.plot(title='Nodes indices after changing the root to node 5')
+NEWTREE.plot_dims(title='Nodes dimensions after changing the root to node 5')
+NEWTREE,modified_nodes = TREE.change_root(11)
+NEWTREE.plot(title='Nodes indices after changing the root to leaf node 11')
+NEWTREE.plot_dims(title='Nodes dimensions after changing the root to leaf node 11')
+
+               
+# %% Add a child to a node
+ORDER = 8
+TREE = tensap.DimensionTree.balanced(ORDER)
+TREE.plot(title='Nodes indices before changing the root')
+NEWTREE = TREE.add_child(5)
+NEWTREE.plot(title='Nodes indices after adding a child to node 5')
+NEWTREE = TREE.add_child(11)
+NEWTREE.plot(title='Nodes indices after adding a child to leaf node 11')
+NEWTREE = TREE.add_child(1)
+NEWTREE.plot(title='Nodes indices after adding a child to root node 1')
+
