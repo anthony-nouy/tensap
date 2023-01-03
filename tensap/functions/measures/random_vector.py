@@ -170,7 +170,7 @@ class RandomVector(tensap.ProbabilityMeasure):
         '''
         Latin Hypercube Sampling of the RandomVector of n points.
 
-        Requires the package pyDOE.
+        Requires the package scipy.stats.qmc.
 
         Parameters
         ----------
@@ -184,8 +184,9 @@ class RandomVector(tensap.ProbabilityMeasure):
             each dimension.
 
         '''
-        from pyDOE import lhs
-        A = lhs(self.size, samples=n)
+        from scipy.stats import qmc
+        sampler = qmc.LatinHypercube(d=self.size)
+        A = sampler.random(n=n)
         A = RandomVector(tensap.UniformRandomVariable(0, 1),
                          self.size).transfer(self, A)
         return A

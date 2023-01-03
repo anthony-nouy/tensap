@@ -153,3 +153,5 @@ print('duplicate a random variable\n',m)
 # tensorize a measure -> returns a product measure
 m = tp.ProductMeasure.duplicate(m3,3)
 print('duplicate a Lebesgue measure\n',m)
+
+# %%

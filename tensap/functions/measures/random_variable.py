@@ -289,7 +289,7 @@ class RandomVariable(tensap.ProbabilityMeasure):
         Latin Hypercube Sampling of the random variable self of n points in
         dimension p.
 
-        Requires the package pyDOE.
+        Requires the package scipy.stats.qmc.
 
         Parameters
         ----------
@@ -302,8 +302,9 @@ class RandomVariable(tensap.ProbabilityMeasure):
             The coordinates of the Latin Hypercube Sampling in each dimension.
 
         '''
-        from pyDOE import lhs
-        A = np.array(lhs(1, samples=n))
+        from scipy.stats import qmc
+        sampler = qmc.LatinHypercube(d=1)
+        A = sampler.random(n=n)
         U = tensap.UniformRandomVariable(0, 1)
         return U.transfer(self, A[:, 0])
 
