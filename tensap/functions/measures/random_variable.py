@@ -173,11 +173,52 @@ class RandomVariable(tensap.ProbabilityMeasure):
             g = self.icdf(np.linspace(1/n, 1-1/n, n-1))
         return np.concatenate(([self.min()], g, [self.max()]))
 
+    def discretize_support(self, n, s = None ):
+        '''
+        Discretize a random variable X and returns 
+        a discrete random variable Xn
+        taking n possible values x[1], ..., x[n],
+        and
+        P(Xn = x[i]) = P(v[i] < X <= v[i+1]) 
+        with v = [-inf , (x[0]+x[1])/2 , ..., (x[n-1]+x[n])/2, inf)       
+
+        Parameters
+        ----------
+        x : list or numpy.ndarray
+        
+        or 
+        
+        n : int
+            The number of possible values the discrete random variable can
+            take.
+        s : list or numpy array providing the support [a,b] 
+            (by default, the truncated support of X)
+            
+
+        Returns
+        -------
+        tensap.DiscreteRandomVariable
+            The obtained discrete random variable.
+
+        '''
+        if np.isscalar(n):
+            if s is None:
+                s = self.truncated_support()
+            u = np.linspace(1/(2*n), 1-1/(2*n), n)
+            x = s[0] + u*(s[1] - s[0])
+        else:
+            x = n
+        v = np.concatenate((-np.Inf,(x[1:] + x[:-1])/2,np.Inf),axis=None)
+        p = self.cdf(v[1:]) - self.cdf(v[:-1])
+        
+        return tensap.DiscreteRandomVariable(x,p)
+
     def discretize(self, n):
         '''
-        Return a discrete random variable taking n possible values x1, ..., xn,
+        Discretize a random variable and returns a discrete random variable Xn
+        taking n possible values x(1), ..., x(n),
         these values being the quantiles of self of probability 1/(2n) + i/n,
-        i=0n ..., n-1 and such that P(Xn >= xn) = 1/n.
+        i=0 ..., n-1, and P(Xn = x(i)) = P( x(i)<X<x(i+1)).
 
         Parameters
         ----------
@@ -243,7 +284,7 @@ class RandomVariable(tensap.ProbabilityMeasure):
             points = shift + scaling * points
         return tensap.IntegrationRule(points, weights)
 
-    def lhs_random(self, n, p=1):
+    def lhs_random(self, n):
         '''
         Latin Hypercube Sampling of the random variable self of n points in
         dimension p.
@@ -254,9 +295,7 @@ class RandomVariable(tensap.ProbabilityMeasure):
         ----------
         n : int
             Number of points.
-        p : int, optional
-            The dimension. The default is 1.
-
+            
         Returns
         -------
         numpy.ndarray
@@ -264,10 +303,9 @@ class RandomVariable(tensap.ProbabilityMeasure):
 
         '''
         from pyDOE import lhs
-        A = lhs(p, samples=n)
+        A = np.array(lhs(1, samples=n))
         U = tensap.UniformRandomVariable(0, 1)
-        A = [U.transfer(self, A[:, i]) for i in range(A.shape[1])]
-        return np.transpose(np.array(A))
+        return U.transfer(self, A[:, 0])
 
     def likelihood(self, x):
         '''
@@ -414,10 +452,18 @@ class RandomVariable(tensap.ProbabilityMeasure):
             'The first two arguments must be RandomVariable.'
         return Y.icdf(self.cdf(x))
 
-    def truncated_support(self):
+    def truncated_support(self , p= 1 - 2e-16):
         '''
-        Return the truncated support of the random variable.
+        Return a truncated support [a,b] of the random variable 
+        with probability at least p:
+        a = icdf(p/2) if self.support[0]=-inf or self.support[0] otherwise
+        a = icdf(1-p/2) if self.support[1]=inf or self.support[1] otherwise
 
+        Parameters
+        ----------
+        p : float 
+            The default is 1 - 2e-16.
+            
         Returns
         -------
         sup : numpy.ndarray
@@ -427,9 +473,9 @@ class RandomVariable(tensap.ProbabilityMeasure):
 
         sup = self.support()
         if sup[0] == -np.inf:
-            sup[0] = self.mean() - 10*self.std()
+            sup[0] = self.icdf((1-p)/2)
         if sup[1] == np.inf:
-            sup[1] = self.mean() + 10*self.std()
+            sup[1] = self.icdf(1-(1-p)/2)
         return sup
 
     def pdf_plot(self, *args):

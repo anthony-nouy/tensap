@@ -69,8 +69,12 @@ class ProductMeasure(tensap.Measure):
         self.measures = measures
 
     def __repr__(self):
-        return self.__class__.__name__
+        return ('<{}:{n}' +
+                '{t}random_variables = {},{n}').format(self.__class__.__name__,
+                                          self.measures,
+                                          t='\t', n='\n')
 
+                                          
     def __eq__(self, measure_2):
         return np.all([x == y for x, y in zip(self.measures,
                                               measure_2.measures)])

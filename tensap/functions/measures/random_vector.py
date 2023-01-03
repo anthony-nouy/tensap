@@ -51,8 +51,10 @@ class RandomVector(tensap.ProbabilityMeasure):
 
     def __repr__(self):
         return ('<{}:{n}' +
+                '{t}size = {} {n}' + 
                 '{t}random_variables = {},{n}' +
                 '{t}copula = {}>').format(self.__class__.__name__,
+                                          self.size,
                                           self.random_variables,
                                           self.copula.__class__.__name__,
                                           t='\t', n='\n')
@@ -186,7 +188,7 @@ class RandomVector(tensap.ProbabilityMeasure):
         A = lhs(self.size, samples=n)
         A = RandomVector(tensap.UniformRandomVariable(0, 1),
                          self.size).transfer(self, A)
-        return [A[:, k] for k in range(self.size)]
+        return A
 
     def pdf(self, x):
         '''
