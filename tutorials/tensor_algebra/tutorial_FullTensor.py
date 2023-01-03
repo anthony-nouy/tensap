@@ -120,3 +120,18 @@ TENSOR_8 = tensap.FullTensor(np.random.choice([0,1],
                              p=[2/3, 1/3]).reshape((3,4,2)))
 print(f'\nTENSOR_8 has a storage complexity of {TENSOR_8.storage()}')
 print(f'Its sparse conversion has a storage complexity of {TENSOR_8.sparse().storage()}')
+
+# %% Sum along given dimensions
+x = tensap.FullTensor.rand([2, 3, 4, 5])
+print('Initial tensor x')
+print(x)
+print('Sum of x over all dimensions')
+print(x.reduce_sum())
+print('Sum of x along dimension 0')
+x1 = x.reduce_sum(0)
+print(x1)
+print('Sum of x along dimensions 1 and 3')
+x2 = x.reduce_sum((1,3))
+print(x2)
+print('Squeeze the resulting tensor (removing modes with size 1)')
+print(x2.squeeze())
