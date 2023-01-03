@@ -246,8 +246,20 @@ class TreeBasedTensor:
     #     return np.all(self.data == tensor2.data)
 
     def __add__(self, arg):
+         
+        
+        if not isinstance(arg, TreeBasedTensor):
+            raise NotImplementedError('Addition only implemented for two TreeBasedTensor.') 
+         
+        if not np.all(self.is_active_node == arg.is_active_node):
+            self = self.activate_nodes(arg.active_nodes)
+            arg = arg.activate_nodes(self.active_nodes)   
+        
+        if not self.tree==arg.tree:
+            raise ValueError('Both tensors should have the same tree.')
+            
         tree = self.tree
-        tensors = np.array(self.tensors)
+        tensors = np.array(self.tensors)    
 
         for nod in np.arange(1, tree.nb_nodes+1):
             if tree.is_leaf[nod-1] and self.is_active_node[nod-1]:
@@ -295,10 +307,19 @@ class TreeBasedTensor:
         if np.isscalar(arg): #'The second argument must be a scalar.'
             tensor = copy.deepcopy(self)
             tensor.tensors[tensor.tree.root-1] *= arg
-        elif isinstance(arg, TreeBasedTensor):
-            arg = self.kron(arg)  
+        elif isinstance(arg, tensap.TreeBasedTensor):
+            tensor = self.kron(arg)  
             I = [np.arange(0,n**2,n+1) for n in self.shape];
-            tensor = arg.sub_tensor(*I)
+            tensor = tensor.sub_tensor(*I)
+            N = self.ranks[self.tree.root-1];
+            if N>1:
+                if arg.ranks[arg.tree.root-1]!=N:
+                    raise ValueError('root ranks should be equal.')
+                a = tensor.tensors[tensor.tree.root-1]
+                I = [':']*a.order    
+                I[a.order-1] = np.arange(0,N**2,N+1)
+                tensor.tensors[tensor.tree.root-1] = a.sub_tensor(*I)
+                tensor = tensor.update_attributes()
         else:
             raise NotImplementedError('Method not implemented.')
             
@@ -344,6 +365,36 @@ class TreeBasedTensor:
 
         '''
         return self * arg
+
+    def reduce_sum(self, dims=None):
+        '''
+        Compute the sum of elements across dimensions dims of a tensor.
+
+        Similar to tensorflow.reduce_sum.
+
+        Parameters
+        ----------
+        dims : list or numpy.ndarray, optional
+            The dimensions to be reduced. The default is None, indicating all
+            the dimensions.
+
+        Returns
+        -------
+        TreeBasedTensor or a scalar if the sum is over all dimensions
+            The reduced tensor.
+
+        '''
+        
+        if dims is None:
+            dims = np.arange(self.order)
+        elif np.isscalar(dims):
+            dims = np.array([dims])
+        else:
+            dims = np.array(dims)
+
+        a = [np.ones(self.shape[i]) for i in dims.tolist()]     
+            
+        return self.tensor_vector_product(a,dims)
 
     def is_admissible_rank(self, ranks=None, nargout=1):
         '''
@@ -990,7 +1041,8 @@ class TreeBasedTensor:
         Parameters
         ----------
         nodes : list or numpy.ndarray
-            The list of nodes to inactivate.
+            The list of nodes to inactivate 
+            (only leaf nodes can be inactivated)
 
         Returns
         -------
@@ -998,11 +1050,15 @@ class TreeBasedTensor:
             The tensor with inactivated nodes.
 
         '''
+
         tree = self.tree
+        if not np.all(np.isin(nodes,tree.dim2ind)):
+            raise ValueError('Only leaf nodes can be inactivated.')
+                    
         tensors = np.array(self.tensors)
         for level in np.arange(np.max(tree.level), -1, -1):
             nodes_lvl = tree.nodes_with_level(level)
-            for nod in nodes_lvl:
+            for nod in nodes_lvl:                
                 if np.isin(nod, nodes) and self.is_active_node[nod-1]:
                     parent = tree.parent(nod)
                     child_nb = tree.child_number(nod)
@@ -1014,6 +1070,32 @@ class TreeBasedTensor:
                     tensors[parent-1] = tensors[parent-1].itranspose(ind)
                     tensors[nod-1] = tensap.FullTensor([])
         return TreeBasedTensor(tensors, tree)
+
+    def activate_nodes(self, nodes):
+        '''
+        Activate a list of nodes.
+
+        Parameters
+        ----------
+        nodes : list or numpy.ndarray
+            The list of nodes to activate
+            (Only leaf nodes can be activated)
+
+        Returns
+        -------
+        TreeBasedTensor
+            The tensor with activated nodes.
+
+        '''
+        tree = self.tree
+        tensors = np.array(self.tensors)
+        for nod in nodes:
+            if not self.is_active_node[nod-1]:
+                dim = np.where(tree.dim2ind==nod)[0][0]
+                s = self.shape[dim]
+                tensors[nod-1] = tensap.FullTensor(np.eye(s),2,[s,s])
+        return TreeBasedTensor(tensors, tree)
+
 
     def eval_at_indices(self, indices, dims=None):
         '''

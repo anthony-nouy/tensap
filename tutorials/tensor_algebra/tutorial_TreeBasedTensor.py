@@ -117,7 +117,7 @@ TENSOR.tree.plot_dims(title='Nodes dimensions')
 # %% Algebraic operations
 ORDER = 8
 TREE = tensap.DimensionTree.linear(ORDER)
-SZ = np.full(ORDER, 5)
+SZ = np.random.randint(3, 10, ORDER)
 T1 = tensap.TreeBasedTensor.rand(TREE, shape = SZ)
 T2 = tensap.TreeBasedTensor.rand(TREE, shape = SZ)
 print('ranks of T1   :', T1.ranks)
@@ -134,6 +134,13 @@ print('ranks of T1*T2:', Ttimes.ranks)
 print('\nNorm of tensors:\n--------------------')
 print('norm of T1',T1.norm())
 print('norm of T1*T2',Ttimes.norm())
+
+print('\nSum of T1 along dimensions:\n-------------------------')
+print('dimensions of T1        : ', T1.shape)
+print('dimensions of T1.reduce_sum(0) : ', T1.reduce_sum(0).shape)
+print('dimensions of T1.reduce_sum([2,5,7]) : ', T1.reduce_sum([2,5,7]).shape)
+print('sum of all entries = ',T1.reduce_sum())
+
 
 # %% Changing root node of a tree based tensor
 
@@ -152,3 +159,25 @@ T3.plot(title='Nodes indices with root' + str(num3))
 T3bis = T2.change_root(num3)
 T3bis.plot(title='Nodes indices with root ' + str(num3) + ' from format with root ' + str(num2))
 print((T3-T3bis).norm()/(T3.norm()+T3bis.norm())*2)
+
+
+# %% Activate and incativate nodes
+ORDER = 5
+TREE = tensap.DimensionTree.balanced(ORDER)
+T1 = tensap.TreeBasedTensor.rand(TREE)
+T1.plot(title='Initial tensor format')
+T2 = T1.inactivate_nodes([9,5])
+print('Check T1-T2 = 0 : ',(T2-T1).norm()/(T1.norm()+T2.norm())*2)
+T2.plot(title='Inactivate nodes [9,5]')
+T3 = T2.activate_nodes([9,5])
+T3.plot(title='Reactivate nodes [9,5]')
+print('Check T1-T3 = 0 : ',(T3-T1).norm()/(T1.norm()+T3.norm())*2)
+
+
+# %% Extraction of a subtree and corresponding tensor 
+# (basis of minimal subspace)
+ORDER = 5
+TREE = tensap.DimensionTree.balanced(ORDER)
+T = tensap.TreeBasedTensor.rand(TREE)
+subTREE, nodes = TREE.sub_dimension_tree(2)
+subT = tensap.TreeBasedTensor(T.tensors[nodes-1],subTREE)
