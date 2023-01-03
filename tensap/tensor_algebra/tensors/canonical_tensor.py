@@ -160,6 +160,82 @@ class CanonicalTensor:
         '''
         return self.full().data
 
+    def tensor_vector_product(self, vectors, dims=None):
+        '''
+        Compute the contraction of the tensor with vectors.
+
+        Compute the contraction of self with each vector contained in the list
+        vectors along dimensions specified by dims. The operation is such that
+        vectors[k] is contracted with the dims[k]-th dimension of self.
+
+        Parameters
+        ----------
+        vectors : numpy.ndarray or list of numpy.ndarray
+            The vectors to use in the product.
+        dims : list or numpy.ndarray, optional
+            Indices of the contractions. The default is None, indicating all
+            the dimensions.
+
+        Returns
+        -------
+        CanonicalTensor 
+            The tensor after the contractions with the vectors.
+
+        '''
+        if dims is None:
+            assert isinstance(vectors, list), 'vectors should be a list.'
+            assert len(vectors) == self.order, \
+                'len(vectors) must be self.order.'
+            dims = np.arange(self.order)
+        else:
+            dims = np.array(dims)
+            if not isinstance(vectors, list):
+                vectors = [vectors]
+            assert len(vectors) == dims.size, \
+                'len(vectors) must be equal to dims.size.'
+
+        vectors = [np.reshape(x, [1, -1]) for x in vectors]
+        return self.tensor_matrix_product(vectors, dims).squeeze(dims.tolist())
+
+    def squeeze(self, dims=None):
+        '''
+        Remove the singleton dimensions of the tensor.
+
+        Parameters
+        ----------
+        dims : list or numpy.ndarray, optional
+            Dimensions to squeeze. The default is None, indicating all the
+            singleton dimensions.
+
+        Returns
+        -------
+        CanonicalTensor or scalar
+            The squeezed tensor.
+
+        '''
+        if dims is None:
+            dims = np.arange(self.order)
+            dims = dims[self.shape == 1]
+        else:
+            assert np.all(self.shape[dims]==1), 'dimensions to squeeze should have a size 1.'
+                
+        dims = np.sort(dims)
+        remaining_dims = tensap.fast_setdiff(np.arange(self.order), dims)
+
+        if remaining_dims.size == 0:
+            tensor = self.full().squeeze()
+            if isinstance(tensor, tensap.FullTensor):
+                tensor = tensor.data
+        else:
+            core = self.core.data
+            space = list(self.space)
+            for i, dim in enumerate(dims):
+                core = core * space[dim]        
+            space = [space[i] for i in remaining_dims.tolist()]        
+            tensor = CanonicalTensor(space, core)  
+
+        return tensor
+    
     def tensor_matrix_product(self, matrices, dims=None):
         '''
         Contract a tensor with matrices.
@@ -394,6 +470,39 @@ class CanonicalTensor:
                     tensap.FullTensor(np.eye(self.shape[mu-1])), [], [], True)
         return out
 
+    def reduce_sum(self, dims=None):
+        '''
+        Compute the sum of elements across dimensions dims of a tensor.
+
+        Similar to tensorflow.reduce_sum.
+
+        Parameters
+        ----------
+        dims : list or numpy.ndarray, optional
+            The dimensions to be reduced. The default is None, indicating all
+            the dimensions.
+
+        Returns
+        -------
+        CanonicalTensor or a scalar if the sum is over all dimensions
+            The reduced tensor.
+
+        '''
+        
+        if dims is None:
+            dims = np.arange(self.order)
+        elif np.isscalar(dims):
+            dims = np.array([dims])
+        else:
+            dims = np.array(dims)
+
+        a = [np.ones(self.shape[i]) for i in dims.tolist()]     
+            
+        return self.tensor_vector_product(a,dims)
+    
+    
+    
+    
     def tree_based_tensor(self, tree, is_active_node=None):
         '''
         Convert a CanonicalTensor to a tensap.TreeBasedTensor with given
