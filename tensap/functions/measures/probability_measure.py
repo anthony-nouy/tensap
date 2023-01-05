@@ -1,16 +1,16 @@
-'''
+"""
 Module probability_measure.
 
-'''
+"""
 
 import tensap
 
 
 class ProbabilityMeasure(tensap.Measure):
-    '''
+    """
     Class ProbabilityMeasure.
 
-    '''
+    """
 
     @staticmethod
     def mass():
@@ -18,4 +18,4 @@ class ProbabilityMeasure(tensap.Measure):
 
     def random_rejection(self, n, Y, c, m):
         # TODO random_rejection
-        raise NotImplementedError('Method not implemented.')
+        raise NotImplementedError("Method not implemented.")

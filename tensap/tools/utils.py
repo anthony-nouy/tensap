@@ -14,10 +14,10 @@
 # You should have received a copy of the GNU Lesser General Public License
 # along with tensap.  If not, see <https://www.gnu.org/licenses/>.
 
-'''
+"""
 Module utils.
 
-'''
+"""
 
 import numpy as np
 
@@ -34,7 +34,7 @@ def fast_setdiff(a, b):
 
 
 def integer2baseb(i, b, d=None):
-    '''
+    """
     Returns the representation [i_1, ..., i_d] in base b of a set of non
     negative integers i = sum_{k=1}^d i_k b^(d-k) in [0, b^d-1].
 
@@ -53,16 +53,16 @@ def integer2baseb(i, b, d=None):
     numpy.ndarray
         The representation [i_1, ..., i_d] in base b of the integers.
 
-    '''
+    """
     if d is None:
-        d = int(np.ceil(np.log(np.max(i)+1)/np.log(b)))
+        d = int(np.ceil(np.log(np.max(i) + 1) / np.log(b)))
 
-    I = np.unravel_index(np.ravel(i), np.full(d, b), order='F')
-    return np.fliplr(np.transpose(np.array(I)))
+    I0 = np.unravel_index(np.ravel(i), np.full(d, b), order="F")
+    return np.fliplr(np.transpose(np.array(I0)))
 
 
-def baseb2integer(I, b):
-    '''
+def baseb2integer(I0, b):
+    """
     Return the integers with given representations in base b.
 
     Parameters
@@ -78,9 +78,9 @@ def baseb2integer(I, b):
     numpy.ndarray
         The integers with given representations in base b.
 
-    '''
-    I = np.atleast_2d(I)
-    d = I.shape[1]
-    I = np.fliplr(I)
-    I = np.transpose(I)
-    return np.ravel_multi_index(I, np.full(d, b), order='F')
+    """
+    I0 = np.atleast_2d(I0)
+    d = I0.shape[1]
+    I0 = np.fliplr(I0)
+    I0 = np.transpose(I0)
+    return np.ravel_multi_index(I0, np.full(d, b), order="F")

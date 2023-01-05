@@ -14,10 +14,10 @@
 # You should have received a copy of the GNU Lesser General Public License
 # along with tensap.  If not, see <https://www.gnu.org/licenses/>.
 
-'''
+"""
 Module function.
 
-'''
+"""
 
 from abc import abstractmethod
 import numpy as np
@@ -25,7 +25,7 @@ import tensap
 
 
 class Function:
-    '''
+    """
     Class Function.
 
     Attributes
@@ -42,17 +42,17 @@ class Function:
         Indicates if the Function object should store the evaluations of the
         function.
 
-    '''
+    """
 
     def __init__(self):
-        '''
+        """
         Constructor for the class Function.
 
         Returns
         -------
         None.
 
-        '''
+        """
         self.dim = []
         self.measure = None
         self.output_shape = 1
@@ -80,7 +80,7 @@ class Function:
             return y
 
     def store_eval(self, x):
-        '''
+        """
         Evaluate the function, reuising previous evaluations if possible, and
         storing the new evaluations in self.
 
@@ -96,19 +96,19 @@ class Function:
         tensap.Function
             The Function with stored evaluations, for future reuse.
 
-        '''
+        """
         if np.ndim(x) < 2:
             x = np.reshape(x, [np.size(x), 1])
 
         if self.store and np.size(self._y_stored) != 0:
-            ind_2, ind_1 = np.nonzero(np.all(x == self._x_stored[:,
-                                                                 np.newaxis],
-                                             axis=2))
+            ind_2, ind_1 = np.nonzero(
+                np.all(x == self._x_stored[:, np.newaxis], axis=2)
+            )
 
             if np.prod(self.output_shape) != 1:
-                self._y_stored = np.reshape(self._y_stored,
-                                            (self._y_stored.shape[0], -1),
-                                            order='F')
+                self._y_stored = np.reshape(
+                    self._y_stored, (self._y_stored.shape[0], -1), order="F"
+                )
 
             y = np.zeros((x.shape[0], self._y_stored.shape[1]))
             y[ind_1, :] = self._y_stored[ind_2, :]
@@ -116,20 +116,26 @@ class Function:
             x_new = x[np.setdiff1d(range(x.shape[0]), ind_1), :]
             if x_new.size != 0:
                 y_new = self.eval(x_new)
-                y[np.setdiff1d(range(x.shape[0]), ind_1), :] = \
-                    np.reshape(y_new, (y_new.shape[0], -1))
+                y[np.setdiff1d(range(x.shape[0]), ind_1), :] = np.reshape(
+                    y_new, (y_new.shape[0], -1)
+                )
                 self._x_stored = np.vstack((self._x_stored, x_new))
-                self._y_stored = np.vstack((self._y_stored,
-                                            np.reshape(y_new,
-                                                       (y_new.shape[0], -1))))
-            y = np.reshape(y, np.concatenate(([y.shape[0]],
-                                              np.atleast_1d(
-                                                  self.output_shape))),
-                           order='F')
+                self._y_stored = np.vstack(
+                    (self._y_stored, np.reshape(y_new, (y_new.shape[0], -1)))
+                )
+            y = np.reshape(
+                y,
+                np.concatenate(([y.shape[0]], np.atleast_1d(self.output_shape))),
+                order="F",
+            )
             if np.prod(self.output_shape) != 1:
-                self._y_stored = np.reshape(self._y_stored, np.concatenate(([
-                    self._y_stored.shape[0]], np.atleast_1d(
-                        self.output_shape))), order='F')
+                self._y_stored = np.reshape(
+                    self._y_stored,
+                    np.concatenate(
+                        ([self._y_stored.shape[0]], np.atleast_1d(self.output_shape))
+                    ),
+                    order="F",
+                )
         else:
             y = self.eval(x)
             if np.ndim(y) < 2:
@@ -142,7 +148,7 @@ class Function:
         return np.squeeze(y), self
 
     def fplot(self, support=None, n_points=100, *args, **kwargs):
-        '''
+        """
         Plot the function on a support using a given number of points.
 
         Parameters
@@ -159,8 +165,9 @@ class Function:
         -------
         None.
 
-        '''
+        """
         import matplotlib.pyplot as plt
+
         if support is None:
             support = self.measure.truncated_support()
 
@@ -169,7 +176,7 @@ class Function:
         plt.show()
 
     def surf(self, n=None, *args):
-        '''
+        """
         Surface plot of the bivariate function.
 
         Parameters
@@ -186,13 +193,13 @@ class Function:
         ax : matplotlib.axes._subplots.AxesSubplot
             The surface plot as a matplotlib.axes._subplots.AxesSubplot object.
 
-        '''
-        assert self.measure is not None, 'Attribute measure is empty.'
-        assert self.dim == 2, \
-            ('The function should be a bivariate function, use the partial ' +
-             'evaluation for higher-dimensional function.')
+        """
+        assert self.measure is not None, "Attribute measure is empty."
+        assert self.dim == 2, (
+            "The function should be a bivariate function, use the partial "
+            + "evaluation for higher-dimensional function."
+        )
 
-        from mpl_toolkits.mplot3d import Axes3D
         import matplotlib.pyplot as plt
 
         if n is None:
@@ -203,8 +210,10 @@ class Function:
         if np.size(n) == 1:
             n = np.tile(n, 2)
 
-        grids = [np.linspace(sup[0][0], sup[0][1], n[0]),
-                 np.linspace(sup[1][0], sup[1][1], n[1])]
+        grids = [
+            np.linspace(sup[0][0], sup[0][1], n[0]),
+            np.linspace(sup[1][0], sup[1][1], n[1]),
+        ]
         grids[0] = grids[0][1:-1]
         grids[1] = grids[1][1:-1]
         grids = [np.reshape(x, (x.size, -1)) for x in grids]
@@ -213,7 +222,7 @@ class Function:
         fg = self.eval_on_tensor_grid(grid)
 
         fig = plt.figure()
-        ax = fig.add_subplot(111, projection='3d')
+        ax = fig.add_subplot(111, projection="3d")
         x, y = np.meshgrid(grids[0], grids[1])
         ax.plot_surface(x, y, fg.data, *args)
         plt.show()
@@ -221,7 +230,7 @@ class Function:
         return ax
 
     def partial_evaluation(self, not_alpha, x_not_alpha):
-        '''
+        """
         Return the partial evaluation of a function
         f(x) = f(x_alpha,x_not_alpha), a function
         f_alpha(.) = f(., x_not_alpha) for fixed values x_not_alpha of the
@@ -245,13 +254,15 @@ class Function:
         f_alpha : tensap.UserDefinedFunction
             The partial evaluation of the Function.
 
-        '''
+        """
         if self.dim is None or np.size(self.dim) == 0:
-            raise ValueError('The Function has an empty attribute dim.')
+            raise ValueError("The Function has an empty attribute dim.")
 
         alpha = np.setdiff1d(range(self.dim), not_alpha)
-        ind = [np.nonzero(np.concatenate((alpha, not_alpha)) == x)[0][0] for
-               x in range(self.dim)]
+        ind = [
+            np.nonzero(np.concatenate((alpha, not_alpha)) == x)[0][0]
+            for x in range(self.dim)
+        ]
 
         def fun(x_alpha):
             grid = tensap.FullTensorGrid([x_alpha, x_not_alpha])
@@ -259,14 +270,13 @@ class Function:
 
         f_alpha = tensap.UserDefinedFunction(fun, alpha.size)
         f_alpha.store = self.store
-        f_alpha.evaluation_at_multiple_points = \
-            self.evaluation_at_multiple_points
+        f_alpha.evaluation_at_multiple_points = self.evaluation_at_multiple_points
         f_alpha.measure = self.measure.marginal(alpha)
 
         return f_alpha
 
     def random(self, n=1, measure=None):
-        '''
+        """
         Evaluates the function at n points x drawn randomly according to the
         ProbabilityMeasure in measure if provided, or in self.measure.
 
@@ -290,20 +300,20 @@ class Function:
         x : numpy.ndarray
             The points at which the function is to be evaluated.
 
-        '''
+        """
         if measure is None:
             if isinstance(self.measure, tensap.ProbabilityMeasure):
                 measure = self.measure
             else:
-                raise ValueError('Must provide a ProbabilityMeasure.')
+                raise ValueError("Must provide a ProbabilityMeasure.")
         elif not isinstance(self.measure, tensap.ProbabilityMeasure):
-            raise ValueError('Must provide a ProbabilityMeasure.')
+            raise ValueError("Must provide a ProbabilityMeasure.")
 
         x = measure.random(n)
         return self.eval(x), x
 
     def eval_on_tensor_grid(self, x):
-        '''
+        """
         Evaluate the Function on a grid x.
 
         Parameters
@@ -323,7 +333,7 @@ class Function:
         fx : numpy.ndarray
             The evaluation of the Function on the grid.
 
-        '''
+        """
         x_a = x.array()
         fx = self.eval(x_a)
 
@@ -331,24 +341,25 @@ class Function:
             if np.all(self.output_shape == 1):
                 fx = tensap.SparseTensor(fx, x.indices, x.shape)
             else:
-                raise NotImplementedError('Method not implemented.')
+                raise NotImplementedError("Method not implemented.")
         elif isinstance(x, tensap.FullTensorGrid):
             if np.all(self.output_shape == 1):
                 shape = x.shape
                 if self.dim > 1:
-                    fx = np.reshape(fx, shape, order='F')
+                    fx = np.reshape(fx, shape, order="F")
             else:
-                shape = np.concatenate((np.atleast_1d(x.shape),
-                                        np.atleast_1d(self.output_shape)))
-                fx = np.reshape(fx, shape, order='F')
+                shape = np.concatenate(
+                    (np.atleast_1d(x.shape), np.atleast_1d(self.output_shape))
+                )
+                fx = np.reshape(fx, shape, order="F")
             fx = tensap.FullTensor(fx, np.size(shape), shape)
         else:
-            raise ValueError('A TensorGrid object must be provided.')
+            raise ValueError("A TensorGrid object must be provided.")
 
         return fx
 
     def test_error(self, g, n=1000, measure=None):
-        '''
+        """
         Compute the test error associated with the function, using a function g
         or some of its evaluations as a reference. A measure can be provided
         to randomly draw the test input data.
@@ -372,7 +383,7 @@ class Function:
         err_linf : float
             The L-infinity error.
 
-        '''
+        """
         if measure is not None:
             x_test = measure.random(n)
             g_x_test = g.eval(x_test)
@@ -391,25 +402,24 @@ class Function:
                 if isinstance(g, tensap.Function):
                     g_x_test = g.eval(x_test)
                 else:
-                    assert np.shape(g)[0] == n, \
-                        ('The number of evaluations does not match the ' +
-                         'number of points.')
+                    assert np.shape(g)[0] == n, (
+                        "The number of evaluations does not match the "
+                        + "number of points."
+                    )
                     g_x_test = np.array(g)
 
-                f_x_test = np.reshape(f_x_test, (n, -1), order='F')
-                g_x_test = np.reshape(g_x_test, (n, -1), order='F')
-                err_l2 = np.linalg.norm(f_x_test - g_x_test) / \
-                    np.linalg.norm(g_x_test)
-                err_linf = np.linalg.norm(np.sqrt(np.sum((f_x_test -
-                                                          g_x_test)**2, 1)),
-                                          np.inf) / \
-                    np.linalg.norm(np.sqrt(np.sum(g_x_test**2, 1)), np.inf)
+                f_x_test = np.reshape(f_x_test, (n, -1), order="F")
+                g_x_test = np.reshape(g_x_test, (n, -1), order="F")
+                err_l2 = np.linalg.norm(f_x_test - g_x_test) / np.linalg.norm(g_x_test)
+                err_linf = np.linalg.norm(
+                    np.sqrt(np.sum((f_x_test - g_x_test) ** 2, 1)), np.inf
+                ) / np.linalg.norm(np.sqrt(np.sum(g_x_test ** 2, 1)), np.inf)
 
         return err_l2, err_linf
 
     @abstractmethod
     def eval(self, x):
-        '''
+        """
         Evaluate the function at the points x.
 
         Parameters
@@ -422,4 +432,4 @@ class Function:
         numpy.ndarray
             The evaluations of the function at the points x.
 
-        '''
+        """

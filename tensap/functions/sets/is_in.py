@@ -14,16 +14,16 @@
 # You should have received a copy of the GNU Lesser General Public License
 # along with tensap.  If not, see <https://www.gnu.org/licenses/>.
 
-'''
+"""
 Module is_in.
 
-'''
+"""
 
 import numpy as np
 
 
 def is_in(B, x):
-    '''
+    """
     Return a boolean array of length x.shape[0] such that ok[k] = True if the
     point x[k, :] is in the box given by B.
 
@@ -42,7 +42,7 @@ def is_in(B, x):
     ok : numpy.ndarray
         A boolean array indicating if the points x are in the box B.
 
-    '''
+    """
     x = np.atleast_2d(x)
     B = np.atleast_2d(B)
     if B.size == 2:

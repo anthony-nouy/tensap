@@ -14,17 +14,17 @@
 # You should have received a copy of the GNU Lesser General Public License
 # along with tensap.  If not, see <https://www.gnu.org/licenses/>.
 
-'''
+"""
 Module random_multi_indices.
 
-'''
+"""
 
 import numpy as np
 import tensap
 
 
 def random_multi_indices(shape):
-    '''
+    """
     Return a random variable uniformly distributed on I1 x ... x Id.
 
     If shape contains integers, the intervals are defined as
@@ -40,7 +40,7 @@ def random_multi_indices(shape):
     tensap.RandomVector
         The random variable uniformly distributed on I1 x ... x Id.
 
-    '''
+    """
     order = len(shape)
 
     if np.all([isinstance(x, (list, np.ndarray)) for x in shape]):

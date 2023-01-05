@@ -14,10 +14,10 @@
 # You should have received a copy of the GNU Lesser General Public License
 # along with tensap.  If not, see <https://www.gnu.org/licenses/>.
 
-'''
+"""
 Module functional_tensor_principal_component_analysis.
 
-'''
+"""
 
 from copy import deepcopy
 import numpy as np
@@ -25,7 +25,7 @@ import tensap
 
 
 class FunctionalTensorPrincipalComponentAnalysis:
-    '''
+    """
     Class FunctionalTensorPrincipalComponentAnalysis: principal component
     analysis of multivariate functions based on
     TensorPrincipalComponentAnalysis for algebraic tensors.
@@ -62,17 +62,17 @@ class FunctionalTensorPrincipalComponentAnalysis:
     projection_type : str
         The type of projection. The default is 'interpolation'.
 
-    '''
+    """
 
     def __init__(self):
-        '''
+        """
         Constructor for the class FunctionalTensorPrincipalComponentAnalysis.
 
         Returns
         -------
         None.
 
-        '''
+        """
         self.tol = 1e-8
         self.max_rank = np.inf
         self.bases = None
@@ -80,10 +80,10 @@ class FunctionalTensorPrincipalComponentAnalysis:
         self.display = True
         self.pca_sampling_factor = 1
         self.pca_adaptive_sampling = False
-        self.projection_type = 'interpolation'
+        self.projection_type = "interpolation"
 
     def hopca(self, fun):
-        '''
+        """
         Return the set of alpha-principal components of a tensor, for all alpha
         in {0,1,...,d-1}.
 
@@ -114,18 +114,19 @@ class FunctionalTensorPrincipalComponentAnalysis:
             List containing the outputs of the method
             alpha_principal_components.
 
-        '''
+        """
         solver, t_fun, shape, tpca = self._prepare(fun)
         t_pc, outputs = tpca.hopca(t_fun, shape)
 
         P = solver._projection_operators()
         t_pc = [np.matmul(p, x) for p, x in zip(P, t_pc)]
-        f_pc = [tensap.SubFunctionalBasis(b, a) for b, a in
-                zip(solver.bases.bases, t_pc)]
+        f_pc = [
+            tensap.SubFunctionalBasis(b, a) for b, a in zip(solver.bases.bases, t_pc)
+        ]
         return f_pc, outputs
 
     def tucker_approximation(self, fun):
-        '''
+        """
         Approximation of a function of d variables in Tucker format based on a
         Principal Component Analysis.
 
@@ -155,13 +156,13 @@ class FunctionalTensorPrincipalComponentAnalysis:
         dict
             Dictionnary containing the outputs of the method.
 
-        '''
+        """
         solver, t_fun, shape, tpca = self._prepare(fun)
         tensor, output = tpca.tucker_approximation(t_fun, shape)
         return solver._project(tensor), output
 
     def tt_approximation(self, fun):
-        '''
+        """
         Approximation of a function of d variables in tensor train format based
         on a Principal Component Analysis.
 
@@ -191,13 +192,13 @@ class FunctionalTensorPrincipalComponentAnalysis:
         dict
             Dictionnary containing the outputs of the method.
 
-        '''
+        """
         solver, t_fun, shape, tpca = self._prepare(fun)
         tensor, output = tpca.tt_approximation(t_fun, shape)
         return solver._project(tensor), output
 
     def tree_based_approximation(self, fun, tree, is_active_node=None):
-        '''
+        """
         Approximation of a function of d variables in tree based tensor format
         based on a Principal Component Analysis.
 
@@ -235,14 +236,15 @@ class FunctionalTensorPrincipalComponentAnalysis:
         dict
             Dictionnary containing the outputs of the method.
 
-        '''
+        """
         solver, t_fun, shape, tpca = self._prepare(fun)
-        tensor, output = tpca.tree_based_approximation(t_fun, shape, tree,
-                                                       is_active_node)
+        tensor, output = tpca.tree_based_approximation(
+            t_fun, shape, tree, is_active_node
+        )
         return solver._project(tensor), output
 
     def _prepare(self, fun):
-        '''
+        """
         Prepare the principal component analysis.
 
         Parameters
@@ -269,18 +271,18 @@ class FunctionalTensorPrincipalComponentAnalysis:
             A tensap.TensorPrincipalComponentAnalysis used to perform the
             principal component analysis.
 
-        '''
+        """
         solver = deepcopy(self)
         solver.bases = tensap.FunctionalBases(self.bases)
 
         # Create the tensor product grid
-        if solver.projection_type == 'interpolation':
+        if solver.projection_type == "interpolation":
             if solver.grid is None:
                 solver.grid = solver.bases.interpolation_points()
             else:
                 solver.grid = solver.bases.interpolation_points(solver.grid)
         else:
-            raise ValueError('Wrong projection_type attribute.')
+            raise ValueError("Wrong projection_type attribute.")
         solver.grid = tensap.FullTensorGrid(solver.grid)
 
         # Create the function which provides the values of the function on the
@@ -302,7 +304,7 @@ class FunctionalTensorPrincipalComponentAnalysis:
         return solver, t_fun, shape, tpca
 
     def _projection_operators(self):
-        '''
+        """
         Compute projection operators.
 
         The matrix P[nu] represents the operator which associates to the values
@@ -319,16 +321,16 @@ class FunctionalTensorPrincipalComponentAnalysis:
         P : list
             The projection operators for each dimension.
 
-        '''
-        if self.projection_type == 'interpolation':
+        """
+        if self.projection_type == "interpolation":
             P = self.bases.eval(self.grid.grids)
             P = [np.linalg.pinv(x) for x in P]
         else:
-            raise ValueError('Wrong projection_type attribute.')
+            raise ValueError("Wrong projection_type attribute.")
         return P
 
     def _project(self, t):
-        '''
+        """
         Compute the projection of a tensor on the functional bases.
 
         The method takes an AlgebraicTensor t whose entries are the values of
@@ -346,17 +348,18 @@ class FunctionalTensorPrincipalComponentAnalysis:
         tensap.FunctionalTensor
             The obtained projection.
 
-        '''
+        """
         tensor = deepcopy(t)
         P = self._projection_operators()
         for nu in range(tensor.order):
             alpha = tensor.tree.dim2ind[nu]
-            if tensor.is_active_node[alpha-1]:
-                data = np.matmul(P[nu], tensor.tensors[alpha-1].data)
-                tensor.tensors[alpha-1] = tensap.FullTensor(data, 2, data.shape)
+            if tensor.is_active_node[alpha - 1]:
+                data = np.matmul(P[nu], tensor.tensors[alpha - 1].data)
+                tensor.tensors[alpha - 1] = tensap.FullTensor(data, 2, data.shape)
             else:
                 pa = tensor.tree.parent(alpha)
                 ch = tensor.tree.child_number(alpha)
-                tensor.tensors[pa-1] = \
-                    tensor.tensors[pa-1].tensor_matrix_product(P[nu], ch-1)
+                tensor.tensors[pa - 1] = tensor.tensors[pa - 1].tensor_matrix_product(
+                    P[nu], ch - 1
+                )
         return tensap.FunctionalTensor(tensor, self.bases)

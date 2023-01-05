@@ -14,17 +14,17 @@
 # You should have received a copy of the GNU Lesser General Public License
 # along with tensap.  If not, see <https://www.gnu.org/licenses/>.
 
-'''
+"""
 Module model_selection.
 
-'''
+"""
 
 import numpy as np
 import tensap
 
 
 class ModelSelection:
-    '''
+    """
     Class ModelSelection.
 
     Attributes
@@ -38,24 +38,23 @@ class ModelSelection:
     gap_factor : int or float
         Multiplicative factor used in the slope heuristic.
 
-    '''
+    """
 
     def __init__(self):
-        '''
+        """
         Constructor for the class ModelSelection.
 
         Returns
         -------
         None.
 
-        '''
-        self.data = {'complexity': [],
-                     'empirical_risk': []}
+        """
+        self.data = {"complexity": [], "empirical_risk": []}
         self.pen_shape = lambda x: x
         self.gap_factor = 2
 
     def m_lambda(self, lbda):
-        '''
+        """
         Compute the argument of the minimum of the penalized risk for given
         values of the penalization factor lbda.
 
@@ -70,14 +69,15 @@ class ModelSelection:
             The argument of the minimum of the penalized risk for the values of
             the penalization factor.
 
-        '''
-        comp = np.array(self.data['complexity'])
-        risk = np.array(self.data['empirical_risk'])
-        return np.array([np.argmin(risk + l * self.pen_shape(comp)) for
-                         l in np.atleast_1d(lbda)])
+        """
+        comp = np.array(self.data["complexity"])
+        risk = np.array(self.data["empirical_risk"])
+        return np.array(
+            [np.argmin(risk + l0 * self.pen_shape(comp)) for l0 in np.atleast_1d(lbda)]
+        )
 
     def lambda_path(self):
-        '''
+        """
         Return the path of possible values of lambda and associated arguments
         of the minimum of the penalized risk.
 
@@ -90,9 +90,9 @@ class ModelSelection:
             The path of the arguments of the minimum of the penalized risk
             associated with the path of possible values of lambda.
 
-        '''
-        comp = np.array(self.data['complexity'])
-        risk = np.array(self.data['empirical_risk'])
+        """
+        comp = np.array(self.data["complexity"])
+        risk = np.array(self.data["empirical_risk"])
 
         path = []
         m_path = []
@@ -102,9 +102,10 @@ class ModelSelection:
         ok = True
 
         while ok:
-            with np.errstate(all='ignore'):
-                lambda_current = (risk - risk[ind]) / \
-                    (self.pen_shape(comp[ind]) - self.pen_shape(comp))
+            with np.errstate(all="ignore"):
+                lambda_current = (risk - risk[ind]) / (
+                    self.pen_shape(comp[ind]) - self.pen_shape(comp)
+                )
                 lambda_current[lambda_current <= lambda_0] = np.nan
                 lambda_current[lambda_current == np.inf] = np.nan
 
@@ -123,12 +124,12 @@ class ModelSelection:
             path = np.atleast_1d(path)
             m_path = np.atleast_1d(m_path)
             ind_min = np.argmin(risk)
-            path = np.concatenate(([path[0]/2], path, [path[-1]*2]))
+            path = np.concatenate(([path[0] / 2], path, [path[-1] * 2]))
             m_path = np.concatenate(([ind_min], m_path, [m_path[-1]]))
         return np.array(path), np.array(m_path)
 
     def slope_heuristic(self, lambda_path=None, m_path=None):
-        '''
+        """
         Apply the slope heuristic to the path of possible values of lambda to
         compute its optimal value lambda_hat and associated argument of the
         minimum of the penalized risk m_hat.
@@ -156,8 +157,8 @@ class ModelSelection:
             The path of the arguments of the minimum of the penalized risk
             associated with the path of possible values of lambda.
 
-        '''
-        comp = np.array(self.data['complexity'])
+        """
+        comp = np.array(self.data["complexity"])
 
         # If all the complexities are equal, choose the first model
         if np.all(np.diff(comp) == 0):
@@ -172,13 +173,13 @@ class ModelSelection:
         l_mid = (lambda_path[:-1] + lambda_path[1:]) / 2
         gaps = comp[self.m_lambda(l_mid[:-1])] - comp[self.m_lambda(l_mid[1:])]
         ind = np.argmax(gaps)
-        lambda_hat = self.gap_factor * lambda_path[ind+1]
+        lambda_hat = self.gap_factor * lambda_path[ind + 1]
         m_hat = self.m_lambda(lambda_hat)
         return lambda_hat, m_hat, lambda_path, m_path
 
     @staticmethod
     def complexity(x, *args, **kwargs):
-        '''
+        """
         Return the complexity associated to the input argument's type.
 
         See also complexity_functional_basis_array,
@@ -203,7 +204,7 @@ class ModelSelection:
         float or list
             The complexity(ies) associated with the object(s).
 
-        '''
+        """
         if isinstance(x, (list, np.ndarray)):
             return [ModelSelection.complexity(y, *args, **kwargs) for y in x]
         if isinstance(x, tensap.FunctionalBasisArray):
@@ -211,13 +212,12 @@ class ModelSelection:
         if isinstance(x, tensap.FunctionalTensor):
             return ModelSelection.complexity(x.tensor, *args, **kwargs)
         if isinstance(x, tensap.TreeBasedTensor):
-            return ModelSelection.complexity_tree_based_tensor(x, *args,
-                                                               **kwargs)
-        raise ValueError('Wrong argument.')
+            return ModelSelection.complexity_tree_based_tensor(x, *args, **kwargs)
+        raise ValueError("Wrong argument.")
 
     @staticmethod
     def complexity_functional_basis_array(x, fun=None):
-        '''
+        """
         Return the complexity associated with a FunctionalBasisArray.
 
         Parameters
@@ -233,14 +233,14 @@ class ModelSelection:
         float
             The complexity associated with the FunctionalBasisArray.
 
-        '''
+        """
         if fun is None:
-            fun = 'storage'
-        return eval('x.' + fun + '()')
+            fun = "storage"
+        return eval("x." + fun + "()")
 
     @staticmethod
-    def complexity_tree_based_tensor(x, fun=None, c_type='standard'):
-        '''
+    def complexity_tree_based_tensor(x, fun=None, c_type="standard"):
+        """
         Return the complexity associated with the TreeBasedTensor.
 
         Parameters
@@ -266,23 +266,24 @@ class ModelSelection:
         float or list
             The complexity(ies) associated with the TreeBasedTensor(s).
 
-        '''
+        """
         if fun is None:
-            fun = 'storage'
+            fun = "storage"
 
         if isinstance(x, (list, np.ndarray)):
             return ModelSelection.complexity(x, fun, c_type)
         if isinstance(x, tensap.FunctionalTensor):
             return ModelSelection.complexity(x.tensor, fun, c_type)
-        assert isinstance(x, tensap.TreeBasedTensor), \
-            'The first argument should be a TreeBasedTensor.'
+        assert isinstance(
+            x, tensap.TreeBasedTensor
+        ), "The first argument should be a TreeBasedTensor."
 
-        if c_type == 'standard':
-            comp = eval('x.' + fun + '()')
-        elif c_type == 'grassman':
-            comp = eval('x.' + fun + '()') - np.sum(x.ranks**2)
-        elif c_type == 'stiefel':
-            comp = eval('x.' + fun + '()') - np.sum(x.ranks*(x.ranks+1)/2)
+        if c_type == "standard":
+            comp = eval("x." + fun + "()")
+        elif c_type == "grassman":
+            comp = eval("x." + fun + "()") - np.sum(x.ranks ** 2)
+        elif c_type == "stiefel":
+            comp = eval("x." + fun + "()") - np.sum(x.ranks * (x.ranks + 1) / 2)
         else:
-            raise ValueError('Wrong argument.')
+            raise ValueError("Wrong argument.")
         return comp

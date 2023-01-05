@@ -14,10 +14,13 @@
 # You should have received a copy of the GNU Lesser General Public License
 # along with tensap.  If not, see <https://www.gnu.org/licenses/>.
 
-'''
+"""
 Initialization file for tensap (tensor approximation package).
 
-'''
+"""
+
+# flake8: noqa
+
 __version__ = "1.2"
 
 from .linear_algebra.magic_indices import magic_indices
@@ -45,8 +48,7 @@ from .functions.measures.probability_measure import ProbabilityMeasure
 from .functions.measures.random_variable import RandomVariable
 from .functions.measures.normal_random_variable import NormalRandomVariable
 from .functions.measures.uniform_random_variable import UniformRandomVariable
-from .functions.measures.empirical_random_variable import \
-    EmpiricalRandomVariable
+from .functions.measures.empirical_random_variable import EmpiricalRandomVariable
 from .functions.measures.discrete_random_variable import DiscreteRandomVariable
 from .functions.measures.discrete_measure import DiscreteMeasure
 from .functions.measures.random_vector import RandomVector
@@ -59,49 +61,57 @@ from .functions.functional_tensor import FunctionalTensor
 from .functions.user_defined_function import UserDefinedFunction
 from .functions.tensorizer import Tensorizer
 from .functions.tensorized_function import TensorizedFunction
-from .functions.compositional_model_function import \
-    CompositionalModelFunction
-from .functions.multivariate_functions_benchmark import \
-    multivariate_functions_benchmark
+from .functions.compositional_model_function import CompositionalModelFunction
+from .functions.multivariate_functions_benchmark import multivariate_functions_benchmark
 
 from .approximation.tools.model_selection import ModelSelection
 from .approximation.bases.functional_basis_array import FunctionalBasisArray
 from .approximation.bases.functional_bases import FunctionalBases
 from .approximation.bases.functional_basis import FunctionalBasis
-from .approximation.bases.polynomial_functional_basis import \
-    PolynomialFunctionalBasis
+from .approximation.bases.polynomial_functional_basis import PolynomialFunctionalBasis
 from .approximation.bases.sub_functional_basis import SubFunctionalBasis
-from .approximation.bases.user_defined_functional_basis import \
-    UserDefinedFunctionalBasis
-from .approximation.bases.full_tensor_product_functional_basis import \
-        FullTensorProductFunctionalBasis
-from .approximation.bases.sparse_tensor_product_functional_basis import \
-        SparseTensorProductFunctionalBasis
+from .approximation.bases.user_defined_functional_basis import (
+    UserDefinedFunctionalBasis,
+)
+from .approximation.bases.full_tensor_product_functional_basis import (
+    FullTensorProductFunctionalBasis,
+)
+from .approximation.bases.sparse_tensor_product_functional_basis import (
+    SparseTensorProductFunctionalBasis,
+)
 from .approximation.bases.delta_functional_basis import DeltaFunctionalBasis
 
 from .approximation.learning.loss_functions import *
 from .approximation.learning.learning import Learning
 from .approximation.learning.linear_model_learning import LinearModelLearning
-from .approximation.learning.linear_model_learning_custom_loss import \
-    LinearModelLearningCustomLoss
-from .approximation.learning.linear_model_learning_square_loss import \
-    LinearModelLearningSquareLoss
-from .approximation.learning.linear_model_learning_density_l2 import \
-    LinearModelLearningDensityL2
-from .approximation.tensor_approximation.tensor_learning.tensor_learning \
-    import TensorLearning
-from .approximation.tensor_approximation.tensor_learning.\
-    tree_based_tensor_learning import TreeBasedTensorLearning
-from .approximation.tensor_approximation.tensor_learning.\
-    canonical_tensor_learning import CanonicalTensorLearning
-from .approximation.tensor_approximation.principal_component_analysis.\
-    tensor_principal_component_analysis import TensorPrincipalComponentAnalysis
-from .approximation.tensor_approximation.principal_component_analysis.\
-    functional_tensor_principal_component_analysis import \
-        FunctionalTensorPrincipalComponentAnalysis
+from .approximation.learning.linear_model_learning_custom_loss import (
+    LinearModelLearningCustomLoss,
+)
+from .approximation.learning.linear_model_learning_square_loss import (
+    LinearModelLearningSquareLoss,
+)
+from .approximation.learning.linear_model_learning_density_l2 import (
+    LinearModelLearningDensityL2,
+)
+from .approximation.tensor_approximation.tensor_learning.tensor_learning import (
+    TensorLearning,
+)
+from .approximation.tensor_approximation.tensor_learning.tree_based_tensor_learning import (
+    TreeBasedTensorLearning,
+)
+from .approximation.tensor_approximation.tensor_learning.canonical_tensor_learning import (
+    CanonicalTensorLearning,
+)
+from .approximation.tensor_approximation.principal_component_analysis.tensor_principal_component_analysis import (
+    TensorPrincipalComponentAnalysis,
+)
+from .approximation.tensor_approximation.principal_component_analysis.functional_tensor_principal_component_analysis import (
+    FunctionalTensorPrincipalComponentAnalysis,
+)
 
 # Disable tensorflow's warning messages
 import os
-os.environ['TF_CPP_MIN_LOG_LEVEL'] = '1'
+
+os.environ["TF_CPP_MIN_LOG_LEVEL"] = "1"
 
 __pdoc__ = {"tutorials": False}

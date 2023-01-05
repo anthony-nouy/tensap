@@ -14,17 +14,18 @@
 # You should have received a copy of the GNU Lesser General Public License
 # along with tensap.  If not, see <https://www.gnu.org/licenses/>.
 
-'''
+"""
 Module multi_indices.
 
-'''
+"""
 
 import numpy as np
+
 # import tensap
 
 
 class MultiIndices:
-    '''
+    """
     Class MultiIndices.
 
     Attributes
@@ -32,10 +33,10 @@ class MultiIndices:
     array : numpy.ndarray
         An array containing n multi-indices in N^d.
 
-    '''
+    """
 
     def __init__(self, array=None):
-        '''
+        """
         Constructor for the class MultiIndices.
 
         Parameters
@@ -48,13 +49,13 @@ class MultiIndices:
         -------
         None.
 
-        '''
-        if hasattr(array, 'array'):
+        """
+        if hasattr(array, "array"):
             array = array.array
         self.array = np.atleast_2d(array)
 
     def sub2ind(self, shape):
-        '''
+        """
         Convert the indices of the MultiIndices object into flat indices.
 
         Parameters
@@ -67,9 +68,9 @@ class MultiIndices:
         numpy.ndarray
             The flat indices associated with the MultiIndices object and shape.
 
-        '''
+        """
         ind = self.to_list()
-        return np.ravel_multi_index(ind, shape, order='F')
+        return np.ravel_multi_index(ind, shape, order="F")
 
     def __eq__(self, J):
         if not isinstance(J, MultiIndices):
@@ -81,25 +82,25 @@ class MultiIndices:
         return ok
 
     def __le__(self, J):
-        assert isinstance(J, MultiIndices), 'Must provide a MultiIndices.'
+        assert isinstance(J, MultiIndices), "Must provide a MultiIndices."
         if J.cardinal() == 1:
             J.array = np.tile(J.array, (self.cardinal(), 1))
         return np.all(self.array <= J.array, axis=1)
 
     def __add__(self, m):
-        return MultiIndices(self.array+m)
+        return MultiIndices(self.array + m)
 
     def __radd__(self, m):
-        self.array +=m
+        self.array += m
 
     def __sub__(self, m):
-        return MultiIndices(self.array-m)
+        return MultiIndices(self.array - m)
 
     def __rsub__(self, m):
-        self.array -=m
+        self.array -= m
 
     def cardinal(self):
-        '''
+        """
         Return the cardinal of the MultiIndices object.
 
         Returns
@@ -107,11 +108,11 @@ class MultiIndices:
         int
             The cardinal of the MultiIndices object.
 
-        '''
+        """
         return self.array.shape[0]
 
     def to_list(self):
-        '''
+        """
         Convert the MultiIndices' array into a list of arrays.
 
         Returns
@@ -119,11 +120,11 @@ class MultiIndices:
         list
             The MultiIndices' array as a list of arrays.
 
-        '''
+        """
         return [self.array[:, i] for i in range(self.ndim())]
 
     def ndim(self):
-        '''
+        """
         Return the dimension of the multi-indices.
 
         Returns
@@ -131,11 +132,11 @@ class MultiIndices:
         int
             The dimension of the multi-indices.
 
-        '''
+        """
         return self.array.shape[1]
 
     def norm(self, p=2, k=None):
-        '''
+        """
         Compute the p-norm of multi-indices k in the object.
 
         Parameters
@@ -152,17 +153,17 @@ class MultiIndices:
         norm : numpy.ndarray
             The p-norm of the selected multi-indices.
 
-        '''
+        """
         if k is None:
             k = np.arange(self.cardinal())
         if p == np.inf:
             norm = np.max(self.array[k, :], axis=1)
         else:
-            norm = np.power(np.sum(self.array[k, :]**p, axis=1), 1/p)
+            norm = np.power(np.sum(self.array[k, :] ** p, axis=1), 1 / p)
         return norm
 
     def weighted_norm(self, p, w, k=None):
-        '''
+        """
         Compute the weighted p-norm of multi-indices k in the object.
 
         Parameters
@@ -180,20 +181,25 @@ class MultiIndices:
         norm : numpy.ndarray
             The p-norm of the selected multi-indices.
 
-        '''
+        """
         if k is None:
             k = np.arange(self.cardinal())
         if p == np.inf:
-            norm = np.max(self.array[k, :]*np.tile(np.ravel(w),
-                                                   (np.size(k), 1)), axis=1)
+            norm = np.max(
+                self.array[k, :] * np.tile(np.ravel(w), (np.size(k), 1)), axis=1
+            )
         else:
-            norm = np.power(np.sum((self.array[k, :] *
-                                    np.tile(np.ravel(w), (np.size(k), 1)))**p,
-                                   axis=1), 1/p)
+            norm = np.power(
+                np.sum(
+                    (self.array[k, :] * np.tile(np.ravel(w), (np.size(k), 1))) ** p,
+                    axis=1,
+                ),
+                1 / p,
+            )
         return norm
 
-    def sort_by_norm(self, p, mode='ascend'):
-        '''
+    def sort_by_norm(self, p, mode="ascend"):
+        """
         Sort the multi-indices by increasing or decreasing p-norm.
 
         Parameters
@@ -210,15 +216,15 @@ class MultiIndices:
             The MultiIndices object with multi-indices sorted by increasing or
             decreasing p-norm.
 
-        '''
+        """
         norm = self.norm(p)
         ind = np.argsort(norm)
-        if mode == 'descend':
+        if mode == "descend":
             ind = np.flip(ind)
         return MultiIndices(self.array[ind, :])
 
-    def sort_by_weighted_norm(self, p, w, mode='ascend'):
-        '''
+    def sort_by_weighted_norm(self, p, w, mode="ascend"):
+        """
         Sort the multi-indices by increasing or decreasing weighted p-norm.
 
         Parameters
@@ -237,15 +243,15 @@ class MultiIndices:
             The MultiIndices object with multi-indices sorted by increasing or
             decreasing weighted p-norm.
 
-        '''
+        """
         norm = self.weighted_norm(p, w)
         ind = np.argsort(norm)
-        if mode == 'descend':
+        if mode == "descend":
             ind = np.flip(ind)
         return MultiIndices(self.array[ind, :])
 
-    def sort(self, columns=None, mode='ascend'):
-        '''
+    def sort(self, columns=None, mode="ascend"):
+        """
         Sort multi-indices column-wise using the column order provided in
         columns.
 
@@ -266,23 +272,23 @@ class MultiIndices:
         tensap.MultiIndices
             The MultiIndices object with sorted multi-indices.
 
-        '''
+        """
         if columns is None:
-            columns = np.arange(self.array.shape[1]-1, -1, -1)
+            columns = np.arange(self.array.shape[1] - 1, -1, -1)
 
         array = np.array(self.array)
         for k in np.flip(columns):
             if k == columns[-1]:
                 ind = np.argsort(array[:, k])
             else:
-                ind = np.argsort(array[:, k], kind='mergesort')
-            if mode == 'descend':
+                ind = np.argsort(array[:, k], kind="mergesort")
+            if mode == "descend":
                 ind = np.flip(ind)
             array = array[ind, :]
         return MultiIndices(array.astype(int))
 
     def add_indices(self, J):
-        '''
+        """
         Return the union of multi-indices of self and J.
 
         Parameters
@@ -295,14 +301,14 @@ class MultiIndices:
         tensap.MultiIndices
             The union of multi-indices of self and J.
 
-        '''
+        """
         array = np.vstack((self.array, J.array))
         ind = np.unique(array, axis=0, return_index=True)[1]
         array = np.array([array[index, :] for index in sorted(ind)])
         return MultiIndices(array.astype(int))
 
     def remove_indices(self, J):
-        '''
+        """
         Remove multi-indices J from self.
 
         Parameters
@@ -316,17 +322,16 @@ class MultiIndices:
         tensap.MultiIndices
             The MultiIndices object with removed multi-indices in J.
 
-        '''
+        """
         if isinstance(J, MultiIndices):
-            ind = np.nonzero(np.all(self.array == J.array[:, np.newaxis],
-                                    axis=2))[1]
+            ind = np.nonzero(np.all(self.array == J.array[:, np.newaxis], axis=2))[1]
         else:
             ind = J
         array = self.array[np.setdiff1d(range(self.cardinal()), ind), :]
         return MultiIndices(array.astype(int))
 
     def remove_dims(self, dims):
-        '''
+        """
         Remove the dimensions in ind in the MultiIndices.
 
         Parameters
@@ -339,14 +344,14 @@ class MultiIndices:
         tensap.MultiIndices
             The MultiIndices object with removed dimenions in dims.
 
-        '''
+        """
         array = self.array[:, np.setdiff1d(range(self.ndim()), dims)]
         ind = np.unique(array, axis=0, return_index=True)[1]
         array = np.array([array[index, :] for index in sorted(ind)])
         return MultiIndices(array.astype(int))
 
     def intersect_indices(self, J):
-        '''
+        """
         Return the intersection of the multi-indices of self and J.
 
         Parameters
@@ -363,14 +368,13 @@ class MultiIndices:
         ind_J : numpy.array
             The indices of the multi-indices in J common to self and J.
 
-        '''
-        ind_J, ind_I = np.nonzero(np.all(self.array == J.array[:, np.newaxis],
-                                         axis=2))
+        """
+        ind_J, ind_I = np.nonzero(np.all(self.array == J.array[:, np.newaxis], axis=2))
 
         return MultiIndices(self.array[ind_I, :]), ind_I, ind_J
 
     def keep_indices(self, k):
-        '''
+        """
         Keep the multi-indices k in self.
 
         Parameters
@@ -383,11 +387,11 @@ class MultiIndices:
         tensap.MultiIndices
             The MultiIndices with retained indices.
 
-        '''
+        """
         return MultiIndices(self.array[k, :])
 
     def keep_dims(self, dims):
-        '''
+        """
         Keep the dimensions dims in self.
 
         Parameters
@@ -400,14 +404,14 @@ class MultiIndices:
         tensap.MultiIndices
             The MultiIndices with retained dimensions.
 
-        '''
+        """
         array = self.array[:, dims]
         ind = np.unique(array, axis=0, return_index=True)[1]
         array = np.array([array[index, :] for index in sorted(ind)])
         return MultiIndices(array.astype(int))
 
     def get_indices(self, k):
-        '''
+        """
         Return the multi-indices k in self.
 
         Parameters
@@ -420,11 +424,11 @@ class MultiIndices:
         numpy.ndarray
             The multi-indices k in self.
 
-        '''
+        """
         return self.array[k, :]
 
     def is_downward_closed(self, m=0):
-        '''
+        """
         Check whether or not the multi-index set is downward closed (or lower
         or monotone).
 
@@ -439,7 +443,7 @@ class MultiIndices:
             Boolean indicating whether or not the multi-index set is downward
             closed.
 
-        '''
+        """
         cond = True
         ind_test = np.arange(self.cardinal())
         while ind_test.size:
@@ -455,7 +459,7 @@ class MultiIndices:
         return cond
 
     def envelope(self, u):
-        '''
+        """
         Compute the monotone envelope (or monotone majorant) of a bounded
         sequence u.
 
@@ -470,12 +474,13 @@ class MultiIndices:
             The monotone envelope corresponding to the sequence defined by
             :math:`env_i = max_{j >= i} |u_j|`
 
-        '''
+        """
         array = self.array
         n = self.cardinal()
-        assert np.size(u) == n, \
-            ('The length of the sequence does not coincide with the number ' +
-             'of multi-indices.')
+        assert np.size(u) == n, (
+            "The length of the sequence does not coincide with the number "
+            + "of multi-indices."
+        )
 
         env = np.array(u)
         for i in range(n):
@@ -484,7 +489,7 @@ class MultiIndices:
         return env
 
     def get_maximal_indices(self):
-        '''
+        """
         Return the set of maximal multi-indices contained in the downward
         closed multi-index set self.
 
@@ -494,23 +499,20 @@ class MultiIndices:
             The set of maximal multi-indices contained in the downward closed
             multi-index set self.
 
-        '''
+        """
         dim = self.ndim()
         n = self.cardinal()
-        neighbours = np.tile(np.transpose(np.expand_dims(self.array, 2),
-                                          [0, 2, 1]), [1, dim, 1]) + \
-            np.tile(np.transpose(np.expand_dims(np.eye(dim), 2),
-                                 [2, 0, 1]), [n, 1, 1])
-        neighbours = np.reshape(neighbours, [n*dim, dim],
-                                order='F').astype(int)
-        ok = np.any(np.all(neighbours == self.array[:, np.newaxis], axis=2),
-                    axis=0)
-        ok = np.reshape(ok, [n, dim], order='F')
+        neighbours = np.tile(
+            np.transpose(np.expand_dims(self.array, 2), [0, 2, 1]), [1, dim, 1]
+        ) + np.tile(np.transpose(np.expand_dims(np.eye(dim), 2), [2, 0, 1]), [n, 1, 1])
+        neighbours = np.reshape(neighbours, [n * dim, dim], order="F").astype(int)
+        ok = np.any(np.all(neighbours == self.array[:, np.newaxis], axis=2), axis=0)
+        ok = np.reshape(ok, [n, dim], order="F")
         ind_max = self.array[np.logical_not(np.any(ok, axis=1)), :]
         return MultiIndices(ind_max.astype(int))
 
     def get_margin(self):
-        '''
+        """
         Return the margin of the multi-index set self defined by the set of
         multi-indices i not in self such that it exists k in N^* s.t. i_k != 0
         implies i - e_k in self where e_k is the k-th Kronecker sequence.
@@ -520,20 +522,18 @@ class MultiIndices:
         tensap.MultiIndices
             The margin of self.
 
-        '''
+        """
         dim = self.ndim()
         n = self.cardinal()
-        neighbours = np.tile(np.transpose(np.expand_dims(self.array, 2),
-                                          [0, 2, 1]), [1, dim, 1]) + \
-            np.tile(np.transpose(np.expand_dims(np.eye(dim), 2),
-                                 [2, 0, 1]), [n, 1, 1])
-        neighbours = np.reshape(neighbours, [n*dim, dim],
-                                order='F').astype(int)
+        neighbours = np.tile(
+            np.transpose(np.expand_dims(self.array, 2), [0, 2, 1]), [1, dim, 1]
+        ) + np.tile(np.transpose(np.expand_dims(np.eye(dim), 2), [2, 0, 1]), [n, 1, 1])
+        neighbours = np.reshape(neighbours, [n * dim, dim], order="F").astype(int)
 
-        ind_marg = np.nonzero(np.all(neighbours == self.array[:, np.newaxis],
-                                     axis=2))[1]
-        ind_marg = neighbours[np.setdiff1d(range(neighbours.shape[0]),
-                                           ind_marg), :]
+        ind_marg = np.nonzero(np.all(neighbours == self.array[:, np.newaxis], axis=2))[
+            1
+        ]
+        ind_marg = neighbours[np.setdiff1d(range(neighbours.shape[0]), ind_marg), :]
 
         ind = np.unique(ind_marg, axis=0, return_index=True)[1]
         ind_marg = np.array([ind_marg[index, :] for index in sorted(ind)])
@@ -541,7 +541,7 @@ class MultiIndices:
         return MultiIndices(ind_marg.astype(int))
 
     def get_reduced_margin(self):
-        '''
+        """
         Return the reduced margin of the multi-index set self defined by the
         set of multi-indices i not in self such that for all k in N^* s.t.
         i_k != 0 implies i - e_k in self where e_k is the k-th Kronecker
@@ -552,30 +552,30 @@ class MultiIndices:
         tensap.MultiIndices
             The reduced margin of self.
 
-        '''
+        """
         I_marg = self.get_margin()
         dim = self.ndim()
-        neighbours = np.tile(np.transpose(np.expand_dims(I_marg.array, 2),
-                                          [0, 2, 1]), [1, dim, 1]) - \
-            np.tile(np.transpose(np.expand_dims(np.eye(dim), 2), [2, 0, 1]),
-                    [I_marg.cardinal(), 1, 1])
+        neighbours = np.tile(
+            np.transpose(np.expand_dims(I_marg.array, 2), [0, 2, 1]), [1, dim, 1]
+        ) - np.tile(
+            np.transpose(np.expand_dims(np.eye(dim), 2), [2, 0, 1]),
+            [I_marg.cardinal(), 1, 1],
+        )
 
         n = neighbours.shape[0]
-        neighbours = np.reshape(neighbours, [n*dim, dim],
-                                order='F').astype(int)
+        neighbours = np.reshape(neighbours, [n * dim, dim], order="F").astype(int)
 
-        ok = np.any(np.all(neighbours == self.array[:, np.newaxis], axis=2),
-                    axis=0)
+        ok = np.any(np.all(neighbours == self.array[:, np.newaxis], axis=2), axis=0)
         is_out = np.any(neighbours < 0, axis=1)
         ok = np.logical_or(ok, is_out)
-        ok = np.reshape(ok, [n, dim], order='F')
+        ok = np.reshape(ok, [n, dim], order="F")
         keep = np.all(ok, axis=1)
         ind_marg_red = I_marg.array[keep, :]
 
         return MultiIndices(ind_marg_red.astype(int))
 
     def plot(self, *args):
-        '''
+        """
         Plot the multi-index set self.
 
         See also the function plot_multi_indices.
@@ -589,13 +589,13 @@ class MultiIndices:
         -------
         None.
 
-        '''
+        """
         # TODO plot
         # tensap.plot_multi_indices(self, *args)
 
     @staticmethod
     def with_bounded_norm(d, p, m):
-        '''
+        """
         Create the set of multi-indices in N^d with p-norm bounded by m, p>0.
 
         Parameters
@@ -612,9 +612,9 @@ class MultiIndices:
         ind : tensap.MultiIndices
             The set of multi-indices in N^d with p-norm bounded by m.
 
-        '''
+        """
         if p == np.inf:
-            ind = MultiIndices.product_set(np.arange(m+1), d)
+            ind = MultiIndices.product_set(np.arange(m + 1), d)
         elif p == 1:
             ind = MultiIndices(np.zeros(d, dtype=int))
             for _ in range(m):
@@ -636,7 +636,7 @@ class MultiIndices:
 
     @staticmethod
     def with_bounded_weighted_norm(d, p, m, w):
-        '''
+        """
         Create the set of multi-indices in N^d with weighted p-norm bounded by
         m, p>0.
 
@@ -658,8 +658,8 @@ class MultiIndices:
         ind : tensap.MultiIndices
             The set of multi-indices in N^d with weighted p-norm bounded by m.
 
-        '''
-        ind = [np.arange(int(np.floor(m/x))+1) for x in w]
+        """
+        ind = [np.arange(int(np.floor(m / x)) + 1) for x in w]
         ind = MultiIndices.product_set(ind)
         n = ind.weighted_norm(p, w)
         k = np.nonzero(n <= m)[0]
@@ -668,7 +668,7 @@ class MultiIndices:
 
     @staticmethod
     def bounded_by(m, m0=0):
-        '''
+        """
         Create the set of multi-indices bounded by m.
 
         Parameters
@@ -685,12 +685,12 @@ class MultiIndices:
             MultiIndices object containing the  product set
             (m0:m[0]) x ... x (m0:m[d-1]).
 
-        '''
-        return MultiIndices.product_set([np.arange(m0, x+1) for x in m])
+        """
+        return MultiIndices.product_set([np.arange(m0, x + 1) for x in m])
 
     @staticmethod
     def product_set(L, d=None):
-        '''
+        """
         Create the set of multi-indices obtained by a product of sets of
         indices.
 
@@ -719,18 +719,18 @@ class MultiIndices:
         tensap.MultiIndices
             The set of multi-indices obtained by a product of sets of indices.
 
-        '''
+        """
         if d is None:
             d = len(L)
         elif np.ndim(L) == 1:
-            L = [L]*d
+            L = [L] * d
         else:
-            raise ValueError('Wrong arguments.')
+            raise ValueError("Wrong arguments.")
 
         L = [np.array(x) for x in L]
         N = [x.size for x in L]
 
-        ind = list(np.unravel_index(range(np.prod(N)), N, order='F'))
+        ind = list(np.unravel_index(range(np.prod(N)), N, order="F"))
 
         for i in range(d):
             ind[i] = L[i][ind[i]]
@@ -739,7 +739,7 @@ class MultiIndices:
 
     @staticmethod
     def ind2sub(shape, ind):
-        '''
+        """
         Create the set of multi-indices with array [I1, ..., Id] such that
         (I1, ..., Id) = np.unravel_index(np.ravel(ind), shape).
 
@@ -756,6 +756,6 @@ class MultiIndices:
         tensap.MultiIndices
             The MultiIndices created using the flat indices ind and shape.
 
-        '''
-        ind = np.unravel_index(np.ravel(ind), shape, order='F')
+        """
+        ind = np.unravel_index(np.ravel(ind), shape, order="F")
         return MultiIndices(np.transpose(ind))

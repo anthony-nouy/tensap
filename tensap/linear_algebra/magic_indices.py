@@ -15,16 +15,16 @@
 # along with tensap.  If not, see <https://www.gnu.org/licenses/>.
 
 
-'''
+"""
 Module magic_indices.
 
-'''
+"""
 
 import numpy as np
 
 
-def magic_indices(F, n=None, option='left_right'):
-    '''
+def magic_indices(F, n=None, option="left_right"):
+    """
     Return the set of n magic indices (i_1, j_1), ..., (i_n, j_n) constructed
     by a greedy algorithm.
 
@@ -62,32 +62,32 @@ def magic_indices(F, n=None, option='left_right'):
     I, J : numpy.ndarray
         The magic indices.
 
-    '''
+    """
     F = np.atleast_2d(F)
     if n is None:
         n = np.min(F.shape)
 
-    if option == 'left_right':
+    if option == "left_right":
         G = np.zeros(F.shape)
-        I = []
+        I0 = []
         J = []
         for _ in range(n):
             i = np.argmax(np.max(np.abs(F - G), 1), 0)
             j = np.argmax(np.abs(F[i, :] - G[i, :]))
-            I.append(i)
+            I0.append(i)
             J.append(j)
-            G = np.matmul(F[:, J], np.linalg.solve(F[np.ix_(I, J)], F[I, :]))
-    elif option == 'left':
+            G = np.matmul(F[:, J], np.linalg.solve(F[np.ix_(I0, J)], F[I0, :]))
+    elif option == "left":
         G = np.zeros(F.shape)
-        I = []
+        I0 = []
         J = []
         for k in range(n):
-            i = np.argmax(np.max(np.abs(F[:, :k+1] - G[:, :k+1]), 1), 0)
-            I.append(i)
+            i = np.argmax(np.max(np.abs(F[:, : k + 1] - G[:, : k + 1]), 1), 0)
+            I0.append(i)
             J.append(k)
-            G = np.matmul(F[:, J], np.linalg.solve(F[np.ix_(I, J)], F[I, :]))
-    elif option == 'right':
-        J, I = magic_indices(np.transpose(F), n, 'left')
+            G = np.matmul(F[:, J], np.linalg.solve(F[np.ix_(I0, J)], F[I0, :]))
+    elif option == "right":
+        J, I0 = magic_indices(np.transpose(F), n, "left")
     else:
-        raise ValueError('Bad option.')
-    return I, J
+        raise ValueError("Bad option.")
+    return I0, J

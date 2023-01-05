@@ -14,10 +14,10 @@
 # You should have received a copy of the GNU Lesser General Public License
 # along with tensap.  If not, see <https://www.gnu.org/licenses/>.
 
-'''
+"""
 Module diagonal_tensor.
 
-'''
+"""
 
 from copy import deepcopy
 import numpy as np
@@ -25,7 +25,7 @@ import tensap
 
 
 class DiagonalTensor:
-    '''
+    """
     Class DiagonalTensor.
 
     Attributes
@@ -40,10 +40,10 @@ class DiagonalTensor:
         Boolean indicating if the representation of the tensor is orthogonal
         (i.e. one mu-matricization is orthogonal).
 
-    '''
+    """
 
     def __init__(self, data, order=None):
-        '''
+        """
         Constructor for the class DiagonalTensor.
 
         Parameters
@@ -57,34 +57,41 @@ class DiagonalTensor:
         -------
         None.
 
-        '''
+        """
         self.is_orth = True
 
         if order is None:
-            assert isinstance(data, DiagonalTensor), \
-                'The input must be a DiagonalTensor.'
+            assert isinstance(
+                data, DiagonalTensor
+            ), "The input must be a DiagonalTensor."
             self.data = np.array(data.data)
             self.order = data.order
             self.shape = data.shape
         else:
-            assert isinstance(data, (list, np.ndarray)), \
-                'The input must be a list or numpy.ndarray.'
+            assert isinstance(
+                data, (list, np.ndarray)
+            ), "The input must be a list or numpy.ndarray."
             self.data = np.reshape(data, -1)
             self.order = order
             self.shape = np.full(order, self.data.size)
 
     def __repr__(self):
-        return ('<{} DiagonalTensor:{n}' +
-                '{t}order = {},{n}' +
-                '{t}shape = {},{n}' +
-                '{t}is_orth = {}>').format('x'.join(map(str, self.shape)),
-                                           self.order,
-                                           self.shape,
-                                           self.is_orth,
-                                           t='\t', n='\n')
+        return (
+            "<{} DiagonalTensor:{n}"
+            + "{t}order = {},{n}"
+            + "{t}shape = {},{n}"
+            + "{t}is_orth = {}>"
+        ).format(
+            "x".join(map(str, self.shape)),
+            self.order,
+            self.shape,
+            self.is_orth,
+            t="\t",
+            n="\n",
+        )
 
     def tree_based_tensor(self, tree=None, is_active_node=None):
-        '''
+        """
         Convert the tensap.DiagonalTensor into a tensap.TreeBasedTensor.
 
         Parameters
@@ -106,7 +113,7 @@ class DiagonalTensor:
         tensap.TreeBasedTensor
             A tree-based tensor representation of the diagonal tensor.
 
-        '''
+        """
         if tree is None:
             tree = tensap.DimensionTree.linear(self.order)
 
@@ -117,21 +124,21 @@ class DiagonalTensor:
         tensors = np.empty(tree.nb_nodes, dtype=object)
         tensors[np.logical_not(is_active_node)] = tensap.FullTensor([])
         r = self.shape[0]
-        for nod in np.arange(1, tree.nb_nodes+1):
+        for nod in np.arange(1, tree.nb_nodes + 1):
             ch = tree.children(nod)
             if tree.parent(nod) == 0:
-                tensors[nod-1] = tensap.FullTensor.diag(self.data, ch.size)
-            elif tree.is_leaf[nod-1] and is_active_node[nod-1]:
-                tensors[nod-1] = tensap.FullTensor(np.eye(r), 2, [r, r])
-            elif is_active_node[nod-1]:
-                tensors[nod-1] = tensap.FullTensor.diag(np.ones(r), ch.size+1)
-            elif not tree.is_leaf[nod-1] and not is_active_node[nod-1]:
-                raise ValueError('The internal nodes should be active.')
+                tensors[nod - 1] = tensap.FullTensor.diag(self.data, ch.size)
+            elif tree.is_leaf[nod - 1] and is_active_node[nod - 1]:
+                tensors[nod - 1] = tensap.FullTensor(np.eye(r), 2, [r, r])
+            elif is_active_node[nod - 1]:
+                tensors[nod - 1] = tensap.FullTensor.diag(np.ones(r), ch.size + 1)
+            elif not tree.is_leaf[nod - 1] and not is_active_node[nod - 1]:
+                raise ValueError("The internal nodes should be active.")
         return tensap.TreeBasedTensor(tensors, tree)
 
     @property
     def ndim(self):
-        '''
+        """
         Compute the order of the tensor. Equivalent to self.order.
 
         Returns
@@ -139,11 +146,11 @@ class DiagonalTensor:
         int
             The order of the tensor.
 
-        '''
+        """
         return self.order
 
     def storage(self):
-        '''
+        """
         Return the storage complexity of the DiagonalTensor.
 
         Returns
@@ -151,11 +158,11 @@ class DiagonalTensor:
         int
             The storage complexity of the DiagonalTensor.
 
-        '''
+        """
         return self.data.size
 
     def sparse_storage(self):
-        '''
+        """
         Return the sparse storage complexity of the DiagonalTensor.
 
         Returns
@@ -163,7 +170,7 @@ class DiagonalTensor:
         int
             The sparse storage complexity of the DiagonalTensor.
 
-        '''
+        """
         return np.count_nonzero(self.data)
 
     def __add__(self, y):
@@ -179,7 +186,7 @@ class DiagonalTensor:
         return DiagonalTensor(self.data * y.data, self.order)
 
     def reshape(self, shape):
-        '''
+        """
         Reshape the tensor. The method has no effet.
 
         Parameters
@@ -192,13 +199,13 @@ class DiagonalTensor:
         tensor : DiagonalTensor
             The reshaped tensor.
 
-        '''
+        """
         out = deepcopy(self)
         out.shape = np.ravel(shape)
         return out
 
     def sub_tensor(self, *args):
-        '''
+        """
         Extract a subtensor of the tensor.
 
         See also tensap.FullTensor.sub_tensor.
@@ -214,24 +221,24 @@ class DiagonalTensor:
         FullTensor
             The subtensor.
 
-        '''
+        """
 
         out = self.full()
         return out.sub_tensor(*args)
 
     def update_attributes(self):
-        '''
+        """
         Update the attribute shape of self if data or order have been modified.
 
         Returns
         -------
         None.
 
-        '''
+        """
         self.shape = np.full(self.order, self.data.size)
 
     def tensor_vector_product(self, vectors):
-        '''
+        """
         Compute the contraction of the tensor with vectors.
 
         Compute the contraction of self with each vector contained in the list
@@ -248,7 +255,7 @@ class DiagonalTensor:
         DiagonalTensor
             The tensor after the contractions with the vectors.
 
-        '''
+        """
         if isinstance(vectors, list):
             vectors = np.hstack([np.reshape(x, [-1, 1]) for x in vectors])
         data = self.data * np.prod(vectors, 1)
@@ -258,7 +265,7 @@ class DiagonalTensor:
         return DiagonalTensor(data, order)
 
     def tensor_matrix_product(self, matrices, dims=None):
-        '''
+        """
         Contract a tensor with matrices.
 
         The second dimension of the matrix matrices[k] is contracted with the
@@ -279,12 +286,12 @@ class DiagonalTensor:
         FullTensor
             The tensor after the contractions with the matrices.
 
-        '''
+        """
         out = self.full()
         return out.tensor_matrix_product(matrices, dims)
 
     def tensor_matrix_product_eval_diag(self, matrices, dims=None):
-        '''
+        """
         Evaluate the diagonal of a tensor obtained by contraction with
         matrices.
 
@@ -305,11 +312,11 @@ class DiagonalTensor:
         tensap.DiagonalTensor or numpy.ndarray
             The diagonal of the contractions of the tensor with the matrices.
 
-        '''
+        """
         return self.tensor_matrix_product(matrices, dims).eval_diag(dims)
 
     def tensor_diagonal_matrix_product(self, matrices):
-        '''
+        """
         Contract a FullTensor with matrices built from their diagonals.
 
         The second dimension of the matrix matrices[k] is contracted with the
@@ -325,13 +332,13 @@ class DiagonalTensor:
         DiagonalTensor
             The tensor after the contractions with the matrices.
 
-        '''
+        """
         if isinstance(matrices, list):
             matrices = np.hstack([np.reshape(x, [-1, 1]) for x in matrices])
         return DiagonalTensor(np.prod(matrices, 1) * self.data, self.order)
 
     def tensordot(self, y, dims1, dims2=None):
-        '''
+        """
         Contract two tensors along specified dimensions.
 
         See also tensap.FullTensor.tensordot.
@@ -352,13 +359,13 @@ class DiagonalTensor:
         out : FullTensor
             The resulting tensor.
 
-        '''
+        """
         x = self.full()
         y = y.full()
         return x.tensordot(y, dims1, dims2)
 
     def dot(self, y):
-        '''
+        """
         Return the inner product of two tensors.
 
         Parameters
@@ -371,11 +378,11 @@ class DiagonalTensor:
         numpy.float
             The inner product of the two tensors.
 
-        '''
-        return np.sum(self.data*y.data)
+        """
+        return np.sum(self.data * y.data)
 
     def norm(self):
-        '''
+        """
         Compute the canonical norm of the DiagonalTensor.
 
         Returns
@@ -383,11 +390,11 @@ class DiagonalTensor:
         numpy.float
             The norm of the tensor.
 
-        '''
+        """
         return np.linalg.norm(self.data)
 
     def full(self):
-        '''
+        """
         Convert the DiagonalTensor to a tensap.FullTensor.
 
         Returns
@@ -395,11 +402,11 @@ class DiagonalTensor:
         tensap.FullTensor
             The DiagonalTensor as a tensap.FullTensor.
 
-        '''
+        """
         return tensap.FullTensor.diag(self.data, self.order)
 
     def numpy(self):
-        '''
+        """
         Convert the DiagonalTensor to a numpy.ndarray.
 
         Returns
@@ -407,11 +414,11 @@ class DiagonalTensor:
         numpy.ndarray
             The DiagonalTensor as a numpy.ndarray.
 
-        '''
+        """
         return self.full().data
 
     def sparse(self):
-        '''
+        """
         Convert the DiagonalTensor to a tensap.SparseTensor.
 
         Returns
@@ -419,15 +426,16 @@ class DiagonalTensor:
         tensap.SparseTensor
             The DiagonalTensor as a tensap.SparseTensor.
 
-        '''
+        """
         ind = np.nonzero(self.data)[0]
         data = self.data[self.data != 0]
-        indices = tensap.MultiIndices(np.tile(np.reshape(ind, [-1, 1]),
-                                              (1, self.order)))
+        indices = tensap.MultiIndices(
+            np.tile(np.reshape(ind, [-1, 1]), (1, self.order))
+        )
         return tensap.SparseTensor(data, indices, self.shape)
 
     def cat(self, y):
-        '''
+        """
         Concatenate the tensors.
 
         Concatenates self and y in a tensor z such that:
@@ -446,12 +454,12 @@ class DiagonalTensor:
         DiagonalTensor
             The concatenated tensors.
 
-        '''
+        """
         data = np.concatenate((self.data, y.data))
         return DiagonalTensor(data, order=self.order)
 
     def kron(self, y):
-        '''
+        """
         Kronecker product of tensors.
 
         Similar to numpy.kron but for arbitrary tensors.
@@ -466,12 +474,12 @@ class DiagonalTensor:
         DiagonalTensor
             The tensor resulting from the Kronecker product.
 
-        '''
-        data = np.reshape(np.outer(y.data, self.data), -1, order='F')
+        """
+        data = np.reshape(np.outer(y.data, self.data), -1, order="F")
         return DiagonalTensor(data, order=self.order)
 
     def dot_with_rank_one_metric(self, y, matrix):
-        '''
+        """
         Compute the weighted inner product of two tensors.
 
         Compute the weighted canonical inner product of self and y,
@@ -491,16 +499,19 @@ class DiagonalTensor:
         numpy.float
             The weighted inner product.
 
-        '''
+        """
         if isinstance(matrix, list):
             matrix = np.hstack([np.reshape(x, [-1, 1]) for x in matrix])
-        matrix = np.reshape(np.expand_dims(matrix, 1),
-                            (self.shape[0], y.shape[0], self.order), order='F')
+        matrix = np.reshape(
+            np.expand_dims(matrix, 1),
+            (self.shape[0], y.shape[0], self.order),
+            order="F",
+        )
         matrix = np.prod(matrix, 2)
         return np.matmul(np.transpose(self.data), np.matmul(matrix, y.data))
 
     def tensordot_matrix_product_except_dim(self, y, matrices, dim):
-        '''
+        """
         Particular type of contraction.
 
         Compute a special contraction of two tensors self, y, a list of
@@ -522,17 +533,19 @@ class DiagonalTensor:
         numpy.ndarray
             The result of the contraction.
 
-        '''
+        """
         ind = np.setdiff1d(range(self.order), dim)
         matrices = np.hstack([matrices[x] for x in ind])
-        matrices = np.reshape(np.expand_dims(matrices, 1),
-                              (self.shape[0], y.shape[0], ind.size),
-                              order='F')
+        matrices = np.reshape(
+            np.expand_dims(matrices, 1),
+            (self.shape[0], y.shape[0], ind.size),
+            order="F",
+        )
         matrices = np.prod(matrices, 2)
         return matrices * np.outer(self.data, y.data)
 
     def orth(self):
-        '''
+        """
         Placeholder method returning a copy of self.
 
         Returns
@@ -540,11 +553,11 @@ class DiagonalTensor:
         DiagonalTensor
             A copy of self.
 
-        '''
+        """
         return deepcopy(self)
 
     def eval_diag(self, dims=None):
-        '''
+        """
         Extract the diagonal of the tensor.
 
         Parameters
@@ -559,20 +572,21 @@ class DiagonalTensor:
         data : DiagonalTensor or numpy.ndarray
             The evaluations of the diagonal of the tensor.
 
-        '''
+        """
         if dims is None or np.size(dims) == self.order:
             out = np.array(self.data)
         else:
             dims = np.sort(np.atleast_1d(dims))
-            rep = np.concatenate((np.arange(dims[0]+1),
-                                  np.arange(dims[-1]+1, self.order)))
+            rep = np.concatenate(
+                (np.arange(dims[0] + 1), np.arange(dims[-1] + 1, self.order))
+            )
             out = deepcopy(self)
             out.shape = out.shape[rep]
             out.order = np.size(rep)
         return out
 
     def eval_at_indices(self, ind, dims=None):
-        '''
+        """
         Evaluate the tensor at indices.
 
         If dims is None, return
@@ -598,7 +612,7 @@ class DiagonalTensor:
         evaluations : numpy.ndarray or DiagonalTensor
             The evaluations of the tensor.
 
-        '''
+        """
 
         ind = np.atleast_2d(ind)
         r = np.full(ind.shape[0], True)
@@ -609,10 +623,10 @@ class DiagonalTensor:
             out = np.zeros(ind.shape[0])
             out[r] = self.data[ind[r, 0]]
             return out
-        raise NotImplementedError('Method not implemented.')
+        raise NotImplementedError("Method not implemented.")
 
     def transpose(self, dims):
-        '''
+        """
         Transpose (permute) the dimensions of the tensor.
 
         Parameters
@@ -625,13 +639,13 @@ class DiagonalTensor:
         tensor : DiagonalTensor
             The transposed (permuted) tensor.
 
-        '''
+        """
         out = deepcopy(self)
         out.shape = out.shape[dims]
         return out
 
     def itranspose(self, dims):
-        '''
+        """
         Return the inverse transpose (permutation) of the dimensions of the
         tensor.
 
@@ -645,12 +659,12 @@ class DiagonalTensor:
         DiagonalTensor
             The transposed (permuted) tensor.
 
-        '''
+        """
         return self.transpose(np.argsort(dims))
 
     @staticmethod
     def create(generator, rank, order):
-        '''
+        """
         Create a DiagonalTensor of rank rank and order order using a given
         generator.
 
@@ -668,12 +682,12 @@ class DiagonalTensor:
         DiagonalTensor
             The created tensor.
 
-        '''
+        """
         return DiagonalTensor(generator(rank), order)
 
     @staticmethod
     def rand(rank, order):
-        '''
+        """
         Create a DiagonalTensor of rank rank and order order with i.i.d.
         entries drawn according to the uniform distribution on [0, 1].
 
@@ -689,12 +703,12 @@ class DiagonalTensor:
         DiagonalTensor
             The created tensor.
 
-        '''
+        """
         return DiagonalTensor.create(np.random.rand, rank, order)
 
     @staticmethod
     def randn(rank, order):
-        '''
+        """
         Create a DiagonalTensor of rank rank and order order with i.i.d.
         entries drawn according to the standard gaussian distribution.
 
@@ -710,12 +724,12 @@ class DiagonalTensor:
         DiagonalTensor
             The created tensor.
 
-        '''
+        """
         return DiagonalTensor.create(np.random.randn, rank, order)
 
     @staticmethod
     def zeros(rank, order):
-        '''
+        """
         Create a DiagonalTensor of rank rank and order order with with entries
         equal to 0.
 
@@ -731,12 +745,12 @@ class DiagonalTensor:
         DiagonalTensor
             The created tensor.
 
-        '''
+        """
         return DiagonalTensor.create(np.zeros, rank, order)
 
     @staticmethod
     def ones(rank, order):
-        '''
+        """
         Create a DiagonalTensor of rank rank and order order with with
         entries equal to 1.
 
@@ -752,5 +766,5 @@ class DiagonalTensor:
         DiagonalTensor
             The created tensor.
 
-        '''
+        """
         return DiagonalTensor.create(np.ones, rank, order)

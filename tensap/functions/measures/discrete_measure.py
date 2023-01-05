@@ -14,17 +14,17 @@
 # You should have received a copy of the GNU Lesser General Public License
 # along with tensap.  If not, see <https://www.gnu.org/licenses/>.
 
-'''
+"""
 Module discrete_measure.
 
-'''
+"""
 
 import numpy as np
 import tensap
 
 
 class DiscreteMeasure(tensap.Measure):
-    '''
+    """
     Class DiscreteMeasure: discrete measure in R^d
     sum_{i=1}^n w_i delta_{x_i}.
 
@@ -37,31 +37,31 @@ class DiscreteMeasure(tensap.Measure):
         Array containing the weights P(X=x_1), ..., P(X=x_N). The default
         is None, indicating to take weights equal to 1.
 
-    '''
+    """
 
     def __init__(self, values, weights=None):
-        '''
-        Constructor for the class DiscreteMeasure.
+        """
+            Constructor for the class DiscreteMeasure.
 
-        Parameters
-        ----------
-        values : list or numpy.ndarray
-        Array containing the set of values (x_1,...,x_N) taken by the random
-        variable, with x_i in R^d, i = 1, ..., N.
-    weights : list or numpy.ndarray, optional
-        Array containing the weights P(X=x_1), ..., P(X=x_N). The default
-        is None, indicating to take weights equal to 1.
+            Parameters
+            ----------
+            values : list or numpy.ndarray
+            Array containing the set of values (x_1,...,x_N) taken by the random
+            variable, with x_i in R^d, i = 1, ..., N.
+        weights : list or numpy.ndarray, optional
+            Array containing the weights P(X=x_1), ..., P(X=x_N). The default
+            is None, indicating to take weights equal to 1.
 
-        Raises
-        ------
-        ValueError
-            If the arguments do not have the same size.
+            Raises
+            ------
+            ValueError
+                If the arguments do not have the same size.
 
-        Returns
-        -------
-        None.
+            Returns
+            -------
+            None.
 
-        '''
+        """
         tensap.Measure.__init__(self)
 
         values = np.array(values)
@@ -69,12 +69,12 @@ class DiscreteMeasure(tensap.Measure):
         if np.ndim(values) == 1:
             values = np.reshape(values, (-1, 1))
 
-        self.values = values 
+        self.values = values
         N = values.shape[0]
         if weights is None:
             weights = np.ones(N)
         elif np.size(weights) != N:
-            raise ValueError('The arguments must have the same size.')
+            raise ValueError("The arguments must have the same size.")
         self.weights = np.ravel(weights)
 
     def ndim(self):
@@ -84,9 +84,11 @@ class DiscreteMeasure(tensap.Measure):
         return np.sum(self.weights)
 
     def __eq__(self, Y):
-        return isinstance(Y, (DiscreteMeasure, tensap.DiscreteMeasure)) and \
-            np.array_equal(self.values, Y.values) and \
-            np.array_equal(self.weights, Y.weights)
+        return (
+            isinstance(Y, (DiscreteMeasure, tensap.DiscreteMeasure))
+            and np.array_equal(self.values, Y.values)
+            and np.array_equal(self.weights, Y.weights)
+        )
 
     def support(self):
         return np.vstack((np.min(self.values, 0), np.max(self.values, 0)))
@@ -95,17 +97,17 @@ class DiscreteMeasure(tensap.Measure):
         return self.support()
 
     def orthonormal_polynomials(self):
-        '''
+        """
         Return orthonormal polynomials associated with
         the DiscreteMeasure.
 
-        '''
+        """
         poly = tensap.DiscretePolynomials(self)
 
         return poly
 
     def plot(self, *args):
-        '''
+        """
         Plot a graphical representation of the discrete measure.
 
         Parameters
@@ -117,19 +119,19 @@ class DiscreteMeasure(tensap.Measure):
         -------
         None.
 
-        '''
+        """
         import matplotlib.pyplot as plt
 
         x = np.ravel(self.values)
         y = self.weights
         delta = np.max(x) - np.min(x)
-        ax = [np.min(x)-delta/10, np.max(x)+delta/10]
+        ax = [np.min(x) - delta / 10, np.max(x) + delta / 10]
         plt.vlines(x, np.zeros(y.shape), y, *args)
         plt.xlim(*ax)
-        plt.ylim(0, 1.1*np.max(y))
+        plt.ylim(0, 1.1 * np.max(y))
 
     def integration_rule(self):
-        '''
+        """
         Return the integration rule associated with the measure
 
         Returns
@@ -137,11 +139,11 @@ class DiscreteMeasure(tensap.Measure):
         tensap.IntegrationRule
             The integration rule associated with the measure
 
-        '''
+        """
         return tensap.IntegrationRule(self.values, self.weights)
 
     def random(self, n=1):
-        '''
+        """
         Generate n random numbers according to the probability distribution
         obtained by rescaling the DiscreteMeasure.
 
@@ -155,9 +157,10 @@ class DiscreteMeasure(tensap.Measure):
         numpy.ndarray
             The n generated random numbers.
 
-        '''
-        Y = tensap.DiscreteRandomVariable(np.reshape(
-            np.arange(self.weights.size), [-1, 1]),
-            self.weights/np.sum(self.weights))
+        """
+        Y = tensap.DiscreteRandomVariable(
+            np.reshape(np.arange(self.weights.size), [-1, 1]),
+            self.weights / np.sum(self.weights),
+        )
         ind = Y.icdf(np.random.rand(n)).astype(int)
-        return np.squeeze(self.values[ind, :],1)
+        return np.squeeze(self.values[ind, :], 1)

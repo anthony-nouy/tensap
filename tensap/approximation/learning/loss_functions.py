@@ -14,23 +14,23 @@
 # You should have received a copy of the GNU Lesser General Public License
 # along with tensap.  If not, see <https://www.gnu.org/licenses/>.
 
-'''
+"""
 Module loss_functions.
 
-'''
+"""
 
 from abc import ABC, abstractmethod
 import numpy as np
 
 
 class LossFunction(ABC):
-    '''
+    """
     Class LossFunction.
 
-    '''
+    """
 
     def risk_estimation(self, fun, sample, *args, nargout=1):
-        '''
+        """
         Compute an estimation of the risk associated with the function fun and
         the loss function using the provided sample.
 
@@ -54,7 +54,7 @@ class LossFunction(ABC):
         float
             The estimated reference risk.
 
-        '''
+        """
         loss, loss_ref = self.eval(fun, sample, *args, nargout=2)
         risk = np.mean(loss)
         if nargout == 1:
@@ -64,7 +64,7 @@ class LossFunction(ABC):
 
     @abstractmethod
     def eval(self, fun, sample, *args, nargout):
-        '''
+        """
         Evaluate the loss function using the function fun and the provided
         sample.
 
@@ -85,11 +85,11 @@ class LossFunction(ABC):
         -------
         None.
 
-        '''
+        """
 
     @abstractmethod
     def relative_test_error(self, fun, sample, *args):
-        '''
+        """
         Compute the relative test error associated with the function fun and
         the loss function using the provided sample.
 
@@ -107,11 +107,11 @@ class LossFunction(ABC):
         float
             The relative test error.
 
-        '''
+        """
 
     @abstractmethod
     def test_error(self, fun, sample, *args):
-        '''
+        """
         Compute the test error associated with the function fun and
         the loss function using the provided sample.
 
@@ -129,11 +129,11 @@ class LossFunction(ABC):
         float
             The relative test error.
 
-        '''
+        """
 
 
 class SquareLossFunction(LossFunction):
-    '''
+    """
     Class SquareLossFunction.
 
     Attributes
@@ -141,18 +141,18 @@ class SquareLossFunction(LossFunction):
     error_type : string, optional
         The error type. The default is 'relative'. Can also be 'absolute'.
 
-    '''
+    """
 
     def __init__(self):
-        '''
+        """
         Constructor for the class SquareLossFunction.
 
         Returns
         -------
         None.
 
-        '''
-        self.error_type = 'relative'
+        """
+        self.error_type = "relative"
 
     def eval(self, fun, sample, *args, nargout=1):
         try:
@@ -165,11 +165,11 @@ class SquareLossFunction(LossFunction):
 
         y_pred = np.atleast_2d(y_pred)
         y_true = np.atleast_2d(sample[1])
-        loss = np.sum((y_pred - y_true)**2, 1)
+        loss = np.sum((y_pred - y_true) ** 2, 1)
 
         if nargout == 1:
             return loss
-        loss_ref = np.sum(y_true**2, 1)
+        loss_ref = np.sum(y_true ** 2, 1)
         return loss, loss_ref
 
     def relative_test_error(self, fun, sample, *args):
@@ -177,18 +177,19 @@ class SquareLossFunction(LossFunction):
         return np.sqrt(risk / risk_ref)
 
     def test_error(self, fun, sample, *args):
-        if self.error_type == 'absolute':
+        if self.error_type == "absolute":
             error = np.sqrt(self.risk_estimation(fun, sample, *args))
-        elif self.error_type == 'relative':
+        elif self.error_type == "relative":
             error = self.relative_test_error(fun, sample, *args)
         else:
-            raise ValueError('The error_type property must be set to "risk" ' +
-                             'or "relative".')
+            raise ValueError(
+                'The error_type property must be set to "risk" ' + 'or "relative".'
+            )
         return error
 
 
 class DensityL2LossFunction(LossFunction):
-    '''
+    """
     Class DensityL2LossFunction.
 
     Attributes
@@ -196,18 +197,18 @@ class DensityL2LossFunction(LossFunction):
     error_type : string, optional
         The error type. The default is 'relative'.
 
-    '''
+    """
 
     def __init__(self):
-        '''
+        """
         Constructor for the class DensityL2LossFunction.
 
         Returns
         -------
         None.
 
-        '''
-        self.error_type = 'risk'
+        """
+        self.error_type = "risk"
 
     def eval(self, fun, sample, *args, nargout=1):
         try:
@@ -219,32 +220,36 @@ class DensityL2LossFunction(LossFunction):
                 y_pred = fun
 
         try:
-            l_ref = fun.norm()**2
+            l_ref = fun.norm() ** 2
         except Exception:
             try:
-                l_ref = args[0]**2
+                l_ref = args[0] ** 2
             except Exception:
-                print('Input fun must have a method norm, or its norm ' +
-                      'must be provided in last argument.')
+                print(
+                    "Input fun must have a method norm, or its norm "
+                    + "must be provided in last argument."
+                )
                 l_ref = np.nan
 
-        loss = l_ref - 2*y_pred
+        loss = l_ref - 2 * y_pred
         if nargout == 1:
             return loss
         return loss, l_ref
 
     def relative_test_error(self, fun, sample, *args):
-        raise NotImplementedError('Relative test error not available for ' +
-                                  'DensityL2LossFunction.')
+        raise NotImplementedError(
+            "Relative test error not available for " + "DensityL2LossFunction."
+        )
 
     def test_error(self, fun, sample, *args):
-        assert self.error_type == 'risk', \
-            'The error_type attribute must be set to "risk".'
+        assert (
+            self.error_type == "risk"
+        ), 'The error_type attribute must be set to "risk".'
         return self.risk_estimation(fun, sample, *args)
 
 
 class CustomLossFunction(LossFunction):
-    '''
+    """
     Class CustomLossFunction.
 
     Attributes
@@ -260,13 +265,13 @@ class CustomLossFunction(LossFunction):
     error_type : string, optional
         The error type. The default is 'relative'. Can also be 'absolute'.
 
-    '''
+    """
 
     def __init__(self, loss_function):
         self.loss_function = loss_function
         self.error_function = None
         self.relative_error_function = None
-        self.error_type = 'absolute'
+        self.error_type = "absolute"
 
     def risk_estimation(self, fun, sample, *args, nargout=1):
         try:
@@ -298,13 +303,14 @@ class CustomLossFunction(LossFunction):
 
         if nargout == 1:
             return loss
-        loss_ref = self.loss_function(y_true, 0*y_pred)
+        loss_ref = self.loss_function(y_true, 0 * y_pred)
         return loss, loss_ref
 
     def relative_test_error(self, fun, sample, *args):
-        assert self.relative_error_function is not None, \
-            ('Relative test error not available, please provide '
-             'self.relative_error_function.')
+        assert self.relative_error_function is not None, (
+            "Relative test error not available, please provide "
+            "self.relative_error_function."
+        )
         return self.relative_error_function(fun, sample)
 
     def test_error(self, fun, sample, *args):

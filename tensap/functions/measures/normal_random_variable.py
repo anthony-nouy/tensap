@@ -14,10 +14,10 @@
 # You should have received a copy of the GNU Lesser General Public License
 # along with tensap.  If not, see <https://www.gnu.org/licenses/>.
 
-'''
+"""
 Module normal_random_variable.
 
-'''
+"""
 
 from numpy import inf, array
 from scipy.stats import norm
@@ -26,7 +26,7 @@ import tensap
 
 
 class NormalRandomVariable(tensap.RandomVariable):
-    '''
+    """
     Class NormalRandomVariable.
 
     Attributes
@@ -38,10 +38,10 @@ class NormalRandomVariable(tensap.RandomVariable):
     sigma : float, optional
         The standard deviation of the normal random variable. The default is 1.
 
-    '''
+    """
 
     def __init__(self, mean=0, standard_deviation=1):
-        '''
+        """
         Normal random variable with provided mean and standard deviation.
 
         Parameters
@@ -56,21 +56,19 @@ class NormalRandomVariable(tensap.RandomVariable):
         -------
         None.
 
-        '''
+        """
         tensap.RandomVariable.__init__(self)
 
         self.mu = mean
         self.sigma = standard_deviation
 
     def __repr__(self):
-        return ('<{}: mu = {}, sigma = {}>').format(
-            self.__class__.__name__,
-            self.mu,
-            self.sigma,
-            t='\t', n='\n')
+        return ("<{}: mu = {}, sigma = {}>").format(
+            self.__class__.__name__, self.mu, self.sigma
+        )
 
     def cdf(self, x):
-        '''
+        """
         Evaluate the cumulative distribution function (cdf) of the normal
         random variable at points x.
 
@@ -84,11 +82,11 @@ class NormalRandomVariable(tensap.RandomVariable):
         numpy.ndarray
             The evaluations of the cdf.
 
-        '''
+        """
         return norm.cdf(x, self.mu, self.sigma)
 
     def icdf(self, x):
-        '''
+        """
         Evaluate the inverse cumulative distribution function (icdf) of the
         normal random variable at points x.
 
@@ -102,11 +100,11 @@ class NormalRandomVariable(tensap.RandomVariable):
         numpy.ndarray
             The evaluations of the icdf.
 
-        '''
+        """
         return norm.ppf(x, self.mu, self.sigma)
 
     def pdf(self, x):
-        '''
+        """
         Evaluate the probability density function (pdf) of the normal
         random variable at points x.
 
@@ -120,11 +118,11 @@ class NormalRandomVariable(tensap.RandomVariable):
         numpy.ndarray
             The evaluations of the pdf.
 
-        '''
+        """
         return norm.pdf(x, self.mu, self.sigma)
 
     def shift(self, bias, scaling):
-        '''
+        """
         Shift the normal random variable using the provided bias and scaling
         factor.
 
@@ -143,7 +141,7 @@ class NormalRandomVariable(tensap.RandomVariable):
         RV : tensap.NormalRandomVariable
             The shifted normal random variable.
 
-        '''
+        """
         shifted_rv = tensap.NormalRandomVariable(self.mu, self.sigma)
         shifted_rv.mu += bias
         shifted_rv.sigma *= scaling
@@ -151,7 +149,7 @@ class NormalRandomVariable(tensap.RandomVariable):
 
     @staticmethod
     def get_standard_random_variable():
-        '''
+        """
         Return the standard normal random variable with mean 0 and standard
         deviation 1.
 
@@ -160,12 +158,12 @@ class NormalRandomVariable(tensap.RandomVariable):
         tensap.NormalRandomVariable
             The standard normal random variable.
 
-        '''
+        """
         return tensap.NormalRandomVariable()
 
     @staticmethod
     def support():
-        '''
+        """
         Return the support of the normal random variable.
 
         Returns
@@ -173,24 +171,23 @@ class NormalRandomVariable(tensap.RandomVariable):
         numpy.ndarray
             Support of the normal random variable.
 
-        '''
+        """
         return array([-inf, inf])
 
     def orthonormal_polynomials(self):
-        '''
+        """
         Return orthonormal polynomials associated with
         the NormalRandomVariable.
 
-        '''
+        """
         poly = tensap.HermitePolynomials()
         if self != NormalRandomVariable(0, 1):
             # print('ShiftedOrthonormalPolynomials are created.')
-            poly = tensap.ShiftedOrthonormalPolynomials(poly, self.mu,
-                                                        self.sigma)
+            poly = tensap.ShiftedOrthonormalPolynomials(poly, self.mu, self.sigma)
         return poly
 
     def get_parameters(self):
-        '''
+        """
         Return the parameters of the normal random variable.
 
         Returns
@@ -200,11 +197,11 @@ class NormalRandomVariable(tensap.RandomVariable):
         float
             The standard deviation of the random variable.
 
-        '''
+        """
         return self.mu, self.sigma
 
     def random_variable_statistics(self):
-        return self.mu, self.sigma**2
+        return self.mu, self.sigma ** 2
 
     def random(self, n):
         return randn(int(n)) * self.sigma + self.mu

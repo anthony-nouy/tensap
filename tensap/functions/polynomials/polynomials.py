@@ -14,10 +14,10 @@
 # You should have received a copy of the GNU Lesser General Public License
 # along with tensap.  If not, see <https://www.gnu.org/licenses/>.
 
-'''
+"""
 Module polynomials.
 
-'''
+"""
 
 from abc import ABC, abstractmethod
 import numpy as np
@@ -25,13 +25,13 @@ import tensap
 
 
 class UnivariatePolynomials(ABC):
-    '''
+    """
     Class UnivariatePolynomials.
 
-    '''
+    """
 
     def polyval(self, ind, x):
-        '''
+        """
         Evaluate the polynomials of degrees contained in ind at the points x.
 
         Parameters
@@ -46,9 +46,9 @@ class UnivariatePolynomials(ABC):
         numpy.ndarray
             The evaluation of the selected polynomials at the points x.
 
-        '''
+        """
         x = np.ravel(x)
-        coef = np.fliplr(self.poly_coeff(np.arange(np.max(ind)+1)))
+        coef = np.fliplr(self.poly_coeff(np.arange(np.max(ind) + 1)))
 
         out = np.zeros((x.size, coef.shape[0]))
         for deg in range(coef.shape[0]):
@@ -56,7 +56,7 @@ class UnivariatePolynomials(ABC):
         return out[:, ind]
 
     def d_poly_coef(self, ind):
-        '''
+        """
         Return the coefficients of the first order derivative of the
         polynomials of degrees contained in ind.
 
@@ -71,12 +71,13 @@ class UnivariatePolynomials(ABC):
             The coefficients of the first order derivative of the polynomials
             of order contained in ind.
 
-        '''
-        return self.poly_coeff(ind)[:, 1:] * \
-            np.tile(np.arange(1, np.max(ind)+1), (len(ind), 1))
+        """
+        return self.poly_coeff(ind)[:, 1:] * np.tile(
+            np.arange(1, np.max(ind) + 1), (len(ind), 1)
+        )
 
     def dn_poly_coeff(self, n, ind):
-        '''
+        """
         Return the coefficients of the n-th order derivative of the
         polynomials of degrees contained in ind.
 
@@ -93,17 +94,21 @@ class UnivariatePolynomials(ABC):
             The coefficients of the n-th order derivative of the polynomials
             of order contained in ind.
 
-        '''
-        coef = np.prod(np.tile(np.arange(np.max(ind)-n+1), (n, 1)) +
-                       np.tile(np.expand_dims(np.arange(1, n+1), axis=1),
-                               (1, np.max(ind)-n+1)), 0)
+        """
+        coef = np.prod(
+            np.tile(np.arange(np.max(ind) - n + 1), (n, 1))
+            + np.tile(
+                np.expand_dims(np.arange(1, n + 1), axis=1), (1, np.max(ind) - n + 1)
+            ),
+            0,
+        )
         coef = self.poly_coeff(ind)[:, n:] * np.tile(coef, (len(ind), 1))
         if coef.size == 0:
             coef = np.zeros(len(ind))
         return coef
 
     def d_polyval(self, ind, x):
-        '''
+        """
         Evaluate the first order derivative of the polynomials of degrees
         contained in ind at the points x.
 
@@ -121,11 +126,11 @@ class UnivariatePolynomials(ABC):
             The evaluation of the first order derivatives of the selected
             polynomials at the points x.
 
-        '''
+        """
         return self.dn_polyval(1, ind, x)
 
     def dn_polyval(self, n, ind, x):
-        '''
+        """
         Evaluate the n-th order derivative of the polynomials of degrees
         contained in ind at the points x.
 
@@ -143,9 +148,9 @@ class UnivariatePolynomials(ABC):
             The evaluation of the n-th order derivatives of the selected
             polynomials at the points x.
 
-        '''
+        """
         x = np.ravel(x)
-        coef = np.fliplr(self.dn_poly_coeff(n, np.arange(np.max(ind)+1)))
+        coef = np.fliplr(self.dn_poly_coeff(n, np.arange(np.max(ind) + 1)))
 
         out = np.zeros((x.size, coef.shape[0]))
         for deg in range(coef.shape[0]):
@@ -153,7 +158,7 @@ class UnivariatePolynomials(ABC):
         return out[:, ind]
 
     def mean(self, ind, measure=None):
-        '''
+        """
         Return the mean of the polynomials of degrees contained in ind, with a
         Measure given by measure if provided, or to self.measure otherwise.
 
@@ -171,20 +176,21 @@ class UnivariatePolynomials(ABC):
         numpy.ndarray
             The mean of the selected polynomials.
 
-        '''
+        """
         if measure is None:
-            assert self.measure is not None, 'Must provide a Measure.'
+            assert self.measure is not None, "Must provide a Measure."
             out = self.moment(np.reshape(ind, [-1, 1])) / self.measure.mass()
         else:
-            out = self.moment(np.reshape(ind, [-1, 1]), measure) / \
-                measure.mass()
+            out = self.moment(np.reshape(ind, [-1, 1]), measure) / measure.mass()
         return out
 
     def moment(self, ind, measure=None):
-        '''
-        Return the integral of products of polynomials p_i, i in ind, using a gauss integration rule.
-        
-        The integral is with respect to a measure mu which is taken as the measure to the polynomials if not provided in input
+        """
+        Return the integral of products of polynomials p_i, i in ind,
+        using a gauss integration rule.
+
+        The integral is with respect to a measure mu which is taken as the
+        measure to the polynomials if not provided in input
 
         Assuming ind is a numpy.ndarray:
             - if ind.ndim == 1, and ind is of length N,  return the float
@@ -192,7 +198,7 @@ class UnivariatePolynomials(ABC):
             - else if ind.ndim == 2, and ind is N-by-M,
                 return the vector m of length N such that
                 m[j] = int p_ind[j, 0](x)...p_ind[j, M-1](x) dmu(x)
-                    
+
 
         Parameters
         ----------
@@ -207,7 +213,7 @@ class UnivariatePolynomials(ABC):
         numpy.ndarray
             Contains the integrals of products of polynomials.
 
-        '''
+        """
         if measure is None:
             measure = self.measure
 
@@ -215,7 +221,7 @@ class UnivariatePolynomials(ABC):
         out = np.zeros(ind.shape[0])
 
         max_deg = np.max(np.sum(ind, 1))  # Maximum degree of the product
-        nb_pts = int(np.ceil((max_deg+1)/2))  # Number of points
+        nb_pts = int(np.ceil((max_deg + 1) / 2))  # Number of points
 
         G = measure.gauss_integration_rule(nb_pts)
         for i in range(ind.shape[0]):
@@ -225,12 +231,13 @@ class UnivariatePolynomials(ABC):
                 for j in np.arange(1, ind.shape[1]):
                     out_loc = out_loc * self.polyval(ind[i, j], x)
                 return out_loc
+
             out[i] = G.integrate(poly)
         return out
 
     @staticmethod
     def ndim():
-        '''
+        """
         Return the dimension of the output of the polynomials.
 
         Returns
@@ -238,20 +245,20 @@ class UnivariatePolynomials(ABC):
         int
             The dimension of the output of the polynomials.
 
-        '''
+        """
         return 1
 
     @abstractmethod
     def one(self):
-        '''
+        """
         Coefficients and corresponding indices for the decomposition of the
         constant function 1.
 
-        '''
+        """
 
     @abstractmethod
     def is_orthonormal(self):
-        '''
+        """
         Check the orthonormality of the basis created by the functions of self.
 
         Returns
@@ -259,11 +266,11 @@ class UnivariatePolynomials(ABC):
         bool
             Indicates if the polynomials are orthonormal.
 
-        '''
+        """
 
     @abstractmethod
     def poly_coeff(self, ind):
-        '''
+        """
         Compute the coefficients of the monomials used to create the
         polynomials of degree specified in ind.
 
@@ -272,11 +279,11 @@ class UnivariatePolynomials(ABC):
         ind : ind or numpy.ndarray
             The orders of the polynomials to be evaluated.
 
-        '''
+        """
 
 
 class CanonicalPolynomials(UnivariatePolynomials):
-    '''
+    """
     Class CanonicalPolynomials.
 
     Attributes
@@ -284,10 +291,10 @@ class CanonicalPolynomials(UnivariatePolynomials):
     measure : None or tensap.Measure
         The measure associated with the canonical polynomials.
 
-    '''
+    """
 
     def __init__(self, measure=None):
-        '''
+        """
         Constructor for the class CanonicalPolynomials.
 
         Parameters
@@ -305,9 +312,9 @@ class CanonicalPolynomials(UnivariatePolynomials):
         -------
         None.
 
-        '''
+        """
         if measure is not None and not isinstance(measure, tensap.Measure):
-            raise ValueError('Must provide a measure.')
+            raise ValueError("Must provide a measure.")
         self.measure = measure
 
     def __eq__(self, poly_2):
@@ -318,19 +325,19 @@ class CanonicalPolynomials(UnivariatePolynomials):
         return False
 
     def poly_coeff(self, ind):
-        return np.eye(np.max(ind)+1)[ind, :]
+        return np.eye(np.max(ind) + 1)[ind, :]
 
     def d_polyval(self, ind, x):
         x = np.expand_dims(np.ravel(x), axis=1)
         ind = np.atleast_1d(ind)
         out = np.zeros((x.size, len(ind)))
         rep = ind != 0
-        out[:, rep] = x**(ind[rep]-1) * np.tile(ind[rep], (x.size, 1))
+        out[:, rep] = x ** (ind[rep] - 1) * np.tile(ind[rep], (x.size, 1))
         return out
 
     @staticmethod
     def domain():
-        '''
+        """
         Return the domain of the canonical polynomials.
 
         Returns
@@ -338,7 +345,7 @@ class CanonicalPolynomials(UnivariatePolynomials):
         list
             The domain of the canonical polynomials.
 
-        '''
+        """
         return [-np.inf, np.inf]
 
     @staticmethod

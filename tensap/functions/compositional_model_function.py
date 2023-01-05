@@ -14,19 +14,20 @@
 # You should have received a copy of the GNU Lesser General Public License
 # along with tensap.  If not, see <https://www.gnu.org/licenses/>.
 
-'''
+"""
 Module compositional_model_function
 
-'''
+"""
 
 import sys
 import numpy as np
-sys.path.insert(0, './../../../')
-import tensap
+
+sys.path.insert(0, "./../../../")
+import tensap  # noqa: E402
 
 
 class CompositionalModelFunction(tensap.Function):
-    '''
+    """
     Class CompositionalModelFunction.
 
     Attributes
@@ -39,10 +40,10 @@ class CompositionalModelFunction(tensap.Function):
     measure : tensap.Measure
         The measure associated with the function.
 
-    '''
+    """
 
     def __init__(self, tree, fun, measure):
-        '''
+        """
         Constructor for the class CompositionalModelFunction.
 
         Parameters
@@ -59,14 +60,14 @@ class CompositionalModelFunction(tensap.Function):
         -------
         None.
 
-        '''
+        """
         tensap.Function.__init__(self)
 
         self.tree = tree
 
         if not isinstance(fun, (list, np.ndarray)):
             self.fun = np.empty(tree.nb_nodes, dtype=object)
-            self.fun[tree.internal_nodes-1] = fun
+            self.fun[tree.internal_nodes - 1] = fun
         else:
             self.fun = np.array(fun, dtype=object)
 
@@ -74,7 +75,7 @@ class CompositionalModelFunction(tensap.Function):
         self.measure = measure
 
     def eval(self, x):
-        '''
+        """
         Evaluate the CompositionalModelFunction at points x.
 
         Parameters
@@ -87,17 +88,17 @@ class CompositionalModelFunction(tensap.Function):
         numpy.ndarray
             The evaluations of the function at points x.
 
-        '''
+        """
         x = np.atleast_2d(x)
         tree = self.tree
         z = np.empty(tree.nb_nodes, dtype=object)
         for nu in range(self.dim):
-            z[tree.dim2ind[nu]-1] = x[:, nu]
+            z[tree.dim2ind[nu] - 1] = x[:, nu]
 
         for level in np.arange(np.max(tree.level), -1, -1):
             nodes = tree.nodes_with_level(level)
             for nod in tensap.fast_setdiff(nodes, tree.dim2ind):
                 ch = tree.children(nod)
-                z[nod-1] = self.fun[nod-1](*z[ch-1])
+                z[nod - 1] = self.fun[nod - 1](*z[ch - 1])
 
-        return z[tree.root-1]
+        return z[tree.root - 1]

@@ -14,10 +14,10 @@
 # You should have received a copy of the GNU Lesser General Public License
 # along with tensap.  If not, see <https://www.gnu.org/licenses/>.
 
-'''
+"""
 Tutorial on Tensorizer and TensorizedFunction.
 
-'''
+"""
 
 import numpy as np
 import tensap
@@ -31,15 +31,18 @@ B = 3  # Scaling factor
 
 T = tensap.Tensorizer(B, L, 1)
 
+
 def FUN(x):
     return np.sqrt(x)
+
+
 FUN = tensap.UserDefinedFunction(FUN, 1)
 FUN.evaluation_at_multiple_points = True
 
 TENSORIZED_FUN = T.tensorize(FUN)
 TENSORIZED_FUN.fun.evaluation_at_multiple_points = True
 
-# Interpolation of the function in the tensor product feature space 
+# Interpolation of the function in the tensor product feature space
 DEGREE = 3
 BASES = T.tensorized_function_functional_bases(DEGREE)
 H = tensap.FullTensorProductFunctionalBasis(BASES)
@@ -49,23 +52,25 @@ X_TEST = T.X.random(100)
 F_X_TEST = TENSORIZED_FUN_INTERP(X_TEST)
 Y_TEST = FUN(X_TEST)
 ERR_L2 = np.linalg.norm(Y_TEST - F_X_TEST) / np.linalg.norm(Y_TEST)
-print('Mean squared error for the interpolation = %2.5e' % ERR_L2)
+print("Mean squared error for the interpolation = %2.5e" % ERR_L2)
 
 # Truncation in tensor train format
 TR = tensap.Truncator()
 tens = TENSORIZED_FUN_INTERP.fun.tensor
-for k in range(1,9):
-    TR.tolerance = 10**(-k)
-    print('Tolerance =%s' % TR.tolerance)
+for k in range(1, 9):
+    TR.tolerance = 10 ** (-k)
+    print("Tolerance =%s" % TR.tolerance)
     TENSORIZED_FUN_TT = TENSORIZED_FUN_INTERP
     TENSORIZED_FUN_TT.fun.tensor = TR.ttsvd(tens)
-    print('Representation ranks = %s' % TENSORIZED_FUN_TT.fun.tensor.representation_rank)
-    print('Complexity = %s' % TENSORIZED_FUN_TT.fun.tensor.storage())
+    print(
+        "Representation ranks = %s" % TENSORIZED_FUN_TT.fun.tensor.representation_rank
+    )
+    print("Complexity = %s" % TENSORIZED_FUN_TT.fun.tensor.storage())
     X_TEST = T.X.random(1000)
     F_X_TEST = TENSORIZED_FUN_TT(X_TEST)
     Y_TEST = FUN(X_TEST)
     ERR_L2 = np.linalg.norm(Y_TEST - F_X_TEST) / np.linalg.norm(Y_TEST)
-    print('Mean squared error = %2.5e' % ERR_L2)
+    print("Mean squared error = %2.5e" % ERR_L2)
 
 # %% Identification of a bivariate function f(x1, x2) on (0,1)^2 with a function
 # g(i1,j1, ..., id,jd, y1, y2)
@@ -79,7 +84,7 @@ B = 2  # Scaling factor
 
 T = tensap.Tensorizer(B, L, DIM)
 T.ordering_type = 2
-FUN = tensap.UserDefinedFunction('1/(1+x0+x1)', DIM)
+FUN = tensap.UserDefinedFunction("1/(1+x0+x1)", DIM)
 FUN.evaluation_at_multiple_points = True
 TENSORIZED_FUN = T.tensorize(FUN)
 
@@ -94,22 +99,22 @@ X_TEST = T.X.random(100)
 F_X_TEST = TENSORIZED_FUN_INTERP(X_TEST)
 Y_TEST = FUN(X_TEST)
 ERR_L2 = np.linalg.norm(Y_TEST - F_X_TEST) / np.linalg.norm(Y_TEST)
-print('Mean squared error for the interpolation = %2.5e' % ERR_L2)
+print("Mean squared error for the interpolation = %2.5e" % ERR_L2)
 
 # Truncation in tensor train format
 TR = tensap.Truncator()
 tens = TENSORIZED_FUN_INTERP.fun.tensor
-for k in range(1,9):
-    TR.tolerance = 10**(-k)
-    print('Tolerance =%s' % TR.tolerance)
+for k in range(1, 9):
+    TR.tolerance = 10 ** (-k)
+    print("Tolerance =%s" % TR.tolerance)
     TENSORIZED_FUN_TT = TENSORIZED_FUN_INTERP
     TENSORIZED_FUN_TT.fun.tensor = TR.ttsvd(tens)
-    print('Representation ranks = %s' % TENSORIZED_FUN_TT.fun.tensor.representation_rank)
-    print('Complexity = %s' % TENSORIZED_FUN_TT.fun.tensor.storage())
+    print(
+        "Representation ranks = %s" % TENSORIZED_FUN_TT.fun.tensor.representation_rank
+    )
+    print("Complexity = %s" % TENSORIZED_FUN_TT.fun.tensor.storage())
     X_TEST = T.X.random(1000)
     F_X_TEST = TENSORIZED_FUN_TT(X_TEST)
     Y_TEST = FUN(X_TEST)
     ERR_L2 = np.linalg.norm(Y_TEST - F_X_TEST) / np.linalg.norm(Y_TEST)
-    print('Mean squared error = %2.5e' % ERR_L2)
- 
-    
+    print("Mean squared error = %2.5e" % ERR_L2)

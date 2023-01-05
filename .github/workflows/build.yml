@@ -11,7 +11,8 @@ jobs:
       - name: Build
         shell: bash -l {0}
         run: |
-          conda install -y tensorflow scikit-learn pytest networkx matplotlib sphinx numpydoc pytest-cov codecov
+          conda install -y tensorflow scikit-learn pytest networkx matplotlib sphinx numpydoc pytest-cov codecov flake8
+          flake8 --ignore=W503 --max-line-length=100
           python setup.py install
           make html -C doc
           mv tensap tensap_code && pytest --cov-report=xml --cov=tensap --capture=no test && codecov && mv tensap_code tensap

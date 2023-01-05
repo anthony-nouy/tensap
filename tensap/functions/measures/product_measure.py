@@ -14,17 +14,17 @@
 # You should have received a copy of the GNU Lesser General Public License
 # along with tensap.  If not, see <https://www.gnu.org/licenses/>.
 
-'''
+"""
 Module product_measure.
 
-'''
+"""
 
 import numpy as np
 import tensap
 
 
 class ProductMeasure(tensap.Measure):
-    '''
+    """
     Class ProductMeasure.
 
     Attributes
@@ -32,17 +32,16 @@ class ProductMeasure(tensap.Measure):
     measures : list or tensap.RandomVector
         List of Measure objects.
 
-    '''
+    """
 
     def __new__(cls, measures):
-        if np.all([isinstance(x, tensap.ProbabilityMeasure) for
-                   x in measures]):
+        if np.all([isinstance(x, tensap.ProbabilityMeasure) for x in measures]):
             return tensap.RandomVector(measures)
         else:
             return object.__new__(cls)
 
     def __init__(self, measures):
-        '''
+        """
         Constructor for the class ProductMeasure.
 
         Parameters
@@ -59,28 +58,25 @@ class ProductMeasure(tensap.Measure):
         -------
         None.
 
-        '''
+        """
         if isinstance(measures, tensap.RandomVector):
             if not isinstance(measures.copula, tensap.IndependentCopula):
-                print('The given Copula is replaced by an IndependentCopula.')
+                print("The given Copula is replaced by an IndependentCopula.")
             measures = measures.random_variables
         elif not isinstance(measures, list):
-            raise ValueError('measures must be a list of Measure.')
+            raise ValueError("measures must be a list of Measure.")
         self.measures = measures
 
     def __repr__(self):
-        return ('<{}:{n}' +
-                '{t}random_variables = {},{n}').format(self.__class__.__name__,
-                                          self.measures,
-                                          t='\t', n='\n')
+        return ("<{}:{n}" + "{t}random_variables = {},{n}").format(
+            self.__class__.__name__, self.measures, t="\t", n="\n"
+        )
 
-                                          
     def __eq__(self, measure_2):
-        return np.all([x == y for x, y in zip(self.measures,
-                                              measure_2.measures)])
+        return np.all([x == y for x, y in zip(self.measures, measure_2.measures)])
 
     def random_vector(self):
-        '''
+        """
         Return, if self is a ProbabilityMeasure, the associated RandomVector.
 
         Returns
@@ -88,10 +84,10 @@ class ProductMeasure(tensap.Measure):
         tensap.RandomVector
             The RandomVector associated with self.
 
-        '''
-        assert np.all([isinstance(x, tensap.ProbabilityMeasure) for x in
-                       self.measures]), \
-            'The measures should be ProbabilityMeasure.'
+        """
+        assert np.all(
+            [isinstance(x, tensap.ProbabilityMeasure) for x in self.measures]
+        ), "The measures should be ProbabilityMeasure."
 
         return tensap.RandomVector(self.measures)
 
@@ -105,7 +101,7 @@ class ProductMeasure(tensap.Measure):
         return [x.support() for x in self.measures]
 
     def truncated_support(self):
-        '''
+        """
         Return the truncated support of the measures of the ProductMeasure.
 
         Returns
@@ -113,7 +109,7 @@ class ProductMeasure(tensap.Measure):
         list
             The truncated support of the measures of the ProductMeasure.
 
-        '''
+        """
         return [x.truncated_support() for x in self.measures]
 
     def marginal(self, ind):
@@ -121,19 +117,19 @@ class ProductMeasure(tensap.Measure):
 
     def pdf(self, x):
         # TODO pdf
-        raise NotImplementedError('Method not implemented.')
+        raise NotImplementedError("Method not implemented.")
 
     def random(self, x):
         # TODO random
-        raise NotImplementedError('Method not implemented.')
+        raise NotImplementedError("Method not implemented.")
 
     def random_sequential(self, x):
         # TODO random_sequential
-        raise NotImplementedError('Method not implemented.')
+        raise NotImplementedError("Method not implemented.")
 
     @staticmethod
     def duplicate(measure, dim):
-        '''
+        """
         Create a ProductMeasure by duplicating dim times the provided measure.
 
         Parameters
@@ -148,5 +144,5 @@ class ProductMeasure(tensap.Measure):
         tensap.ProductMeasure
             The created ProductMeasure.
 
-        '''
-        return ProductMeasure([measure]*dim)
+        """
+        return ProductMeasure([measure] * dim)

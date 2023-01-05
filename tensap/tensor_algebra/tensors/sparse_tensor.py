@@ -14,10 +14,10 @@
 # You should have received a copy of the GNU Lesser General Public License
 # along with tensap.  If not, see <https://www.gnu.org/licenses/>.
 
-'''
+"""
 Module sparse_tensor.
 
-'''
+"""
 
 from copy import deepcopy
 import numpy as np
@@ -26,7 +26,7 @@ import tensap
 
 
 class SparseTensor:
-    '''
+    """
     Class SparseTensor.
 
     Attributes
@@ -41,10 +41,10 @@ class SparseTensor:
     shape : numpy.ndarray
         The shape of the tensor.
 
-    '''
+    """
 
     def __init__(self, data=None, indices=None, shape=None):
-        '''
+        """
         Constructor for the class SparseTensor.
 
         Parameters
@@ -69,7 +69,7 @@ class SparseTensor:
         -------
         None.
 
-        '''
+        """
         if data is None and indices is None and shape is None:
             self.data = []
             self.order = 0
@@ -83,33 +83,37 @@ class SparseTensor:
                 rep = np.nonzero(data)
                 self.data = data[rep]
                 self.indices = tensap.MultiIndices(
-                    np.hstack([np.reshape(x, [-1, 1]) for x in rep]))
-            elif np.all([hasattr(data, x) for x in ['data', 'order',
-                                                    'shape', 'indices']]):
+                    np.hstack([np.reshape(x, [-1, 1]) for x in rep])
+                )
+            elif np.all(
+                [hasattr(data, x) for x in ["data", "order", "shape", "indices"]]
+            ):
                 self.data = data.data
                 self.order = data.order
                 self.shape = data.shape
                 self.indices = data.indices
             else:
-                raise ValueError('Wrong input arguments.')
+                raise ValueError("Wrong input arguments.")
         elif data is not None and indices is not None and shape is not None:
-            assert isinstance(indices, tensap.MultiIndices), \
-                'Argument indices must be a MultiIndices.'
+            assert isinstance(
+                indices, tensap.MultiIndices
+            ), "Argument indices must be a MultiIndices."
 
             self.indices = indices
             self.order = indices.ndim()
             self.shape = shape
             self.data = data
-            assert np.size(data) == indices.cardinal(), \
-                'data and indices must have the same number of elements.'
+            assert (
+                np.size(data) == indices.cardinal()
+            ), "data and indices must have the same number of elements."
         else:
-            raise ValueError('Wrong input arguments.')
+            raise ValueError("Wrong input arguments.")
         self.data = np.squeeze(self.data)
         self.shape = np.squeeze(self.shape)
 
     @property
     def size(self):
-        '''
+        """
         Compute the size of the tensor. Equivalent to self.storage().
 
         Returns
@@ -117,11 +121,11 @@ class SparseTensor:
         numpy.ndarray
             The size of the tensor.
 
-        '''
+        """
         return np.prod(self.shape)
 
     def storage(self):
-        '''
+        """
         Return the storage complexity of the SparseTensor.
 
         Returns
@@ -129,11 +133,11 @@ class SparseTensor:
         int
             The storage complexity of the SparseTensor.
 
-        '''
+        """
         return self.size
 
     def sparse_storage(self):
-        '''
+        """
         Return the sparse storage complexity of the SparseTensor.
 
         Returns
@@ -141,11 +145,11 @@ class SparseTensor:
         int
             The sparse storage complexity of the SparseTensor.
 
-        '''
+        """
         return self.count_non_zero()
 
     def count_non_zero(self):
-        '''
+        """
         Return the number of non-zero coefficients of the SparseTensor.
         Equivalent to self.sparse_storage().
 
@@ -154,12 +158,12 @@ class SparseTensor:
         int
             The number of non-zero coefficients of the SparseTensor.
 
-        '''
+        """
         return self.indices.cardinal()
 
     @property
     def ndim(self):
-        '''
+        """
         Compute the order of the tensor. Equivalent to self.order.
 
         Returns
@@ -167,11 +171,11 @@ class SparseTensor:
         int
             The order of the tensor.
 
-        '''
+        """
         return np.size(self.shape)
 
     def full(self):
-        '''
+        """
         Convert the SparseTensor to a tensap.FullTensor.
 
         Returns
@@ -179,14 +183,14 @@ class SparseTensor:
         y : tensap.FullTensor
             The SparseTensor as a tensap.FullTensor.
 
-        '''
+        """
         y = tensap.FullTensor(np.zeros(self.shape))
         ind = tuple(self.indices.to_list())
         y.data[ind] = self.data
         return y
 
     def numpy(self):
-        '''
+        """
         Convert the SparseTensor to a scipy.sparse.lil.lil_matrix, which can
         be converted to a numpy.matrix using the command todense().
 
@@ -195,9 +199,8 @@ class SparseTensor:
         y : scipy.sparse.lil.lil_matrix
             The SparseTensor as a scipy.sparse.lil.lil_matrix.
 
-        '''
-        assert self.ndim <= 2, \
-            'nd sparse arrays are not allowed for d > 2.'
+        """
+        assert self.ndim <= 2, "nd sparse arrays are not allowed for d > 2."
 
         y = lil_matrix(tuple(self.shape), dtype=float)
         ind = tuple(self.indices.to_list())
@@ -205,7 +208,7 @@ class SparseTensor:
         return y
 
     def eval_at_indices(self, ind, dims=None):
-        '''
+        """
         Evaluate the tensor at indices.
 
         If dims is None, return
@@ -231,9 +234,10 @@ class SparseTensor:
         evaluations : scipy.sparse.lil.lil_matrix
             The evaluations of the tensor.
 
-        '''
-        assert dims is None or np.all(dims == np.arange(self.order)), \
-            'Method not implemented.'
+        """
+        assert dims is None or np.all(
+            dims == np.arange(self.order)
+        ), "Method not implemented."
 
         if isinstance(ind, tensap.MultiIndices):
             ind = ind.array
@@ -245,7 +249,7 @@ class SparseTensor:
         return evaluations
 
     def squeeze(self, dims):
-        '''
+        """
         Remove the singleton dimensions of the tensor.
 
         Parameters
@@ -259,8 +263,8 @@ class SparseTensor:
         SparseTensor
             The squeezed tensor.
 
-        '''
-        raise NotImplementedError('Method not implemented.')
+        """
+        raise NotImplementedError("Method not implemented.")
 
     def __add__(self, y):
         ind = self.indices.add_indices(y.indices)
@@ -272,13 +276,13 @@ class SparseTensor:
         return SparseTensor(data, ind, self.shape)
 
     def __neg__(self):
-        raise NotImplementedError('Method not implemented.')
+        raise NotImplementedError("Method not implemented.")
 
     def __sub__(self, y):
-        raise NotImplementedError('Method not implemented.')
+        raise NotImplementedError("Method not implemented.")
 
     def tensor_vector_product(self, vectors, dims=None):
-        '''
+        """
         Compute the contraction of the tensor with vectors.
 
         Compute the contraction of self with each vector contained in the list
@@ -298,18 +302,16 @@ class SparseTensor:
         out : SparseTensor
             The tensor after the contractions with the vectors.
 
-        '''
+        """
         if dims is None:
-            assert isinstance(vectors, list), 'vectors should be a list.'
-            assert len(vectors) == self.order, \
-                'len(vectors) must be self.order.'
+            assert isinstance(vectors, list), "vectors should be a list."
+            assert len(vectors) == self.order, "len(vectors) must be self.order."
             dims = np.arange(self.order)
         else:
             dims = np.array(dims)
             if not isinstance(vectors, list):
                 vectors = [vectors]
-            assert len(vectors) == dims.size, \
-                'len(vectors) must be equal to dims.size.'
+            assert len(vectors) == dims.size, "len(vectors) must be equal to dims.size."
 
         vectors = [np.ravel(x) for x in vectors]
 
@@ -323,13 +325,15 @@ class SparseTensor:
         for i in range(dims.size):
             a = out.data * vectors[i][out.indices.array[:, dims[i]]]
 
-            out.indices.array = out.indices.array[:, np.setdiff1d(
-                range(out.indices.array.shape[1]), dims[i])]
+            out.indices.array = out.indices.array[
+                :, np.setdiff1d(range(out.indices.array.shape[1]), dims[i])
+            ]
             out.indices.array = out.indices.array[a != 0, :]
 
             if out.indices.array.size != 0:
-                out.indices.array, ind = np.unique(out.indices.array, axis=0,
-                                                   return_inverse=True)
+                out.indices.array, ind = np.unique(
+                    out.indices.array, axis=0, return_inverse=True
+                )
 
                 a = a[a != 0]
                 out.data = np.bincount(ind, weights=a)
@@ -344,7 +348,7 @@ class SparseTensor:
         return out
 
     def tensor_matrix_product(self, matrices, dims=None):
-        '''
+        """
         Contract a tensor with matrices.
 
         The second dimension of the matrix matrices[k] is contracted with the
@@ -363,43 +367,47 @@ class SparseTensor:
         out : SparseTensor
             The tensor after the contractions with the matrices.
 
-        '''
+        """
         if dims is None:
-            assert isinstance(matrices, (list, np.ndarray)), \
-                'matrices should be a list or a numpy.ndarray.'
-            assert len(matrices) == self.order, \
-                'len(matrices) must be self.order.'
+            assert isinstance(
+                matrices, (list, np.ndarray)
+            ), "matrices should be a list or a numpy.ndarray."
+            assert len(matrices) == self.order, "len(matrices) must be self.order."
             dims = range(self.order)
         else:
             dims = np.atleast_1d(dims)
             if not isinstance(matrices, list):
                 matrices = [matrices]
-            assert len(matrices) == dims.size, \
-                'len(matrices) must be equal to dims.size.'
+            assert (
+                len(matrices) == dims.size
+            ), "len(matrices) must be equal to dims.size."
 
         k = 0
         out = deepcopy(self)
         for mu in dims:
-            perm_dims = np.concatenate(
-                ([mu], np.setdiff1d(np.arange(out.order), mu)))
+            perm_dims = np.concatenate(([mu], np.setdiff1d(np.arange(out.order), mu)))
             out = out.transpose(perm_dims)
             if out.order == 1:
                 out.shape[1] = 1
-            ind = tensap.MultiIndices(
-                out.indices.array[out.data != 0, :]).sub2ind(out.shape)
-            x1, x2 = np.unravel_index(ind,
-                                      [out.shape[0], np.prod(out.shape[1:])],
-                                      order='F')
+            ind = tensap.MultiIndices(out.indices.array[out.data != 0, :]).sub2ind(
+                out.shape
+            )
+            x1, x2 = np.unravel_index(
+                ind, [out.shape[0], np.prod(out.shape[1:])], order="F"
+            )
             x2u, x2uind = np.unique(x2, return_inverse=True)
-            s = coo_matrix((out.data[out.data != 0],
-                            (x1, x2uind)),
-                           shape=(out.shape[0], np.max(x2uind)+1))
+            s = coo_matrix(
+                (out.data[out.data != 0], (x1, x2uind)),
+                shape=(out.shape[0], np.max(x2uind) + 1),
+            )
             a = np.transpose(s.transpose().dot(np.transpose(matrices[k])))
             y1, y2 = np.nonzero(a)
             out.shape[0] = matrices[k].shape[0]
-            ind = np.ravel_multi_index((y1, np.reshape(x2u[y2], y1.shape)),
-                                       (out.shape[0], np.prod(out.shape[1:])),
-                                       order='F')
+            ind = np.ravel_multi_index(
+                (y1, np.reshape(x2u[y2], y1.shape)),
+                (out.shape[0], np.prod(out.shape[1:])),
+                order="F",
+            )
             out.indices = tensap.MultiIndices.ind2sub(out.shape, ind)
             out.data = np.ravel(a[a != 0])
             out = out.itranspose(perm_dims)
@@ -407,7 +415,7 @@ class SparseTensor:
         return out
 
     def tensor_matrix_product_eval_diag(self, matrices):
-        '''
+        """
         Evaluate the diagonal of a tensor obtained by contraction with
         matrices.
 
@@ -421,14 +429,14 @@ class SparseTensor:
         SparseTensor
             The diagonal of the contractions of the tensor with the matrices.
 
-        '''
+        """
         y = matrices[0][:, self.indices.array[:, 0]]
         for k in np.arange(1, self.order):
             y *= matrices[k][:, self.indices.array[:, k]]
         return np.matmul(y, self.data)
 
     def transpose(self, dims):
-        '''
+        """
         Transpose (permute) the dimensions of the tensor.
 
         Parameters
@@ -441,14 +449,14 @@ class SparseTensor:
         out : SparseTensor
             The transposed (permuted) tensor.
 
-        '''
+        """
         out = deepcopy(self)
         out.indices.array = out.indices.array[:, dims]
         out.shape = out.shape[dims]
         return out
 
     def itranspose(self, dims):
-        '''
+        """
         Return the inverse transpose (permutation) of the dimensions of the
         tensor.
 
@@ -462,12 +470,12 @@ class SparseTensor:
         SparseTensor
             The transposed (permuted) tensor.
 
-        '''
+        """
         out = deepcopy(self)
         return out.transpose(np.argsort(dims))
 
     def reshape(self, shape):
-        '''
+        """
         Reshape the tensor.
 
         Parameters
@@ -480,7 +488,7 @@ class SparseTensor:
         tensor : SparseTensor
             The reshaped tensor.
 
-        '''
+        """
         shape = np.array(shape)
         ind = self.indices.sub2ind(self.shape)
         out = deepcopy(self)
@@ -490,7 +498,7 @@ class SparseTensor:
         return out
 
     def tensor_diagonal_matrix_product(self, matrices, dims=None):
-        '''
+        """
         Contract a SparseTensor with matrices built from their diagonals.
 
         The second dimension of the matrix matrices[k] is contracted with the
@@ -511,25 +519,24 @@ class SparseTensor:
         SparseTensor
             The tensor after the contractions with the matrices.
 
-        '''
+        """
         if not isinstance(matrices, list):
             matrices = [matrices[:, i] for i in range(np.shape(matrices)[1])]
 
         if dims is None:
-            assert len(matrices) == self.order, \
-                'len(matrices) must be self.order.'
+            assert len(matrices) == self.order, "len(matrices) must be self.order."
             dims = range(self.order)
         else:
             dims = np.array(dims)
-            assert len(matrices) == dims.size, \
-                'len(matrices) must be equal to dims.size.'
+            assert (
+                len(matrices) == dims.size
+            ), "len(matrices) must be equal to dims.size."
 
-        matrices = [tensap.FullTensor(np.diag(np.reshape(x, [-1])))
-                    for x in matrices]
+        matrices = [tensap.FullTensor(np.diag(np.reshape(x, [-1]))) for x in matrices]
         return self.tensor_matrix_product(matrices, dims)
 
     def dot(self, y):
-        '''
+        """
         Return the inner product of two tensors.
 
         Parameters
@@ -543,12 +550,12 @@ class SparseTensor:
         numpy.float
             The inner product of the two tensors.
 
-        '''
+        """
         if not isinstance(y, SparseTensor):
             try:
                 y = y.sparse()
             except Exception:
-                raise ValueError('Cannot convert input to SparseTensor.')
+                raise ValueError("Cannot convert input to SparseTensor.")
 
         _, ind_x, ind_y = self.indices.intersect_indices(y.indices)
         return np.sum(self.data[ind_x] * y.data[ind_y])
@@ -558,7 +565,7 @@ class SparseTensor:
             try:
                 y = y.sparse()
             except Exception:
-                raise ValueError('Cannot convert input to SparseTensor.')
+                raise ValueError("Cannot convert input to SparseTensor.")
 
         _, ind_x, ind_y = self.indices.intersect_indices(y.indices)
         out = deepcopy(self)
@@ -567,7 +574,7 @@ class SparseTensor:
         return out
 
     def norm(self):
-        '''
+        """
         Compute the canonical norm of the SparseTensor.
 
         Returns
@@ -575,11 +582,11 @@ class SparseTensor:
         numpy.float
             The norm of the tensor.
 
-        '''
+        """
         return np.sqrt(self.dot(self))
 
     def orth(self, dim):
-        '''
+        """
         Orthogonalize the tensor.
 
         Parameters
@@ -596,11 +603,11 @@ class SparseTensor:
         r_matrix : numpy.ndarray
             The R factor.
 
-        '''
-        raise NotImplementedError('Method not implemented.')
+        """
+        raise NotImplementedError("Method not implemented.")
 
     def cat(self, y, dims):
-        '''
+        """
         Concatenate the tensors.
 
         Concatenates self and y in a tensor z such that:
@@ -622,11 +629,11 @@ class SparseTensor:
         SparseTensor
             The concatenated tensors.
 
-        '''
-        raise NotImplementedError('Method not implemented.')
+        """
+        raise NotImplementedError("Method not implemented.")
 
     def kron(self, y):
-        '''
+        """
         Kronecker product of tensors.
 
         Similar to numpy.kron but for sparse tensors.
@@ -641,11 +648,11 @@ class SparseTensor:
         SparseTensor
             The tensor resulting from the Kronecker product.
 
-        '''
-        raise NotImplementedError('Method not implemented.')
+        """
+        raise NotImplementedError("Method not implemented.")
 
     def dot_with_rank_one_metric(self, y, M):
-        '''
+        """
         Compute the weighted inner product of two tensors.
 
         Compute the weighted canonical inner product of self and y,
@@ -666,12 +673,12 @@ class SparseTensor:
         numpy.float
             The weighted inner product.
 
-        '''
+        """
         s = y.tensor_matrix_product(M)
         return self.dot(s)
 
     def tensordot_matrix_product_except_dim(self, y, M, dim):
-        '''
+        """
         Particular type of contraction.
 
         Compute a special contraction of two tensors self, y, a list of
@@ -693,14 +700,14 @@ class SparseTensor:
         numpy.ndarray
             The result of the contraction.
 
-        '''
+        """
         # dims = np.setdiff1d(np.arange(self.order), dim)
         # s = y.tensor_matrix_product(M[dims], dims)
         # return self.tensordot(s, dims, dims)
-        raise NotImplementedError('Method not implemented.')
+        raise NotImplementedError("Method not implemented.")
 
     def eval_diag(self, dims=None):
-        '''
+        """
         Extract the diagonal of the tensor.
 
         The tensor must be such that self.shape[mu] = n for all mu (in dims if
@@ -718,7 +725,7 @@ class SparseTensor:
         data : numpy.ndarray
             The evaluations of the diagonal of the tensor.
 
-        '''
+        """
         if dims is None:
             dims = np.arange(self.order)
         else:
@@ -727,16 +734,15 @@ class SparseTensor:
         if dims.size == 1:
             data = self
         else:
-            assert np.all([self.shape[x] == self.shape[dims[0]] for
-                           x in dims]),\
-             'The shapes of the tensor in dimensions dims should be equal.'
-            ind = np.repeat(np.reshape(np.arange(self.shape[0]), [-1, 1]),
-                            dims.size, 1)
+            assert np.all(
+                [self.shape[x] == self.shape[dims[0]] for x in dims]
+            ), "The shapes of the tensor in dimensions dims should be equal."
+            ind = np.repeat(np.reshape(np.arange(self.shape[0]), [-1, 1]), dims.size, 1)
             data = self.eval_at_indices(ind, dims)
         return data
 
     def sub_tensor(self, *indices):
-        '''
+        """
         Extract a subtensor of the tensor.
 
         The result is a tensor s of shape
@@ -758,5 +764,5 @@ class SparseTensor:
         SparseTensor
             The subtensor.
 
-        '''
-        raise NotImplementedError('Method not implemented.')
+        """
+        raise NotImplementedError("Method not implemented.")

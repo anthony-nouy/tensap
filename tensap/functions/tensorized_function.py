@@ -14,17 +14,17 @@
 # You should have received a copy of the GNU Lesser General Public License
 # along with tensap.  If not, see <https://www.gnu.org/licenses/>.
 
-'''
+"""
 Module tensorized_function.
 
-'''
+"""
 
 import numpy as np
 import tensap
 
 
 class TensorizedFunction(tensap.Function):
-    '''
+    """
     Class TensorizedFunction.
 
     Attributes
@@ -34,10 +34,10 @@ class TensorizedFunction(tensap.Function):
     tens : tensap.Tensorizer
         A tensap.Tensorizer object.
 
-    '''
+    """
 
     def __init__(self, fun, tens=None):
-        '''
+        """
         Constructor for the class TensorizedFunction.
 
         Function g(x1, ..., xdim) identified with a function f(z) of
@@ -68,8 +68,8 @@ class TensorizedFunction(tensap.Function):
         -------
         None.
 
-        '''
-        assert tens is not None, 'Must provide a Tensorizer.'
+        """
+        assert tens is not None, "Must provide a Tensorizer."
 
         tensap.Function.__init__(self)
 
@@ -86,7 +86,7 @@ class TensorizedFunction(tensap.Function):
         return self.fun(z)
 
     def domain(self):
-        '''
+        """
         Return the domain of the function.
 
         Returns
@@ -94,5 +94,5 @@ class TensorizedFunction(tensap.Function):
         sup : numpy.ndarray
             The domain of the function.
 
-        '''
+        """
         return self.tens.X.support()

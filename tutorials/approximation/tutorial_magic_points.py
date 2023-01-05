@@ -14,10 +14,10 @@
 # You should have received a copy of the GNU Lesser General Public License
 # along with tensap.  If not, see <https://www.gnu.org/licenses/>.
 
-'''
+"""
 Tutorial on magic points and interpolation.
 
-'''
+"""
 
 import numpy as np
 import matplotlib.pyplot as plt
@@ -30,8 +30,8 @@ G1 = np.linspace(DOM[0], DOM[1], 200)
 MAGIC_POINTS, IND, OUTPUT = P1.magic_points(G1)
 
 plt.figure()
-plt.plot(G1, np.zeros(G1.shape), 'k.', markersize=1)
-plt.plot(MAGIC_POINTS, np.zeros(MAGIC_POINTS.shape), 'ro', fillstyle='none')
+plt.plot(G1, np.zeros(G1.shape), "k.", markersize=1)
+plt.plot(MAGIC_POINTS, np.zeros(MAGIC_POINTS.shape), "ro", fillstyle="none")
 plt.show()
 
 # %% Magic points associated with a FullTensorProductFunctionalBasis
@@ -47,8 +47,8 @@ MAGIC_POINTS, IND, OUTPUT = P.magic_points(G)
 
 if D == 2:
     plt.figure()
-    plt.plot(G[:, 0], G[:, 1], 'k.', markersize=1)
-    plt.plot(MAGIC_POINTS[:, 0], MAGIC_POINTS[:, 1], 'ro', fillstyle='none')
+    plt.plot(G[:, 0], G[:, 1], "k.", markersize=1)
+    plt.plot(MAGIC_POINTS[:, 0], MAGIC_POINTS[:, 1], "ro", fillstyle="none")
     plt.show()
 
 # %% Magic points associated with a SparseTensorProductFunctionalBasis
@@ -60,7 +60,7 @@ D = 2
 P1 = tensap.PolynomialFunctionalBasis(tensap.LegendrePolynomials(), range(21))
 BASES = tensap.FunctionalBases.duplicate(P1, D)
 W = [1, 2]  # Weights for the anisotropic sparsity
-IND = tensap.MultiIndices.with_bounded_weighted_norm(2, 1, P1.cardinal()-1, W)
+IND = tensap.MultiIndices.with_bounded_weighted_norm(2, 1, P1.cardinal() - 1, W)
 P = tensap.SparseTensorProductFunctionalBasis(BASES, IND)
 
 if not TENSORIZATION_OF_MAGIC_POINTS:
@@ -75,8 +75,8 @@ MAGIC_POINTS, IND, OUTPUT = P.magic_points(G)
 
 if D == 2:
     plt.figure()
-    plt.plot(G[:, 0], G[:, 1], 'k.', markersize=1)
-    plt.plot(MAGIC_POINTS[:, 0], MAGIC_POINTS[:, 1], 'ro', fillstyle='none')
+    plt.plot(G[:, 0], G[:, 1], "k.", markersize=1)
+    plt.plot(MAGIC_POINTS[:, 0], MAGIC_POINTS[:, 1], "ro", fillstyle="none")
     plt.show()
 
 # %% Interpolation of a function using magic points
@@ -84,7 +84,7 @@ D = 2
 
 
 def F(x):
-    return np.cos(x[:, 0]) + x[:, 1]**6 + x[:, 0]**2*x[:, 1]
+    return np.cos(x[:, 0]) + x[:, 1] ** 6 + x[:, 0] ** 2 * x[:, 1]
 
 
 IF = P.interpolate(F, MAGIC_POINTS)
@@ -93,4 +93,4 @@ X = tensap.RandomVector(tensap.UniformRandomVariable(), D)
 N_TEST = 1000
 X_TEST = X.random(N_TEST)
 ERR = np.linalg.norm(IF(X_TEST) - F(X_TEST)) / np.linalg.norm(F(X_TEST))
-print('Test error = %2.5e' % ERR)
+print("Test error = %2.5e" % ERR)

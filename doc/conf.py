@@ -10,20 +10,20 @@
 # add these directories to sys.path here. If the directory is relative to the
 # documentation root, use os.path.abspath to make it absolute, like shown here.
 #
-#import os
-#import sys
-#import subprocess
+# import os
+# import sys
+# import subprocess
 # sys.path.insert(0, os.path.abspath('.'))
 
 
 # -- Project information -----------------------------------------------------
 
-project = 'tensap'
-copyright = '2020, A. Nouy, E. Grelier'
-author = 'A. Nouy, E. Grelier'
+project = "tensap"
+copyright = "2023, A. Nouy, E. Grelier"
+author = "A. Nouy, E. Grelier"
 
 # The full version, including alpha/beta/rc tags
-release = '1.1'
+release = "1.2"
 
 
 # -- General configuration ---------------------------------------------------
@@ -31,40 +31,23 @@ release = '1.1'
 # Add any Sphinx extension module names here, as strings. They can be
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
-extensions = ['sphinx.ext.autodoc',
-              'numpydoc',
-              ]
+extensions = [
+    "sphinx.ext.autodoc",
+    "numpydoc",
+]
 
-#try:
-    #import sphinx.ext.imgmath
-    #extensions.append('sphinx.ext.imgmath')
-    #imgmath_latex_preamble = r'\usepackage{{{0}math_notations}}'.format(
-        #os.path.dirname(__file__) + os.sep)
-    #imgmath_use_preview = True
-    #if subprocess.call('dvisvgm -V', shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE) == 0:
-        #imgmath_image_format = 'svg'
-#except ImportError:
-    #extensions.append('sphinx.ext.pngmath')
-    #pngmath_latex_preamble = r'\usepackage{{{0}math_notations}}'.format(
-        #os.path.dirname(__file__) + os.sep)
-    ## The next option is used for smart-alignment of math images on the text.
-    ## It only works when the preview-latex package is installed.
-    ## See http://sphinx-doc.org/latest/ext/math.html#confval-pngmath_use_preview
-    #pngmath_use_preview = True
-
-
-autodoc_default_flags = ['members', 'inherited-members']
+autodoc_default_flags = ["members", "inherited-members"]
 autosummary_generate = True
 numpydoc_show_class_members = True
 numpydoc_class_members_toctree = False
 
 # Add any paths that contain templates here, relative to this directory.
-templates_path = ['_templates']
+templates_path = ["_templates"]
 
 # List of patterns, relative to source directory, that match files and
 # directories to ignore when looking for source files.
 # This pattern also affects html_static_path and html_extra_path.
-exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
+exclude_patterns = ["_build", "Thumbs.db", ".DS_Store"]
 
 
 # -- Options for HTML output -------------------------------------------------
@@ -72,23 +55,22 @@ exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
 #
-html_theme = 'alabaster'
+html_theme = "alabaster"
 
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
 # so a file named "default.css" will overwrite the builtin "default.css".
-#html_static_path = ['_static']
+# html_static_path = ['_static']
 
 # -- Options for LATEX -------------------------------------------------
 
 latex_elements = {
     # The paper size ('letterpaper' or 'a4paper').
-    'papersize': 'a4paper',
+    "papersize": "a4paper",
     # The font size ('10pt', '11pt' or '12pt').
-    'pointsize': '10pt',
+    "pointsize": "10pt",
     # Additional stuff for the LaTeX preamble.
-    'preamble': r'\usepackage{math_notations}',
+    "preamble": r"\usepackage{math_notations}",
 }
 
-latex_additional_files = ['math_notations.sty']
-
+latex_additional_files = ["math_notations.sty"]

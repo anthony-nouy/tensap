@@ -1,4 +1,4 @@
-'''
+"""
 Setup file for tensap (tensor approximation package).
 
 Copyright (c) 2020, Anthony Nouy, Erwan Grelier
@@ -17,7 +17,7 @@ GNU Lesser General Public License for more details.
 You should have received a copy of the GNU Lesser General Public License
 along with tensap.  If not, see <https://www.gnu.org/licenses/>.
 
-'''
+"""
 
 import setuptools
 
@@ -25,9 +25,9 @@ with open("README.md", "r") as fh:
     long_description = fh.read()
 
 # Get the version from __init__.py
-with open('tensap/__init__.py') as fid:
+with open("tensap/__init__.py") as fid:
     for line in fid:
-        if line.startswith('__version__'):
+        if line.startswith("__version__"):
             version = line.strip().split()[-1][1:-1]
             break
 
@@ -36,7 +36,8 @@ setuptools.setup(
     version=version,
     author="Anthony Nouy, Erwan Grelier",
     author_email="anthony.nouy@ec-nantes.fr",
-    description="Tensor Approximation Package: a Python package for the approximation of functions and tensors.",
+    description="Tensor Approximation Package: a Python package for the \
+                 approximation of functions and tensors.",
     long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://anthony-nouy.github.io/tensap/",
@@ -47,9 +48,9 @@ setuptools.setup(
         "Operating System :: OS Independent",
     ],
     install_requires=[
-        'numpy',
-        'scipy',
+        "numpy",
+        "scipy",
     ],
-    python_requires='>=3.6',
+    python_requires=">=3.6",
     include_package_data=True,
 )

@@ -14,10 +14,10 @@
 # You should have received a copy of the GNU Lesser General Public License
 # along with tensap.  If not, see <https://www.gnu.org/licenses/>.
 
-'''
+"""
 Module orthonormal_polynomials.
 
-'''
+"""
 
 from abc import abstractmethod
 import numpy as np
@@ -25,7 +25,7 @@ import tensap
 
 
 class OrthonormalPolynomials(tensap.UnivariatePolynomials):
-    '''
+    """
     Class OrthonormalPolynomials.
 
     Attributes
@@ -33,22 +33,23 @@ class OrthonormalPolynomials(tensap.UnivariatePolynomials):
     measure : tensap.Measure
         The measure associated with the orthonormal polynomials.
 
-    '''
+    """
 
     @abstractmethod
     def __init__(self):
-        '''
+        """
         Constructor for the class OrthonormalPolynomials.
 
         Returns
         -------
         None.
 
-        '''
+        """
         self.measure = None
-#
+
+    #
     def __repr__(self):
-        return '<{}>'.format(self.__class__.__name__)
+        return "<{}>".format(self.__class__.__name__)
 
     @staticmethod
     def is_orthonormal():
@@ -62,16 +63,21 @@ class OrthonormalPolynomials(tensap.UnivariatePolynomials):
         if not isinstance(poly_2, OrthonormalPolynomials):
             out = False
         else:
-            out = (self.measure == poly_2.measure and
-                   np.array_equal(self._recurrence_coefficients,
-                                  poly_2._recurrence_coefficients) and
-                   np.array_equal(self._orthogonal_polynomials_norms,
-                                  poly_2._orthogonal_polynomials_norms) and
-                   self.is_orthonormal == poly_2.is_orthonormal)
+            out = (
+                self.measure == poly_2.measure
+                and np.array_equal(
+                    self._recurrence_coefficients, poly_2._recurrence_coefficients
+                )
+                and np.array_equal(
+                    self._orthogonal_polynomials_norms,
+                    poly_2._orthogonal_polynomials_norms,
+                )
+                and self.is_orthonormal == poly_2.is_orthonormal
+            )
         return out
 
     def domain(self):
-        '''
+        """
         Return the support of the associated measure.
 
         Returns
@@ -79,11 +85,11 @@ class OrthonormalPolynomials(tensap.UnivariatePolynomials):
         numpy.ndarray
             The support of the associated measure.
 
-        '''
+        """
         return self.measure.support()
 
     def truncated_domain(self):
-        '''
+        """
         Return the truncated support of the associated measure.
 
         Returns
@@ -91,14 +97,15 @@ class OrthonormalPolynomials(tensap.UnivariatePolynomials):
         numpy.ndarray
             The truncated support of the associated measure.
 
-        '''
+        """
         return self.measure.truncated_support()
 
     def moment(self, ind, measure=None):
         ind = np.atleast_2d(ind)
 
-        if np.isin(ind.shape[1], [1, 2]) and (measure is None or
-                                              measure == self.measure):
+        if np.isin(ind.shape[1], [1, 2]) and (
+            measure is None or measure == self.measure
+        ):
             out = np.zeros(ind.shape[0])
             if ind.shape[1] == 1:
                 out[ind[:, 0] == 0] = 1
@@ -111,21 +118,24 @@ class OrthonormalPolynomials(tensap.UnivariatePolynomials):
     def poly_coeff(self, ind):
         max_ind = np.max(ind)
         recurr = self.recurrence_monic(max_ind)[0]
-        a = recurr[0, :max_ind+1]
-        b = recurr[1, :max_ind+1]
+        a = recurr[0, : max_ind + 1]
+        b = recurr[1, : max_ind + 1]
 
-        coef = np.zeros([max_ind+1]*2)
+        coef = np.zeros([max_ind + 1] * 2)
         coef[0, 0] = 1
 
         if max_ind > 0:
             coef[1, 1:] = coef[0, :-1]
-            coef[1, :] = (coef[1, :] - a[0] * coef[0, :])/np.sqrt(b[1])
+            coef[1, :] = (coef[1, :] - a[0] * coef[0, :]) / np.sqrt(b[1])
 
         if max_ind > 1:
             for deg in np.arange(1, max_ind):
-                coef[deg+1, 1:] = coef[deg, :-1]
-                coef[deg+1, :] = (coef[deg+1, :] -  a[deg] * coef[deg, :] - \
-                    np.sqrt(b[deg]) * coef[deg-1, :])/np.sqrt(b[deg+1])
+                coef[deg + 1, 1:] = coef[deg, :-1]
+                coef[deg + 1, :] = (
+                    coef[deg + 1, :]
+                    - a[deg] * coef[deg, :]
+                    - np.sqrt(b[deg]) * coef[deg - 1, :]
+                ) / np.sqrt(b[deg + 1])
 
         return coef[ind, :]
 
@@ -134,18 +144,19 @@ class OrthonormalPolynomials(tensap.UnivariatePolynomials):
         max_ind = np.max(ind)
         recurr = self.recurrence_monic(max_ind)[0]
 
+        a = recurr[0, : max_ind + 1]
+        b = recurr[1, : max_ind + 1]
 
-        a = recurr[0, :max_ind+1]
-        b = recurr[1, :max_ind+1]
-
-        out = np.zeros((x.size, max_ind+1))
+        out = np.zeros((x.size, max_ind + 1))
         out[:, 0] = 1
         if max_ind > 0:
-            out[:, 1] = (x - a[0])/np.sqrt(b[1])
-            for deg in np.arange(2, max_ind+1):
-                out[:, deg] = (x - a[deg-1]) * out[:, deg-1] - np.sqrt(b[deg-1]) * out[:, deg-2]
+            out[:, 1] = (x - a[0]) / np.sqrt(b[1])
+            for deg in np.arange(2, max_ind + 1):
+                out[:, deg] = (x - a[deg - 1]) * out[:, deg - 1] - np.sqrt(
+                    b[deg - 1]
+                ) * out[:, deg - 2]
                 out[:, deg] /= np.sqrt(b[deg])
-        out/=np.sqrt(self.measure.mass())
+        out /= np.sqrt(self.measure.mass())
         return out[:, ind]
 
     def d_polyval(self, ind, x):
@@ -155,29 +166,31 @@ class OrthonormalPolynomials(tensap.UnivariatePolynomials):
         x = np.ravel(x)
         max_ind = np.max(ind)
         recurr = self.recurrence_monic(max_ind)[0]
-        a = recurr[0, :max_ind+1]
-        b = recurr[1, :max_ind+1]
+        a = recurr[0, : max_ind + 1]
+        b = recurr[1, : max_ind + 1]
 
-        out = self.polyval(np.arange(max_ind+1), x)
+        out = self.polyval(np.arange(max_ind + 1), x)
 
-        for k in np.arange(1, n+1):
+        for k in np.arange(1, n + 1):
             out_0 = np.array(out)
 
-            out = np.zeros((x.size, max_ind+1))
+            out = np.zeros((x.size, max_ind + 1))
             out[:, 0] = 0
             if max_ind > 0:
                 if k == 1:
-                    out[:, 1] = 1/np.sqrt(b[1])
+                    out[:, 1] = 1 / np.sqrt(b[1])
                 else:
                     out[:, 1] = 0
-            for deg in np.arange(2, max_ind+1):
-                out[:, deg] = (k * out_0[:, deg-1] + \
-                    (x - a[deg-1]) * out[:, deg-1] - \
-                    np.sqrt(b[deg-1]) * out[:, deg-2])/np.sqrt(b[deg])
+            for deg in np.arange(2, max_ind + 1):
+                out[:, deg] = (
+                    k * out_0[:, deg - 1]
+                    + (x - a[deg - 1]) * out[:, deg - 1]
+                    - np.sqrt(b[deg - 1]) * out[:, deg - 2]
+                ) / np.sqrt(b[deg])
         return out[:, ind]
 
     def random(self, ind, n=1, measure=None):
-        '''
+        """
         Return an array of size n of random evaluations of the polynomials for
         which the degree is in ind. If measure is not provided, the
         random generation is performed using self.measure.
@@ -200,12 +213,13 @@ class OrthonormalPolynomials(tensap.UnivariatePolynomials):
         x : numpy.ndarray
             The randomly drawn input points.
 
-        '''
+        """
         if measure is None:
             measure = self.measure
 
-        assert isinstance(measure, tensap.ProbabilityMeasure), \
-            'Must provide a ProbabilityMeasure.'
+        assert isinstance(
+            measure, tensap.ProbabilityMeasure
+        ), "Must provide a ProbabilityMeasure."
         n = np.atleast_1d(int(n))
         x = measure.random(np.prod(n))
 
@@ -218,7 +232,7 @@ class OrthonormalPolynomials(tensap.UnivariatePolynomials):
         return out, x
 
     def roots(self, deg):
-        '''
+        """
         Return the roots of the polynomial of degree deg.
 
         Parameters
@@ -232,8 +246,8 @@ class OrthonormalPolynomials(tensap.UnivariatePolynomials):
         numpy.ndarray
             The roots of the polynomial of degree deg.
 
-        '''
-        reccur = self.recurrence_monic(deg-1)[0]
+        """
+        reccur = self.recurrence_monic(deg - 1)[0]
         a = reccur[0]
         b = reccur[1]
 
@@ -241,14 +255,14 @@ class OrthonormalPolynomials(tensap.UnivariatePolynomials):
         if deg == 1:
             jacobi_matrix = np.diag(a)
         else:
-            jacobi_matrix = np.diag(a) + \
-                np.diag(np.sqrt(b[1:]), -1) + \
-                np.diag(np.sqrt(b[1:]), 1)
+            jacobi_matrix = (
+                np.diag(a) + np.diag(np.sqrt(b[1:]), -1) + np.diag(np.sqrt(b[1:]), 1)
+            )
         return np.sort(np.linalg.eig(jacobi_matrix)[0])
 
 
 class ShiftedOrthonormalPolynomials(tensap.UnivariatePolynomials):
-    '''
+    """
     Class ShiftedOrthonormalPolynomials.
 
     Attributes
@@ -262,10 +276,10 @@ class ShiftedOrthonormalPolynomials(tensap.UnivariatePolynomials):
     scaling : float
         The scaling parameter.
 
-    '''
+    """
 
     def __init__(self, polynomials, shift, scaling):
-        '''
+        """
         Constructor for the class ShiftedOrthonormalPolynomials.
 
         Parameters
@@ -281,14 +295,14 @@ class ShiftedOrthonormalPolynomials(tensap.UnivariatePolynomials):
         -------
         None.
 
-        '''
+        """
         self.measure = polynomials.measure.shift(shift, scaling)
         self.polynomials = polynomials
         self.shift = shift
         self.scaling = scaling
 
     def __repr__(self):
-        return '<{}>'.format(self.__class__.__name__)
+        return "<{}>".format(self.__class__.__name__)
 
     @staticmethod
     def is_orthonormal():
@@ -302,13 +316,15 @@ class ShiftedOrthonormalPolynomials(tensap.UnivariatePolynomials):
         if not isinstance(poly_2, ShiftedOrthonormalPolynomials):
             out = False
         else:
-            out = (self.polynomials == poly_2.polynomials) and \
-                (self.shift == poly_2.shift) and \
-                (self.scaling == poly_2.scaling)
+            out = (
+                (self.polynomials == poly_2.polynomials)
+                and (self.shift == poly_2.shift)
+                and (self.scaling == poly_2.scaling)
+            )
         return out
 
     def domain(self):
-        '''
+        """
         Return the support of the associated shifted measure.
 
         Returns
@@ -316,11 +332,11 @@ class ShiftedOrthonormalPolynomials(tensap.UnivariatePolynomials):
         numpy.ndarray
             The support of the associated measure.
 
-        '''
+        """
         return self.shift + self.scaling * self.polynomials.domain()
 
     def truncated_domain(self):
-        '''
+        """
         Return the truncated support of the associated shifted measure.
 
         Returns
@@ -328,7 +344,7 @@ class ShiftedOrthonormalPolynomials(tensap.UnivariatePolynomials):
         numpy.ndarray
             The truncated support of the associated measure.
 
-        '''
+        """
         return self.shift + self.scaling * self.polynomials.truncated_domain()
 
     def mean(self, ind, *measure):
@@ -339,8 +355,9 @@ class ShiftedOrthonormalPolynomials(tensap.UnivariatePolynomials):
             if measure[0] == self.measure:
                 measure = ()
             else:
-                measure = tuple([measure[0].shift(-self.shift/self.scaling,
-                                                  1/self.scaling)])
+                measure = tuple(
+                    [measure[0].shift(-self.shift / self.scaling, 1 / self.scaling)]
+                )
         return self.polynomials.moment(ind, *measure)
 
     def polyval(self, ind, x):
@@ -353,10 +370,10 @@ class ShiftedOrthonormalPolynomials(tensap.UnivariatePolynomials):
 
     def dn_polyval(self, n, ind, x):
         x = (x - self.shift) / self.scaling
-        return self.polynomials.dn_polyval(n,ind, x) / (self.scaling**n)
+        return self.polynomials.dn_polyval(n, ind, x) / (self.scaling ** n)
 
     def random(self, ind, n=1, measure=None):
-        '''
+        """
         Return an array of size n of random evaluations of the shifted
         polynomials for which the degree is in ind. If measure is not provided,
         the random generation is performed using self.measure.
@@ -379,13 +396,13 @@ class ShiftedOrthonormalPolynomials(tensap.UnivariatePolynomials):
         x : numpy.ndarray
             The randomly drawn input points.
 
-        '''
+        """
         fx, x = self.polynomials.random(ind, n, measure)
         x = self.shift + self.scaling * x
         return fx, x
 
     def roots(self, n):
-        '''
+        """
         Return the roots of the shifted polynomial of degree deg.
 
         Parameters
@@ -399,7 +416,7 @@ class ShiftedOrthonormalPolynomials(tensap.UnivariatePolynomials):
         numpy.ndarray
             The roots of the polynomial of degree deg.
 
-        '''
+        """
         return self.shift + self.scaling * self.polynomials.roots(n)
 
     @staticmethod
@@ -408,21 +425,21 @@ class ShiftedOrthonormalPolynomials(tensap.UnivariatePolynomials):
 
     @staticmethod
     def poly_coeff():
-        raise NotImplementedError('Method not implemented.')
+        raise NotImplementedError("Method not implemented.")
 
 
 class HermitePolynomials(OrthonormalPolynomials):
-    
-    '''
+
+    """
     Class HermitePolynomials.
 
     Polynomials defined on R and orthonormal with respect to the standard
     gaussian measure 1/sqrt(2*pi)*exp(-x^2/2).
- 
-    '''
+
+    """
 
     def __init__(self):
-        '''
+        """
         Constructor for the class HermitePolynomials.
 
         Parameters
@@ -435,13 +452,13 @@ class HermitePolynomials(OrthonormalPolynomials):
         -------
         None.
 
-        '''
+        """
         self.measure = tensap.NormalRandomVariable(0, 1)
-        
-    
-    def recurrence_monic(self,n):
-        '''
-        Computes the coefficients of the three-term recurrence used to construct the monic polynomials
+
+    def recurrence_monic(self, n):
+        """
+        Computes the coefficients of the three-term recurrence used
+        to construct the monic polynomials
         :math::`p_{n+1}(x) = (x-a_n)p_n(x) - b_n p_{n-1}(x)`, an and bn are
         the three-term recurrence coefficients
 
@@ -452,28 +469,28 @@ class HermitePolynomials(OrthonormalPolynomials):
         Returns
         -------
         recurr : 2-by-(n+1) numpy.ndarray
-            recurr[0] contains [a_0 , ..., a_n] 
+            recurr[0] contains [a_0 , ..., a_n]
             recurr[1] contains [b_0 , ..., b_n]
         norms : 1-by-(n+1) numpy.ndarray
             norms array
-        '''
-        recurr = np.zeros((2,n+1))
-        recurr[1,:] = np.arange(n+1)
-        norms = np.array([np.sqrt(float(np.math.factorial(x))) for x in range(n+1)])
+        """
+        recurr = np.zeros((2, n + 1))
+        recurr[1, :] = np.arange(n + 1)
+        norms = np.array([np.sqrt(float(np.math.factorial(x))) for x in range(n + 1)])
         return recurr, norms
 
 
 class LegendrePolynomials(OrthonormalPolynomials):
-    '''
+    """
     Class LegendrePolynomials.
 
     Polynomials defined on [-1,1], orthonormal with respect to the standard
     uniform measure 1/2.
 
-    '''
+    """
 
     def __init__(self):
-        '''
+        """
         Constructor for the class LegendrePolynomials.
 
         Parameters
@@ -486,13 +503,13 @@ class LegendrePolynomials(OrthonormalPolynomials):
         -------
         None.
 
-        '''
+        """
         self.measure = tensap.UniformRandomVariable(-1, 1)
 
-
-    def recurrence_monic(self,n):
-        '''
-        Computes the coefficients of the three-term recurrence used to construct the monic polynomials
+    def recurrence_monic(self, n):
+        """
+        Computes the coefficients of the three-term recurrence used
+        to construct the monic polynomials
         :math::`p_{n+1}(x) = (x-a_n)p_n(x) - b_n p_{n-1}(x)`, an and bn are
         the three-term recurrence coefficients
 
@@ -503,28 +520,36 @@ class LegendrePolynomials(OrthonormalPolynomials):
         Returns
         -------
         recurr : 2-by-(n+1) numpy.ndarray
-            recurr[0] contains [a_0 , ..., a_n] 
+            recurr[0] contains [a_0 , ..., a_n]
             recurr[1] contains [b_0 , ..., b_n]
         norms : 1-by-(n+1) numpy.ndarray
             norms array
-        '''
-        recurr = np.zeros((2,n+1))
-        recurr[1,:] = np.arange(n+1)**2 / (4*np.arange(n+1)**2 - 1)
-        norms = np.array([np.sqrt(1/(2*x+1)) * 2**x * np.math.factorial(x)**2 / np.math.factorial(2*x) for x in range(n+1)])
+        """
+        recurr = np.zeros((2, n + 1))
+        recurr[1, :] = np.arange(n + 1) ** 2 / (4 * np.arange(n + 1) ** 2 - 1)
+        norms = np.array(
+            [
+                np.sqrt(1 / (2 * x + 1))
+                * 2 ** x
+                * np.math.factorial(x) ** 2
+                / np.math.factorial(2 * x)
+                for x in range(n + 1)
+            ]
+        )
         return recurr, norms
 
 
 class LegendrePolynomialsLebesgue(OrthonormalPolynomials):
-    '''
+    """
     Class LegendrePolynomialsLebesgue.
 
     Polynomials defined on [-1,1], orthonormal with respect to the Lebesgue
       measure.
 
-    '''
+    """
 
     def __init__(self):
-        '''
+        """
         Constructor for the class LegendrePolynomialsLebesgue.
 
         Parameters
@@ -537,13 +562,13 @@ class LegendrePolynomialsLebesgue(OrthonormalPolynomials):
         -------
         None.
 
-        '''
+        """
         self.measure = tensap.LebesgueMeasure(-1, 1)
 
-
-    def recurrence_monic(self,n):       
-        '''
-        Computes the coefficients of the three-term recurrence used to construct the monic polynomials
+    def recurrence_monic(self, n):
+        """
+        Computes the coefficients of the three-term recurrence used
+        to construct the monic polynomials
         :math::`p_{n+1}(x) = (x-a_n)p_n(x) - b_n p_{n-1}(x)`, an and bn are
         the three-term recurrence coefficients
 
@@ -554,32 +579,39 @@ class LegendrePolynomialsLebesgue(OrthonormalPolynomials):
         Returns
         -------
         recurr : 2-by-(n+1) numpy.ndarray
-            recurr[0] contains [a_0 , ..., a_n] 
+            recurr[0] contains [a_0 , ..., a_n]
             recurr[1] contains [b_0 , ..., b_n]
         norms : 1-by-(n+1) numpy.ndarray
             norms array
-        '''
-        recurr = np.zeros((2,n+1))
-        recurr[1,:] = np.arange(n+1)**2 / (4*np.arange(n+1)**2 - 1)
+        """
+        recurr = np.zeros((2, n + 1))
+        recurr[1, :] = np.arange(n + 1) ** 2 / (4 * np.arange(n + 1) ** 2 - 1)
 
-        norms = np.array([np.sqrt(1/(2*x+1)) * 2**x * np.math.factorial(x)**2 / np.math.factorial(2*x)*np.sqrt(2) for x in range(n+1)])
+        norms = np.array(
+            [
+                np.sqrt(1 / (2 * x + 1))
+                * 2 ** x
+                * np.math.factorial(x) ** 2
+                / np.math.factorial(2 * x)
+                * np.sqrt(2)
+                for x in range(n + 1)
+            ]
+        )
         return recurr, norms
 
 
-
-
 class EmpiricalPolynomials(OrthonormalPolynomials):
-    '''
+    """
     Class EmpiricalPolynomials.
 
     Polynomials defined on R and orthonormal with respect to the gaussian
     kernel smoothed distribution based on a sample x, which was centered and
     normalized (unit variance).
 
-    '''
+    """
 
     def __init__(self, sample, n=None):
-        '''
+        """
         Constructor for the class EmpiricalPolynomials.
 
         Parameters
@@ -595,49 +627,52 @@ class EmpiricalPolynomials(OrthonormalPolynomials):
         -------
         None.
 
-        '''
+        """
         if isinstance(sample, tensap.EmpiricalRandomVariable):
             self.measure = sample.get_standard_random_variable()
         else:
             # Standardization of the sample
             x = np.reshape(self.sample, [-1, 1])
-            x = (x - np.tile(np.mean(x, 0), (x.shape[0], 1))) / \
-                np.tile(np.std(x, 0), (x.shape[0], 1))
+            x = (x - np.tile(np.mean(x, 0), (x.shape[0], 1))) / np.tile(
+                np.std(x, 0), (x.shape[0], 1)
+            )
             self.measure = tensap.EmpiricalRandomVariable(np.ravel(x))
-        if n is None: 
-            n =self.measure.sample.shape[0]-1
+        if n is None:
+            n = self.measure.sample.shape[0] - 1
 
-        self._recurrence_coefficients, self._orthogonal_polynomials_norms = \
-            self._precompute_recurrence_monic(self.measure, n)
+        (
+            self._recurrence_coefficients,
+            self._orthogonal_polynomials_norms,
+        ) = self._precompute_recurrence_monic(self.measure, n)
 
-    def recurrence_monic(self,n):
-        recurr = self._recurrence_coefficients[:,np.arange(n+1)]
-        norms = self._orthogonal_polynomials_norms[np.arange(n+1)]
+    def recurrence_monic(self, n):
+        recurr = self._recurrence_coefficients[:, np.arange(n + 1)]
+        norms = self._orthogonal_polynomials_norms[np.arange(n + 1)]
         return recurr, norms
 
     @staticmethod
-    def _precompute_recurrence_monic(measure,n):
-        '''
-        Computes the coefficients of the three-term recurrence used to construct the monic polynomials
+    def _precompute_recurrence_monic(measure, n):
+        """
+        Computes the coefficients of the three-term recurrence used
+        to construct the monic polynomials
         p_{n+1}(x) = (x-a_n)p_n(x) - b_n p_{n-1}(x), a_n and b_n are
         the three-term recurrence coefficients
 
         Parameters
         ----------
         n : int
-        
+
         Returns
         -------
         recurr : 2-by-(n+1) numpy.ndarray
-            recurr[0] contains [a_0 , ..., a_n] 
-            recurr[1] contains [b_0 , ..., b_n] 
+            recurr[0] contains [a_0 , ..., a_n]
+            recurr[1] contains [b_0 , ..., b_n]
         norms : 1-by-(n+1) numpy.ndarray
             norms array
-        '''
-      
+        """
 
         def is_orth(pnp1, pn, pnm1, weights):
-            '''
+            """
             Determine if the polynomial pnp1 is orthogonal to the polynomials
             pn and pnm1, according to the DiscreteRandomVariable r.
 
@@ -658,18 +693,18 @@ class EmpiricalPolynomials(OrthonormalPolynomials):
                 Boolean equal to True if the polynomial pnp1 is orthogonal to
                 the polynomials pn and pnm1, False otherwise.
 
-            '''
+            """
             tol = 1e-4  # Tolerance for the inner product to be considered as 0
 
-            d1 = np.abs(np.sum(np.matmul(pnp1*pn, weights)))
-            d2 = np.abs(np.sum(np.matmul(pnp1*pnm1, weights)))
+            d1 = np.abs(np.sum(np.matmul(pnp1 * pn, weights)))
+            d2 = np.abs(np.sum(np.matmul(pnp1 * pnm1, weights)))
 
             if d1 < tol and d2 < tol:
                 return True
             return False
 
         def peval(i, a, b, x):
-            '''
+            """
             Evaluate the polynomial of degree i defined by the coefficients a
             and b at points x.
 
@@ -689,7 +724,7 @@ class EmpiricalPolynomials(OrthonormalPolynomials):
             p_n_loc : numpy.ndarray
                 The evaluations of the polynomial at points x.
 
-            '''
+            """
 
             if i < 0:
                 p_n_loc = np.zeros(x.shape)
@@ -699,8 +734,8 @@ class EmpiricalPolynomials(OrthonormalPolynomials):
                 p_n_loc_m2 = 1
                 p_n_loc_m1 = x - a[0]
                 p_n_loc = np.array(p_n_loc_m1)
-                for N in np.arange(2, i+1):
-                    p_n_loc = (x - a[N-1]) * p_n_loc_m1 - b[N-1] * p_n_loc_m2
+                for N in np.arange(2, i + 1):
+                    p_n_loc = (x - a[N - 1]) * p_n_loc_m1 - b[N - 1] * p_n_loc_m2
                     p_n_loc_m2 = np.array(p_n_loc_m1)
                     p_n_loc_m1 = np.array(p_n_loc)
             return p_n_loc
@@ -711,34 +746,35 @@ class EmpiricalPolynomials(OrthonormalPolynomials):
         else:
             check = False
 
-        norms = np.zeros(n+2)
-        a = np.zeros(n+2)
-        b = np.zeros(n+2)
+        norms = np.zeros(n + 2)
+        a = np.zeros(n + 2)
+        b = np.zeros(n + 2)
 
         G = tensap.NormalRandomVariable().gauss_integration_rule(
-            int(np.ceil((2*n+3)/2)))
+            int(np.ceil((2 * n + 3) / 2))
+        )
         xi = measure.sample
         weights = G.weights / xi.size
 
-        x_ij = measure.bandwidth * np.tile(np.reshape(G.points, [1, -1]),
-                                           (xi.size, 1)) + \
-            np.tile(np.reshape(xi, [-1, 1]), (1, G.points.size))
+        x_ij = measure.bandwidth * np.tile(
+            np.reshape(G.points, [1, -1]), (xi.size, 1)
+        ) + np.tile(np.reshape(xi, [-1, 1]), (1, G.points.size))
 
         i = 0
         cond = True
         norms[0] = 1
-        a[0] = np.sum(np.matmul(x_ij, weights)) 
+        a[0] = np.sum(np.matmul(x_ij, weights))
         b[0] = 0
 
         while cond and i <= n:
             i += 1
 
-            p_n_m1 = np.reshape(peval(i-1, a, b, x_ij), x_ij.shape)
+            p_n_m1 = np.reshape(peval(i - 1, a, b, x_ij), x_ij.shape)
             p_n = np.reshape(peval(i, a, b, x_ij), x_ij.shape)
 
-            norms[i] = np.sum(np.matmul(p_n**2, weights))
-            a[i] = np.sum(np.matmul(p_n*x_ij*p_n, weights))/norms[i]
-            b[i] = norms[i]/norms[i-1]
+            norms[i] = np.sum(np.matmul(p_n ** 2, weights))
+            a[i] = np.sum(np.matmul(p_n * x_ij * p_n, weights)) / norms[i]
+            b[i] = norms[i] / norms[i - 1]
 
             p_n_p1 = (x_ij - a[i]) * p_n - b[i] * p_n_m1
 
@@ -747,22 +783,22 @@ class EmpiricalPolynomials(OrthonormalPolynomials):
                 # is not specified by the user
                 cond = is_orth(p_n_p1, p_n, p_n_m1, weights)
 
-        if not cond and i-2 != n:
-            raise ValueError('Maximum degree: %i (%i asked)' % (i-2, n))
+        if not cond and i - 2 != n:
+            raise ValueError("Maximum degree: %i (%i asked)" % (i - 2, n))
 
         return np.vstack((a[:i], b[:i])), np.sqrt(norms[:i])
 
 
 class DiscretePolynomials(OrthonormalPolynomials):
-    '''
+    """
     Class DiscretePolynomials.
 
     Polynomials orthonormal with respect to a discrete measure.
 
-    '''
+    """
 
     def __init__(self, measure=None):
-        '''
+        """
         Constructor for the class DiscretePolynomials.
 
         Polynomials orthonormal with respect to a discrete measure.
@@ -777,42 +813,46 @@ class DiscretePolynomials(OrthonormalPolynomials):
         -------
         None.
 
-        '''
-        assert (isinstance(measure, tensap.DiscreteRandomVariable) or \
-                isinstance(measure, tensap.DiscreteMeasure)), \
-            'Must specify a DiscreteRandomVariable or DiscreteMeasure.'
+        """
+        assert isinstance(measure, tensap.DiscreteRandomVariable) or isinstance(
+            measure, tensap.DiscreteMeasure
+        ), "Must specify a DiscreteRandomVariable or DiscreteMeasure."
 
         self.measure = measure
-        n = np.size(measure.values)-1
-        self._recurrence_coefficients, self._orthogonal_polynomials_norms = \
-            tensap.DiscretePolynomials._precompute_recurrence_monic(measure,n)
+        n = np.size(measure.values) - 1
+        (
+            self._recurrence_coefficients,
+            self._orthogonal_polynomials_norms,
+        ) = tensap.DiscretePolynomials._precompute_recurrence_monic(measure, n)
 
-    def recurrence_monic(self,n):
-        recurr = self._recurrence_coefficients[:,np.arange(n+1)]
-        norms = self._orthogonal_polynomials_norms[np.arange(n+1)]
+    def recurrence_monic(self, n):
+        recurr = self._recurrence_coefficients[:, np.arange(n + 1)]
+        norms = self._orthogonal_polynomials_norms[np.arange(n + 1)]
         return recurr, norms
-    
+
     @staticmethod
-    def _precompute_recurrence_monic(measure,n):        
-        '''
-        Precompute the coefficients of the three-term recurrence used to construct the monic polynomials
+    def _precompute_recurrence_monic(measure, n):
+        """
+        Precompute the coefficients of the three-term recurrence used
+        to construct the monic polynomials
         p_{n+1}(x) = (x-a_n)p_n(x) - b_n p_{n-1}(x), a_n and b_n are
         the three-term recurrence coefficients
 
         Parameters
         ----------
         n : int
-        
+
         Returns
         -------
         recurr : 2-by-(n+1) numpy.ndarray
-            recurr[0] contains [a_0 , ..., a_n] 
-            recurr[1] contains [b_0 , ..., b_n] 
+            recurr[0] contains [a_0 , ..., a_n]
+            recurr[1] contains [b_0 , ..., b_n]
         norms : 1-by-(n+1) numpy.ndarray
             norms array
-        '''
+        """
+
         def dot_product(p1, p2, r):
-            '''
+            """
             Compute the inner product between two polynomials p1 and p2,
             according to the DiscreteRandomVariable r.
 
@@ -830,12 +870,12 @@ class DiscretePolynomials(OrthonormalPolynomials):
             float
                 The inner product between p1 and p2.
 
-            '''
+            """
             G = r.integration_rule()
-            return G.integrate(lambda x: p1(x)*p2(x))
+            return G.integrate(lambda x: p1(x) * p2(x))
 
         def is_orth(pnp1, pn, pnm1, r):
-            '''
+            """
             Determine if the polynomial pnp1 is orthogonal to the polynomials
             pn and pnm1, according to the DiscreteRandomVariable r.
 
@@ -856,7 +896,7 @@ class DiscretePolynomials(OrthonormalPolynomials):
                 Boolean equal to True if the polynomial pnp1 is orthogonal to
                 the polynomials pn and pnm1, False otherwise.
 
-            '''
+            """
             tol = 1e-5  # Tolerance for the inner product to be considered as 0
 
             d1 = np.abs(dot_product(pnp1, pn, r))
@@ -866,36 +906,37 @@ class DiscretePolynomials(OrthonormalPolynomials):
                 return True
             return False
 
-        norms = np.zeros(n+2)
-        a = np.zeros(n+2)
-        b = np.zeros(n+2)
+        norms = np.zeros(n + 2)
+        a = np.zeros(n + 2)
+        b = np.zeros(n + 2)
 
         i = 0
         cond = True
-        norms[0] = dot_product(lambda x: x**0, lambda x: x**0, measure)
-        a[0] = dot_product(lambda x: x**0, lambda x: x, measure)/norms[0]
+        norms[0] = dot_product(lambda x: x ** 0, lambda x: x ** 0, measure)
+        a[0] = dot_product(lambda x: x ** 0, lambda x: x, measure) / norms[0]
         b[0] = 0
         pnm1 = []
         pn = [lambda x: 1]
-        pnp1 = [lambda x, a=a[0]: (x-a)*pn[0](x)]
+        pnp1 = [lambda x, a=a[0]: (x - a) * pn[0](x)]
 
         while cond and i <= n:
             i += 1
-            pnm1.append(pn[i-1])
-            pn.append(pnp1[i-1])
+            pnm1.append(pn[i - 1])
+            pn.append(pnp1[i - 1])
 
             norms[i] = dot_product(pn[i], pn[i], measure)
             if norms[i] == 0:
                 a[i] = np.nan
             else:
-                a[i] = dot_product(pn[i],
-                                   lambda x: x*pn[i](x), measure) / norms[i]
-            b[i] = norms[i] / norms[i-1]
+                a[i] = dot_product(pn[i], lambda x: x * pn[i](x), measure) / norms[i]
+            b[i] = norms[i] / norms[i - 1]
 
-            pnp1.append(lambda x, a=a[i], b=b[i], pn=pn[i], pnm1=pnm1[i-1]:
-                        (x-a)*pn(x) - b*pnm1(x))
+            pnp1.append(
+                lambda x, a=a[i], b=b[i], pn=pn[i], pnm1=pnm1[i - 1]: (x - a) * pn(x)
+                - b * pnm1(x)
+            )
 
             # Orthogonality condition
-            cond = is_orth(pnp1[i], pn[i], pnm1[i-1], measure)
+            cond = is_orth(pnp1[i], pn[i], pnm1[i - 1], measure)
 
         return np.vstack((a[:i], b[:i])), np.sqrt(norms[:i])

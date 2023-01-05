@@ -14,10 +14,10 @@
 # You should have received a copy of the GNU Lesser General Public License
 # along with tensap.  If not, see <https://www.gnu.org/licenses/>.
 
-'''
+"""
 Module random_variable.
 
-'''
+"""
 
 from copy import deepcopy
 import numpy as np
@@ -25,7 +25,7 @@ import tensap
 
 
 class RandomVariable(tensap.ProbabilityMeasure):
-    '''
+    """
     Class RandomVariable.
 
     Attributes
@@ -33,10 +33,10 @@ class RandomVariable(tensap.ProbabilityMeasure):
     moments : numpy.array
         The moments of the normal random variable (if computed).
 
-    '''
+    """
 
     def __init__(self):
-        '''
+        """
         Constructor of the class RandomVariable.
 
         The moments attribute remains empty as long as the moments have not
@@ -46,12 +46,12 @@ class RandomVariable(tensap.ProbabilityMeasure):
         -------
         None.
 
-        '''
+        """
         self.moments = np.array([])
 
     @staticmethod
     def ndim():
-        '''
+        """
         Return the dimension of the random variable, equal to 1.
 
         Returns
@@ -59,12 +59,14 @@ class RandomVariable(tensap.ProbabilityMeasure):
         int
             The dimension of the random variable.
 
-        '''
+        """
         return 1
 
     def __eq__(self, rv_2):
-        if not (isinstance(self, tensap.RandomVariable) and
-                isinstance(rv_2, tensap.RandomVariable)):
+        if not (
+            isinstance(self, tensap.RandomVariable)
+            and isinstance(rv_2, tensap.RandomVariable)
+        ):
             is_equal = False
         elif not isinstance(self, type(rv_2)):
             is_equal = False
@@ -80,7 +82,7 @@ class RandomVariable(tensap.ProbabilityMeasure):
         return not (self == rv_2)
 
     def number_of_parameters(self):
-        '''
+        """
         Compute the number of parameters that admits the random variable.
 
         Returns
@@ -88,11 +90,11 @@ class RandomVariable(tensap.ProbabilityMeasure):
         int
             The number of parameters that admits the random variable.
 
-        '''
+        """
         return np.size(self.get_parameters())
 
     def pdf(self, x):
-        '''
+        """
         Compute the probability density function (pdf) of the RandomVariable
         at points x.
 
@@ -106,11 +108,11 @@ class RandomVariable(tensap.ProbabilityMeasure):
         numpy.ndarray
             The evaluations of the pdf at points x.
 
-        '''
-        raise NotImplementedError('No generic implementation of the method.')
+        """
+        raise NotImplementedError("No generic implementation of the method.")
 
     def cdf(self, x):
-        '''
+        """
         Compute the cumulative distribution function (cdf) of the
         RandomVariable at points x.
 
@@ -124,11 +126,11 @@ class RandomVariable(tensap.ProbabilityMeasure):
         numpy.ndarray
             The evaluations of the cdf at points x.
 
-        '''
-        raise NotImplementedError('No generic implementation of the method.')
+        """
+        raise NotImplementedError("No generic implementation of the method.")
 
     def icdf(self, x):
-        '''
+        """
         Compute the inverse cumulative distribution function (icdf) of the
         RandomVariable at points x.
 
@@ -142,11 +144,11 @@ class RandomVariable(tensap.ProbabilityMeasure):
         numpy.ndarray
             The evaluations of the icdf at points x.
 
-        '''
-        raise NotImplementedError('No generic implementation of the method.')
+        """
+        raise NotImplementedError("No generic implementation of the method.")
 
     def iso_probabilistic_grid(self, n):
-        '''
+        """
         Return a set of n+1 points (x_0, ..., x_{n}) such that the n sets
         (x0, x_1), [x_1, x_2) ... [x_{n-1}, x_{n})  have all the same
         probability p = 1/n (with x0 = self.min() and x_{n+1}=self.max()).
@@ -161,60 +163,60 @@ class RandomVariable(tensap.ProbabilityMeasure):
         numpy.ndarray
             The iso-probabilistic grid.
 
-        '''
+        """
         if n < 1:
-            n = int(np.ceil(1/n))
+            n = int(np.ceil(1 / n))
 
         if n == 1:
             g = []
         elif n == 2:
             g = [self.icdf(0.5)]
         else:
-            g = self.icdf(np.linspace(1/n, 1-1/n, n-1))
+            g = self.icdf(np.linspace(1 / n, 1 - 1 / n, n - 1))
         return np.concatenate(([self.min()], g, [self.max()]))
 
-    def discretize_support(self, n, s = None ):
-        '''
-        Discretize a random variable X and returns 
+    def discretize_support(self, n, s=None):
+        """
+        Discretize a random variable X and returns
         a discrete random variable Xn
         taking n possible values x[1], ..., x[n],
         and
-        P(Xn = x[i]) = P(v[i] < X <= v[i+1]) 
-        with v = [-inf , (x[0]+x[1])/2 , ..., (x[n-1]+x[n])/2, inf)       
+        P(Xn = x[i]) = P(v[i] < X <= v[i+1])
+        with v = [-inf , (x[0]+x[1])/2 , ..., (x[n-1]+x[n])/2, inf)
 
         Parameters
         ----------
         x : list or numpy.ndarray
-        
-        or 
-        
+
+        or
+
         n : int
             The number of possible values the discrete random variable can
             take.
-        s : list or numpy array providing the support [a,b] 
+        s : list or numpy array providing the support [a,b]
             (by default, the truncated support of X)
-            
+
 
         Returns
         -------
         tensap.DiscreteRandomVariable
             The obtained discrete random variable.
 
-        '''
+        """
         if np.isscalar(n):
             if s is None:
                 s = self.truncated_support()
-            u = np.linspace(1/(2*n), 1-1/(2*n), n)
-            x = s[0] + u*(s[1] - s[0])
+            u = np.linspace(1 / (2 * n), 1 - 1 / (2 * n), n)
+            x = s[0] + u * (s[1] - s[0])
         else:
             x = n
-        v = np.concatenate((-np.Inf,(x[1:] + x[:-1])/2,np.Inf),axis=None)
+        v = np.concatenate((-np.Inf, (x[1:] + x[:-1]) / 2, np.Inf), axis=None)
         p = self.cdf(v[1:]) - self.cdf(v[:-1])
-        
-        return tensap.DiscreteRandomVariable(x,p)
+
+        return tensap.DiscreteRandomVariable(x, p)
 
     def discretize(self, n):
-        '''
+        """
         Discretize a random variable and returns a discrete random variable Xn
         taking n possible values x(1), ..., x(n),
         these values being the quantiles of self of probability 1/(2n) + i/n,
@@ -231,13 +233,13 @@ class RandomVariable(tensap.ProbabilityMeasure):
         tensap.DiscreteRandomVariable
             The obtained discrete random variable.
 
-        '''
-        u = np.linspace(1/(2*n), 1-1/(2*n), n)
+        """
+        u = np.linspace(1 / (2 * n), 1 - 1 / (2 * n), n)
         x = self.icdf(u)
         return tensap.DiscreteRandomVariable(x)
 
     def gauss_integration_rule(self, nb_pts):
-        '''
+        """
         Return the nb_pts-points gauss integration rule associated with the
         measure of self, using Golub-Welsch algorithm.
 
@@ -251,7 +253,7 @@ class RandomVariable(tensap.ProbabilityMeasure):
         tensap.IntegrationRule
             The integration rule associated with the measure of self.
 
-        '''
+        """
         poly = self.orthonormal_polynomials()
         if isinstance(poly, tensap.ShiftedOrthonormalPolynomials):
             shift = poly.shift
@@ -261,15 +263,17 @@ class RandomVariable(tensap.ProbabilityMeasure):
         else:
             flag = False
 
-        coef = poly.recurrence_monic(nb_pts-1)[0]
+        coef = poly.recurrence_monic(nb_pts - 1)[0]
 
         # Jacobi matrix
         if nb_pts == 1:
             jacobi_matrix = np.diag(coef[0, :])
         else:
-            jacobi_matrix = np.diag(coef[0, :]) + \
-                np.diag(np.sqrt(coef[1, 1:]), -1) + \
-                np.diag(np.sqrt(coef[1, 1:]), 1)
+            jacobi_matrix = (
+                np.diag(coef[0, :])
+                + np.diag(np.sqrt(coef[1, 1:]), -1)
+                + np.diag(np.sqrt(coef[1, 1:]), 1)
+            )
 
         # Quadrature points are the eigenvalues of the Jacobi matrix, weights
         # are deduced from the eigenvectors
@@ -278,14 +282,14 @@ class RandomVariable(tensap.ProbabilityMeasure):
         ind = np.argsort(eig_values)
         eig_vectors = eig_vectors[:, ind]
 
-        weights = eig_vectors[0, :]**2 / np.sqrt(np.sum(eig_vectors**2, 0))
+        weights = eig_vectors[0, :] ** 2 / np.sqrt(np.sum(eig_vectors ** 2, 0))
 
         if flag:
             points = shift + scaling * points
         return tensap.IntegrationRule(points, weights)
 
     def lhs_random(self, n):
-        '''
+        """
         Latin Hypercube Sampling of the random variable self of n points in
         dimension p.
 
@@ -295,21 +299,22 @@ class RandomVariable(tensap.ProbabilityMeasure):
         ----------
         n : int
             Number of points.
-            
+
         Returns
         -------
         numpy.ndarray
             The coordinates of the Latin Hypercube Sampling in each dimension.
 
-        '''
+        """
         from scipy.stats import qmc
+
         sampler = qmc.LatinHypercube(d=1)
         A = sampler.random(n=n)
         U = tensap.UniformRandomVariable(0, 1)
         return U.transfer(self, A[:, 0])
 
     def likelihood(self, x):
-        '''
+        """
          Compute the log-likelihood of the random variable on sample x.
 
         Parameters
@@ -322,12 +327,12 @@ class RandomVariable(tensap.ProbabilityMeasure):
         float
             The log-likelihood of the random variable on sample x.
 
-        '''
+        """
         P = self.pdf(x)
         return np.sum(np.log(P + np.finfo(float).eps))
 
     def max(self):
-        '''
+        """
         Compute the maximum value that can take the inverse cumulative
         distribution function of the random variable.
 
@@ -337,11 +342,11 @@ class RandomVariable(tensap.ProbabilityMeasure):
             The maximum value that can take the inverse cumulative distribution
             function of the random variable.
 
-        '''
+        """
         return np.max(self.support())
 
     def min(self):
-        '''
+        """
         Compute the minimum value that can take the inverse cumulative
         distribution function of the random variable.
 
@@ -351,11 +356,11 @@ class RandomVariable(tensap.ProbabilityMeasure):
             The minimum value that can take the inverse cumulative distribution
             function of the random variable.
 
-        '''
+        """
         return np.min(self.support())
 
     def moment(self, ind, nargout=1):
-        '''
+        """
         Compute the moments of self of orders contained in ind, defined as
         E(X^ind[î]).
         If a second output argument is asked, the computed moments are stored
@@ -377,13 +382,13 @@ class RandomVariable(tensap.ProbabilityMeasure):
             The RandomVariable object with the computed moments stored in the
             attribute moments.
 
-        '''
+        """
         ind = np.atleast_1d(ind)
-        if np.size(self.moments)-1 >= np.max(ind):
+        if np.size(self.moments) - 1 >= np.max(ind):
             out = self.moments[ind]
         else:
             out = np.zeros(np.size(ind))
-            nb_pts = int(np.ceil((np.max(ind)+1)/2))
+            nb_pts = int(np.ceil((np.max(ind) + 1) / 2))
             G = self.gauss_integration_rule(nb_pts)
             for nb, ind_loc in enumerate(ind):
                 out[nb] = G.integrate(lambda x: x ** ind_loc)
@@ -395,7 +400,7 @@ class RandomVariable(tensap.ProbabilityMeasure):
         return out, X
 
     def mean(self):
-        '''
+        """
         Return the mean of the random variable.
 
         Returns
@@ -403,11 +408,11 @@ class RandomVariable(tensap.ProbabilityMeasure):
         float
             The mean of the random variable.
 
-        '''
+        """
         return self.random_variable_statistics()[0]
 
     def std(self):
-        '''
+        """
         Return the standard deviation of the random variable.
 
         Returns
@@ -415,11 +420,11 @@ class RandomVariable(tensap.ProbabilityMeasure):
         float
             The standard deviation of the random variable.
 
-        '''
+        """
         return np.sqrt(self.random_variable_statistics()[1])
 
     def variance(self):
-        '''
+        """
         Return the variance of the random variable.
 
         Returns
@@ -427,11 +432,11 @@ class RandomVariable(tensap.ProbabilityMeasure):
         float
             The variance of the random variable.
 
-        '''
+        """
         return self.random_variable_statistics()[1]
 
     def transfer(self, Y, x):
-        '''
+        """
         Transfer from the random variable self to the random variable Y at
         points x.
 
@@ -447,40 +452,40 @@ class RandomVariable(tensap.ProbabilityMeasure):
         y : numpy.ndarray
             The transfered points.
 
-        '''
-        assert isinstance(self, tensap.RandomVariable) and \
-            isinstance(Y, tensap.RandomVariable), \
-            'The first two arguments must be RandomVariable.'
+        """
+        assert isinstance(self, tensap.RandomVariable) and isinstance(
+            Y, tensap.RandomVariable
+        ), "The first two arguments must be RandomVariable."
         return Y.icdf(self.cdf(x))
 
-    def truncated_support(self , p= 1 - 2e-16):
-        '''
-        Return a truncated support [a,b] of the random variable 
+    def truncated_support(self, p=1 - 2e-16):
+        """
+        Return a truncated support [a,b] of the random variable
         with probability at least p:
         a = icdf(p/2) if self.support[0]=-inf or self.support[0] otherwise
         a = icdf(1-p/2) if self.support[1]=inf or self.support[1] otherwise
 
         Parameters
         ----------
-        p : float 
+        p : float
             The default is 1 - 2e-16.
-            
+
         Returns
         -------
         sup : numpy.ndarray
             The truncated support of the random variable.
 
-        '''
+        """
 
         sup = self.support()
         if sup[0] == -np.inf:
-            sup[0] = self.icdf((1-p)/2)
+            sup[0] = self.icdf((1 - p) / 2)
         if sup[1] == np.inf:
-            sup[1] = self.icdf(1-(1-p)/2)
+            sup[1] = self.icdf(1 - (1 - p) / 2)
         return sup
 
     def pdf_plot(self, *args):
-        '''
+        """
         Plot the probability density function (pdf) of the random variable.
 
         See also plot.
@@ -494,11 +499,11 @@ class RandomVariable(tensap.ProbabilityMeasure):
         -------
         None.
 
-        '''
-        self.plot('pdf', *args)
+        """
+        self.plot("pdf", *args)
 
     def cdf_plot(self, *args):
-        '''
+        """
         Plot the cumulative distribution function (cdf) of the random variable.
 
         See also plot.
@@ -512,11 +517,11 @@ class RandomVariable(tensap.ProbabilityMeasure):
         -------
         None.
 
-        '''
-        self.plot('cdf', *args)
+        """
+        self.plot("cdf", *args)
 
     def icdf_plot(self, *args):
-        '''
+        """
         Plot the inverse cumulative distribution function (icdf) of the random
         variable.
 
@@ -531,11 +536,11 @@ class RandomVariable(tensap.ProbabilityMeasure):
         -------
         None.
 
-        '''
-        self.plot('icdf', *args)
+        """
+        self.plot("icdf", *args)
 
     def plot(self, quantity, n_pts=100, bar=False, *args):
-        '''
+        """
         Plot the desired quantity, chosen between 'pdf', 'cdf' or 'icdf'.
 
         Parameters
@@ -559,21 +564,21 @@ class RandomVariable(tensap.ProbabilityMeasure):
         -------
         None.
 
-        '''
+        """
         import matplotlib.pyplot as plt
 
         sup = self.truncated_support()
-        if quantity == 'cdf':
+        if quantity == "cdf":
             x = np.linspace(sup[0], sup[1], n_pts)
             P = self.cdf(x)
-        elif quantity == 'icdf':
+        elif quantity == "icdf":
             x = np.linspace(0, 1, n_pts)
             P = self.icdf(x)
-        elif quantity == 'pdf':
+        elif quantity == "pdf":
             x = np.linspace(sup[0], sup[1], n_pts)
             P = self.pdf(x)
         else:
-            raise ValueError('Wrong argument value')
+            raise ValueError("Wrong argument value")
 
         if bar:
             plt.bar(x, P, *args)
@@ -582,14 +587,14 @@ class RandomVariable(tensap.ProbabilityMeasure):
         plt.show()
 
     def get_parameters(self):
-        '''
+        """
         Return the parameters of the random variable.
 
-        '''
-        raise NotImplementedError('No generic implementation of the method.')
+        """
+        raise NotImplementedError("No generic implementation of the method.")
 
     def random_variable_statistics(self):
-        '''
+        """
         Return the mean and the variance of the random variable.
 
         Returns
@@ -599,11 +604,11 @@ class RandomVariable(tensap.ProbabilityMeasure):
         float
             The variance of the random variable.
 
-        '''
-        raise NotImplementedError('No generic implementation of the method.')
+        """
+        raise NotImplementedError("No generic implementation of the method.")
 
     def random(self, n):
-        '''
+        """
         Generate n random numbers according to the distribution of the
         RandomVariable.
 
@@ -617,11 +622,11 @@ class RandomVariable(tensap.ProbabilityMeasure):
         numpy.ndarray
             The generated numbers.
 
-        '''
-        raise NotImplementedError('No generic implementation of the method.')
+        """
+        raise NotImplementedError("No generic implementation of the method.")
 
     def orthonormal_polynomials(self, *max_degree):
-        '''
+        """
         Return the max_degree-1 first orthonormal polynomials associated with
         the RandomVariable.
 
@@ -637,5 +642,5 @@ class RandomVariable(tensap.ProbabilityMeasure):
         poly : tensap.OrthonormalPolynomials
             The generated orthonormal polynomials.
 
-        '''
-        raise NotImplementedError('No generic implementation of the method.')
+        """
+        raise NotImplementedError("No generic implementation of the method.")

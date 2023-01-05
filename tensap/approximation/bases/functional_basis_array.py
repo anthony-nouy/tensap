@@ -15,10 +15,10 @@
 # along with tensap.  If not, see <https://www.gnu.org/licenses/>.
 
 
-'''
+"""
 Module functional_basis_array.
 
-'''
+"""
 
 from copy import deepcopy
 import numpy as np
@@ -26,7 +26,7 @@ import tensap
 
 
 class FunctionalBasisArray(tensap.Function):
-    '''
+    """
     Class FunctionalBasisArray.
 
     Attributes
@@ -39,10 +39,10 @@ class FunctionalBasisArray(tensap.Function):
         Array such that the function is with values in
         R^(shape[0] x shape[1] x ...). The default is 1.
 
-    '''
+    """
 
     def __init__(self, data=None, basis=None, shape=None):
-        '''
+        """
         Constructor for the class FunctionalBasisArray
 
         Parameters
@@ -59,7 +59,7 @@ class FunctionalBasisArray(tensap.Function):
         -------
         None.
 
-        '''
+        """
         tensap.Function.__init__(self)
 
         if shape is None and (data is not None or basis is not None):
@@ -69,9 +69,9 @@ class FunctionalBasisArray(tensap.Function):
         self.basis = deepcopy(basis)
         self.shape = np.atleast_1d(shape)
         self.output_shape = self.shape
-        self.data = np.reshape(self.data,
-                               np.concatenate(([basis.cardinal()],
-                                               self.shape)))
+        self.data = np.reshape(
+            self.data, np.concatenate(([basis.cardinal()], self.shape))
+        )
 
     def __add__(self, g):
         return FunctionalBasisArray(self.data + g.data, self.basis, self.shape)
@@ -88,7 +88,7 @@ class FunctionalBasisArray(tensap.Function):
         return FunctionalBasisArray(self.data * g, self.basis, self.shape)
 
     def matmul(self, v):
-        '''
+        """
         Compute the matrix multiplication of self.data with v.
 
         Parameters
@@ -101,12 +101,12 @@ class FunctionalBasisArray(tensap.Function):
         tensap.FunctionalBasisArray
             The result of the matrix multiplication.
 
-        '''
+        """
         data = np.matmul(self.data, v)
         return FunctionalBasisArray(data, self.basis, data.shape[1:])
 
     def matdiv(self, v):
-        '''
+        """
         Compute the matrix multiplication of self.data with the inverse of v.
 
         Parameters
@@ -119,13 +119,12 @@ class FunctionalBasisArray(tensap.Function):
         tensap.FunctionalBasisArray
             The result of the matrix multiplication.
 
-        '''
-        data = np.transpose(np.linalg.solve(np.transpose(v),
-                                            np.transpose(self.data)))
+        """
+        data = np.transpose(np.linalg.solve(np.transpose(v), np.transpose(self.data)))
         return FunctionalBasisArray(data, self.basis, self.shape)
 
     def dot(self, g, dim=None):
-        '''
+        """
         Compute the dot product between the arrays self.data and g.data
         treated as collections of vectors. The function calculates
         the dot product of corresponding vectors along the first
@@ -144,11 +143,11 @@ class FunctionalBasisArray(tensap.Function):
         float or numpy.ndarray
             The result of the dot product.
 
-        '''
+        """
         return np.sum(self.data * g.data, dim, keepdims=True)
 
-    def norm(self, p='fro'):
-        '''
+    def norm(self, p="fro"):
+        """
         Compute the p-norm of the array self.data.
 
         See also numpy.linalg.norm.
@@ -163,14 +162,14 @@ class FunctionalBasisArray(tensap.Function):
         float
             The norm of self.data.
 
-        '''
-        return np.linalg.norm(np.reshape(self.data,
-                                         [self.basis.cardinal(), -1],
-                                         order='F'), p)
+        """
+        return np.linalg.norm(
+            np.reshape(self.data, [self.basis.cardinal(), -1], order="F"), p
+        )
 
     @staticmethod
     def is_random():
-        '''
+        """
         Determine if the object is random.
 
         Returns
@@ -178,11 +177,11 @@ class FunctionalBasisArray(tensap.Function):
         bool
             Boolean equal to True if the object is random.
 
-        '''
+        """
         return True
 
     def mean(self, measure=None):
-        '''
+        """
         Compute the expectation of the function, according to the measure
         associated with the tensap.ProbabilityMeasure measure if provided, or
         to the standard tensap.ProbabilityMeasure associated with each
@@ -200,15 +199,14 @@ class FunctionalBasisArray(tensap.Function):
         numpy.ndarray
             The expectation of the function.
 
-        '''
+        """
         M = self.basis.mean(measure)
         M = np.tile(np.ravel(M), np.concatenate((self.shape, [1])))
-        M = np.transpose(M, np.concatenate(([np.ndim(M)-1],
-                                            range(np.ndim(M)-1))))
-        return np.sum(self.data*M, 0, keepdims=True)
+        M = np.transpose(M, np.concatenate(([np.ndim(M) - 1], range(np.ndim(M) - 1))))
+        return np.sum(self.data * M, 0, keepdims=True)
 
     def expectation(self, measure=None):
-        '''
+        """
         Compute the expectation of the function, according to the measure
         associated with the tensap.ProbabilityMeasure measure if provided, or
         to the standard tensap.ProbabilityMeasure associated with each
@@ -226,11 +224,11 @@ class FunctionalBasisArray(tensap.Function):
         numpy.ndarray
             The expectation of the function.
 
-        '''
+        """
         return self.mean(measure)
 
     def variance(self, measure=None):
-        '''
+        """
         Compute the variance of the function, according to the measure
         associated with the tensap.ProbabilityMeasure measure if provided, or
         to the standard tensap.ProbabilityMeasure associated with each
@@ -248,12 +246,12 @@ class FunctionalBasisArray(tensap.Function):
         numpy.ndarray
             The variance of the function.
 
-        '''
+        """
         m = self.expectation(measure)
-        return self.dot_product_expectation(self, None, measure) - m**2
+        return self.dot_product_expectation(self, None, measure) - m ** 2
 
     def std(self, *args):
-        '''
+        """
         Compute the standard deviation of the function, according to the
         measure associated with the tensap.ProbabilityMeasure measure if
         provided, or to the standard tensap.ProbabilityMeasure associated with
@@ -271,11 +269,11 @@ class FunctionalBasisArray(tensap.Function):
         numpy.ndarray
             The standard deviation of the function.
 
-        '''
+        """
         return np.sqrt(self.variance(*args))
 
     def dot_product_expectation(self, g, dims=None, measure=None):
-        '''
+        """
         Compute the expectation of self(X)g(X), where X is the probability
         measure associated with the underlying basis, or measure if provided.
 
@@ -304,16 +302,16 @@ class FunctionalBasisArray(tensap.Function):
         float or numpy.ndarray
             The result of the dot product.
 
-        '''
+        """
         if dims is None:
             dims = range(self.basis.cardinal())
         if not (self.basis == g.basis) or not self.basis.is_orthonormal:
-            raise NotImplementedError('Method not implemented.')
+            raise NotImplementedError("Method not implemented.")
 
         return self.dot(g, 0)
 
     def norm_expectation(self, measure=None):
-        '''
+        """
         Compute the L^2 norm of self(measure). If measure is not provided, use
         the probability measure associated with the underlying basis of self.
 
@@ -327,11 +325,11 @@ class FunctionalBasisArray(tensap.Function):
         float
             The L2 norm of the function.
 
-        '''
+        """
         return np.sqrt(self.dot_product_expectation(self, None, measure))
 
     def conditional_expectation(self, dims, *args):
-        '''
+        """
         Compute the conditional expectation of self with respect to
         the random variables dims (a subset of range(d)). The expectation
         with respect to other variables (in the complementary set of
@@ -353,19 +351,21 @@ class FunctionalBasisArray(tensap.Function):
         f : tensap.FunctionalBasisArray
             The conditional expectation of the function.
 
-        '''
+        """
         h = self.basis.conditional_expectation(dims, *args)
         f = deepcopy(self)
-        f.data = np.matmul(h.data, np.reshape(self.data,
-                                              [self.basis.cardinal(),
-                                               np.prod(self.shape)],
-                                              order='F'))
-        f.data = np.reshape(f.data, (f.data.shape[0], f.shape), order='F')
+        f.data = np.matmul(
+            h.data,
+            np.reshape(
+                self.data, [self.basis.cardinal(), np.prod(self.shape)], order="F"
+            ),
+        )
+        f.data = np.reshape(f.data, (f.data.shape[0], f.shape), order="F")
         f.basis = h.basis
         return f
 
     def variance_conditional_expectation(self, alpha):
-        '''
+        """
         Compute the variance of the conditional expectation of the function in
         dimensions in alpha.
 
@@ -380,7 +380,7 @@ class FunctionalBasisArray(tensap.Function):
         numpy.ndarray
             The variance of the conditional expectation of the function.
 
-        '''
+        """
         alpha = np.atleast_2d(alpha)
         m = self.expectation()
         v = np.zeros((np.shape(alpha)[0], np.prod(self.shape)))
@@ -393,11 +393,12 @@ class FunctionalBasisArray(tensap.Function):
                 v[i, :] = 0
             else:
                 mi = self.conditional_expectation(u)
-                vi = mi.dot_product_expectation(mi) - m**2
+                vi = mi.dot_product_expectation(mi) - m ** 2
                 v[i, :] = np.ravel(vi)
 
-        return np.reshape(v, np.concatenate(([np.shape(alpha)[0]],
-                                             self.shape)), order='F')
+        return np.reshape(
+            v, np.concatenate(([np.shape(alpha)[0]], self.shape)), order="F"
+        )
 
     def eval(self, x, *args):
         if np.ndim(x) == 1:
@@ -406,7 +407,7 @@ class FunctionalBasisArray(tensap.Function):
         return self.eval_with_bases_evals(H, *args)
 
     def eval_with_bases_evals(self, H):
-        '''
+        """
         Compute the evaluations of the function using the evaluations of the
         basis H.
 
@@ -420,15 +421,17 @@ class FunctionalBasisArray(tensap.Function):
         numpy.ndarray
             The evaluations of the function.
 
-        '''
-        y = np.matmul(H, np.reshape(self.data, [self.basis.cardinal(),
-                                                np.prod(self.shape)],
-                                    order='F'))
-        return np.reshape(y, np.concatenate(([H.shape[0]], self.shape)),
-                          order='F')
+        """
+        y = np.matmul(
+            H,
+            np.reshape(
+                self.data, [self.basis.cardinal(), np.prod(self.shape)], order="F"
+            ),
+        )
+        return np.reshape(y, np.concatenate(([H.shape[0]], self.shape)), order="F")
 
     def eval_derivative(self, n, x):
-        '''
+        """
         Compute the n-derivative of the function at points x in R^d, with n a
         multi-index of size d.
 
@@ -450,15 +453,15 @@ class FunctionalBasisArray(tensap.Function):
         numpy.ndarray
             The evaluation of the n-derivative of the function at the points x.
 
-        '''
+        """
         try:
             H = self.basis.eval_derivative(n, x)
             return self.eval_with_bases_evals(H)
         except Exception:
-            raise NotImplementedError('Method not implemented for the basis.')
+            raise NotImplementedError("Method not implemented for the basis.")
 
     def derivative(self, n):
-        '''
+        """
         Compute the n-derivative of the function.
 
         Parameters
@@ -471,13 +474,13 @@ class FunctionalBasisArray(tensap.Function):
         df : tensap.FunctionalBasisArray()
             The n-derivative of the function.
 
-        '''
+        """
         df = deepcopy(self)
         df.basis = self.basis.derivative(n)
         return df
 
     def random(self, n=1, measure=None):
-        '''
+        """
         Compute evaluations of the function at an array of points of size n,
         drawn randomly according to the tensap.ProbabilityMeasure measure if
         provided, or to the standard tensap.ProbabilityMeasure associated with
@@ -499,16 +502,18 @@ class FunctionalBasisArray(tensap.Function):
         numpy.ndarray
             The points used for the evaluations of the function.
 
-        '''
+        """
         fx, x = self.basis.random(n, measure)
-        y = np.matmul(fx, np.reshape(self.data, [self.basis.cardinal(),
-                                                 np.prod(self.shape)],
-                                     order='F'))
-        return np.reshape(y, np.concatenate(([fx.shape[0]], self.shape)),
-                          order='F'), x
+        y = np.matmul(
+            fx,
+            np.reshape(
+                self.data, [self.basis.cardinal(), np.prod(self.shape)], order="F"
+            ),
+        )
+        return np.reshape(y, np.concatenate(([fx.shape[0]], self.shape)), order="F"), x
 
     def get_random_vector(self):
-        '''
+        """
         Return the random vector associated with the basis functions of the
         object.
 
@@ -518,11 +523,11 @@ class FunctionalBasisArray(tensap.Function):
             The random vector associated with the basis functions of the
             object.
 
-        '''
+        """
         return self.basis.get_random_vector()
 
     def storage(self):
-        '''
+        """
         The storage complexity of the object.
 
         Returns
@@ -530,11 +535,11 @@ class FunctionalBasisArray(tensap.Function):
         int
             The storage complexity of the object.
 
-        '''
+        """
         return np.size(self.data)
 
     def sparse_storage(self):
-        '''
+        """
         The storage complexity of the object, taking into account the sparsity.
 
         Returns
@@ -543,11 +548,11 @@ class FunctionalBasisArray(tensap.Function):
             The storage complexity of the object, taking into account the
             sparsity.
 
-        '''
+        """
         return np.count_nonzero(self.data)
 
     def projection(self, basis, indices=None):
-        '''
+        """
         Projection of the object on a functional basis using multi-indices
         indices if provided, or the multi-indices associated with
         the functional basis if not.
@@ -566,33 +571,34 @@ class FunctionalBasisArray(tensap.Function):
         g : FunctionalBasisArray
             The obtained projection.
 
-        '''
+        """
         if indices is None:
             if isinstance(basis, tensap.SparseTensorProductFunctionalBasis):
                 indices = basis.indices
             else:
-                raise ValueError('Must specify a MultiIndices.')
+                raise ValueError("Must specify a MultiIndices.")
 
-        if self.basis.ndim() == basis.ndim() and \
-                self.basis.cardinal() <= basis.cardinal():
+        if (
+            self.basis.ndim() == basis.ndim()
+            and self.basis.cardinal() <= basis.cardinal()
+        ):
             d = np.zeros((basis.cardinal(), np.prod(self.shape)))
             _, ia, ib = self.basis.indices.intersect_indices(indices)
             d[ib, :] = self.data[ia, :]
             if np.ndim(self.data) != np.ndim(d):
-                d = np.reshape(d, [basis.cardinal(), self.shape], order='F')
+                d = np.reshape(d, [basis.cardinal(), self.shape], order="F")
 
             if isinstance(basis, tensap.FullTensorProductFunctionalBasis):
                 H = tensap.FullTensorProductIntegrationRule(basis.bases)
             elif isinstance(basis, tensap.SparseTensorProductFunctionalBasis):
-                H = tensap.SparseTensorProductFunctionalBasis(basis.bases,
-                                                              indices)
+                H = tensap.SparseTensorProductFunctionalBasis(basis.bases, indices)
             g = FunctionalBasisArray(d, H, self.shape)
         else:
-            raise NotImplementedError('Method not implemented.')
+            raise NotImplementedError("Method not implemented.")
         return g
 
     def sub_functional_basis(self):
-        '''
+        """
         Converts the FunctionalBasisArray into a tensap.SubFunctionalbasis.
 
         Returns
@@ -600,11 +606,11 @@ class FunctionalBasisArray(tensap.Function):
         tensap.SubFunctionalbasis
             The FunctionalBasisArray as a tensap.SubFunctionalbasis.
 
-        '''
+        """
         return tensap.SubFunctionalBasis(self.basis, self.data)
 
     def get_coefficients(self):
-        '''
+        """
         Return the coefficients of the object.
 
         Returns
@@ -612,7 +618,7 @@ class FunctionalBasisArray(tensap.Function):
         numpy.ndarray
             The coefficients of the object.
 
-        '''
-        return np.reshape(self.data, np.concatenate(([self.basis.cardinal()],
-                                                     self.shape)),
-                          order='F')
+        """
+        return np.reshape(
+            self.data, np.concatenate(([self.basis.cardinal()], self.shape)), order="F"
+        )

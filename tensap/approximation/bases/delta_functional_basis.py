@@ -14,10 +14,10 @@
 # You should have received a copy of the GNU Lesser General Public License
 # along with tensap.  If not, see <https://www.gnu.org/licenses/>.
 
-'''
+"""
 Module delta_functional_basis.
 
-'''
+"""
 
 from copy import deepcopy
 import numpy as np
@@ -25,11 +25,11 @@ import tensap
 
 
 class DeltaFunctionalBasis(tensap.FunctionalBasis):
-    '''
+    """
     Class DeltaFunctionalBasis.
 
     Basis of univariate functions defined on a finite set of values in R^d.
-    
+
     The is_orthonormal attribute remains at its default value of False.
 
     Attributes
@@ -37,14 +37,14 @@ class DeltaFunctionalBasis(tensap.FunctionalBasis):
     values : numpy.ndarray of shape (n,d)
         contains the set of n values taken by the argument of the functions.
     measure : tensap.Measure
-        The measure associated with the basis, by default a DiscreteMeasure. Can be a tensap.RandomVector or
-        a tensap.RandomVariable to define a random generator and an
-        expectation.
+        The measure associated with the basis, by default a DiscreteMeasure.
+        Can be a tensap.RandomVector or a tensap.RandomVariable to define
+        a random generator and an expectation.
 
-    '''
+    """
 
     def __init__(self, values=None, measure=None):
-        '''
+        """
         Constructor for the class DeltaFunctionalBasis.
 
         The basis is not L2-orthonormal a priori, hence the is_orthonormal
@@ -56,17 +56,17 @@ class DeltaFunctionalBasis(tensap.FunctionalBasis):
             contains the set of n values taken by the argument of the functions.
             The default is None.
         measure : tensap.Measure, optional
-            The measure associated with the basis, by default a DiscreteMeasure. Can be a tensap.RandomVector or
-            a tensap.RandomVariable to define a random generator and an
-                expectation. The default is None.-
+            The measure associated with the basis, by default a DiscreteMeasure.
+            Can be a tensap.RandomVector or a tensap.RandomVariable to define
+            a random generator and an expectation. The default is None.
 
         Returns
         -------
         None.
 
-        '''
+        """
         tensap.FunctionalBasis.__init__(self)
-                   
+
         if values is not None:
             values = np.array(values)
             if values.ndim == 1:
@@ -75,8 +75,8 @@ class DeltaFunctionalBasis(tensap.FunctionalBasis):
         if measure is not None:
             self.measure = deepcopy(measure)
         elif values is not None:
-            self.measure = tensap.DiscreteMeasure(values);
-            
+            self.measure = tensap.DiscreteMeasure(values)
+
         if measure is not None:
             self.input_dimension = measure.ndim()
         else:
@@ -86,11 +86,17 @@ class DeltaFunctionalBasis(tensap.FunctionalBasis):
         x = np.atleast_1d(x)
         print(x)
         dim = self.values.shape[0]
-        N = self.values.shape[0]
         out = np.zeros((np.shape(x)[0], dim))
         for mu in range(dim):
             for i in range(x.shape[0]):
-                out[i, mu] = np.all(x[i,] == self.values[mu,])
+                out[i, mu] = np.all(
+                    x[
+                        i,
+                    ]
+                    == self.values[
+                        mu,
+                    ]
+                )
         return out
 
     def domain(self):

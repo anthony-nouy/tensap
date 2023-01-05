@@ -14,10 +14,10 @@
 # You should have received a copy of the GNU Lesser General Public License
 # along with tensap.  If not, see <https://www.gnu.org/licenses/>.
 
-'''
+"""
 Tutorial on Tensorizer, TensorizedFunction and FunctionalTensorPrincipalComponentAnalysis.
 
-'''
+"""
 
 import numpy as np
 import tensap
@@ -34,14 +34,13 @@ B = 2  # Scaling factor
 
 T = tensap.Tensorizer(B, L, DIM)
 T.ordering_type = 2
-FUN = tensap.UserDefinedFunction('1/(1+x0+2*x1+3*x2+4*x3)', DIM)
+FUN = tensap.UserDefinedFunction("1/(1+x0+2*x1+3*x2+4*x3)", DIM)
 FUN.evaluation_at_multiple_points = True
 TENSORIZED_FUN = T.tensorize(FUN)
 
 # Interpolation of the function in the tensor product feature space
 DEGREE = 2
 BASES = T.tensorized_function_functional_bases(DEGREE)
-
 
 
 # %% Learning with PCA based algorithm
@@ -58,6 +57,4 @@ X_TEST = T.X.random(1000)
 F_X_TEST = TENSORIZED_FUN_TB(X_TEST)
 Y_TEST = FUN(X_TEST)
 ERR_L2 = np.linalg.norm(Y_TEST - F_X_TEST) / np.linalg.norm(Y_TEST)
-print('Mean squared error = %2.5e' % ERR_L2)
-
-
+print("Mean squared error = %2.5e" % ERR_L2)

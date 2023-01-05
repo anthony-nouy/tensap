@@ -14,17 +14,17 @@
 # You should have received a copy of the GNU Lesser General Public License
 # along with tensap.  If not, see <https://www.gnu.org/licenses/>.
 
-'''
+"""
 Module integration_rules.
 
-'''
+"""
 
 import numpy as np
 import tensap
 
 
 class IntegrationRule:
-    '''
+    """
     Class IntegrationRule.
 
     Attributes
@@ -34,10 +34,10 @@ class IntegrationRule:
     weights : numpy.ndarray
         The integration weights.
 
-    '''
+    """
 
     def __init__(self, points, weights):
-        '''
+        """
         Constructor for the class IntegrationRule.
 
         Parameters
@@ -51,12 +51,12 @@ class IntegrationRule:
         -------
         None.
 
-        '''
+        """
         self.points = np.atleast_1d(points)
         self.weights = np.atleast_1d(weights)
 
     def ndim(self):
-        '''
+        """
         Return the number of integration points.
 
         Returns
@@ -64,11 +64,11 @@ class IntegrationRule:
         int
             The number of integration points.
 
-        '''
+        """
         return self.points.shape[1]
 
     def integrate(self, fun):
-        '''
+        """
         Integrate the function fun using the integration rule.
 
         Parameters
@@ -81,12 +81,12 @@ class IntegrationRule:
         int
             The integrated function using the integration rule.
 
-        '''
+        """
         fun_eval = fun(self.points)
         return np.dot(np.ravel(fun_eval), self.weights)
 
     def tensorize(self, dim):
-        '''
+        """
         Create a tensap.FullTensorProductIntegrationRule in dimension dim
         using the object.
 
@@ -100,14 +100,14 @@ class IntegrationRule:
         tensap.FullTensorProductIntegrationRule
             The integration rule in dimension dim.
 
-        '''
+        """
         points = tensap.FullTensorGrid(self.points, dim)
-        weights = [self.weights]*dim
+        weights = [self.weights] * dim
         return tensap.FullTensorProductIntegrationRule(points, weights)
 
     @staticmethod
     def gauss(random_variable, *args):
-        '''
+        """
         Call the method gauss_integration_rule of tensap.RandomVariable or
         tensap.RandomVector.
 
@@ -124,15 +124,15 @@ class IntegrationRule:
         tensap.IntegrationRule
             The integration rule associated with the random variable or vector.
 
-        '''
+        """
         return random_variable.gauss_integration_rule(*args)
 
 
 class FullTensorProductIntegrationRule(IntegrationRule):
-    '''
+    """
     Class FullTensorProductIntegrationRule.
 
-    '''
+    """
 
     def __init__(self, points, weights):
         tensap.IntegrationRule.__init__(self, points, weights)
@@ -140,10 +140,11 @@ class FullTensorProductIntegrationRule(IntegrationRule):
         if isinstance(points, list):
             points = tensap.FullTensorGrid(points)
         elif not isinstance(points, tensap.FullTensorGrid):
-            raise ValueError('The points must be a FullTensorGrid or a list.')
+            raise ValueError("The points must be a FullTensorGrid or a list.")
 
-        assert isinstance(weights, list) and len(weights) == points.ndim(), \
-            'The weights must be a list of length the length of points.'
+        assert (
+            isinstance(weights, list) and len(weights) == points.ndim()
+        ), "The weights must be a list of length the length of points."
 
         self.points = points
         self.weights = [np.ravel(x) for x in weights]
@@ -160,12 +161,12 @@ class FullTensorProductIntegrationRule(IntegrationRule):
             try:
                 f_x = fun(points)
             except Exception:
-                raise ValueError('The function must be evaluable.')
+                raise ValueError("The function must be evaluable.")
 
-        return np.dot(weights.T , f_x)
+        return np.dot(weights.T, f_x)
 
     def weights_on_grid(self):
-        '''
+        """
         Return the weights on the grid.
 
         Returns
@@ -173,7 +174,8 @@ class FullTensorProductIntegrationRule(IntegrationRule):
         numpy.ndarray
             The weights on the grid.
 
-        '''
-        weights = tensap.CanonicalTensor([np.reshape(x, [-1, 1]) for
-                                          x in self.weights], [1])
+        """
+        weights = tensap.CanonicalTensor(
+            [np.reshape(x, [-1, 1]) for x in self.weights], [1]
+        )
         return np.ravel(weights.full().numpy())

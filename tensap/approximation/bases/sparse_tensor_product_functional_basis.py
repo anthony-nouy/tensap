@@ -14,10 +14,10 @@
 # You should have received a copy of the GNU Lesser General Public License
 # along with tensap.  If not, see <https://www.gnu.org/licenses/>.
 
-'''
+"""
 Module sparse_tensor_product_functional_basis.
 
-'''
+"""
 
 from copy import deepcopy
 import numpy as np
@@ -26,7 +26,7 @@ import tensap
 
 
 class SparseTensorProductFunctionalBasis(tensap.FunctionalBasis):
-    '''
+    """
     Class SparseTensorProductFunctionalBasis.
 
     Attributes
@@ -36,10 +36,10 @@ class SparseTensorProductFunctionalBasis(tensap.FunctionalBasis):
     indices : tensap.MultiIndices
         The indices of the basis functions (the indices start at 0).
 
-    '''
+    """
 
     def __init__(self, bases, indices):
-        '''
+        """
         Constructor for the class SparseTensorProductFunctionalBasis.
 
         Parameters
@@ -53,14 +53,16 @@ class SparseTensorProductFunctionalBasis(tensap.FunctionalBasis):
         -------
         None.
 
-        '''
+        """
         tensap.FunctionalBasis.__init__(self)
 
-        assert isinstance(bases, tensap.FunctionalBases), \
-            'The first argument must be a FunctionalBases.'
+        assert isinstance(
+            bases, tensap.FunctionalBases
+        ), "The first argument must be a FunctionalBases."
 
-        assert isinstance(indices, tensap.MultiIndices), \
-            'The second argument must be a MultiIndices.'
+        assert isinstance(
+            indices, tensap.MultiIndices
+        ), "The second argument must be a MultiIndices."
 
         self.bases = bases
         self.indices = indices
@@ -71,12 +73,11 @@ class SparseTensorProductFunctionalBasis(tensap.FunctionalBasis):
         if not isinstance(G, SparseTensorProductFunctionalBasis):
             out = False
         else:
-            out = np.all(self.bases == G.bases) and \
-                np.all(self.indices == G.indices)
+            out = np.all(self.bases == G.bases) and np.all(self.indices == G.indices)
         return out
 
     def length(self):
-        '''
+        """
         Return the number of bases in self.bases.
 
         Returns
@@ -84,7 +85,7 @@ class SparseTensorProductFunctionalBasis(tensap.FunctionalBasis):
         int
             The number of bases in self.bases.
 
-        '''
+        """
         return len(self.bases)
 
     def __len__(self):
@@ -100,7 +101,7 @@ class SparseTensorProductFunctionalBasis(tensap.FunctionalBasis):
         return self.bases.domain()
 
     def remove_bases(self, ind):
-        '''
+        """
         Remove bases of self of index ind.
 
         Parameters
@@ -113,13 +114,13 @@ class SparseTensorProductFunctionalBasis(tensap.FunctionalBasis):
         tensap.SparseTensorProductFunctionalBasis
             The SparseTensorProductFunctionalBasis with removed bases.
 
-        '''
+        """
         out = deepcopy(self)
         out.bases = out.bases.remove_bases(ind)
         return out
 
     def keep_bases(self, ind):
-        '''
+        """
         Keep only the bases of self of index ind.
 
         Parameters
@@ -132,7 +133,7 @@ class SparseTensorProductFunctionalBasis(tensap.FunctionalBasis):
         tensap.SparseTensorProductFunctionalBasis
             The SparseTensorProductFunctionalBasis with kept bases.
 
-        '''
+        """
         out = deepcopy(self)
         out.bases = out.bases.keep_bases(ind)
         return out
@@ -146,7 +147,7 @@ class SparseTensorProductFunctionalBasis(tensap.FunctionalBasis):
         return self
 
     def transpose(self, perm):
-        '''
+        """
         Return self with the basis permutation perm.
 
         Parameters
@@ -159,7 +160,7 @@ class SparseTensorProductFunctionalBasis(tensap.FunctionalBasis):
         tensap.SparseTensorProductFunctionalBasis
             The SparseTensorProductFunctionalBasis with permuted bases.
 
-        '''
+        """
         out = deepcopy(self)
         out.bases = out.bases.transpose(perm)
         return out
@@ -180,34 +181,36 @@ class SparseTensorProductFunctionalBasis(tensap.FunctionalBasis):
 
         if dims_C.size != 0:
             M = self.bases.mean(dims_C, *args)
-            I = self.indices
-            J = I.keep_dims(dims)
-            m = M[0][I.array[:, dims_C[0]]]
+            I0 = self.indices
+            J = I0.keep_dims(dims)
+            m = M[0][I0.array[:, dims_C[0]]]
             for i in np.arange(1, len(M)):
-                m *= M[i][I.array[:, dims_C[i]]]
+                m *= M[i][I0.array[:, dims_C[i]]]
 
             if dims.size == 0:
                 return m
 
-            ind = np.nonzero(np.all(J.array == I.array[:, dims][:, np.newaxis],
-                                    axis=2))[1]
+            ind = np.nonzero(
+                np.all(J.array == I0.array[:, dims][:, np.newaxis], axis=2)
+            )[1]
 
-            d = np.zeros((J.cardinal(), I.cardinal()))
-            d[ind, range(I.cardinal())] = m
+            d = np.zeros((J.cardinal(), I0.cardinal()))
+            d[ind, range(I0.cardinal())] = m
 
             h = self.keep_bases(dims)
             # TODO Uncomment when the mappings are implemented
             # h = self.keep_mapping(dims)
             h.indices = J
-            h = tensap.FunctionalBasisArray(d, h, I.cardinal())
+            h = tensap.FunctionalBasisArray(d, h, I0.cardinal())
 
         else:
-            h = tensap.FunctionalBasisArray(np.eye(self.cardinal()), self,
-                                            [self.cardinal(), 1])
+            h = tensap.FunctionalBasisArray(
+                np.eye(self.cardinal()), self, [self.cardinal(), 1]
+            )
         return h
 
     def get_random_vector(self):
-        '''
+        """
         Return the random vector associated with the basis functions of self.
 
         Returns
@@ -215,7 +218,7 @@ class SparseTensorProductFunctionalBasis(tensap.FunctionalBasis):
         tensap.RandomVector
             The random vector associated with the basis functions of self.
 
-        '''
+        """
         return self.bases.get_random_vector()
 
     def eval(self, x):
@@ -238,7 +241,7 @@ class SparseTensorProductFunctionalBasis(tensap.FunctionalBasis):
         return out
 
     def adaptation_path(self, p=1):
-        '''
+        """
         Create an adaptation path associated with increasing p-norm of
         multi-indices.
 
@@ -252,7 +255,7 @@ class SparseTensorProductFunctionalBasis(tensap.FunctionalBasis):
         P : numpy.ndarray
             The adaptation path.
 
-        '''
+        """
         n = self.indices.norm(p)
         n_unique = np.sort(np.unique(n))
         P = np.full((self.indices.cardinal(), n_unique.size), False)
@@ -260,8 +263,10 @@ class SparseTensorProductFunctionalBasis(tensap.FunctionalBasis):
             P[n <= n_unique[k], k] = True
         return P
 
-    def gram_matrix(self,):
-        '''
+    def gram_matrix(
+        self,
+    ):
+        """
         Return the gram matrix of the basis.
 
         Returns
@@ -269,7 +274,7 @@ class SparseTensorProductFunctionalBasis(tensap.FunctionalBasis):
         numpy.ndarray
             The gram matrix of the basis.
 
-        '''
+        """
         if self.is_orthonormal:
             M = speye(self.indices.cardinal())
         else:
@@ -281,7 +286,7 @@ class SparseTensorProductFunctionalBasis(tensap.FunctionalBasis):
         return M
 
     def plot_multi_indices(self, *args):
-        '''
+        """
         PLot the multi-index set of the object.
 
         See also tensap.MultiIndices.plot.
@@ -295,11 +300,11 @@ class SparseTensorProductFunctionalBasis(tensap.FunctionalBasis):
         -------
         None.
 
-        '''
+        """
         self.indices.plot(*args)
 
     def tensor_product_interpolation(self, fun, *args):
-        '''
+        """
         Return the interpolation of function fun on a sparse grid.
 
         Parameters
@@ -326,11 +331,11 @@ class SparseTensorProductFunctionalBasis(tensap.FunctionalBasis):
         output : dict
             A dictionnary of outputs of the method.
 
-        '''
+        """
         grid = self.bases.interpolation_points(*args)
         grid = tensap.SparseTensorGrid(grid, self.indices)
         x_grid = grid.array()
         f_interp = self.interpolate(fun, x_grid)
-        output = {'number_of_evaluations': x_grid.shape[0], 'grid': grid}
+        output = {"number_of_evaluations": x_grid.shape[0], "grid": grid}
 
         return f_interp, output

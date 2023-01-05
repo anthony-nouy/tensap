@@ -15,10 +15,10 @@
 # along with tensap.  If not, see <https://www.gnu.org/licenses/>.
 
 
-'''
+"""
 Module functional_basis.
 
-'''
+"""
 
 from abc import abstractmethod
 from scipy.sparse import diags
@@ -27,7 +27,7 @@ import tensap
 
 
 class FunctionalBasis:
-    '''
+    """
     Class FunctionalBasis.
 
     Attributes
@@ -39,30 +39,27 @@ class FunctionalBasis:
         Indicates if the basis is orthonormal with respect to the associated
         measure.
 
-    '''
+    """
 
     def __init__(self):
-        '''
+        """
         Constructor for the class FunctionalBasis.
 
         Returns
         -------
         None.
 
-        '''
+        """
         self.measure = None
         self.is_orthonormal = False
 
     def __repr__(self):
-        return ('<{}:{n}' +
-                '{t}measure = {},{n}' +
-                '{t}is_orthonormal = {}>').format(self.__class__.__name__,
-                                                  self.measure,
-                                                  self.is_orthonormal,
-                                                  t='\t', n='\n')
+        return ("<{}:{n}" + "{t}measure = {},{n}" + "{t}is_orthonormal = {}>").format(
+            self.__class__.__name__, self.measure, self.is_orthonormal, t="\t", n="\n"
+        )
 
     def random(self, n=1, measure=None):
-        '''
+        """
         Evaluate the basis using n points drawn randomly according to measure
         if provided, or to self.measure otherwise.
 
@@ -81,11 +78,11 @@ class FunctionalBasis:
         x : numpy.ndarray
             The input points.
 
-        '''
+        """
         if measure is None:
             measure = self.measure
         if not isinstance(measure, tensap.ProbabilityMeasure):
-            raise ValueError('Must provide a ProbabilityMeasure.')
+            raise ValueError("Must provide a ProbabilityMeasure.")
 
         x = measure.random(n)
         basis_eval = np.reshape(self.eval(x), (n, self.cardinal()))
@@ -93,7 +90,7 @@ class FunctionalBasis:
 
     @staticmethod
     def storage():
-        '''
+        """
         Return the storage requirement of the FunctionalBasis.
 
         Returns
@@ -101,11 +98,11 @@ class FunctionalBasis:
         int
             The storage requirement of the FunctionalBasis.
 
-        '''
+        """
         return 0
 
     def adaptation_path(self):
-        '''
+        """
         Return the adaptation path of the functional basis.
 
         Returns
@@ -115,11 +112,11 @@ class FunctionalBasis:
             and m is the number of elements in the adaptation path,
             column P[:,i] corresponds to a sparsity pattern.
 
-        '''
-        return np.triu(np.full([self.cardinal()]*2, True))
+        """
+        return np.triu(np.full([self.cardinal()] * 2, True))
 
     def interpolate(self, y, x=None):
-        '''
+        """
         Provide an interpolation on a functional basis of a function (or values
         of the function) y associated with a set of n interpolation points x.
 
@@ -136,7 +133,7 @@ class FunctionalBasis:
         f : tensap.FunctionalBasisArray
             The computed interpolation.
 
-        '''
+        """
         if x is None:
             x = self.interpolation_points()
         try:
@@ -155,7 +152,7 @@ class FunctionalBasis:
 
     @staticmethod
     def mean():
-        '''
+        """
         Return the mean of the basis functions.
 
         Returns
@@ -163,11 +160,11 @@ class FunctionalBasis:
         numpy.ndarray
             The mean of the basis functions.
 
-        '''
-        raise NotImplementedError('No generic implementation of the method.')
+        """
+        raise NotImplementedError("No generic implementation of the method.")
 
     def expectation(self):
-        '''
+        """
         Return the expectation of the basis functions. Equivalent to
         self.mean().
 
@@ -176,12 +173,12 @@ class FunctionalBasis:
         numpy.ndarray
             The expectation of the basis functions.
 
-        '''
+        """
         return self.mean()
 
     @staticmethod
     def conditional_expectation():
-        '''
+        """
         Compute the conditional expectation of self with respect to
         the random variables dims (a subset of range(d)). The expectation
         with respect to other variables (in the complementary set of
@@ -204,12 +201,12 @@ class FunctionalBasis:
         f : tensap.FunctionalBasisArray
             The conditional expectation of the function.
 
-        '''
-        raise NotImplementedError('No generic implementation of the method.')
+        """
+        raise NotImplementedError("No generic implementation of the method.")
 
     @staticmethod
     def kron():
-        '''
+        """
         Compute the Kronecker product of two bases. For two functional bases
         f_i, i = 1, ..., n and g_j, j = 1, ..., m, return a functional basis
         h_k, k = 1, ..., nm.
@@ -219,11 +216,11 @@ class FunctionalBasis:
         tensap.FunctionalBasis
             The obtained basis.
 
-        '''
-        NotImplementedError('Method not implemented.')
+        """
+        NotImplementedError("Method not implemented.")
 
     def projection(self, fun, G):
-        '''
+        """
         Compute the projection of the function fun onto the functional basis
         using the integration rule G.
 
@@ -240,7 +237,7 @@ class FunctionalBasis:
             The projection of the function fun onto the functional basis using
             the integration rule G.
 
-        '''
+        """
 
         A = self.eval(G.points)
         W = diags(G.weights)
@@ -249,14 +246,16 @@ class FunctionalBasis:
         if self.is_orthonormal:
             u = np.matmul(np.transpose(A), W.dot(y))
         else:
-            u = np.linalg.solve(np.matmul(np.transpose(A), W.dot(A)),
-                                np.matmul(np.transpose(A), W.dot(y)))
+            u = np.linalg.solve(
+                np.matmul(np.transpose(A), W.dot(A)),
+                np.matmul(np.transpose(A), W.dot(y)),
+            )
         if u.ndim == 1:
             u = np.reshape(u, [-1, 1])
         return tensap.FunctionalBasisArray(u, self, u.shape[1])
 
     def interpolation_points(self, *args):
-        '''
+        """
         Return the interpolation points for the basis.
 
         See also FunctionalBasis.magic_points.
@@ -271,11 +270,11 @@ class FunctionalBasis:
         numpy.ndarray
             The interpolation points for the basis.
 
-        '''
+        """
         return self.magic_points(*args)[0]
 
     def magic_points(self, x=None, J=None):
-        '''
+        """
         Provide the magic points associated with a functional basis f selected
         in a given set of points x.
 
@@ -300,24 +299,26 @@ class FunctionalBasis:
         output : dict
             A dictionnary of outputs of the method.
 
-        '''
+        """
         if x is None:
-            if isinstance(self.measure, (tensap.DiscreteMeasure,
-                                         tensap.DiscreteRandomVariable)):
+            if isinstance(
+                self.measure, (tensap.DiscreteMeasure, tensap.DiscreteRandomVariable)
+            ):
                 x = self.measure.values
             else:
-                x = self.measure.random(self.cardinal()*100)
+                x = self.measure.random(self.cardinal() * 100)
 
         if np.ndim(x) == 1:
             x = np.expand_dims(x, 1)
 
-        assert x.shape[0] >= self.cardinal(), \
-            ('The number of points must be higher than the number of basis ' +
-             'functions.')
+        assert x.shape[0] >= self.cardinal(), (
+            "The number of points must be higher than the number of basis "
+            + "functions."
+        )
 
         F = self.eval(x)
         if J is not None:
-            ind = tensap.magic_indices(F[:, J], self.cardinal(), 'left')[0]
+            ind = tensap.magic_indices(F[:, J], self.cardinal(), "left")[0]
         else:
             ind = tensap.magic_indices(F)[0]
         points = x[ind, :]
@@ -328,12 +329,12 @@ class FunctionalBasis:
         h_x = np.transpose(self.eval(points))
         A = np.transpose(np.linalg.solve(h_x, np.transpose(F)))
 
-        output = {'lebesgue_constant': np.max(np.sum(np.abs(A), 1))}
+        output = {"lebesgue_constant": np.max(np.sum(np.abs(A), 1))}
 
         return points, ind, output
 
     def domain(self):
-        '''
+        """
         Return the domain of the set of basis functions, which is the support
         of the associated measure.
 
@@ -342,15 +343,15 @@ class FunctionalBasis:
         numpy.ndarray
             The domain of the set of basis functions
 
-        '''
+        """
         return self.measure.support()
 
     def christoffel(self, x):
         # TODO christoffel
-        raise NotImplementedError('Method not implemented.')
+        raise NotImplementedError("Method not implemented.")
 
     def orthonormalize(self):
-        '''
+        """
         Orthonormalize the basis.
 
         Returns
@@ -358,7 +359,7 @@ class FunctionalBasis:
         out : tensap.SubFunctionalBasis
             The orthonormalized basis.
 
-        '''
+        """
         G = self.gram_matrix()
         out = self
         if np.linalg.norm(G - np.eye(G.shape[0]), 2):
@@ -369,10 +370,10 @@ class FunctionalBasis:
 
     def optimal_sampling_measure(self):
         # TODO optimal_sampling_measure
-        raise NotImplementedError('Method not implemented.')
+        raise NotImplementedError("Method not implemented.")
 
     def plot(self, indices=None, n=10000, *args):
-        '''
+        """
         Plot the functions of the basis.
 
         Parameters
@@ -389,8 +390,8 @@ class FunctionalBasis:
         -------
         None.
 
-        '''
-        assert self.ndim() == 1, 'Method not implemented.'
+        """
+        assert self.ndim() == 1, "Method not implemented."
 
         import matplotlib.pyplot as plt
 
@@ -410,7 +411,7 @@ class FunctionalBasis:
 
     @abstractmethod
     def cardinal(self):
-        '''
+        """
         Return the number of basis functions.
 
         Returns
@@ -418,11 +419,11 @@ class FunctionalBasis:
         int
             The number of basis functions.
 
-        '''
+        """
 
     @abstractmethod
     def ndim(self):
-        '''
+        """
         Return the dimension n for f defined in R^n.
 
         Returns
@@ -430,11 +431,11 @@ class FunctionalBasis:
         int
             The dimension n for f defined in R^n.
 
-        '''
+        """
 
     @abstractmethod
     def eval(self, x):
-        '''
+        """
         Return the evaluation of the basis functions at the points x.
 
         Parameters
@@ -447,4 +448,4 @@ class FunctionalBasis:
         numpy.ndarray
             The evaluations of the basis functions at the points x.
 
-        '''
+        """

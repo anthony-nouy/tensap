@@ -3,21 +3,24 @@ import pytest
 import time
 import matplotlib
 import matplotlib.pyplot as plt
-matplotlib.use('Agg')
+
+matplotlib.use("Agg")
 
 
 def execfile(filepath, globals=None, locals=None):
     if globals is None:
         globals = {}
-    globals.update({
-        "__file__": filepath,
-        "__name__": "__main__",
-    })
-    with open(filepath, 'rb') as file:
-        exec(compile(file.read(), filepath, 'exec'), globals, locals)
+    globals.update(
+        {
+            "__file__": filepath,
+            "__name__": "__main__",
+        }
+    )
+    with open(filepath, "rb") as file:
+        exec(compile(file.read(), filepath, "exec"), globals, locals)
 
 
-@pytest.mark.parametrize("f", glob.glob('tutorials/**/*.py', recursive=True))
+@pytest.mark.parametrize("f", glob.glob("tutorials/**/*.py", recursive=True))
 def test_tutorial(f):
     print(f"-- running {f}", flush=True)
     t0 = time.time()

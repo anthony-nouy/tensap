@@ -14,19 +14,19 @@
 # You should have received a copy of the GNU Lesser General Public License
 # along with tensap.  If not, see <https://www.gnu.org/licenses/>.
 
-'''
+"""
 Module measure.
 
-'''
+"""
 
 from abc import ABC, abstractmethod
 
 
 class Measure(ABC):
-    '''
+    """
     Class Measure.
 
-    '''
+    """
 
     @abstractmethod
     def __eq__(self, measure_2):
@@ -34,36 +34,36 @@ class Measure(ABC):
 
     @abstractmethod
     def mass(self):
-        '''
+        """
         Return the mass of the Measure.
 
         Returns
         -------
         None.
 
-        '''
+        """
         pass
 
     @abstractmethod
     def support(self):
-        '''
+        """
         Return the support of the Measure.
 
         Returns
         -------
         None.
 
-        '''
+        """
         pass
 
     @abstractmethod
     def ndim(self):
-        '''
+        """
         Return the dimension of the Measure.
 
         Returns
         -------
         None.
 
-        '''
+        """
         pass
