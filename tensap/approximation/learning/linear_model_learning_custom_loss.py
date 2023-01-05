@@ -64,7 +64,11 @@ class LinearModelLearningCustomLoss(tensap.LinearModelLearning):
             raise ImportError('Package tensorflow must be installed to ' +
                               'use LinearModelLearningCustomLoss.')
         super().__init__(custom_loss)
-        self.optimizer = tf.keras.optimizers.Adam()
+
+        # fails with new tf.keras.optimizers.Adam() from tf>=2.11
+        # https://github.com/tensorflow/tensorflow/issues/58973
+        self.optimizer = tf.keras.optimizers.legacy.Adam()
+
         self.initial_guess = None
 
         self.options = {'max_iterations': 1e3,
