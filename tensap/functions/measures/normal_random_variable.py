@@ -64,7 +64,7 @@ class NormalRandomVariable(tensap.RandomVariable):
 
     def __repr__(self):
         return ("<{}: mu = {}, sigma = {}>").format(
-            self.__class__.__name__, self.mu, self.sigma, t="\t", n="\n"
+            self.__class__.__name__, self.mu, self.sigma
         )
 
     def cdf(self, x):

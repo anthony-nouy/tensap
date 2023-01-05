@@ -457,7 +457,8 @@ class HermitePolynomials(OrthonormalPolynomials):
 
     def recurrence_monic(self, n):
         """
-        Computes the coefficients of the three-term recurrence used to construct the monic polynomials
+        Computes the coefficients of the three-term recurrence used
+        to construct the monic polynomials
         :math::`p_{n+1}(x) = (x-a_n)p_n(x) - b_n p_{n-1}(x)`, an and bn are
         the three-term recurrence coefficients
 
@@ -507,7 +508,8 @@ class LegendrePolynomials(OrthonormalPolynomials):
 
     def recurrence_monic(self, n):
         """
-        Computes the coefficients of the three-term recurrence used to construct the monic polynomials
+        Computes the coefficients of the three-term recurrence used
+        to construct the monic polynomials
         :math::`p_{n+1}(x) = (x-a_n)p_n(x) - b_n p_{n-1}(x)`, an and bn are
         the three-term recurrence coefficients
 
@@ -565,7 +567,8 @@ class LegendrePolynomialsLebesgue(OrthonormalPolynomials):
 
     def recurrence_monic(self, n):
         """
-        Computes the coefficients of the three-term recurrence used to construct the monic polynomials
+        Computes the coefficients of the three-term recurrence used
+        to construct the monic polynomials
         :math::`p_{n+1}(x) = (x-a_n)p_n(x) - b_n p_{n-1}(x)`, an and bn are
         the three-term recurrence coefficients
 
@@ -650,7 +653,8 @@ class EmpiricalPolynomials(OrthonormalPolynomials):
     @staticmethod
     def _precompute_recurrence_monic(measure, n):
         """
-        Computes the coefficients of the three-term recurrence used to construct the monic polynomials
+        Computes the coefficients of the three-term recurrence used
+        to construct the monic polynomials
         p_{n+1}(x) = (x-a_n)p_n(x) - b_n p_{n-1}(x), a_n and b_n are
         the three-term recurrence coefficients
 
@@ -829,7 +833,8 @@ class DiscretePolynomials(OrthonormalPolynomials):
     @staticmethod
     def _precompute_recurrence_monic(measure, n):
         """
-        Precompute the coefficients of the three-term recurrence used to construct the monic polynomials
+        Precompute the coefficients of the three-term recurrence used
+        to construct the monic polynomials
         p_{n+1}(x) = (x-a_n)p_n(x) - b_n p_{n-1}(x), a_n and b_n are
         the three-term recurrence coefficients
 

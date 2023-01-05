@@ -181,27 +181,27 @@ class SparseTensorProductFunctionalBasis(tensap.FunctionalBasis):
 
         if dims_C.size != 0:
             M = self.bases.mean(dims_C, *args)
-            I = self.indices
-            J = I.keep_dims(dims)
-            m = M[0][I.array[:, dims_C[0]]]
+            I0 = self.indices
+            J = I0.keep_dims(dims)
+            m = M[0][I0.array[:, dims_C[0]]]
             for i in np.arange(1, len(M)):
-                m *= M[i][I.array[:, dims_C[i]]]
+                m *= M[i][I0.array[:, dims_C[i]]]
 
             if dims.size == 0:
                 return m
 
             ind = np.nonzero(
-                np.all(J.array == I.array[:, dims][:, np.newaxis], axis=2)
+                np.all(J.array == I0.array[:, dims][:, np.newaxis], axis=2)
             )[1]
 
-            d = np.zeros((J.cardinal(), I.cardinal()))
-            d[ind, range(I.cardinal())] = m
+            d = np.zeros((J.cardinal(), I0.cardinal()))
+            d[ind, range(I0.cardinal())] = m
 
             h = self.keep_bases(dims)
             # TODO Uncomment when the mappings are implemented
             # h = self.keep_mapping(dims)
             h.indices = J
-            h = tensap.FunctionalBasisArray(d, h, I.cardinal())
+            h = tensap.FunctionalBasisArray(d, h, I0.cardinal())
 
         else:
             h = tensap.FunctionalBasisArray(

@@ -313,21 +313,21 @@ class TreeBasedTensor:
 
     def __mul__(self, arg):
 
-        if np.isscalar(arg):  #'The second argument must be a scalar.'
+        if np.isscalar(arg):  # The second argument must be a scalar.
             tensor = copy.deepcopy(self)
             tensor.tensors[tensor.tree.root - 1] *= arg
         elif isinstance(arg, tensap.TreeBasedTensor):
             tensor = self.kron(arg)
-            I = [np.arange(0, n ** 2, n + 1) for n in self.shape]
-            tensor = tensor.sub_tensor(*I)
+            I0 = [np.arange(0, n ** 2, n + 1) for n in self.shape]
+            tensor = tensor.sub_tensor(*I0)
             N = self.ranks[self.tree.root - 1]
             if N > 1:
                 if arg.ranks[arg.tree.root - 1] != N:
                     raise ValueError("root ranks should be equal.")
                 a = tensor.tensors[tensor.tree.root - 1]
-                I = [":"] * a.order
-                I[a.order - 1] = np.arange(0, N ** 2, N + 1)
-                tensor.tensors[tensor.tree.root - 1] = a.sub_tensor(*I)
+                I0 = [":"] * a.order
+                I0[a.order - 1] = np.arange(0, N ** 2, N + 1)
+                tensor.tensors[tensor.tree.root - 1] = a.sub_tensor(*I0)
                 tensor = tensor.update_attributes()
         else:
             raise NotImplementedError("Method not implemented.")
@@ -619,7 +619,7 @@ class TreeBasedTensor:
                     pnew = pnew[pnew != 0]
                     chnew = tnew.children(k)
                     chpnew = np.concatenate((chnew, pnew))
-                    r = np.concatenate([np.where(chp == l)[0] for l in chpnew])
+                    r = np.concatenate([np.where(chp == l0)[0] for l0 in chpnew])
                     x.tensors[k - 1] = x.tensors[k - 1].transpose(r)
             if t.is_leaf[nod - 1]:
                 tensors = np.empty(tnew.nb_nodes, dtype=object)
@@ -632,7 +632,7 @@ class TreeBasedTensor:
                 ch = np.array([t.nb_nodes + 1])
                 chp = np.concatenate((ch, p))
                 chnew = tnew.children(nod)
-                r = np.concatenate([np.where(chp == l)[0] for l in chnew])
+                r = np.concatenate([np.where(chp == l0)[0] for l0 in chnew])
                 x.tensors[nod - 1] = x.tensors[nod - 1].transpose(r)
             x.tree = tnew
             x = x.update_attributes()
@@ -925,7 +925,7 @@ class TreeBasedTensor:
                             [tensors[gamma - 1].order - 1],
                             perm[
                                 tree.child_number(nod)
-                                - 1 : tensors[gamma - 1].order
+                                - 1: tensors[gamma - 1].order
                                 - 1
                             ],
                         )

@@ -170,7 +170,7 @@ class TreeBasedTensorLearning(tensap.TensorLearning):
         rep = 0
         for level in range(np.max(tree.level) + 1):
             nodes = np.intersect1d(tree.nodes_with_level(level), active_nodes)
-            exploration_strategy[rep : rep + len(nodes)] = nodes
+            exploration_strategy[rep: rep + len(nodes)] = nodes
             rep += len(nodes)
         self._exploration_strategy = exploration_strategy
         return self, f
@@ -677,7 +677,7 @@ class TreeBasedTensorLearning(tensap.TensorLearning):
         rep = 0
         for level in np.arange(np.max(tree.level), -1, -1):
             nodes = np.intersect1d(tree.nodes_with_level(level), active_nodes)
-            exploration_strategy[rep : rep + len(nodes)] = nodes
+            exploration_strategy[rep: rep + len(nodes)] = nodes
             rep += len(nodes)
         self._exploration_strategy = np.setdiff1d(
             exploration_strategy, tree.root, assume_unique=True
@@ -1258,7 +1258,7 @@ class TreeBasedTensorLearning(tensap.TensorLearning):
                         * (1 + np.random.randn(A.shape[0], rank)),
                     )
                 )
-                A[:, -1 - rank - 1 :] /= np.sqrt(np.sum(A[:, -1 - rank - 1 :] ** 2, 0))
+                A[:, -1 - rank - 1:] /= np.sqrt(np.sum(A[:, -1 - rank - 1:] ** 2, 0))
                 shape = np.array(f.tensors[alpha - 1].shape)
                 shape[-1] += rank
                 f.tensors[alpha - 1].data = np.reshape(A, shape, order="F")
@@ -1274,7 +1274,7 @@ class TreeBasedTensorLearning(tensap.TensorLearning):
                         * (1 + np.random.randn(A.shape[0], rank)),
                     )
                 )
-                A[:, -1 - rank - 1 :] /= np.sqrt(np.sum(A[:, -1 - rank - 1 :] ** 2, 0))
+                A[:, -1 - rank - 1:] /= np.sqrt(np.sum(A[:, -1 - rank - 1:] ** 2, 0))
                 shape = np.array(f.tensors[gamma - 1].shape)
                 shape[ch] += rank
                 A = np.reshape(A, shape[ind], order="F")

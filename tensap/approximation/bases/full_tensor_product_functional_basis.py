@@ -201,7 +201,7 @@ class FullTensorProductFunctionalBasis(tensap.FunctionalBasis):
         """
         return self.bases.gram_matrix(dims)
 
-    def projection(self, fun, I):
+    def projection(self, fun, I0):
         """
         Compute the projection of the function fun on the basis functions of
         self.
@@ -228,19 +228,19 @@ class FullTensorProductFunctionalBasis(tensap.FunctionalBasis):
             the key 'number_of_evaluations'.
 
         """
-        if not isinstance(I, tensap.FullTensorProductIntegrationRule):
+        if not isinstance(I0, tensap.FullTensorProductIntegrationRule):
             raise NotImplementedError("Method not implemented.")
 
-        u = fun.eval_on_tensor_grid(I.points)
+        u = fun.eval_on_tensor_grid(I0.points)
         output = {"number_of_evaluations": u.storage()}
-        Hx = self.bases.eval(np.hstack(I.points.grids))
+        Hx = self.bases.eval(np.hstack(I0.points.grids))
         Mx = [
             np.matmul(np.transpose(x), np.matmul(np.diag(y), x))
-            for x, y in zip(Hx, I.weights)
+            for x, y in zip(Hx, I0.weights)
         ]
         Hx_w = [
             np.linalg.solve(m, np.matmul(np.transpose(x), np.diag(y)))
-            for m, x, y in zip(Mx, Hx, I.weights)
+            for m, x, y in zip(Mx, Hx, I0.weights)
         ]
         f_dims = np.arange(len(Hx_w))
         u_coeff = u.tensor_matrix_product(Hx_w, f_dims)

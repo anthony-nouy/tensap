@@ -23,7 +23,7 @@ import sys
 import numpy as np
 
 sys.path.insert(0, "./../../../")
-import tensap
+import tensap  # noqa: E402
 
 
 class CompositionalModelFunction(tensap.Function):

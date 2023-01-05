@@ -57,11 +57,11 @@ def integer2baseb(i, b, d=None):
     if d is None:
         d = int(np.ceil(np.log(np.max(i) + 1) / np.log(b)))
 
-    I = np.unravel_index(np.ravel(i), np.full(d, b), order="F")
-    return np.fliplr(np.transpose(np.array(I)))
+    I0 = np.unravel_index(np.ravel(i), np.full(d, b), order="F")
+    return np.fliplr(np.transpose(np.array(I0)))
 
 
-def baseb2integer(I, b):
+def baseb2integer(I0, b):
     """
     Return the integers with given representations in base b.
 
@@ -79,8 +79,8 @@ def baseb2integer(I, b):
         The integers with given representations in base b.
 
     """
-    I = np.atleast_2d(I)
-    d = I.shape[1]
-    I = np.fliplr(I)
-    I = np.transpose(I)
-    return np.ravel_multi_index(I, np.full(d, b), order="F")
+    I0 = np.atleast_2d(I0)
+    d = I0.shape[1]
+    I0 = np.fliplr(I0)
+    I0 = np.transpose(I0)
+    return np.ravel_multi_index(I0, np.full(d, b), order="F")

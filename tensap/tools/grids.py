@@ -105,7 +105,6 @@ class TensorGrid(ABC):
         None.
 
         """
-        from mpl_toolkits.mplot3d import Axes3D
         import matplotlib.pyplot as plt
 
         x = self.array()
@@ -240,8 +239,6 @@ class FullTensorGrid(TensorGrid):
         if d == 1:
             plt.plot(self.grids[0], y, *args)
         elif d == 2:
-            from mpl_toolkits.mplot3d import Axes3D
-
             ax = plt.axes(projection="3d")
             x = self.array()
             ax.scatter(x[:, 0], x[:, 1], y, *args)

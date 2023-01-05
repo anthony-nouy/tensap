@@ -22,7 +22,6 @@ Module lebesgue_variable.
 from numpy import array
 from numpy.random import rand
 import tensap
-import numpy as np
 
 
 class LebesgueMeasure(tensap.Measure):
@@ -152,10 +151,10 @@ class LebesgueMeasure(tensap.Measure):
 
         """
         RV = tensap.UniformRandomVariable(self.a, self.b)
-        I = RV.gauss_integration_rule(nb_pts)
-        I.weights = I.weights * self.mass()
+        I0 = RV.gauss_integration_rule(nb_pts)
+        I0.weights = I0.weights * self.mass()
 
-        return I
+        return I0
 
     def orthonormal_polynomials(self):
         """

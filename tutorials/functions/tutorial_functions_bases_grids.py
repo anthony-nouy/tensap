@@ -50,8 +50,8 @@ fx = fun.eval_on_tensor_grid(g)
 g.plot_grid(marker="x")
 
 # %% Evaluation on a SparseTensorGrid
-I = tensap.MultiIndices.with_bounded_norm(d, 1, 5)
-g = tensap.SparseTensorGrid(np.linspace(0, 1, 6), I, d)
+I0 = tensap.MultiIndices.with_bounded_norm(d, 1, 5)
+g = tensap.SparseTensorGrid(np.linspace(0, 1, 6), I0, d)
 fx = fun.eval_on_tensor_grid(g)
 g.plot_grid(marker="x")
 
@@ -68,18 +68,18 @@ p = 1
 m = 4
 h = tensap.PolynomialFunctionalBasis(tensap.CanonicalPolynomials(), range(5))
 H = tensap.FunctionalBases.duplicate(h, d)
-I = tensap.MultiIndices.with_bounded_norm(d, p, m)
-Psi = tensap.SparseTensorProductFunctionalBasis(H, I)
+I0 = tensap.MultiIndices.with_bounded_norm(d, p, m)
+Psi = tensap.SparseTensorProductFunctionalBasis(H, I0)
 
-print("Multi-indices: \n%s\n" % I.array)
+print("Multi-indices: \n%s\n" % I0.array)
 
 finegrid = tensap.FullTensorGrid(np.arange(-1, 1.1, 0.1), d)
 x = finegrid.array()
 Psix = Psi.eval(x)
 
-for i in range(I.cardinal()):
+for i in range(I0.cardinal()):
     finegrid.plot(Psix[:, i])
-    plt.title(I.array[i, :])
+    plt.title(I0.array[i, :])
 
 # %% Projection on polynomial space through quadrature
 d = 3
@@ -88,14 +88,14 @@ fun = tensap.UserDefinedFunction("x0+x1**2+x2**3", d)
 fun.evaluation_at_multiple_points = True
 v = tensap.NormalRandomVariable()
 X = tensap.RandomVector(v, d)
-I = v.gauss_integration_rule(5).tensorize(d)
-u = fun.eval_on_tensor_grid(I.points)
+I0 = v.gauss_integration_rule(5).tensorize(d)
+u = fun.eval_on_tensor_grid(I0.points)
 
 h = tensap.PolynomialFunctionalBasis(tensap.HermitePolynomials(), range(p + 1))
 H = tensap.FunctionalBases.duplicate(h, d)
 H = tensap.FullTensorProductFunctionalBasis(H)
 
-f, _ = H.projection(fun, I)
+f, _ = H.projection(fun, I0)
 
 N_test = 100
 x_test = X.random(N_test)

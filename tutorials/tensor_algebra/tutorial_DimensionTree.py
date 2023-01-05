@@ -20,7 +20,6 @@ Tutorial on DimensionTree.
 """
 
 import tensap
-import matplotlib as plt
 
 # %% Linear dimension tree
 ORDER = 5

@@ -37,9 +37,9 @@ class DeltaFunctionalBasis(tensap.FunctionalBasis):
     values : numpy.ndarray of shape (n,d)
         contains the set of n values taken by the argument of the functions.
     measure : tensap.Measure
-        The measure associated with the basis, by default a DiscreteMeasure. Can be a tensap.RandomVector or
-        a tensap.RandomVariable to define a random generator and an
-        expectation.
+        The measure associated with the basis, by default a DiscreteMeasure.
+        Can be a tensap.RandomVector or a tensap.RandomVariable to define
+        a random generator and an expectation.
 
     """
 
@@ -56,9 +56,9 @@ class DeltaFunctionalBasis(tensap.FunctionalBasis):
             contains the set of n values taken by the argument of the functions.
             The default is None.
         measure : tensap.Measure, optional
-            The measure associated with the basis, by default a DiscreteMeasure. Can be a tensap.RandomVector or
-            a tensap.RandomVariable to define a random generator and an
-                expectation. The default is None.-
+            The measure associated with the basis, by default a DiscreteMeasure.
+            Can be a tensap.RandomVector or a tensap.RandomVariable to define
+            a random generator and an expectation. The default is None.
 
         Returns
         -------
@@ -86,7 +86,6 @@ class DeltaFunctionalBasis(tensap.FunctionalBasis):
         x = np.atleast_1d(x)
         print(x)
         dim = self.values.shape[0]
-        N = self.values.shape[0]
         out = np.zeros((np.shape(x)[0], dim))
         for mu in range(dim):
             for i in range(x.shape[0]):

@@ -19,12 +19,11 @@ Tutorial on MultiIndices.
 
 """
 
-import numpy as np
 import tensap
 
 # %% Product set
-I = tensap.MultiIndices.product_set([[1, 2, 3], [1, 2]])
-print("I.array = \n%s\n" % I.array)
+I0 = tensap.MultiIndices.product_set([[1, 2, 3], [1, 2]])
+print("I.array = \n%s\n" % I0.array)
 
 # %% Set of indices with bounded p-norm
 m = 6
@@ -43,48 +42,48 @@ I1 = tensap.MultiIndices.bounded_by([1, 3])
 I2 = tensap.MultiIndices.bounded_by([3, 1])
 
 # Adding two sets
-I = I1.add_indices(I2)
-print("I1.add_indices(I2).array = \n%s\n" % I.array)
+I0 = I1.add_indices(I2)
+print("I1.add_indices(I2).array = \n%s\n" % I0.array)
 
 # Subtracting a set
-I = I1.remove_indices(I2)
-print("I1.remove_indices(I2).array = \n%s\n" % I.array)
+I0 = I1.remove_indices(I2)
+print("I1.remove_indices(I2).array = \n%s\n" % I0.array)
 
 # Adding (or subtracting) an integer
-I = I + 2
-print("(I+2).array = \n%s\n" % I.array)
+I0 = I0 + 2
+print("(I+2).array = \n%s\n" % I0.array)
 
 # %% Maximal elements, margin, reduced margin
 I1 = tensap.MultiIndices.bounded_by([1, 3])
 I2 = tensap.MultiIndices.bounded_by([3, 1])
-I = I1.add_indices(I2)
-print("I.array = I1.add_indices(I2).array = \n%s\n" % I.array)
-I_marg = I.get_margin()
+I0 = I1.add_indices(I2)
+print("I.array = I1.add_indices(I2).array = \n%s\n" % I0.array)
+I_marg = I0.get_margin()
 print("I.get_margin().array = \n%s\n" % I_marg.array)
-I_red = I.get_reduced_margin()
+I_red = I0.get_reduced_margin()
 print("I.get_reduced_margin().array = \n%s\n" % I_red.array)
-I_max = I.get_maximal_indices()
+I_max = I0.get_maximal_indices()
 print("I.get_maximal_indices().array = \n%s\n" % I_max.array)
 
 # %% Check whether a set is downward closed
 dim = 2
-I = tensap.MultiIndices.with_bounded_norm(dim, 1, 4)
-print("I.is_downward_closed() = %s\n" % I.is_downward_closed())
+I0 = tensap.MultiIndices.with_bounded_norm(dim, 1, 4)
+print("I.is_downward_closed() = %s\n" % I0.is_downward_closed())
 
-J = I.add_indices(tensap.MultiIndices([2, 4]))
+J = I0.add_indices(tensap.MultiIndices([2, 4]))
 print("J.is_downward_closed() = %s\n" % J.is_downward_closed())
 
 # %% When indices represent subindices of an nd array of shape sz
 # Obtaining the position of multi-indices in the nd array
-I = tensap.MultiIndices.bounded_by([3, 4, 2], 1)
-e = I.sub2ind([5, 5, 5])
+I0 = tensap.MultiIndices.bounded_by([3, 4, 2], 1)
+e = I0.sub2ind([5, 5, 5])
 # Creating a multi-index set associated with entries of a multi-array
-I = tensap.MultiIndices.ind2sub([5, 5, 5], e)
-print("I.array = \n%s\n" % I.array)
+I0 = tensap.MultiIndices.ind2sub([5, 5, 5], e)
+print("I.array = \n%s\n" % I0.array)
 
 # %% Reduced margin of a sum of two tensap.MultiIndices
 I1 = tensap.MultiIndices.bounded_by([3, 5, 7, 4, 3])
 I2 = tensap.MultiIndices.bounded_by([7, 5, 3, 4, 2])
-I = I1.add_indices(I2)
-I_marg = I.get_reduced_margin()
+I0 = I1.add_indices(I2)
+I_marg = I0.get_reduced_margin()
 print("I1.add_indices(I2).get_reduced_margin().array = \n%s\n" % I_marg.array)

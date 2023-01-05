@@ -23,7 +23,7 @@ import sys
 import numpy as np
 
 sys.path.insert(0, "./../../../")
-import tensap
+import tensap  # noqa: E402
 
 
 def multivariate_functions_benchmark(case, *args):

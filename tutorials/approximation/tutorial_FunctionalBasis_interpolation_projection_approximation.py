@@ -24,6 +24,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import tensap
 
+
 # %% Interpolation on a polynomial space using Chebyshev Points
 def FUN(x):
     # Function to approximate
@@ -53,6 +54,7 @@ plt.show()
 N = 100
 ERR_L2, ERR_L_INF = F.test_error(FUN, N, X)
 print("Mean squared error = %2.5e" % ERR_L2)
+
 
 # %% Interpolation on a polynomial space using magic Points
 def FUN(x):
@@ -84,6 +86,7 @@ N = 100
 ERR_L2, ERR_L_INF = F.test_error(FUN, N, X)
 print("Mean squared error = %2.5e" % ERR_L2)
 
+
 # %% Projection on polynomial space through quadrature
 def FUN(x):
     # Function to approximate
@@ -95,20 +98,21 @@ FUN.evaluation_at_multiple_points = True
 X = tensap.NormalRandomVariable()
 
 # Integration rule
-I = X.gauss_integration_rule(5)
+I0 = X.gauss_integration_rule(5)
 
 # Approximation basis
 P = 3
 H = tensap.PolynomialFunctionalBasis(X.orthonormal_polynomials(), range(P + 1))
 
 # Computation of the projection
-F = H.projection(FUN, I)
+F = H.projection(FUN, I0)
 
 # Displays and error
 print("\nProjection on polynomial space through quadrature")
 N = 100
 ERR_L2, ERR_L_INF = F.test_error(FUN, N, X)
 print("Mean squared error = %2.5e" % ERR_L2)
+
 
 # %% Interpolation on UserDefinedFunctionalBasis
 def FUN(x):
@@ -152,6 +156,7 @@ N = 100
 ERR_L2, ERR_L_INF = F.test_error(FUN, N, X)
 print("Mean squared error = %2.5e" % ERR_L2)
 
+
 # %% Interpolation with a radial basis
 def FUN(x):
     # Function to approximate
@@ -166,7 +171,12 @@ X = tensap.UniformRandomVariable(-1, 1)
 N = 20
 X_LIN = np.linspace(-1, 1, N)
 S = 10 / N
-k = lambda x, y, s=S: np.exp(-((x - y) ** 2) / s ** 2)
+
+
+def k(x, y, s=S):
+    return np.exp(-((x - y) ** 2) / s ** 2)
+
+
 H = np.empty(N, dtype=object)
 for i in range(N):
     H[i] = lambda y, x=X_LIN[i], k=k: k(y, x)
@@ -188,6 +198,7 @@ N = 100
 ERR_L2, ERR_L_INF = F.test_error(FUN, N, X)
 print("Mean squared error = %2.5e" % ERR_L2)
 
+
 # %% Projection on polynomial space through quadrature
 def FUN(x):
     # Function to approximate
@@ -199,18 +210,18 @@ FUN.evaluation_at_multiple_points = True
 X = tensap.NormalRandomVariable()
 
 # Integration rule
-I = X.gauss_integration_rule(5)
+I0 = X.gauss_integration_rule(5)
 
 # Approximation basis
 P = 3
 H = tensap.PolynomialFunctionalBasis(tensap.HermitePolynomials(), range(P + 1))
 
 # Computation of the approximation
-F = H.projection(FUN, I)
+F = H.projection(FUN, I0)
 
 # Derivative and second derivative of F through projection
-DF = H.projection(lambda x, F=F: F.eval_derivative(1, x), I)
-DDF = H.projection(lambda x, DF=DF: DF.eval_derivative(1, x), I)
+DF = H.projection(lambda x, F=F: F.eval_derivative(1, x), I0)
+DDF = H.projection(lambda x, DF=DF: DF.eval_derivative(1, x), I0)
 
 # Displays and error
 print("\nProjection on polynomial space through quadrature")
@@ -224,6 +235,7 @@ plt.plot(X_PLOT, DF(X_PLOT))
 plt.plot(X_PLOT, DDF(X_PLOT))
 plt.legend(("F", "df", "ddf"))
 plt.show()
+
 
 # %% Least-squares approximation
 def FUN(x):

@@ -32,7 +32,7 @@ def test_integer2baseb():
 
 
 def test_baseb2integer():
-    I = [1, 0, 0, 1, 1]
+    i = [1, 0, 0, 1, 1]
     b = 3
-    n = baseb2integer(I, b)
+    n = baseb2integer(i, b)
     assert n == 85, "wrong base > int conversion"

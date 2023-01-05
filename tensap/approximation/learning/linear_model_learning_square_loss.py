@@ -438,8 +438,8 @@ class LinearModelLearningSquareLoss(tensap.LinearModelLearning):
                 and err[i] > 2 * err[i - 1]
             ):
                 print("stop_if_error_increase")
-                err[i + 1 :] = np.inf
-                delta[:, i + 1 :] = np.inf
+                err[i + 1:] = np.inf
+                delta[:, i + 1:] = np.inf
 
         ind = np.argmin(err)
 

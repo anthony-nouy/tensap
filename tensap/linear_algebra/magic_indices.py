@@ -69,25 +69,25 @@ def magic_indices(F, n=None, option="left_right"):
 
     if option == "left_right":
         G = np.zeros(F.shape)
-        I = []
+        I0 = []
         J = []
         for _ in range(n):
             i = np.argmax(np.max(np.abs(F - G), 1), 0)
             j = np.argmax(np.abs(F[i, :] - G[i, :]))
-            I.append(i)
+            I0.append(i)
             J.append(j)
-            G = np.matmul(F[:, J], np.linalg.solve(F[np.ix_(I, J)], F[I, :]))
+            G = np.matmul(F[:, J], np.linalg.solve(F[np.ix_(I0, J)], F[I0, :]))
     elif option == "left":
         G = np.zeros(F.shape)
-        I = []
+        I0 = []
         J = []
         for k in range(n):
             i = np.argmax(np.max(np.abs(F[:, : k + 1] - G[:, : k + 1]), 1), 0)
-            I.append(i)
+            I0.append(i)
             J.append(k)
-            G = np.matmul(F[:, J], np.linalg.solve(F[np.ix_(I, J)], F[I, :]))
+            G = np.matmul(F[:, J], np.linalg.solve(F[np.ix_(I0, J)], F[I0, :]))
     elif option == "right":
-        J, I = magic_indices(np.transpose(F), n, "left")
+        J, I0 = magic_indices(np.transpose(F), n, "left")
     else:
         raise ValueError("Bad option.")
-    return I, J
+    return I0, J

@@ -186,9 +186,11 @@ class UnivariatePolynomials(ABC):
 
     def moment(self, ind, measure=None):
         """
-        Return the integral of products of polynomials p_i, i in ind, using a gauss integration rule.
+        Return the integral of products of polynomials p_i, i in ind,
+        using a gauss integration rule.
 
-        The integral is with respect to a measure mu which is taken as the measure to the polynomials if not provided in input
+        The integral is with respect to a measure mu which is taken as the
+        measure to the polynomials if not provided in input
 
         Assuming ind is a numpy.ndarray:
             - if ind.ndim == 1, and ind is of length N,  return the float

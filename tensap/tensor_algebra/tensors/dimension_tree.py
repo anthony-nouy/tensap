@@ -662,7 +662,7 @@ class DimensionTree:
         _children = np.zeros([self.arity, self.nb_nodes], dtype=int)
         for i in range(self.nb_nodes):
             ind = np.nonzero(self.adjacency_matrix[i, :])[0]
-            _children[0 : len(ind), i] = ind + 1
+            _children[0: len(ind), i] = ind + 1
         self._children = _children
 
         _child_number = np.zeros(self.nb_nodes, dtype=int)
@@ -777,7 +777,7 @@ class DimensionTree:
         adj_mat = np.zeros([2 * dim - 1] * 2, dtype=int)
         adj_mat[0, 1:3] = 1
         for i in range(1, dim - 1):
-            adj_mat[i, 2 * i + 1 : 2 * i + 3] = 1
+            adj_mat[i, 2 * i + 1: 2 * i + 3] = 1
         d2i[order] = d2i.flatten()
         return DimensionTree(d2i, adj_mat)
 

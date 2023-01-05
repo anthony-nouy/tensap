@@ -73,7 +73,7 @@ class ModelSelection:
         comp = np.array(self.data["complexity"])
         risk = np.array(self.data["empirical_risk"])
         return np.array(
-            [np.argmin(risk + l * self.pen_shape(comp)) for l in np.atleast_1d(lbda)]
+            [np.argmin(risk + l0 * self.pen_shape(comp)) for l0 in np.atleast_1d(lbda)]
         )
 
     def lambda_path(self):

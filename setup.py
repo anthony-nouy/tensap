@@ -36,7 +36,8 @@ setuptools.setup(
     version=version,
     author="Anthony Nouy, Erwan Grelier",
     author_email="anthony.nouy@ec-nantes.fr",
-    description="Tensor Approximation Package: a Python package for the approximation of functions and tensors.",
+    description="Tensor Approximation Package: a Python package for the \
+                 approximation of functions and tensors.",
     long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://anthony-nouy.github.io/tensap/",
