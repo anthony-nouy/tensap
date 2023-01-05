@@ -14,10 +14,10 @@
 # You should have received a copy of the GNU Lesser General Public License
 # along with tensap.  If not, see <https://www.gnu.org/licenses/>.
 
-'''
+"""
 Module full_tensor.
 
-'''
+"""
 
 # from string import ascii_lowercase
 import numpy as np
@@ -25,7 +25,7 @@ import tensap
 
 
 class FullTensor:
-    '''
+    """
     Class FullTensor.
 
     Attributes
@@ -43,13 +43,13 @@ class FullTensor:
         Boolean indicating, if is_orth = True, the dimension mu for which
         the mu-matricization of the tensor is orthogonal.
 
-    '''
+    """
 
     # Override numpy's operations with reversed operands
     __array_priority__ = 1
 
     def __init__(self, data, order=None, shape=None):
-        '''
+        """
         Constructor for the class FullTensor.
 
         Parameters
@@ -67,13 +67,13 @@ class FullTensor:
         -------
         None.
 
-        '''
-        if hasattr(data, 'data'):
+        """
+        if hasattr(data, "data"):
             self.data = np.array(data.data)
         else:
             self.data = np.array(data)
         if shape is not None:
-            self.data = np.reshape(self.data, shape, order='F')
+            self.data = np.reshape(self.data, shape, order="F")
 
         ndim = np.ndim(self.data)
         if order is not None and ndim != order:
@@ -85,7 +85,7 @@ class FullTensor:
 
     @property
     def order(self):
-        '''
+        """
         Compute the order of the tensor.
 
         Returns
@@ -93,12 +93,12 @@ class FullTensor:
         int
             The order of the tensor.
 
-        '''
+        """
         return np.ndim(self.data)
 
     @property
     def ndim(self):
-        '''
+        """
         Compute the order of the tensor. Equivalent to self.order.
 
         Returns
@@ -106,12 +106,12 @@ class FullTensor:
         int
             The order of the tensor.
 
-        '''
+        """
         return self.data.ndim
 
     @property
     def size(self):
-        '''
+        """
         Compute the number of elements of the tensor.
 
         Returns
@@ -119,12 +119,12 @@ class FullTensor:
         numpy.ndarray
             The number of elements of the tensor.
 
-        '''
+        """
         return np.array(self.data.shape)
 
     @property
     def shape(self):
-        '''
+        """
         Compute the shape of the tensor
 
         Returns
@@ -132,11 +132,11 @@ class FullTensor:
         numpy.ndarray
             The shape of the tensor.
 
-        '''
+        """
         return np.array(self.data.shape)
 
     def tree_based_tensor(self):
-        '''
+        """
         Convert a FullTensor into a TreeBasedTensor.
 
         Returns
@@ -144,7 +144,7 @@ class FullTensor:
         TreeBasedTensor
             The FullTensor in tree-based tensor format.
 
-        '''
+        """
         tree = tensap.DimensionTree.trivial(self.order)
         tensors = [FullTensor(self)]
         for dim in range(self.order):
@@ -152,7 +152,7 @@ class FullTensor:
         return tensap.TreeBasedTensor(tensors, tree)
 
     def sparse(self):
-        '''
+        """
         Conversion of a FullTensor into a SparseTensor.
 
         Returns
@@ -160,23 +160,28 @@ class FullTensor:
         tensap.SparseTensor
             A SparseTensor representation of the FullTensor.
 
-        '''
-        dat = np.reshape(self.data, -1, order='F')
+        """
+        dat = np.reshape(self.data, -1, order="F")
         ind = np.nonzero(dat)[0]
         indices = tensap.MultiIndices.ind2sub(self.shape, ind)
         return tensap.SparseTensor(dat[ind], indices, self.shape)
 
     def __repr__(self):
-        return ('<{} FullTensor:{n}' +
-                '{t}order = {},{n}' +
-                '{t}shape = {},{n}' +
-                '{t}is_orth = {},{n}' +
-                '{t}orth_dim = {}>').format('x'.join(map(str, self.shape)),
-                                            self.order,
-                                            self.shape,
-                                            self.is_orth,
-                                            self.orth_dim,
-                                            t='\t', n='\n')
+        return (
+            "<{} FullTensor:{n}"
+            + "{t}order = {},{n}"
+            + "{t}shape = {},{n}"
+            + "{t}is_orth = {},{n}"
+            + "{t}orth_dim = {}>"
+        ).format(
+            "x".join(map(str, self.shape)),
+            self.order,
+            self.shape,
+            self.is_orth,
+            self.orth_dim,
+            t="\t",
+            n="\n",
+        )
 
     def __getitem__(self, key):
         return self.data.__getitem__(key)
@@ -217,11 +222,11 @@ class FullTensor:
         return FullTensor(self.data / arg)
 
     def __pow__(self, arg):
-        assert np.isscalar(arg), 'The power must be a scalar.'
+        assert np.isscalar(arg), "The power must be a scalar."
         return FullTensor(self.data ** arg)
 
     def hadamard_product(self, arg):
-        '''
+        """
         Compute the Hadamard product of two tensors.
 
         Equivalent to self * arg.
@@ -236,11 +241,11 @@ class FullTensor:
         FullTensor
             The tensor resulting from the Hadamard product.
 
-        '''
+        """
         return self * arg
 
     def storage(self):
-        '''
+        """
         Return the storage complexity of the FullTensor.
 
         Returns
@@ -248,11 +253,11 @@ class FullTensor:
         int
             The storage complexity of the FullTensor.
 
-        '''
+        """
         return np.size(self.data)
 
     def sparse_storage(self):
-        '''
+        """
         Return the sparse storage complexity of the FullTensor.
 
         Returns
@@ -260,11 +265,11 @@ class FullTensor:
         int
             The sparse storage complexity of the FullTensor.
 
-        '''
+        """
         return np.count_nonzero(self.data)
 
     def numpy(self):
-        '''
+        """
         Convert the FullTensor to a numpy.ndarray.
 
         Returns
@@ -272,11 +277,11 @@ class FullTensor:
         numpy.ndarray
             The FullTensor as a numpy.ndarray.
 
-        '''
+        """
         return self.data
 
     def eval_at_indices(self, indices, dims=None):
-        '''
+        """
         Evaluate the tensor at indices.
 
         If dims is None, return
@@ -302,7 +307,7 @@ class FullTensor:
         evaluations : numpy.ndarray or FullTensor
             The evaluations of the tensor.
 
-        '''
+        """
         indices = np.atleast_2d(indices)
         if dims is None:
             dims = np.arange(self.order)
@@ -310,36 +315,42 @@ class FullTensor:
             dims = np.atleast_1d(dims)
             if indices.shape[1] != dims.size:
                 indices = np.transpose(indices)
-            assert dims.size == indices.shape[1], \
-                'Wrong size of multi-indices.'
+            assert dims.size == indices.shape[1], "Wrong size of multi-indices."
             sort_ind = np.argsort(dims)
             dims = dims[sort_ind]
             indices = indices[:, sort_ind]
-        assert dims.size == indices.shape[1], 'Wrong size of multi-indices.'
+        assert dims.size == indices.shape[1], "Wrong size of multi-indices."
 
         if dims.size == self.order:
             data = self
             evaluations = np.array([data[tuple(i)] for i in indices.tolist()])
         elif dims.size == 1:
-            ind = [':']*self.order
+            ind = [":"] * self.order
             ind[dims[0]] = np.ravel(indices).tolist()
             evaluations = self.sub_tensor(*ind)
         else:
             no_dims = tensap.fast_setdiff(np.arange(self.order), dims)
-            indices = np.ravel_multi_index(np.transpose(indices),
-                                           [self.shape[i] for i in dims])
-            evaluations = self.matricize(dims).sub_tensor(indices, ':')
-            evaluations = evaluations.reshape([indices.size] +
-                                              [self.shape[i] for i in no_dims])
+            indices = np.ravel_multi_index(
+                np.transpose(indices), [self.shape[i] for i in dims]
+            )
+            evaluations = self.matricize(dims).sub_tensor(indices, ":")
+            evaluations = evaluations.reshape(
+                [indices.size] + [self.shape[i] for i in no_dims]
+            )
             left_dims = np.arange(dims[0])
             evaluations = evaluations.transpose(
-                np.concatenate((np.arange(1, left_dims.size + 1), [0],
-                                np.arange(left_dims.size + 1,
-                                          self.order - dims.size + 1))))
+                np.concatenate(
+                    (
+                        np.arange(1, left_dims.size + 1),
+                        [0],
+                        np.arange(left_dims.size + 1, self.order - dims.size + 1),
+                    )
+                )
+            )
         return evaluations
 
     def eval_diag(self, dims=None):
-        '''
+        """
         Extract the diagonal of the tensor.
 
         The tensor must be such that self.shape[mu] = n for all mu (in dims if
@@ -357,7 +368,7 @@ class FullTensor:
         data : numpy.ndarray
             The evaluations of the diagonal of the tensor.
 
-        '''
+        """
         if dims is None:
             dims = np.arange(self.order)
         else:
@@ -366,16 +377,17 @@ class FullTensor:
         if dims.size == 1:
             data = self
         else:
-            assert np.all([self.shape[x] == self.shape[dims[0]] for
-                           x in dims]),\
-             'The shapes of the tensor in dimensions dims should be equal.'
-            ind = np.repeat(np.reshape(np.arange(self.shape[dims[0]]),
-                                       [-1, 1]), dims.size, 1)
+            assert np.all(
+                [self.shape[x] == self.shape[dims[0]] for x in dims]
+            ), "The shapes of the tensor in dimensions dims should be equal."
+            ind = np.repeat(
+                np.reshape(np.arange(self.shape[dims[0]]), [-1, 1]), dims.size, 1
+            )
             data = self.eval_at_indices(ind, dims)
         return data
 
     def reshape(self, shape):
-        '''
+        """
         Reshape the tensor.
 
         Parameters
@@ -388,13 +400,13 @@ class FullTensor:
         tensor : FullTensor
             The reshaped tensor.
 
-        '''
+        """
         tensor = FullTensor(self)
-        tensor.data = np.reshape(tensor.data, shape, order='F')
+        tensor.data = np.reshape(tensor.data, shape, order="F")
         return tensor
 
     def transpose(self, dims):
-        '''
+        """
         Transpose (permute) the dimensions of the tensor.
 
         Parameters
@@ -407,13 +419,13 @@ class FullTensor:
         tensor : FullTensor
             The transposed (permuted) tensor.
 
-        '''
+        """
         tensor = FullTensor(self)
         tensor.data = np.transpose(tensor.data, dims)
         return tensor
 
     def itranspose(self, dims):
-        '''
+        """
         Return the inverse transpose (permutation) of the dimensions of the
         tensor.
 
@@ -427,11 +439,11 @@ class FullTensor:
         FullTensor
             The transposed (permuted) tensor.
 
-        '''
+        """
         return self.transpose(np.argsort(dims))
 
     def squeeze(self, dims=None):
-        '''
+        """
         Remove the singleton dimensions of the tensor.
 
         Parameters
@@ -445,7 +457,7 @@ class FullTensor:
         out : float or FullTensor
             The squeezed tensor.
 
-        '''
+        """
         if dims is not None:
             dims = tuple(dims)
 
@@ -455,7 +467,7 @@ class FullTensor:
         return out
 
     def dot(self, tensor2):
-        '''
+        """
         Return the inner product of two tensors.
 
         Parameters
@@ -468,11 +480,11 @@ class FullTensor:
         numpy.float
             The inner product of the two tensors.
 
-        '''
+        """
         return np.sum(np.multiply(self.data, tensor2.data))
 
     def norm(self):
-        '''
+        """
         Compute the canonical norm of the FullTensor.
 
         Returns
@@ -480,11 +492,11 @@ class FullTensor:
         numpy.float
             The norm of the tensor.
 
-        '''
+        """
         return np.linalg.norm(self.data)
 
     def full(self):
-        '''
+        """
         Return the tensor.
 
         Returns
@@ -492,11 +504,11 @@ class FullTensor:
         FullTensor
             The tensor.
 
-        '''
+        """
         return self
 
     def sub_tensor(self, *indices):
-        '''
+        """
         Extract a subtensor of the tensor.
 
         The result is a tensor s of shape
@@ -518,12 +530,12 @@ class FullTensor:
         FullTensor
             The subtensor.
 
-        '''
+        """
         data = self.data
         order = self.order
         for dim in range(self.order):
             ind_loc = np.atleast_1d(indices[dim])
-            if ind_loc.size != 1 or ind_loc[0] != ':':
+            if ind_loc.size != 1 or ind_loc[0] != ":":
                 data = np.take(data, ind_loc, axis=dim)
                 if order != data.ndim:
                     data = np.expand_dims(data, dim)
@@ -531,7 +543,7 @@ class FullTensor:
         return FullTensor(data)
 
     def cat(self, tensor2, dims=None):
-        '''
+        """
         Concatenate the tensors.
 
         Concatenates self and tensor2 in a tensor z such that:
@@ -553,9 +565,8 @@ class FullTensor:
         data : FullTensor
             The concatenated tensors.
 
-        '''
-        assert self.order == tensor2.order, \
-            'The orders of the tensors must be equal.'
+        """
+        assert self.order == tensor2.order, "The orders of the tensors must be equal."
 
         tensor1 = FullTensor(self)
         order = self.order
@@ -567,9 +578,9 @@ class FullTensor:
 
         dims = np.atleast_1d(dims)
         dims_not = tensap.fast_setdiff(np.arange(order), dims)
-        assert np.all([a == b for a, b in zip(shape1[dims_not],
-                                              shape2[dims_not])]), \
-            'The dimensions of the tensors are not compatible.'
+        assert np.all(
+            [a == b for a, b in zip(shape1[dims_not], shape2[dims_not])]
+        ), "The dimensions of the tensors are not compatible."
 
         if dims.size == 1:
             data = np.concatenate([tensor1.data, tensor2.data], dims[0])
@@ -577,15 +588,15 @@ class FullTensor:
             shape_out = np.array(shape1)
             shape_out[dims] = shape1[dims] + shape2[dims]
 
-            padding = np.transpose([[0]*order, shape_out - shape1])
+            padding = np.transpose([[0] * order, shape_out - shape1])
             data = np.pad(tensor1.data, padding)
-            padding = np.transpose([shape_out - shape2, [0]*order])
+            padding = np.transpose([shape_out - shape2, [0] * order])
             data += np.pad(tensor2.data, padding)
 
         return FullTensor(data)
 
     def reduce_sum(self, dims=None):
-        '''
+        """
         Compute the sum of elements across dimensions dims of a tensor.
 
         Similar to tensorflow.reduce_sum.
@@ -601,11 +612,11 @@ class FullTensor:
         FullTensor
             The reduced tensor.
 
-        '''
+        """
         return FullTensor(np.sum(self.data, dims, keepdims=True))
 
     def reduce_mean(self, dims=None):
-        '''
+        """
         Compute the mean of elements across dimensions dims of a tensor.
 
         Similar to tensorflow.mean.
@@ -621,11 +632,11 @@ class FullTensor:
         FullTensor
             The reduced tensor.
 
-        '''
+        """
         return FullTensor(np.mean(self.data, dims, keepdims=True))
 
     def kron(self, tensor2):
-        '''
+        """
         Kronecker product of tensors.
 
         Similar to numpy.kron but for arbitrary tensors.
@@ -640,31 +651,33 @@ class FullTensor:
         FullTensor
             The tensor resulting from the Kronecker product.
 
-        '''
+        """
         order1 = self.order
         order2 = tensor2.order
         order_max = np.max((order1, order2))
 
-        shape1 = np.concatenate((self.shape,
-                                np.ones(order_max - order1, dtype=int)))
-        shape2 = np.concatenate((tensor2.shape,
-                                np.ones(order_max - order2, dtype=int)))
+        shape1 = np.concatenate((self.shape, np.ones(order_max - order1, dtype=int)))
+        shape2 = np.concatenate((tensor2.shape, np.ones(order_max - order2, dtype=int)))
 
         data1 = np.reshape(self.data, [-1, 1])
         data2 = np.reshape(tensor2.data, [1, -1])
 
-        perm = np.reshape(np.transpose(np.reshape(np.arange(2*order_max),
-                                                  [2, order_max])),
-                          2*order_max)
+        perm = np.reshape(
+            np.transpose(np.reshape(np.arange(2 * order_max), [2, order_max])),
+            2 * order_max,
+        )
 
-        data = np.reshape(np.transpose(np.reshape(np.matmul(data1, data2),
-                                                  np.concatenate((shape1,
-                                                                  shape2))),
-                                       perm), shape1 * shape2)
-        return FullTensor(data, shape=self.shape*tensor2.shape)
+        data = np.reshape(
+            np.transpose(
+                np.reshape(np.matmul(data1, data2), np.concatenate((shape1, shape2))),
+                perm,
+            ),
+            shape1 * shape2,
+        )
+        return FullTensor(data, shape=self.shape * tensor2.shape)
 
     def orth(self, dim=None):
-        '''
+        """
         Orthogonalize the tensor.
 
         Parameters
@@ -682,18 +695,16 @@ class FullTensor:
         r_matrix : numpy.ndarray
             The R factor.
 
-        '''
+        """
         tensor = FullTensor(self)  # Copy the tensor
 
         if dim is None:
             return tensor, np.array([])
 
         if dim == -1:
-            dim = tensor.order-1
+            dim = tensor.order - 1
 
-        dims = np.concatenate((np.arange(dim),
-                               np.arange(dim+1, tensor.order),
-                               [dim]))
+        dims = np.concatenate((np.arange(dim), np.arange(dim + 1, tensor.order), [dim]))
         tensor = tensor.transpose(dims)
 
         shape0 = np.array(tensor.shape)
@@ -701,6 +712,7 @@ class FullTensor:
 
         try:
             from tensorflow.python.ops.gen_linalg_ops import qr
+
             q_tf, r_tf = qr(tensor.data, full_matrices=False)
             tensor.data, r_matrix = q_tf.numpy(), r_tf.numpy()
         except ImportError:
@@ -714,7 +726,7 @@ class FullTensor:
         return tensor, r_matrix
 
     def dot_with_rank_one_metric(self, tensor2, matrix):
-        '''
+        """
         Compute the weighted inner product of two tensors.
 
         Compute the weighted canonical inner product of self and tensor2,
@@ -735,11 +747,11 @@ class FullTensor:
         numpy.float
             The weighted inner product.
 
-        '''
+        """
         return self.dot(tensor2.tensor_matrix_product(matrix))
 
     def tensordot_matrix_product_except_dim(self, tensor2, matrices, dim):
-        '''
+        """
         Particular type of contraction.
 
         Compute a special contraction of two tensors self, tensor2, a list of
@@ -761,10 +773,9 @@ class FullTensor:
         numpy.ndarray
             The result of the contraction.
 
-        '''
-        assert isinstance(matrices, list), 'matrices should be a list.'
-        assert len(matrices) == self.order, \
-            'len(matrices) must be self.order.'
+        """
+        assert isinstance(matrices, list), "matrices should be a list."
+        assert len(matrices) == self.order, "len(matrices) must be self.order."
 
         dims = tensap.fast_setdiff(np.arange(self.order), dim)
         matrices = [matrices[i] for i in dims]
@@ -773,7 +784,7 @@ class FullTensor:
         return tmp
 
     def tensordot(self, tensor2, dims1, dims2=None):
-        '''
+        """
         Contract two tensors along specified dimensions.
 
         Similar to tensorflow.tensordot.
@@ -794,23 +805,23 @@ class FullTensor:
         out : FullTensor
             The resulting tensor.
 
-        '''
+        """
         dims1 = np.atleast_1d(dims1)
         if dims1.size == 1 and dims1 == 0 and dims2 is None:
             # Outer product (notation similar to tensorflow)
             out = FullTensor(np.tensordot(self.data, tensor2.data, 0))
         else:
             dims2 = np.atleast_1d(dims2)
-            assert np.all([self.shape[i] == tensor2.shape[j] for i, j in
-                           zip(dims1, dims2)]), \
-                'The dimensions of the tensors are not compatible.'
-            out = FullTensor(np.tensordot(self.data, tensor2.data,
-                                          [dims1, dims2]))
+            assert np.all(
+                [self.shape[i] == tensor2.shape[j] for i, j in zip(dims1, dims2)]
+            ), "The dimensions of the tensors are not compatible."
+            out = FullTensor(np.tensordot(self.data, tensor2.data, [dims1, dims2]))
         return out
 
-    def tensordot_eval_diag(self, tensor2, dims1, dims2, diag_dims1,
-                            diag_dims2, diag=False):
-        '''
+    def tensordot_eval_diag(
+        self, tensor2, dims1, dims2, diag_dims1, diag_dims2, diag=False
+    ):
+        """
         Evaluate of the diagonal of a tensor obtained by contraction of two
         tensors.
 
@@ -849,7 +860,7 @@ class FullTensor:
         FullTensor
             The evaluated tensor.
 
-        '''
+        """
         # Check if an outer product is asked with dims1 and dims2 equal to None
         if dims1 is None and dims2 is None:
             dims1 = []
@@ -875,8 +886,9 @@ class FullTensor:
         ind_out = np.array([ind12[index] for index in sorted(indexes)])
         # Remove from ind_out the contracted dimensions without sorting it
         ind_out = ind_out[[i not in np.atleast_1d(dims1) for i in ind_out]]
-        array = np.einsum(self.data, ind1.tolist(), tensor2.data,
-                          ind2.tolist(), ind_out.tolist())
+        array = np.einsum(
+            self.data, ind1.tolist(), tensor2.data, ind2.tolist(), ind_out.tolist()
+        )
         # alph = list(ascii_lowercase)
         # ind1 = [alph[i] for i in ind1]
         # ind2 = [alph[i] for i in ind2]
@@ -886,7 +898,7 @@ class FullTensor:
         return FullTensor(array)
 
     def tensor_matrix_product(self, matrices, dims=None):
-        '''
+        """
         Contract a tensor with matrices.
 
         The second dimension of the matrix matrices[k] is contracted with the
@@ -905,19 +917,20 @@ class FullTensor:
         FullTensor
             The tensor after the contractions with the matrices.
 
-        '''
+        """
         if dims is None:
-            assert isinstance(matrices, (list, np.ndarray)), \
-                'matrices should be a list or a numpy.ndarray.'
-            assert len(matrices) == self.order, \
-                'len(matrices) must be self.order.'
+            assert isinstance(
+                matrices, (list, np.ndarray)
+            ), "matrices should be a list or a numpy.ndarray."
+            assert len(matrices) == self.order, "len(matrices) must be self.order."
             dims = range(self.order)
         else:
             dims = np.atleast_1d(dims)
             if not isinstance(matrices, list):
                 matrices = [matrices]
-            assert len(matrices) == dims.size, \
-                'len(matrices) must be equal to dims.size.'
+            assert (
+                len(matrices) == dims.size
+            ), "len(matrices) must be equal to dims.size."
 
         # Numpy implementation
         # matrices = [np.array(x) for x in matrices]
@@ -942,13 +955,14 @@ class FullTensor:
         tensor = FullTensor(self)
         matrices = [FullTensor(x) for x in matrices]
         for i, dim in enumerate(dims):
-            index = np.concatenate((
-                tensap.fast_setdiff(np.arange(tensor.order), dim), [dim]))
+            index = np.concatenate(
+                (tensap.fast_setdiff(np.arange(tensor.order), dim), [dim])
+            )
             tensor = tensor.tensordot(matrices[i], dim, 1).itranspose(index)
         return tensor
 
     def tensor_vector_product(self, vectors, dims=None):
-        '''
+        """
         Compute the contraction of the tensor with vectors.
 
         Compute the contraction of self with each vector contained in the list
@@ -968,24 +982,22 @@ class FullTensor:
         FullTensor
             The tensor after the contractions with the vectors.
 
-        '''
+        """
         if dims is None:
-            assert isinstance(vectors, list), 'vectors should be a list.'
-            assert len(vectors) == self.order, \
-                'len(vectors) must be self.order.'
+            assert isinstance(vectors, list), "vectors should be a list."
+            assert len(vectors) == self.order, "len(vectors) must be self.order."
             dims = np.arange(self.order)
         else:
             dims = np.array(dims)
             if not isinstance(vectors, list):
                 vectors = [vectors]
-            assert len(vectors) == dims.size, \
-                'len(vectors) must be equal to dims.size.'
+            assert len(vectors) == dims.size, "len(vectors) must be equal to dims.size."
 
         vectors = [FullTensor(x, 2, [1, -1]) for x in vectors]
         return self.tensor_matrix_product(vectors, dims).squeeze(dims.tolist())
 
     def tensor_matrix_product_eval_diag(self, matrices, dims=None):
-        '''
+        """
         Evaluate the diagonal of a tensor obtained by contraction with
         matrices.
 
@@ -1006,31 +1018,31 @@ class FullTensor:
         out : FullTensor
             The diagonal of the contractions of the tensor with the matrices.
 
-        '''
+        """
         if dims is None:
-            assert isinstance(matrices, list), 'matrices should be a list.'
-            assert len(matrices) == self.order, \
-                'len(matrices) must be self.order.'
+            assert isinstance(matrices, list), "matrices should be a list."
+            assert len(matrices) == self.order, "len(matrices) must be self.order."
             dims = np.arange(self.order)
         else:
             dims = np.atleast_1d(dims)
             if not isinstance(matrices, list):
                 matrices = [matrices]
-            assert len(matrices) == dims.size, \
-                'len(matrices) must be equal to dims.size.'
+            assert (
+                len(matrices) == dims.size
+            ), "len(matrices) must be equal to dims.size."
 
         matrices = [FullTensor(x) for x in matrices]
         ind = np.flip(np.argsort(dims))
         out = matrices[ind[0]].tensordot(self, 1, dims[ind[0]])
         for i in ind[1:]:
-            out = matrices[i].tensordot_eval_diag(out, 1, dims[i]+1, 0, 0)
+            out = matrices[i].tensordot_eval_diag(out, 1, dims[i] + 1, 0, 0)
 
         # if out.order == 1:
         #     out = out.numpy()
         return out
 
     def tensor_diagonal_matrix_product(self, matrices, dims=None):
-        '''
+        """
         Contract a FullTensor with matrices built from their diagonals.
 
         The second dimension of the matrix matrices[k] is contracted with the
@@ -1049,25 +1061,24 @@ class FullTensor:
         FullTensor
             The tensor after the contractions with the matrices.
 
-        '''
+        """
         if dims is None:
-            assert isinstance(matrices, list), 'matrices should be a list.'
-            assert len(matrices) == self.order, \
-                'len(matrices) must be self.order.'
+            assert isinstance(matrices, list), "matrices should be a list."
+            assert len(matrices) == self.order, "len(matrices) must be self.order."
             dims = range(self.order)
         else:
             dims = np.array(dims)
             if not isinstance(matrices, list):
                 matrices = [matrices]
-            assert len(matrices) == dims.size, \
-                'len(matrices) must be equal to dims.size.'
+            assert (
+                len(matrices) == dims.size
+            ), "len(matrices) must be equal to dims.size."
 
-        matrices = [FullTensor(np.diag(np.reshape(x, [-1])))
-                    for x in matrices]
+        matrices = [FullTensor(np.diag(np.reshape(x, [-1]))) for x in matrices]
         return self.tensor_matrix_product(matrices, dims)
 
     def matricize(self, dims1, dims2=None):
-        '''
+        """
         Return the matricization of the tensor.
 
         Parameters
@@ -1085,10 +1096,10 @@ class FullTensor:
         FullTensor
             The matricization of the tensor.
 
-        '''
+        """
         dims1 = np.atleast_1d(dims1)
         if dims1.size == 1 and dims1 == -1:
-            dims1 = np.array([self.order-1])
+            dims1 = np.array([self.order - 1])
         if dims2 is None:
             dims2 = tensap.fast_setdiff(np.arange(self.order), dims1)
         else:
@@ -1102,7 +1113,7 @@ class FullTensor:
         return FullTensor(tensor)
 
     def outer_product_eval_diag(self, tensor2, dims1, dims2, diag=False):
-        '''
+        """
         Compute the diagonal of the outer product of two tensors.
 
         Equivalent to
@@ -1125,12 +1136,11 @@ class FullTensor:
         FullTensor
             The evaluated tensor.
 
-        '''
-        return self.tensordot_eval_diag(tensor2, None, None,
-                                        dims1, dims2, diag)
+        """
+        return self.tensordot_eval_diag(tensor2, None, None, dims1, dims2, diag)
 
     def principal_components(self, parameter=None):
-        '''
+        """
         Compute the principal components of an order-2 tensor.
 
         Parameters
@@ -1153,8 +1163,8 @@ class FullTensor:
         singular_values : numpy.ndarray
             The diagonal matrix of the associated singular values.
 
-        '''
-        assert self.order == 2, 'The order of the tensor must be 2.'
+        """
+        assert self.order == 2, "The order of the tensor must be 2."
         if parameter is None or parameter > self.shape[0]:
             parameter = self.shape[0]
 
@@ -1168,7 +1178,7 @@ class FullTensor:
         return principal_components, singular_values
 
     def alpha_principal_components(self, alpha, parameter=None):
-        '''
+        """
         Compute the alpha-principal components of a tensor.
 
         Return the principal components of the alpha-matricization
@@ -1191,13 +1201,14 @@ class FullTensor:
         singular_values : numpy.ndarray
             The diagonal matrix of the associated singular values.
 
-        '''
-        principal_components, singular_values = \
-            self.matricize(alpha).principal_components(parameter)
+        """
+        principal_components, singular_values = self.matricize(
+            alpha
+        ).principal_components(parameter)
         return principal_components, singular_values
 
     def singular_values(self):
-        '''
+        """
         Compute the higher-order singular values of a tensor (the collection
         of singular values of d different matricizations).
 
@@ -1206,20 +1217,19 @@ class FullTensor:
         sin_val : numpy.ndarray or list of numpy.ndarray.
             The higher-order singular values.
 
-        '''
+        """
         if self.order == 2:
             sin_val = np.linalg.svd(self.data, compute_uv=False)
         else:
             sin_val = []
             for ind in range(self.order):
                 mat = self.matricize(ind)
-                sin_val.append(np.linalg.svd(mat.data,
-                                             compute_uv=False))
+                sin_val.append(np.linalg.svd(mat.data, compute_uv=False))
         return sin_val
 
     @staticmethod
     def create(generator, shape):
-        '''
+        """
         Create a FullTensor of shape shape using a given generator.
 
         Parameters
@@ -1234,12 +1244,12 @@ class FullTensor:
         FullTensor
             The created tensor.
 
-        '''
+        """
         return FullTensor(generator(np.atleast_1d(shape)))
 
     @staticmethod
     def zeros(shape):
-        '''
+        """
         Create a FullTensor of shape shape with entries equal to 0.
 
         Parameters
@@ -1252,12 +1262,12 @@ class FullTensor:
         FullTensor
             The created tensor.
 
-        '''
+        """
         return FullTensor.create(np.zeros, shape)
 
     @staticmethod
     def ones(shape):
-        '''
+        """
         Create a FullTensor of shape shape with entries equal to 1.
 
         Parameters
@@ -1270,12 +1280,12 @@ class FullTensor:
         FullTensor
             The created tensor.
 
-        '''
+        """
         return FullTensor.create(np.ones, shape)
 
     @staticmethod
     def randn(shape):
-        '''
+        """
         Create a FullTensor of shape shape with i.i.d. entries drawn according
         to the standard gaussian distribution.
 
@@ -1289,12 +1299,12 @@ class FullTensor:
         FullTensor
             The created tensor.
 
-        '''
+        """
         return FullTensor.create(lambda x: np.random.randn(*x), shape)
 
     @staticmethod
     def rand(shape):
-        '''
+        """
         Create a FullTensor of shape shape with i.i.d. entries drawn according
         to the uniform distribution on [0, 1].
 
@@ -1308,12 +1318,12 @@ class FullTensor:
         FullTensor
             The created tensor.
 
-        '''
+        """
         return FullTensor.create(lambda x: np.random.rand(*x), shape)
 
     @staticmethod
     def diag(diag, order):
-        '''
+        """
         Create a diagonal tensor x of order order, such that
         x[i, ..., i] = diag[i] for i = 0, ..., diag.size - 1.
 
@@ -1329,7 +1339,7 @@ class FullTensor:
         FullTensor
             The created tensor.
 
-        '''
+        """
         diag = np.atleast_1d(diag)
 
         ones_v = np.ones(order, dtype=int)

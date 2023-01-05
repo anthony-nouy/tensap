@@ -14,10 +14,10 @@
 # You should have received a copy of the GNU Lesser General Public License
 # along with tensap.  If not, see <https://www.gnu.org/licenses/>.
 
-'''
+"""
 Module user_defined_functional_basis.
 
-'''
+"""
 
 from copy import deepcopy
 import numpy as np
@@ -25,7 +25,7 @@ import tensap
 
 
 class UserDefinedFunctionalBasis(tensap.FunctionalBasis):
-    '''
+    """
     Class UserDefinedFunctionalBasis.
 
     The basis is not L2-orthonormal a priori, hence the is_orthonormal
@@ -42,10 +42,10 @@ class UserDefinedFunctionalBasis(tensap.FunctionalBasis):
     input_dimension : int
         The dimension of the domain of the functions in handle_fun.
 
-    '''
+    """
 
     def __init__(self, h_fun=None, measure=None, input_dim=None):
-        '''
+        """
         Constructor for the class UserDefinedFunctionalBasis.
 
         The basis is not L2-orthonormal a priori, hence the is_orthonormal
@@ -67,7 +67,7 @@ class UserDefinedFunctionalBasis(tensap.FunctionalBasis):
         -------
         None.
 
-        '''
+        """
         tensap.FunctionalBasis.__init__(self)
         self.handle_fun = np.ravel(h_fun)
 

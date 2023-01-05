@@ -14,16 +14,16 @@
 # You should have received a copy of the GNU Lesser General Public License
 # along with tensap.  If not, see <https://www.gnu.org/licenses/>.
 
-'''
+"""
 Module chebyshev_points.
 
-'''
+"""
 
 import numpy as np
 
 
 def chebyshev_points(n, s=None):
-    '''
+    """
     Return the first n Chebyshev points in [s[0], s[1]].
 
     Parameters
@@ -38,8 +38,8 @@ def chebyshev_points(n, s=None):
     x : numpy.ndarray
         The first n Chebyshev points in [s[0], s[1]].
 
-    '''
-    x = np.cos(np.pi*(2*np.arange(1, n+1)-1)/2/n)
+    """
+    x = np.cos(np.pi * (2 * np.arange(1, n + 1) - 1) / 2 / n)
     if s is not None:
-        x = 0.5*(s[0]+s[1]) + 0.5*(s[1]-s[0])*x
+        x = 0.5 * (s[0] + s[1]) + 0.5 * (s[1] - s[0]) * x
     return np.expand_dims(x, 1)

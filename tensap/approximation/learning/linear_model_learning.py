@@ -14,57 +14,61 @@
 # You should have received a copy of the GNU Lesser General Public License
 # along with tensap.  If not, see <https://www.gnu.org/licenses/>.
 
-'''
+"""
 Module linear_model_learning.
 
-'''
+"""
 
 import tensap
 
 
 class LinearModelLearning(tensap.Learning):
-
     def __init__(self, loss):
         super().__init__(loss)
         self.basis = None
         self.basis_eval = None
         self.basis_eval_test = None
         self.regularization = False
-        self.regularization_type = 'l1'
-        self.regularization_options = {'alpha': 0}
+        self.regularization_type = "l1"
+        self.regularization_options = {"alpha": 0}
         self.basis_adaptation = False
         self.basis_adaptation_path = None
         self.options = {}
 
     def initialize(self):
         # If the test error cannot be computed, it is disabled
-        if self.test_error and self.basis is None and \
-                self.basis_eval_test is None:
-            print('The test error cannot be computed.')
+        if self.test_error and self.basis is None and self.basis_eval_test is None:
+            print("The test error cannot be computed.")
             self.test_error = False
 
         # Bases evaluation
         try:
             if self.training_data is not None and self.basis_eval is None:
-                if isinstance(self.training_data, list) and \
-                        self.training_data[0] is not None:
+                if (
+                    isinstance(self.training_data, list)
+                    and self.training_data[0] is not None
+                ):
                     self.basis_eval = self.basis.eval(self.training_data[0])
-                elif not isinstance(self.training_data, list) and \
-                        self.training_data is not None:
+                elif (
+                    not isinstance(self.training_data, list)
+                    and self.training_data is not None
+                ):
                     self.basis_eval = self.basis.eval(self.training_data)
                 else:
-                    raise ValueError('Must provide input training data.')
+                    raise ValueError("Must provide input training data.")
 
-            if self.test_error and self.test_data is not None and \
-                    self.basis_eval_test is None:
-                if isinstance(self.test_data, list) and \
-                        self.test_data[0] is not None:
-                    self.basis_eval_test = self.basis.eval(
-                        self.test_data[0])
-                elif not isinstance(self.test_data, list) and \
-                        self.test_data is not None:
+            if (
+                self.test_error
+                and self.test_data is not None
+                and self.basis_eval_test is None
+            ):
+                if isinstance(self.test_data, list) and self.test_data[0] is not None:
+                    self.basis_eval_test = self.basis.eval(self.test_data[0])
+                elif (
+                    not isinstance(self.test_data, list) and self.test_data is not None
+                ):
                     self.basis_eval_test = self.basis.eval(self.test_data)
                 else:
-                    raise ValueError('Must provide input test data.')
+                    raise ValueError("Must provide input test data.")
         except Exception:
             pass

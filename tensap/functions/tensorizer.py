@@ -14,17 +14,17 @@
 # You should have received a copy of the GNU Lesser General Public License
 # along with tensap.  If not, see <https://www.gnu.org/licenses/>.
 
-'''
+"""
 Module tensorizer.
 
-'''
+"""
 
 import numpy as np
 import tensap
 
 
 class Tensorizer:
-    '''
+    """
     Class Tensorizer.
 
     Attributes
@@ -40,10 +40,10 @@ class Tensorizer:
     Y : tensap.RandomVector
         Random vector used for the map.
 
-    '''
+    """
 
     def __init__(self, b, d, dim=1, X=None, Y=None):
-        '''
+        """
         Constructor for the class Tensorizer.
 
         If dim == 1, defines a map t from [0,1] to {0,...,b-1}^d x [0,1]
@@ -73,14 +73,14 @@ class Tensorizer:
             Random vector used for the map. The default is None a uniform
             random vector on [0, 1]^dim.
         ordering_type : int
-            Integer specifying the ordering type of the variables. 
-            The default is 1. 
+            Integer specifying the ordering type of the variables.
+            The default is 1.
 
         Returns
         -------
         None.
 
-        '''
+        """
         self.dim = dim
         self.b = b
         self.d = d
@@ -92,19 +92,17 @@ class Tensorizer:
                 X = tensap.RandomVector(X, self.dim)
             self.X = X
         else:
-            self.X = tensap.RandomVector(tensap.UniformRandomVariable(0, 1),
-                                         self.dim)
+            self.X = tensap.RandomVector(tensap.UniformRandomVariable(0, 1), self.dim)
 
         if Y is not None:
             if isinstance(Y, tensap.RandomVariable):
                 Y = tensap.RandomVector(Y, self.dim)
             self.Y = Y
         else:
-            self.Y = tensap.RandomVector(tensap.UniformRandomVariable(0, 1),
-                                         self.dim)
+            self.Y = tensap.RandomVector(tensap.UniformRandomVariable(0, 1), self.dim)
 
     def map(self, x, nargout=1):
-        '''
+        """
         Evaluate the map at points x, returning y and i such that
         self.map(x) = (i_1, ..., i_d, y).
 
@@ -123,7 +121,7 @@ class Tensorizer:
         numpy.ndarray
             (i_1, ..., i_d), if nargout == 2.
 
-        '''
+        """
         if np.ndim(x) == 1:
             x = np.reshape(x, [-1, 1])
 
@@ -144,14 +142,14 @@ class Tensorizer:
                 j.append(i[:, np.arange(k, i.shape[1], self.d)])
             i = np.hstack(j)
         elif self.ordering_type != 1:
-            raise ValueError('Wrong ordering_type')
+            raise ValueError("Wrong ordering_type")
 
         if nargout == 2:
             return y, i
         return np.hstack((i, np.atleast_2d(y)))
 
     def inverse_map(self, z):
-        '''
+        """
         Evaluate the map at points z = (i_1, ..., i_d, y), returning x such
         that self.map(x) = z.
 
@@ -165,26 +163,25 @@ class Tensorizer:
         numpy.ndarray
             The points x such that self.map(x) = z.
 
-        '''
+        """
         z = np.atleast_2d(z)
         u = []
         for k in range(self.dim):
             if self.ordering_type == 1:
-                ik = z[:, np.arange(self.d)+k*self.d]
+                ik = z[:, np.arange(self.d) + k * self.d]
             elif self.ordering_type == 2:
-                ik = z[:, np.arange(k, self.dim*self.d, self.dim)]
+                ik = z[:, np.arange(k, self.dim * self.d, self.dim)]
             else:
-                raise ValueError('Wrong ordering_type')
-                
-            zk = z[:, -self.dim+k]
+                raise ValueError("Wrong ordering_type")
+
+            zk = z[:, -self.dim + k]
             zk = self.Y.random_variables[k].cdf(zk)
-            u.append(Tensorizer.z2u(np.hstack((ik, np.reshape(zk, [-1, 1]))),
-                                    self.b))
+            u.append(Tensorizer.z2u(np.hstack((ik, np.reshape(zk, [-1, 1]))), self.b))
             u[k] = self.X.random_variables[k].icdf(u[k])
         return np.transpose(u)
 
     def tensorize(self, fun):
-        '''
+        """
         Tensorize a provided function defined on self.X.support().
 
         Parameters
@@ -203,23 +200,22 @@ class Tensorizer:
         tensap.TensorizedFunction
             The tensorized function.
 
-        '''
-        if not isinstance(fun, tensap.Function) and \
-                not hasattr(fun, '__call__'):
-            raise ValueError('The argument must be a tensap.Function or ' +
-                             'function.')
+        """
+        if not isinstance(fun, tensap.Function) and not hasattr(fun, "__call__"):
+            raise ValueError("The argument must be a tensap.Function or " + "function.")
 
-        if not isinstance(fun, tensap.Function) and hasattr(fun, '__call__'):
+        if not isinstance(fun, tensap.Function) and hasattr(fun, "__call__"):
             fun = tensap.UserDefinedFunction(fun, self.dim)
-            fun.evaluation_at_multiple_points = True            
+            fun.evaluation_at_multiple_points = True
 
-        f = tensap.UserDefinedFunction(lambda z: fun(self.inverse_map(z)),
-                                       (self.d+1)*self.dim)
-        f.evaluation_at_multiple_points = fun.evaluation_at_multiple_points 
+        f = tensap.UserDefinedFunction(
+            lambda z: fun(self.inverse_map(z)), (self.d + 1) * self.dim
+        )
+        f.evaluation_at_multiple_points = fun.evaluation_at_multiple_points
         return tensap.TensorizedFunction(f, self)
 
     def tensorized_function_functional_bases(self, h=1):
-        '''
+        """
         Return a tensap.FunctionalBases object associated with the provided
         basis or basis function(s) and the Tensorizer object.
 
@@ -235,37 +231,39 @@ class Tensorizer:
         tensap.FunctionalBases
             The functional bases.
 
-        '''
-        #if isinstance(h, (np.ndarray, list)) or np.isscalar(h):
+        """
+        # if isinstance(h, (np.ndarray, list)) or np.isscalar(h):
         #    h = lambda y, h=h: h*np.ones(np.shape(y))
-        
-        
 
-        if hasattr(h, '__call__'):
+        if hasattr(h, "__call__"):
             h = tensap.UserDefinedFunctionalBasis([h])
             h.measure = self.Y.random_variables[0]
 
         if isinstance(h, tensap.FunctionalBasis):
             h = tensap.FunctionalBases.duplicate(h, self.dim)
-            
+
         if np.isscalar(h):
-            h = [tensap.PolynomialFunctionalBasis(y.orthonormal_polynomials(),
-                                      range(h+1)) for y in self.Y.random_variables]
-            h = tensap.FunctionalBases(h)    
+            h = [
+                tensap.PolynomialFunctionalBasis(
+                    y.orthonormal_polynomials(), range(h + 1)
+                )
+                for y in self.Y.random_variables
+            ]
+            h = tensap.FunctionalBases(h)
 
-        assert isinstance(h, tensap.FunctionalBases), \
-            'Wrong type of argument for h.'
+        assert isinstance(h, tensap.FunctionalBases), "Wrong type of argument for h."
 
-        p = tensap.DiscretePolynomials(tensap.DiscreteRandomVariable(
-            np.reshape(np.arange(self.b), [-1, 1])))
+        p = tensap.DiscretePolynomials(
+            tensap.DiscreteRandomVariable(np.reshape(np.arange(self.b), [-1, 1]))
+        )
         p = tensap.PolynomialFunctionalBasis(p, np.arange(self.b))
 
-        bases = [p]*self.d*self.dim + list(h.bases)
+        bases = [p] * self.d * self.dim + list(h.bases)
         return tensap.FunctionalBases(bases)
 
     @staticmethod
     def u2z(u, b, d, nargout=1):
-        '''
+        """
         Return the representation of numbers on [0, 1] in base b with
         resolution d.
 
@@ -288,11 +286,11 @@ class Tensorizer:
         numpy.ndarray
             (i_1, ..., i_d), if nargout == 2.
 
-        '''
+        """
         u = np.ravel(u)
-        su = u*(b**d)
+        su = u * (b ** d)
         i = np.floor(su)
-        i = np.minimum(i, b**d-1).astype(int)
+        i = np.minimum(i, b ** d - 1).astype(int)
         y = su - i
         i = tensap.integer2baseb(i, b, d)
         if nargout == 2:
@@ -301,7 +299,7 @@ class Tensorizer:
 
     @staticmethod
     def z2u(z, b):
-        '''
+        """
         Return the representation of numbers in base b in decimal on [0, 1].
 
         Parameters
@@ -316,9 +314,9 @@ class Tensorizer:
         numpy.ndarray
             The decimal representation of the inputs on [0, 1].
 
-        '''
+        """
         z = np.atleast_2d(z)
         d = z.shape[1] - 1
         y = z[:, -1]
         i = tensap.baseb2integer(z[:, :-1].astype(int), b)
-        return (y+i)*b**(-d)
+        return (y + i) * b ** (-d)

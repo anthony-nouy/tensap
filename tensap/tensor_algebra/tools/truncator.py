@@ -14,10 +14,10 @@
 # You should have received a copy of the GNU Lesser General Public License
 # along with tensap.  If not, see <https://www.gnu.org/licenses/>.
 
-'''
+"""
 Module truncator.
 
-'''
+"""
 
 import warnings
 import numpy as np
@@ -25,7 +25,7 @@ import tensap
 
 
 class Truncator:
-    '''
+    """
     Class Truncator.
 
     Attributes
@@ -39,11 +39,16 @@ class Truncator:
     thresholding_parameter : float
         The thresholding parameter.
 
-    '''
+    """
 
-    def __init__(self, tolerance=1e-8, max_rank=np.inf,
-                 thresholding_type='hard', thresholding_parameter=None):
-        '''
+    def __init__(
+        self,
+        tolerance=1e-8,
+        max_rank=np.inf,
+        thresholding_type="hard",
+        thresholding_parameter=None,
+    ):
+        """
         Constructor for the class Truncator.
 
         Parameters
@@ -61,7 +66,7 @@ class Truncator:
         -------
         None.
 
-        '''
+        """
         self.tolerance = tolerance
         self.max_rank = max_rank
         self.thresholding_type = thresholding_type
@@ -69,7 +74,7 @@ class Truncator:
         self._hsvd_type = 2  # 1 for root to leaves, 2 for leaves to root
 
     def truncate(self, tensor):
-        '''
+        """
         Compute the truncation of the tensor with relative precision
         self.tolerance and maximal rank self.max_rank.
 
@@ -91,9 +96,9 @@ class Truncator:
         out : tensap.CanonicalTensor or tensap.TreeBasedTensor
             The truncated tensor.
 
-        '''
+        """
 
-        if not hasattr(tensor, 'order'):
+        if not hasattr(tensor, "order"):
             tensor = tensap.FullTensor(tensor)
 
         if tensor.order == 2:
@@ -104,14 +109,13 @@ class Truncator:
             elif isinstance(tensor, tensap.TreeBasedTensor):
                 out = self.hsvd(tensor)
             else:
-                raise NotImplementedError(
-                    'Not implemented with this tensor format.')
+                raise NotImplementedError("Not implemented with this tensor format.")
         else:
-            raise ValueError('Wrong tensor order.')
+            raise ValueError("Wrong tensor order.")
         return out
 
     def trunc_svd(self, matrix, tolerance=None, power=2):
-        '''
+        """
         Compute the truncated svd of the matrix x with relative precision
         self.tolerance (or tolerance if provided) in Schatten p-norm (with p
         given by the input power) and maximal rank self.max_rank.
@@ -132,17 +136,19 @@ class Truncator:
         tensap.CanonicalTensor
             The truncated matrix.
 
-        '''
+        """
         if tolerance is None:
             tolerance = self.tolerance
 
         left, sin_val, right = np.linalg.svd(matrix, full_matrices=False)
-        if power in ('inf', float('inf'), np.inf):
+        if power in ("inf", float("inf"), np.inf):
             error = sin_val / np.max(sin_val)
         else:
-            error = np.power(np.flip(np.cumsum(np.flip(np.power(sin_val,
-                                                                power)))) /
-                             np.sum(np.power(sin_val, power)), 1/power)
+            error = np.power(
+                np.flip(np.cumsum(np.flip(np.power(sin_val, power))))
+                / np.sum(np.power(sin_val, power)),
+                1 / power,
+            )
         error = np.concatenate((np.atleast_1d(error[1:]), [0]))
         ind = np.nonzero(error < tolerance)[0]
         if ind.size == 0:
@@ -151,14 +157,20 @@ class Truncator:
             ind = np.min(ind) + 1
 
         ind = int(np.min([ind, self.max_rank]))
-        if self.thresholding_parameter is not None and \
-                self.thresholding_parameter != 0:
-            if self.thresholding_type == 'soft':
+        if self.thresholding_parameter is not None and self.thresholding_parameter != 0:
+            if self.thresholding_type == "soft":
                 sin_val -= self.thresholding_parameter
-                ind = int(np.min([ind, np.nonzero(sin_val >= 0)[0][-1]+1]))
-            elif self.thresholding_type == 'hard':
-                ind = int(np.min([ind, np.nonzero(
-                    sin_val >= self.thresholding_parameter)[0][-1]+1]))
+                ind = int(np.min([ind, np.nonzero(sin_val >= 0)[0][-1] + 1]))
+            elif self.thresholding_type == "hard":
+                ind = int(
+                    np.min(
+                        [
+                            ind,
+                            np.nonzero(sin_val >= self.thresholding_parameter)[0][-1]
+                            + 1,
+                        ]
+                    )
+                )
         left = np.atleast_2d(left[:, :ind])
         sin_val = np.atleast_1d(sin_val[:ind])
         right = np.transpose(np.atleast_2d(right[:ind, :]))
@@ -166,7 +178,7 @@ class Truncator:
         return tensap.CanonicalTensor([left, right], sin_val)
 
     def svd(self, tensor):
-        '''
+        """
         Compute the truncated svd of an order-2 tensor.
 
         Parameters
@@ -185,8 +197,8 @@ class Truncator:
         out : tensap.CanonicalTensor or tensap.TreeBasedTensor
             The truncated tensor.
 
-        '''
-        assert tensor.ndim == 2, 'Wrong order.'
+        """
+        assert tensor.ndim == 2, "Wrong order."
 
         if isinstance(tensor, np.ndarray):
             out = self.trunc_svd(tensor)
@@ -201,11 +213,11 @@ class Truncator:
             out.space[1] = np.matmul(tensor.space[1], out.space[1])
             out.shape = tensor.shape
         else:
-            raise NotImplementedError('Method not implemented.')
+            raise NotImplementedError("Method not implemented.")
         return out
 
     def hosvd(self, tensor):
-        '''
+        """
         Compute the truncated hosvd of tensor.
 
         Parameters
@@ -223,7 +235,7 @@ class Truncator:
         out : tensap.CanonicalTensor or tensap.TreeBasedTensor
             The truncated tensor.
 
-        '''
+        """
         if isinstance(tensor, np.ndarray):
             tensor = tensap.FullTensor(tensor)
 
@@ -239,22 +251,20 @@ class Truncator:
                 vec = np.empty(order, dtype=object)
                 for dim in range(order):
                     self.max_rank = max_rank[dim]
-                    vec[dim] = self.trunc_svd(tensor.matricize(dim).numpy(),
-                                              local_tol)
+                    vec[dim] = self.trunc_svd(tensor.matricize(dim).numpy(), local_tol)
                     vec[dim] = vec[dim].space[0]
                 core = tensor.tensor_matrix_product(np.transpose(vec[0]), 0)
                 for dim in np.arange(1, order):
-                    core = core.tensor_matrix_product(
-                        np.transpose(vec[dim]), dim)
+                    core = core.tensor_matrix_product(np.transpose(vec[dim]), dim)
                 tensors = [core] + [tensap.FullTensor(x) for x in vec]
                 tree = tensap.DimensionTree.trivial(order)
                 out = tensap.TreeBasedTensor(tensors, tree)
             else:
-                raise ValueError('Wrong type.')
+                raise ValueError("Wrong type.")
         return out
 
     def hsvd(self, tensor, tree=None, is_active_node=None):
-        '''
+        """
         Compute the truncated svd in tree-based tensor format of tensor.
 
         Parameters
@@ -282,12 +292,14 @@ class Truncator:
         out : tensap.TreeBasedTensor
             The truncated tensor in tree-based tensor format.
 
-        '''
+        """
         if isinstance(tensor, tensap.TreeBasedTensor):
             if tree is not None or is_active_node is not None:
-                warnings.warn('The provided tree and/or is_active_node '
-                              'are not taken into account when x is a '
-                              'tensap.TreeBasedTensor.')
+                warnings.warn(
+                    "The provided tree and/or is_active_node "
+                    "are not taken into account when x is a "
+                    "tensap.TreeBasedTensor."
+                )
             is_active_node = tensor.is_active_node
             tree = tensor.tree
         elif is_active_node is None:
@@ -296,13 +308,12 @@ class Truncator:
         max_rank = np.atleast_1d(self.max_rank)
         if max_rank.size == 1:
             max_rank = np.repeat(max_rank, tree.nb_nodes)
-            max_rank[tree.root-1] = 1
+            max_rank[tree.root - 1] = 1
 
-        local_tol = self.tolerance / np.sqrt(
-            np.count_nonzero(is_active_node)-1)
+        local_tol = self.tolerance / np.sqrt(np.count_nonzero(is_active_node) - 1)
 
         if isinstance(tensor, tensap.FullTensor):
-            root_rank_greater_than_one = tensor.order == len(tree.dim2ind)+1
+            root_rank_greater_than_one = tensor.order == len(tree.dim2ind) + 1
 
             tensors = np.empty(tree.nb_nodes, dtype=object)
             shape = np.array(tensor.shape)
@@ -311,49 +322,52 @@ class Truncator:
 
             for level in np.arange(np.max(tree.level), 0, -1):
                 for nod in tree.nodes_with_level(level):
-                    if is_active_node[nod-1]:
-                        if tree.is_leaf[nod-1]:
+                    if is_active_node[nod - 1]:
+                        if tree.is_leaf[nod - 1]:
                             rep = np.nonzero(nod == nodes_x)[0][0]
                         else:
                             children = tree.children(nod)
-                            rep = [np.nonzero(np.isin(nodes_x, x))[0][0]
-                                   for x in children]
-                        rep_c = tensap.fast_setdiff(np.arange(nodes_x.size),
-                                                    rep)
+                            rep = [
+                                np.nonzero(np.isin(nodes_x, x))[0][0] for x in children
+                            ]
+                        rep_c = tensap.fast_setdiff(np.arange(nodes_x.size), rep)
 
                         if root_rank_greater_than_one:
-                            rep_c = np.concatenate((rep_c, [tensor.order-1]))
+                            rep_c = np.concatenate((rep_c, [tensor.order - 1]))
 
-                        self.max_rank = max_rank[nod-1]
-                        tmp = self.trunc_svd(tensor.matricize(rep).numpy(),
-                                             local_tol)
-                        tensors[nod-1] = tmp.space[0]
-                        ranks[nod-1] = tensors[nod-1].shape[1]
-                        shape_loc = np.hstack((shape[rep], ranks[nod-1]))
-                        tensors[nod-1] = tensap.FullTensor(tensors[nod-1],
-                                                           shape=shape_loc)
-                        tmp = np.matmul(tmp.space[1],
-                                        np.diag(tmp.core.data))
-                        shape = np.hstack((shape[rep_c], ranks[nod-1]))
+                        self.max_rank = max_rank[nod - 1]
+                        tmp = self.trunc_svd(tensor.matricize(rep).numpy(), local_tol)
+                        tensors[nod - 1] = tmp.space[0]
+                        ranks[nod - 1] = tensors[nod - 1].shape[1]
+                        shape_loc = np.hstack((shape[rep], ranks[nod - 1]))
+                        tensors[nod - 1] = tensap.FullTensor(
+                            tensors[nod - 1], shape=shape_loc
+                        )
+                        tmp = np.matmul(tmp.space[1], np.diag(tmp.core.data))
+                        shape = np.hstack((shape[rep_c], ranks[nod - 1]))
                         tensor = tensap.FullTensor(tmp, shape=shape)
 
                         if root_rank_greater_than_one:
-                            perm = np.concatenate((np.arange(tensor.order-2),
-                                                   [tensor.order-1],
-                                                   [tensor.order-2]))
+                            perm = np.concatenate(
+                                (
+                                    np.arange(tensor.order - 2),
+                                    [tensor.order - 1],
+                                    [tensor.order - 2],
+                                )
+                            )
                             tensor = tensor.transpose(perm)
                             shape = shape[perm]
                             rep_c = rep_c[:-1]
 
                         nodes_x = np.hstack((nodes_x[rep_c], nod))
                     else:
-                        tensors[nod-1] = []
+                        tensors[nod - 1] = []
 
             root_ch = tree.children(tree.root)
             rep = [np.nonzero(np.isin(nodes_x, x))[0][0] for x in root_ch]
             if root_rank_greater_than_one:
-                rep = np.concatenate((rep, [tensor.order-1]))
-            tensors[tree.root-1] = tensor.transpose(rep)
+                rep = np.concatenate((rep, [tensor.order - 1]))
+            tensors[tree.root - 1] = tensor.transpose(rep)
             out = tensap.TreeBasedTensor(tensors, tree)
         elif isinstance(tensor, tensap.TreeBasedTensor):
             if self._hsvd_type == 1:
@@ -373,31 +387,31 @@ class Truncator:
                 # Interior nodes without the root
                 for level in np.arange(1, np.max(tree.level)):
                     nod_level = tensap.fast_setdiff(
-                        tree.nodes_with_level(level),
-                        np.nonzero(tree.is_leaf)[0]+1)
-                    for nod in tree.nodes_indices[nod_level-1]:
-                        order = out.tensors[nod-1].order
-                        out.tensors[nod-1] = \
-                            out.tensors[nod-1].tensor_matrix_product(
-                                mat[nod-1], order-1)
+                        tree.nodes_with_level(level), np.nonzero(tree.is_leaf)[0] + 1
+                    )
+                    for nod in tree.nodes_indices[nod_level - 1]:
+                        order = out.tensors[nod - 1].order
+                        out.tensors[nod - 1] = out.tensors[
+                            nod - 1
+                        ].tensor_matrix_product(mat[nod - 1], order - 1)
                         parent = tree.parent(nod)
                         ch_nb = tree.child_number(nod)
-                        out.tensors[parent-1] = \
-                            out.tensors[parent-1].tensor_matrix_product(
-                                mat[nod-1], ch_nb-1)
+                        out.tensors[parent - 1] = out.tensors[
+                            parent - 1
+                        ].tensor_matrix_product(mat[nod - 1], ch_nb - 1)
 
                 # Leaves
                 for nod in tree.dim2ind:
-                    if out.is_active_node[nod-1]:
-                        order = out.tensors[nod-1].order
-                        out.tensors[nod-1] = \
-                            out.tensors[nod-1].tensor_matrix_product(
-                                mat[nod-1], order-1)
+                    if out.is_active_node[nod - 1]:
+                        order = out.tensors[nod - 1].order
+                        out.tensors[nod - 1] = out.tensors[
+                            nod - 1
+                        ].tensor_matrix_product(mat[nod - 1], order - 1)
                         parent = tree.parent(nod)
                         ch_nb = tree.child_number(nod)
-                        out.tensors[parent-1] = \
-                            out.tensors[parent-1].tensor_matrix_product(
-                                mat[nod-1], ch_nb-1)
+                        out.tensors[parent - 1] = out.tensors[
+                            parent - 1
+                        ].tensor_matrix_product(mat[nod - 1], ch_nb - 1)
                 # Update the shape
                 out = out.update_attributes()
                 out.is_orth = False
@@ -407,31 +421,33 @@ class Truncator:
                 gram = out.gramians()[0]
                 for level in np.arange(np.max(tree.level), 0, -1):
                     for nod in tensap.fast_intersect(
-                            tree.nodes_with_level(level), out.active_nodes):
+                        tree.nodes_with_level(level), out.active_nodes
+                    ):
                         # Truncation of the Gramian in trace norm for a control
                         # of Frobenius norm of the tensor
-                        self.max_rank = max_rank[nod-1]
-                        tmp = self.trunc_svd(gram[nod-1], local_tol ** 2)
+                        self.max_rank = max_rank[nod - 1]
+                        tmp = self.trunc_svd(gram[nod - 1], local_tol ** 2)
                         tmp = np.transpose(tmp.space[0])
-                        order = out.tensors[nod-1].order
-                        out.tensors[nod-1] = \
-                            out.tensors[nod-1].tensor_matrix_product(tmp,
-                                                                     order-1)
+                        order = out.tensors[nod - 1].order
+                        out.tensors[nod - 1] = out.tensors[
+                            nod - 1
+                        ].tensor_matrix_product(tmp, order - 1)
                         parent = tree.parent(nod)
                         ch_nb = tree.child_number(nod)
-                        out.tensors[parent-1] = out.tensors[parent-1].\
-                            tensor_matrix_product(tmp, ch_nb-1)
+                        out.tensors[parent - 1] = out.tensors[
+                            parent - 1
+                        ].tensor_matrix_product(tmp, ch_nb - 1)
                 out = out.update_attributes()
                 out.is_orth = True
                 out.orth_node = tree.root
             else:
-                raise ValueError('Wrong value of _hsvd_type.')
+                raise ValueError("Wrong value of _hsvd_type.")
         else:
-            raise NotImplementedError('Method not implemented.')
+            raise NotImplementedError("Method not implemented.")
         return out
 
     def ttsvd(self, tensor):
-        '''
+        """
         Compute the truncated svd in tensor-train format of tensor.
 
         Parameters
@@ -445,9 +461,9 @@ class Truncator:
             The truncated tensor in tree-based tensor format with a linear
             tree.
 
-        '''
+        """
         tree = tensap.DimensionTree.linear(tensor.order)
         is_active_node = np.full(tree.nb_nodes, True)
-        is_active_node[tree.dim2ind[1:]-1] = False
+        is_active_node[tree.dim2ind[1:] - 1] = False
 
         return self.hsvd(tensor, tree, is_active_node)

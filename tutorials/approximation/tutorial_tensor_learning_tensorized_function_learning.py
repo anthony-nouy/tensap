@@ -14,12 +14,12 @@
 # You should have received a copy of the GNU Lesser General Public License
 # along with tensap.  If not, see <https://www.gnu.org/licenses/>.
 
-'''
+"""
 Tutorial on learning in tree-based tensor format a tensorized function, with
 an example of model selection using a slope heuristic instead of the error on a
 test sample.
 
-'''
+"""
 
 from time import time
 import numpy as np
@@ -30,21 +30,26 @@ import tensap
 # g(i1,...,id,y) (see also tutorial_TensorizedFunction)
 R = 4  # Resolution
 B = 5  # Scaling factor
-ORDER = R+1
+ORDER = R + 1
 
 X = tensap.UniformRandomVariable(0, 1)
 Y = tensap.UniformRandomVariable(0, 1)
 
 CHOICE = 1
 if CHOICE == 1:
+
     def FUN(x):
-        return np.sin(10*np.pi*(2*x+0.5))/(4*x+1) + (2*x-0.5)**4
+        return np.sin(10 * np.pi * (2 * x + 0.5)) / (4 * x + 1) + (2 * x - 0.5) ** 4
+
 elif CHOICE == 2:
+
     def FUN(x):
-        return (np.sin(4*np.pi*x) + 0.2*np.cos(16*np.pi*x))**(x < 0.5) + \
-            (2*x-1)*(x >= 0.5)
+        return (np.sin(4 * np.pi * x) + 0.2 * np.cos(16 * np.pi * x)) ** (x < 0.5) + (
+            2 * x - 1
+        ) * (x >= 0.5)
+
 else:
-    raise ValueError('Bad function choice.')
+    raise ValueError("Bad function choice.")
 
 T = tensap.Tensorizer(B, R, 1, X, Y)
 TENSORIZED_FUN = T.tensorize(FUN)
@@ -52,8 +57,7 @@ TENSORIZED_FUN.fun.evaluation_at_multiple_points = True
 
 # %% Approximation basis
 DEGREE = 5
-H = tensap.PolynomialFunctionalBasis(Y.orthonormal_polynomials(),
-                                     range(DEGREE+1))
+H = tensap.PolynomialFunctionalBasis(Y.orthonormal_polynomials(), range(DEGREE + 1))
 BASES = T.tensorized_function_functional_bases(H)
 
 # %% Training and test samples
@@ -75,28 +79,32 @@ X_TEST = T.map(X_TEST)
 # 4 - Binary tree
 CHOICE = 3
 if CHOICE == 1:
-    print('Random tree with active nodes')
+    print("Random tree with active nodes")
     ARITY = [2, 4]
     TREE = tensap.DimensionTree.random(ORDER, ARITY)
     IS_ACTIVE_NODE = np.full(TREE.nb_nodes, True)
-    SOLVER = tensap.TreeBasedTensorLearning(TREE, IS_ACTIVE_NODE,
-                                            tensap.SquareLossFunction())
+    SOLVER = tensap.TreeBasedTensorLearning(
+        TREE, IS_ACTIVE_NODE, tensap.SquareLossFunction()
+    )
 elif CHOICE == 2:
-    print('Tensor-train format')
+    print("Tensor-train format")
     SOLVER = tensap.TreeBasedTensorLearning.tensor_train(
-        ORDER, tensap.SquareLossFunction())
+        ORDER, tensap.SquareLossFunction()
+    )
 elif CHOICE == 3:
-    print('Tensor Train Tucker')
+    print("Tensor Train Tucker")
     SOLVER = tensap.TreeBasedTensorLearning.tensor_train_tucker(
-        ORDER, tensap.SquareLossFunction())
+        ORDER, tensap.SquareLossFunction()
+    )
 elif CHOICE == 4:
-    print('Binary tree')
+    print("Binary tree")
     TREE = tensap.DimensionTree.balanced(ORDER)
     IS_ACTIVE_NODE = np.full(TREE.nb_nodes, True)
-    SOLVER = tensap.TreeBasedTensorLearning(TREE, IS_ACTIVE_NODE,
-                                            tensap.SquareLossFunction())
+    SOLVER = tensap.TreeBasedTensorLearning(
+        TREE, IS_ACTIVE_NODE, tensap.SquareLossFunction()
+    )
 else:
-    raise NotImplementedError('Not implemented.')
+    raise NotImplementedError("Not implemented.")
 
 # %% Random shuffling of the dimensions associated to the leaves
 RANDOMIZE = True
@@ -111,11 +119,11 @@ SOLVER.training_data = [None, Y_TRAIN]
 
 # Let the solver go to the maximum number of iterations, to perform model
 # selection a posteriori using the test error and a slope heuristic
-SOLVER.tolerance['on_stagnation'] = 0
-SOLVER.tolerance['on_error'] = 0
-SOLVER.rank_adaptation_options['early_stopping'] = False
+SOLVER.tolerance["on_stagnation"] = 0
+SOLVER.tolerance["on_error"] = 0
+SOLVER.rank_adaptation_options["early_stopping"] = False
 
-SOLVER.initialization_type = 'canonical'
+SOLVER.initialization_type = "canonical"
 
 SOLVER.linear_model_learning.regularization = False
 SOLVER.linear_model_learning.basis_adaptation = True
@@ -126,53 +134,56 @@ SOLVER.test_data = [X_TEST, Y_TEST]
 # SOLVER.bases_eval_test = BASES.eval(X_TEST)
 
 SOLVER.rank_adaptation = True
-SOLVER.rank_adaptation_options['max_iterations'] = 50
-SOLVER.rank_adaptation_options['theta'] = 0.8
+SOLVER.rank_adaptation_options["max_iterations"] = 50
+SOLVER.rank_adaptation_options["theta"] = 0.8
 
 SOLVER.tree_adaptation = True
-SOLVER.tree_adaptation_options['max_iterations'] = 100
+SOLVER.tree_adaptation_options["max_iterations"] = 100
 # SOLVER.tree_adaptation_options['force_rank_adaptation'] = True
 
-SOLVER.alternating_minimization_parameters['stagnation'] = 1e-10
-SOLVER.alternating_minimization_parameters['max_iterations'] = 50
+SOLVER.alternating_minimization_parameters["stagnation"] = 1e-10
+SOLVER.alternating_minimization_parameters["max_iterations"] = 50
 
 SOLVER.display = True
-SOLVER.alternating_minimization_parameters['display'] = False
+SOLVER.alternating_minimization_parameters["display"] = False
 
 SOLVER.model_selection = True
-SOLVER.model_selection_options['type'] = 'test_error'
+SOLVER.model_selection_options["type"] = "test_error"
 
 T0 = time()
 F, OUTPUT = SOLVER.solve()
 T1 = time()
-print(T1-T0)
+print(T1 - T0)
 
 # %% Displays
 TEST_ERROR = SOLVER.loss_function.test_error(F, [X_TEST, Y_TEST])
-print('\nRanks: %s' % F.tensor.ranks)
-print('Loo error = %2.5e' % OUTPUT['error'])
-print('Test error = %2.5e' % TEST_ERROR)
+print("\nRanks: %s" % F.tensor.ranks)
+print("Loo error = %2.5e" % OUTPUT["error"])
+print("Test error = %2.5e" % TEST_ERROR)
 
-F.tensor.plot(title='Active nodes')
-F.tensor.tree.plot_dims(title='Dimensions associated to the leaf nodes')
-F.tensor.tree.plot_with_labels_at_nodes(F.tensor.representation_rank,
-                                        title='Representation ranks')
+F.tensor.plot(title="Active nodes")
+F.tensor.tree.plot_dims(title="Dimensions associated to the leaf nodes")
+F.tensor.tree.plot_with_labels_at_nodes(
+    F.tensor.representation_rank, title="Representation ranks"
+)
 
 plt.figure()
 x_lin = np.linspace(0, 1, 1000)
 plt.plot(x_lin, FUN(x_lin), x_lin, F(T.map(x_lin)))
-plt.legend(('True function', 'Approximation'))
+plt.legend(("True function", "Approximation"))
 plt.show()
 
 # %% Model selection using a slope heuristic instead of the test error
 SEL = tensap.ModelSelection()
 # Complexity of each model: standard complexity based on the method storage
-SEL.data['complexity'] = SEL.complexity(OUTPUT['iterates'],
-                                        fun='storage',
-                                        c_type='standard')
+SEL.data["complexity"] = SEL.complexity(
+    OUTPUT["iterates"], fun="storage", c_type="standard"
+)
 # Empirical risk associated with each model
-SEL.data['empirical_risk'] = [SOLVER.loss_function.risk_estimation(
-    x, (X_TRAIN, Y_TRAIN)) for x in OUTPUT['iterates']]
+SEL.data["empirical_risk"] = [
+    SOLVER.loss_function.risk_estimation(x, (X_TRAIN, Y_TRAIN))
+    for x in OUTPUT["iterates"]
+]
 # Shape of the penalization function
 SEL.pen_shape = lambda x: x / NUM_TRAIN
 # Gap factor used in the slope heuristic
@@ -180,7 +191,11 @@ SEL.gap_factor = 2
 
 LAMBDA_HAT, M_HAT, LAMBDA_PATH, M_PATH = SEL.slope_heuristic()
 
-print('Model selected using a test sample:         %i, test error = %2.5e.' %
-      (OUTPUT['selected_model_number'], OUTPUT['test_error']))
-print('Model selected using the slope heuristic:   %i, test error = %2.5e.' %
-      (M_HAT, OUTPUT['test_error_iterations'][M_HAT]))
+print(
+    "Model selected using a test sample:         %i, test error = %2.5e."
+    % (OUTPUT["selected_model_number"], OUTPUT["test_error"])
+)
+print(
+    "Model selected using the slope heuristic:   %i, test error = %2.5e."
+    % (M_HAT, OUTPUT["test_error_iterations"][M_HAT])
+)

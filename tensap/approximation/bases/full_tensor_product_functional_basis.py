@@ -15,10 +15,10 @@
 # along with tensap.  If not, see <https://www.gnu.org/licenses/>.
 
 
-'''
+"""
 Module full_tensor_product_functional_basis.
 
-'''
+"""
 
 from copy import deepcopy
 import numpy as np
@@ -26,7 +26,7 @@ import tensap
 
 
 class FullTensorProductFunctionalBasis(tensap.FunctionalBasis):
-    '''
+    """
     Class FullTensorProductFunctionalBasis.
 
     Attributes
@@ -34,10 +34,10 @@ class FullTensorProductFunctionalBasis(tensap.FunctionalBasis):
     bases : list or tensap.FunctionalBases
         The bases associated with the object.
 
-    '''
+    """
 
     def __init__(self, bases):
-        '''
+        """
         Constructor for the class FullTensorProductFunctionalBasis.
 
         Parameters
@@ -49,14 +49,15 @@ class FullTensorProductFunctionalBasis(tensap.FunctionalBasis):
         -------
         None.
 
-        '''
+        """
         tensap.FunctionalBasis.__init__(self)
 
         if isinstance(bases, list):
             bases = tensap.FunctionalBases(bases)
 
-        assert isinstance(bases, tensap.FunctionalBases), \
-            'The first argument must be a FunctionalBases.'
+        assert isinstance(
+            bases, tensap.FunctionalBases
+        ), "The first argument must be a FunctionalBases."
 
         self.bases = bases
         self.measure = tensap.ProductMeasure([x.measure for x in bases.bases])
@@ -70,7 +71,7 @@ class FullTensorProductFunctionalBasis(tensap.FunctionalBasis):
         return out
 
     def length(self):
-        '''
+        """
         Return the number of bases in self.bases.
 
         Returns
@@ -78,7 +79,7 @@ class FullTensorProductFunctionalBasis(tensap.FunctionalBasis):
         int
             The number of bases in self.bases.
 
-        '''
+        """
         return len(self.bases)
 
     def __len__(self):
@@ -99,7 +100,7 @@ class FullTensorProductFunctionalBasis(tensap.FunctionalBasis):
         return out
 
     def remove_bases(self, ind):
-        '''
+        """
         Remove bases of self of index ind.
 
         Parameters
@@ -112,13 +113,13 @@ class FullTensorProductFunctionalBasis(tensap.FunctionalBasis):
         tensap.FullTensorProductFunctionalBasis
             The FullTensorProductFunctionalBasis with removed bases.
 
-        '''
+        """
         out = deepcopy(self)
         out.bases = out.bases.remove_bases(ind)
         return out
 
     def keep_bases(self, ind):
-        '''
+        """
         Keep only the bases of self of index ind.
 
         Parameters
@@ -131,7 +132,7 @@ class FullTensorProductFunctionalBasis(tensap.FunctionalBasis):
         tensap.FullTensorProductFunctionalBasis
             The FullTensorProductFunctionalBasis with kept bases.
 
-        '''
+        """
         out = deepcopy(self)
         out.bases = out.bases.keep_bases(ind)
         return out
@@ -145,7 +146,7 @@ class FullTensorProductFunctionalBasis(tensap.FunctionalBasis):
         return self
 
     def transpose(self, perm):
-        '''
+        """
         Return self with the basis permutation perm.
 
         Parameters
@@ -158,7 +159,7 @@ class FullTensorProductFunctionalBasis(tensap.FunctionalBasis):
         tensap.FullTensorProductFunctionalBasis
             The FullTensorProductFunctionalBasis with permuted bases.
 
-        '''
+        """
         out = deepcopy(self)
         out.bases = out.bases.transpose(perm)
         return out
@@ -169,20 +170,20 @@ class FullTensorProductFunctionalBasis(tensap.FunctionalBasis):
         return np.ravel(H.full().numpy())
 
     def conditional_expectation(self, dims, *args):
-        ind = tensap.MultiIndices.bounded_by(self.bases.cardinals()-1)
+        ind = tensap.MultiIndices.bounded_by(self.bases.cardinals() - 1)
         h = tensap.SparseTensorProductFunctionalBasis(self.bases, ind)
         return h.conditional_expectation(dims, *args)
 
     def eval(self, x):
         Hx = self.bases.eval(x)
-        ind = tensap.MultiIndices.bounded_by(self.bases.cardinals()-1)
+        ind = tensap.MultiIndices.bounded_by(self.bases.cardinals() - 1)
         y = Hx[0][:, ind.array[:, 0]]
         for i in np.arange(1, len(Hx)):
             y *= Hx[i][:, ind.array[:, i]]
         return y
 
     def gram_matrix(self, dims=None):
-        '''
+        """
         Return the gram matrix of each basis of self, or of a selection of
         them if dims is provided.
 
@@ -197,11 +198,11 @@ class FullTensorProductFunctionalBasis(tensap.FunctionalBasis):
         list
             The gram matrix of the selected bases.
 
-        '''
+        """
         return self.bases.gram_matrix(dims)
 
     def projection(self, fun, I):
-        '''
+        """
         Compute the projection of the function fun on the basis functions of
         self.
 
@@ -226,24 +227,28 @@ class FullTensorProductFunctionalBasis(tensap.FunctionalBasis):
             Dictionnary containing the number of evaluations of the function in
             the key 'number_of_evaluations'.
 
-        '''
+        """
         if not isinstance(I, tensap.FullTensorProductIntegrationRule):
-            raise NotImplementedError('Method not implemented.')
+            raise NotImplementedError("Method not implemented.")
 
         u = fun.eval_on_tensor_grid(I.points)
-        output = {'number_of_evaluations': u.storage()}
+        output = {"number_of_evaluations": u.storage()}
         Hx = self.bases.eval(np.hstack(I.points.grids))
-        Mx = [np.matmul(np.transpose(x), np.matmul(np.diag(y), x)) for
-              x, y in zip(Hx, I.weights)]
-        Hx_w = [np.linalg.solve(m, np.matmul(np.transpose(x), np.diag(y))) for
-                m, x, y in zip(Mx, Hx, I.weights)]
+        Mx = [
+            np.matmul(np.transpose(x), np.matmul(np.diag(y), x))
+            for x, y in zip(Hx, I.weights)
+        ]
+        Hx_w = [
+            np.linalg.solve(m, np.matmul(np.transpose(x), np.diag(y)))
+            for m, x, y in zip(Mx, Hx, I.weights)
+        ]
         f_dims = np.arange(len(Hx_w))
         u_coeff = u.tensor_matrix_product(Hx_w, f_dims)
         return tensap.FunctionalTensor(u_coeff, self.bases, f_dims), output
 
     def optimal_sampling_measure(self):
         # TODO optimal_sampling_measure
-        raise NotImplementedError('Method not implemented.')
+        raise NotImplementedError("Method not implemented.")
 
     def interpolation_points(self, *args):
         grid = self.bases.interpolation_points(*args)
@@ -251,7 +256,7 @@ class FullTensorProductFunctionalBasis(tensap.FunctionalBasis):
         return points, grid
 
     def tensor_product_interpolation(self, fun, grid=None):
-        '''
+        """
         Return the interpolation of function fun on a product grid.
 
         Parameters
@@ -279,7 +284,7 @@ class FullTensorProductFunctionalBasis(tensap.FunctionalBasis):
         output : dict
             A dictionnary of outputs of the method.
 
-        '''
+        """
         if grid is None:
             grid = self.bases.interpolation_points()
         else:
@@ -287,19 +292,23 @@ class FullTensorProductFunctionalBasis(tensap.FunctionalBasis):
         grid = tensap.FullTensorGrid(grid)
 
         output = {}
-        if hasattr(fun, '__call__') or isinstance(fun, tensap.Function):
+        if hasattr(fun, "__call__") or isinstance(fun, tensap.Function):
             x_grid = grid.array()
             y = fun(x_grid)
             y = tensap.FullTensor(y, grid.dim, grid.shape)
-            output['number_of_evaluations'] = y.storage()
+            output["number_of_evaluations"] = y.storage()
         # TODO Create an empty class Tensor for when using isinstance?
-        elif isinstance(fun, (tensap.FullTensor, tensap.CanonicalTensor,
-                              tensap.TreeBasedTensor), tensap.DiagonalTensor):
+        elif isinstance(
+            fun,
+            (tensap.FullTensor, tensap.CanonicalTensor, tensap.TreeBasedTensor),
+            tensap.DiagonalTensor,
+        ):
             y = fun
         else:
-            raise ValueError('The argument fun should be a Function, ' +
-                             'function, or a Tensor.')
-        output['grid'] = grid
+            raise ValueError(
+                "The argument fun should be a Function, " + "function, or a Tensor."
+            )
+        output["grid"] = grid
 
         B = self.bases.eval(grid.grids)
         B = [np.linalg.inv(x) for x in B]

@@ -14,17 +14,17 @@
 # You should have received a copy of the GNU Lesser General Public License
 # along with tensap.  If not, see <https://www.gnu.org/licenses/>.
 
-'''
+"""
 Module user_defined_function.
 
-'''
+"""
 
 import numpy as np
 import tensap
 
 
 class UserDefinedFunction(tensap.Function):
-    '''
+    """
     Class UserDefinedFunction.
 
     Attributes
@@ -32,10 +32,10 @@ class UserDefinedFunction(tensap.Function):
     fun : function or tensap.Function
         The function defining the UserDefinedFunction object.
 
-    '''
+    """
 
     def __init__(self, fun, dim, shape=None):
-        '''
+        """
         Constructor for the class UserDefinedFunction.
 
         Parameters
@@ -51,7 +51,7 @@ class UserDefinedFunction(tensap.Function):
         -------
         None.
 
-        '''
+        """
         tensap.Function.__init__(self)
 
         self.evaluation_at_multiple_points = False
@@ -60,9 +60,9 @@ class UserDefinedFunction(tensap.Function):
             self.output_shape = shape
 
         if isinstance(fun, str):
-            for i in np.arange(dim-1, -1, -1):
-                s = f'x{i}'
-                s_new = f'x[:, {i}]'
+            for i in np.arange(dim - 1, -1, -1):
+                s = f"x{i}"
+                s_new = f"x[:, {i}]"
                 fun = fun.replace(s, s_new)
             self.fun = lambda x: eval(fun)
         else:
@@ -74,9 +74,11 @@ class UserDefinedFunction(tensap.Function):
 
         n = x.shape[0]
 
-        if hasattr(self.fun, 'eval'):
+        if hasattr(self.fun, "eval"):
+
             def fun(x):
                 return self.fun.eval(x)
+
         else:
             fun = self.fun
 
@@ -89,5 +91,4 @@ class UserDefinedFunction(tensap.Function):
             for i in range(n):
                 y[i, :] = np.ravel(fun(np.atleast_2d(x[i, :])))
 
-        return np.reshape(y, np.concatenate(
-            ([n], np.atleast_1d(self.output_shape))))
+        return np.reshape(y, np.concatenate(([n], np.atleast_1d(self.output_shape))))

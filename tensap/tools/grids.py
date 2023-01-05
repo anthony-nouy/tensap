@@ -14,10 +14,10 @@
 # You should have received a copy of the GNU Lesser General Public License
 # along with tensap.  If not, see <https://www.gnu.org/licenses/>.
 
-'''
+"""
 Module grids.
 
-'''
+"""
 
 from abc import ABC, abstractmethod
 import numpy as np
@@ -25,7 +25,7 @@ import tensap
 
 
 class TensorGrid(ABC):
-    '''
+    """
     Class TensorGrid: grids in product sets.
 
     Attributes
@@ -37,23 +37,23 @@ class TensorGrid(ABC):
     shape: numpy.ndarray
         The shapes of the grids.
 
-    '''
+    """
 
     def __init__(self):
-        '''
+        """
         Constructor for the class TensorGrid.
 
         Returns
         -------
         None.
 
-        '''
+        """
         self.dim = None
         self.grids = None
         self.shape = None
 
     def ndim(self):
-        '''
+        """
         Return the dimension of the underlying space.
 
         Returns
@@ -61,11 +61,11 @@ class TensorGrid(ABC):
         int
             The dimension of the underlying space.
 
-        '''
+        """
         return self.dim
 
     def shape(self, d=None):
-        '''
+        """
         Return the shape of the grid, along the dimension d if provided.
 
         Equivalent to self.shape[d] if d is provided, self.shape otherwise.
@@ -80,13 +80,13 @@ class TensorGrid(ABC):
         numpy.ndarray
             The shape of the grid.
 
-        '''
+        """
         if d is None:
             return self.shape
         return self.shape[d]
 
     def plot_grid(self, *args, **kwargs):
-        '''
+        """
         Plot the grid.
 
         Parameters
@@ -104,9 +104,10 @@ class TensorGrid(ABC):
         -------
         None.
 
-        '''
+        """
         from mpl_toolkits.mplot3d import Axes3D
         import matplotlib.pyplot as plt
+
         x = self.array()
         d = x.shape[1]
         fig = plt.figure()
@@ -115,14 +116,14 @@ class TensorGrid(ABC):
         elif d == 2:
             plt.plot(x[:, 0], x[:, 1], *args, **kwargs)
         elif d == 3:
-            ax = fig.add_subplot(111, projection='3d')
+            ax = fig.add_subplot(111, projection="3d")
             ax.scatter(x[:, 0], x[:, 1], x[:, 2], *args, **kwargs)
         else:
-            raise ValueError('The dimension must be less or equal than 3.')
+            raise ValueError("The dimension must be less or equal than 3.")
 
     @abstractmethod
     def array(self):
-        '''
+        """
         Return an array of shape (n, d) where n is the number of grid points
         and d is the dimension.
 
@@ -131,12 +132,12 @@ class TensorGrid(ABC):
         numpy.ndarray
             The TensorGrid as an array.
 
-        '''
+        """
 
     @property
     @abstractmethod
     def size(self):
-        '''
+        """
         Return the number of grid points.
 
         Returns
@@ -144,17 +145,17 @@ class TensorGrid(ABC):
         int
             The number of grid points.
 
-        '''
+        """
 
 
 class FullTensorGrid(TensorGrid):
-    '''
+    """
     Class FullTensorGrid: tensor product grid.
 
-    '''
+    """
 
     def __init__(self, grids, dim=None):
-        '''
+        """
         Constructor for the class FullTensorGrid.
 
         Parameters
@@ -171,16 +172,17 @@ class FullTensorGrid(TensorGrid):
         -------
         None.
 
-        '''
+        """
 
         tensap.TensorGrid.__init__(self)
 
         if dim is None:
             dim = len(grids)
         else:
-            assert np.ndim(grids) == 1, \
-                'The first argument must be a unidimensional grid.'
-            grids = [np.reshape(grids, (-1, 1))]*dim
+            assert (
+                np.ndim(grids) == 1
+            ), "The first argument must be a unidimensional grid."
+            grids = [np.reshape(grids, (-1, 1))] * dim
         grids = [np.atleast_2d(x) for x in grids]
 
         self.dim = dim
@@ -203,7 +205,7 @@ class FullTensorGrid(TensorGrid):
         return np.prod(self.shape)
 
     def multi_indices(self):
-        '''
+        """
         Return a set of multi-indices for indexing the grid.
 
         Returns
@@ -211,11 +213,11 @@ class FullTensorGrid(TensorGrid):
         tensap.MultiIndices
             Aset of multi-indices for indexing the grid.
 
-        '''
-        return tensap.MultiIndices.bounded_by(self.shape-1)
+        """
+        return tensap.MultiIndices.bounded_by(self.shape - 1)
 
     def plot(self, y, *args):
-        '''
+        """
         Plot the grid.
 
         Parameters
@@ -230,23 +232,25 @@ class FullTensorGrid(TensorGrid):
         -------
         None.
 
-        '''
+        """
         import matplotlib.pyplot as plt
+
         d = self.ndim()
         plt.figure()
         if d == 1:
             plt.plot(self.grids[0], y, *args)
         elif d == 2:
             from mpl_toolkits.mplot3d import Axes3D
-            ax = plt.axes(projection='3d')
+
+            ax = plt.axes(projection="3d")
             x = self.array()
             ax.scatter(x[:, 0], x[:, 1], y, *args)
         else:
-            raise ValueError('The dimension must be less or equal than 2.')
+            raise ValueError("The dimension must be less or equal than 2.")
 
     @staticmethod
     def random(X, n):
-        '''
+        """
         Generate a random FullTensorGrid from a RandomVector.
 
         Parameters
@@ -262,7 +266,7 @@ class FullTensorGrid(TensorGrid):
         tensap.FullTensorGrid
             The random FullTensorGrid.
 
-        '''
+        """
         d = X.size
 
         n = np.atleast_1d(n)
@@ -276,13 +280,13 @@ class FullTensorGrid(TensorGrid):
 
 
 class SparseTensorGrid(TensorGrid):
-    '''
+    """
     Class SparseTensorGrid: sparse tensor product grid.
 
-    '''
+    """
 
     def __init__(self, grids, indices, dim=None):
-        '''
+        """
         Constructor for the class SparseTensorGrid
 
         Parameters
@@ -302,7 +306,7 @@ class SparseTensorGrid(TensorGrid):
         -------
         None.
 
-        '''
+        """
         tensap.TensorGrid.__init__(self)
 
         T = tensap.FullTensorGrid(grids, dim)
