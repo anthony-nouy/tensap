@@ -121,6 +121,7 @@ TENSOR_8 = tensap.FullTensor(
     np.random.choice([0, 1], size=24, p=[2 / 3, 1 / 3]).reshape((3, 4, 2))
 )
 print(f"\nTENSOR_8 has a storage complexity of {TENSOR_8.storage()}")
+print(f"It has a sparse storage complexity of {TENSOR_8.sparse_storage()}")
 print(
     f"Its sparse conversion has a storage complexity of {TENSOR_8.sparse().storage()}"
 )

@@ -134,7 +134,7 @@ class SparseTensor:
             The storage complexity of the SparseTensor.
 
         """
-        return self.size
+        return self.indices.cardinal()
 
     def sparse_storage(self):
         """
@@ -146,7 +146,7 @@ class SparseTensor:
             The sparse storage complexity of the SparseTensor.
 
         """
-        return self.count_non_zero()
+        return self.indices.cardinal()
 
     def count_non_zero(self):
         """
@@ -547,7 +547,7 @@ class SparseTensor:
 
         Returns
         -------
-        numpy.float
+        scalar
             The inner product of the two tensors.
 
         """
@@ -579,7 +579,7 @@ class SparseTensor:
 
         Returns
         -------
-        numpy.float
+        numpy scalar
             The norm of the tensor.
 
         """
@@ -670,7 +670,7 @@ class SparseTensor:
 
         Returns
         -------
-        numpy.float
+        numpy scalar
             The weighted inner product.
 
         """
