@@ -454,7 +454,7 @@ class FullTensor:
 
         Returns
         -------
-        out : float or FullTensor
+        out : scalar or FullTensor
             The squeezed tensor.
 
         """
@@ -477,7 +477,7 @@ class FullTensor:
 
         Returns
         -------
-        numpy.float
+        numpy scalar
             The inner product of the two tensors.
 
         """
@@ -489,7 +489,7 @@ class FullTensor:
 
         Returns
         -------
-        numpy.float
+        numpy scalar
             The norm of the tensor.
 
         """
@@ -744,7 +744,7 @@ class FullTensor:
 
         Returns
         -------
-        numpy.float
+        numpy scalar
             The weighted inner product.
 
         """
@@ -1145,11 +1145,11 @@ class FullTensor:
 
         Parameters
         ----------
-        parameter : float or int, optional
+        parameter : scalar or int, optional
             A parameter controlling the number of principal components.
             - If it is an integer, the number of principal components is the
             minimum between parameter and self.shape[0].
-            - If it is a float smaller than 1, the number of principal
+            - If it is smaller than 1, the number of principal
             components is determined such that ||x - VV'x||_F < t ||x||_F,
             with x the tensor, V the matrix of principal components, t the
             parameter, V' the transpose of the matrix V and ||.||_F the
@@ -1190,7 +1190,7 @@ class FullTensor:
         ----------
         alpha : int
             The index of the alpha-matricization.
-        parameter : float or int, optional
+        parameter : scalar or int, optional
             A parameter controlling the number of principal components.
             The default is M_alpha(self).shape[0].
 

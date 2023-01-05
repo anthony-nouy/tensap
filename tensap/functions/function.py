@@ -378,9 +378,9 @@ class Function:
 
         Returns
         -------
-        err_l2 : float
+        err_l2 : scalar
             The L2 error.
-        err_linf : float
+        err_linf : scalar
             The L-infinity error.
 
         """

@@ -370,7 +370,7 @@ class CanonicalTensor:
 
         Returns
         -------
-        numpy.float
+        numpy scalar
             The inner product of the two tensors.
 
         """
@@ -388,7 +388,7 @@ class CanonicalTensor:
 
         Returns
         -------
-        numpy.float
+        numpy scalar
             The norm of the tensor.
 
         """

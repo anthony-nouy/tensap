@@ -375,7 +375,7 @@ class DiagonalTensor:
 
         Returns
         -------
-        numpy.float
+        numpy scalar
             The inner product of the two tensors.
 
         """
@@ -387,7 +387,7 @@ class DiagonalTensor:
 
         Returns
         -------
-        numpy.float
+        numpy scalar
             The norm of the tensor.
 
         """
@@ -496,7 +496,7 @@ class DiagonalTensor:
 
         Returns
         -------
-        numpy.float
+        numpy scalar
             The weighted inner product.
 
         """

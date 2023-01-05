@@ -34,7 +34,7 @@ class EmpiricalRandomVariable(tensap.RandomVariable):
     ----------
     sample : numpy.array
         The sample used to generate the random variable.
-    bandwidth : float
+    bandwidth : scalar
         The computed bandwidth for the kernel density estimator.
 
     """

@@ -241,7 +241,7 @@ class DiscreteRandomVariable(tensap.RandomVariable):
 
         Returns
         -------
-        float
+        scalar
             The variance of the random variable.
 
         """
@@ -256,9 +256,9 @@ class DiscreteRandomVariable(tensap.RandomVariable):
 
         Returns
         -------
-        float
+        scalar
             The mean of the random variable.
-        float
+        scalar
             The variance of the random variable.
 
         """

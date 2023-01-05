@@ -140,7 +140,7 @@ class FunctionalBasisArray(tensap.Function):
 
         Returns
         -------
-        float or numpy.ndarray
+        scalar or numpy.ndarray
             The result of the dot product.
 
         """
@@ -159,7 +159,7 @@ class FunctionalBasisArray(tensap.Function):
 
         Returns
         -------
-        float
+        scalar
             The norm of self.data.
 
         """
@@ -299,7 +299,7 @@ class FunctionalBasisArray(tensap.Function):
 
         Returns
         -------
-        float or numpy.ndarray
+        scalar or numpy.ndarray
             The result of the dot product.
 
         """
@@ -322,7 +322,7 @@ class FunctionalBasisArray(tensap.Function):
 
         Returns
         -------
-        float
+        scalar
             The L2 norm of the function.
 
         """
