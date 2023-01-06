@@ -458,8 +458,9 @@ class FullTensor:
             The squeezed tensor.
 
         """
+        
         if dims is not None:
-            dims = tuple(dims)
+            dims = tuple(np.atleast_1d(dims))
 
         out = FullTensor(np.squeeze(self.data, dims))
         if out.order == 0:
@@ -988,7 +989,7 @@ class FullTensor:
             assert len(vectors) == self.order, "len(vectors) must be self.order."
             dims = np.arange(self.order)
         else:
-            dims = np.array(dims)
+            dims = np.atleast_1d(dims)
             if not isinstance(vectors, list):
                 vectors = [vectors]
             assert len(vectors) == dims.size, "len(vectors) must be equal to dims.size."
@@ -1067,7 +1068,7 @@ class FullTensor:
             assert len(matrices) == self.order, "len(matrices) must be self.order."
             dims = range(self.order)
         else:
-            dims = np.array(dims)
+            dims = np.atleast_1d(dims)
             if not isinstance(matrices, list):
                 matrices = [matrices]
             assert (

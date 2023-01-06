@@ -398,10 +398,8 @@ class TreeBasedTensor:
 
         if dims is None:
             dims = np.arange(self.order)
-        elif np.isscalar(dims):
-            dims = np.array([dims])
         else:
-            dims = np.array(dims)
+            dims = np.atleast_1d(dims)
 
         a = [np.ones(self.shape[i]) for i in dims.tolist()]
 
@@ -524,7 +522,14 @@ class TreeBasedTensor:
             A representation of the TreeBasedTensor as a tensap.FullTensor.
 
         """
+        
         tree = self.tree
+        if self.order == 1:
+            a =  self.tensors[tree.root - 1]
+            if a.order==2:
+                a = a.squeeze(1)
+            return a
+        
         tensors = np.array(self.tensors)
 
         for level in np.arange(np.max(tree.level), -1, -1):
@@ -545,9 +550,12 @@ class TreeBasedTensor:
                         dims = np.concatenate((dims, tree.dims[child - 1]))
                 tree.dims[nod - 1] = dims
 
-        if self.ranks[tree.root - 1] > 1:
-            dims = np.concatenate((dims, [self.order]))
+        #if self.ranks[tree.root - 1] > 1:
+        #    dims = np.concatenate((dims, [self.order]))
         tensor = tensors[tree.root - 1]
+        if tensor.order > self.order:
+            dimsextra = np.arange(self.order,tensor.order)
+            dims = np.concatenate((dims,dimsextra))
         if tensor.order > 1:
             tensor = tensor.itranspose(dims)
         return tensor
@@ -1406,13 +1414,14 @@ class TreeBasedTensor:
             assert len(vectors) == self.order, "len(vectors) must be self.order."
             dims = np.arange(self.order)
         else:
-            dims = np.array(dims)
+            dims = np.atleast_1d(dims)
             if not isinstance(vectors, list):
                 vectors = [vectors]
             assert len(vectors) == dims.size, "len(vectors) must be equal to dims.size."
 
         vectors = [np.reshape(x, [1, -1]) for x in vectors]
-        return self.tensor_matrix_product(vectors, dims).squeeze(dims.tolist())
+
+        return self.tensor_matrix_product(vectors, dims).squeeze(dims)
 
     def tensor_matrix_product_eval_diag(self, matrices, dims=None):
         """
@@ -1521,6 +1530,8 @@ class TreeBasedTensor:
         if dims is None:
             dims = np.arange(self.order)
             dims = dims[self.shape == 1]
+        else:
+            dims = np.atleast_1d(dims)
         dims = np.sort(dims)
         remaining_dims = tensap.fast_setdiff(np.arange(self.order), dims)
 
@@ -1547,7 +1558,7 @@ class TreeBasedTensor:
                                 tensors[child - 1], num
                             )
                             tensors[child - 1] = []
-                    if np.any(children_r):
+                    if np.any(children_r):        
                         tensors[nod - 1] = tensors[nod - 1].squeeze(
                             np.nonzero(children_r)[0].tolist()
                         )

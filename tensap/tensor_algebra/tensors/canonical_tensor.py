@@ -193,7 +193,7 @@ class CanonicalTensor:
             assert len(vectors) == self.order, "len(vectors) must be self.order."
             dims = np.arange(self.order)
         else:
-            dims = np.array(dims)
+            dims = np.atleast_1d(dims)
             if not isinstance(vectors, list):
                 vectors = [vectors]
             assert len(vectors) == dims.size, "len(vectors) must be equal to dims.size."
@@ -225,6 +225,7 @@ class CanonicalTensor:
                 self.shape[dims] == 1
             ), "dimensions to squeeze should have a size 1."
 
+        dims = np.atleast_1d(dims)
         dims = np.sort(dims)
         remaining_dims = tensap.fast_setdiff(np.arange(self.order), dims)
 
@@ -505,12 +506,10 @@ class CanonicalTensor:
 
         if dims is None:
             dims = np.arange(self.order)
-        elif np.isscalar(dims):
-            dims = np.array([dims])
         else:
-            dims = np.array(dims)
-
-        a = [np.ones(self.shape[i]) for i in dims.tolist()]
+            dims = np.atleast_1d(dims)
+        
+        a = [np.ones(self.shape[i]) for i in dims]
 
         return self.tensor_vector_product(a, dims)
 
