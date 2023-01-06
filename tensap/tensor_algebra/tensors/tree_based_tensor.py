@@ -522,14 +522,14 @@ class TreeBasedTensor:
             A representation of the TreeBasedTensor as a tensap.FullTensor.
 
         """
-        
+
         tree = self.tree
         if self.order == 1:
             a =  self.tensors[tree.root - 1]
-            if a.order==2:
+            if a.order == 2:
                 a = a.squeeze(1)
             return a
-        
+
         tensors = np.array(self.tensors)
 
         for level in np.arange(np.max(tree.level), -1, -1):
@@ -550,12 +550,10 @@ class TreeBasedTensor:
                         dims = np.concatenate((dims, tree.dims[child - 1]))
                 tree.dims[nod - 1] = dims
 
-        #if self.ranks[tree.root - 1] > 1:
-        #    dims = np.concatenate((dims, [self.order]))
         tensor = tensors[tree.root - 1]
         if tensor.order > self.order:
-            dimsextra = np.arange(self.order,tensor.order)
-            dims = np.concatenate((dims,dimsextra))
+            dimsextra = np.arange(self.order, tensor.order)
+            dims = np.concatenate((dims, dimsextra))
         if tensor.order > 1:
             tensor = tensor.itranspose(dims)
         return tensor
@@ -1558,7 +1556,7 @@ class TreeBasedTensor:
                                 tensors[child - 1], num
                             )
                             tensors[child - 1] = []
-                    if np.any(children_r):        
+                    if np.any(children_r):
                         tensors[nod - 1] = tensors[nod - 1].squeeze(
                             np.nonzero(children_r)[0].tolist()
                         )

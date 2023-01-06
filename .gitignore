@@ -6,3 +6,6 @@ tensap.egg-info
 coverage.xml
 .coverage
 .pytest_cache
+.DS_store
+.ipynb_checkpoints
+_build
