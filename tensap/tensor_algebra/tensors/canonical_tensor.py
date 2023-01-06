@@ -508,7 +508,7 @@ class CanonicalTensor:
             dims = np.arange(self.order)
         else:
             dims = np.atleast_1d(dims)
-        
+
         a = [np.ones(self.shape[i]) for i in dims]
 
         return self.tensor_vector_product(a, dims)

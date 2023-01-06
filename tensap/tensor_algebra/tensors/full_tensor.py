@@ -458,7 +458,7 @@ class FullTensor:
             The squeezed tensor.
 
         """
-        
+
         if dims is not None:
             dims = tuple(np.atleast_1d(dims))
 
