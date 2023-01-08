@@ -525,7 +525,7 @@ class TreeBasedTensor:
 
         tree = self.tree
         if self.order == 1:
-            a =  self.tensors[tree.root - 1]
+            a = self.tensors[tree.root - 1]
             if a.order == 2 and a.shape[1] == 1:
                 a = a.squeeze(1)
             return a
