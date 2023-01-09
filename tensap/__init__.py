@@ -21,7 +21,7 @@ Initialization file for tensap (tensor approximation package).
 
 # flake8: noqa
 
-__version__ = "1.3"
+__version__ = "1.4"
 
 from .linear_algebra.magic_indices import magic_indices
 
