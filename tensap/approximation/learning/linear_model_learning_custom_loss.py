@@ -19,6 +19,7 @@ Module linear_model_learning_custom_loss.
 
 """
 
+from copy import deepcopy
 from numpy import arange, finfo
 import numpy as np
 import tensap
@@ -69,13 +70,24 @@ class LinearModelLearningCustomLoss(tensap.LinearModelLearning):
             )
         super().__init__(custom_loss)
 
-        # fails with new tf.keras.optimizers.Adam() from tf>=2.11
-        # https://github.com/tensorflow/tensorflow/issues/58973
-        self.optimizer = tf.keras.optimizers.legacy.Adam()
+        self.optimizer = tf.keras.optimizers.Adam()
 
         self.initial_guess = None
 
         self.options = {"max_iterations": 1e3, "stagnation": finfo(float).eps}
+
+    def __deepcopy__(self, memo):
+        # https://github.com/tensorflow/tensorflow/issues/58973
+        strategy = self.optimizer._distribution_strategy
+        self.optimizer._distribution_strategy = None
+        cls = self.__class__
+        result = cls.__new__(cls)
+        memo[id(self)] = result
+        for k, v in self.__dict__.items():
+            setattr(result, k, deepcopy(v, memo))
+        self.optimizer._distribution_strategy = strategy
+        result.optimizer._distribution_strategy = strategy
+        return result
 
     def solve(self):
         """
