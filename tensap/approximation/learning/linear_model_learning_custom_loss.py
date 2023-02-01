@@ -19,6 +19,7 @@ Module linear_model_learning_custom_loss.
 
 """
 
+from copy import deepcopy
 from numpy import arange, finfo
 import numpy as np
 import tensap
@@ -69,13 +70,25 @@ class LinearModelLearningCustomLoss(tensap.LinearModelLearning):
             )
         super().__init__(custom_loss)
 
-        # fails with new tf.keras.optimizers.Adam() from tf>=2.11
-        # https://github.com/tensorflow/tensorflow/issues/58973
-        self.optimizer = tf.keras.optimizers.legacy.Adam()
+        self.optimizer = tf.keras.optimizers.Adam()
 
         self.initial_guess = None
 
         self.options = {"max_iterations": 1e3, "stagnation": finfo(float).eps}
+        self.var = None
+
+    def __deepcopy__(self, memo):
+        # https://github.com/tensorflow/tensorflow/issues/58973
+        strategy = self.optimizer._distribution_strategy
+        self.optimizer._distribution_strategy = None
+        cls = self.__class__
+        result = cls.__new__(cls)
+        memo[id(self)] = result
+        for k, v in self.__dict__.items():
+            setattr(result, k, deepcopy(v, memo))
+        self.optimizer._distribution_strategy = strategy
+        result.optimizer._distribution_strategy = strategy
+        return result
 
     def solve(self):
         """
@@ -103,20 +116,25 @@ class LinearModelLearningCustomLoss(tensap.LinearModelLearning):
         training_data = self.training_data
 
         def risk():
-            fun_eval = tf.squeeze(tf.tensordot(basis_eval, var, [1, 0]))
+            fun_eval = tf.squeeze(tf.tensordot(basis_eval, self.var, [1, 0]))
             out = self.loss_function.risk_estimation(fun_eval, training_data)
             return out
 
-        var = tf.Variable(self.initial_guess, dtype=tf.float64)
-        for it in arange(self.options["max_iterations"]):
-            var0 = var.numpy()
-            self.optimizer.minimize(risk, var_list=[var])
+        if self.var is None:
+            self.var = tf.Variable(self.initial_guess, dtype=tf.float64)
+            self.optimizer.build([self.var])
+        else:
+            self.var.assign(self.initial_guess)
 
-            stagnation = (tf.linalg.norm(var0 - var) / tf.linalg.norm(var0)).numpy()
+        for it in arange(self.options["max_iterations"]):
+            var0 = self.var.numpy()
+            self.optimizer.minimize(risk, var_list=[self.var])
+
+            stagnation = (tf.linalg.norm(var0 - self.var) / tf.linalg.norm(var0)).numpy()
             if stagnation < self.options["stagnation"]:
                 break
 
-        sol = var.numpy()
+        sol = self.var.numpy()
 
         output = {}
         if self.test_error:
