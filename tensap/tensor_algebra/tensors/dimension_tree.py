@@ -615,7 +615,7 @@ class DimensionTree:
         plt.title(title)
         axes = plt.gca()
         axes.set_ylim([0, 1])
-        if fname:
+        if fname is not None:
             plt.savefig(fname, transparent=True)
         else:
             plt.show()

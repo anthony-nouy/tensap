@@ -1985,7 +1985,7 @@ class TreeBasedTensor:
             dtype=object,
         )
 
-    def plot(self, nodes_labels=None, title=None):
+    def plot(self, nodes_labels=None, title=None, fname=None):
         """
         Plot the tree with the nodes indices and the active nodes.
 
@@ -1998,6 +1998,8 @@ class TreeBasedTensor:
             nodes numbers.
         title : str, optional
             The title of the graph. The default is None.
+        fname : str, optimal
+            The file where to save the plot. The default is None.
 
         Returns
         -------

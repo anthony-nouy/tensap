@@ -280,8 +280,9 @@ class DiscreteRandomVariable(tensap.RandomVariable):
             The generated numbers.
 
         """
-        Y = DiscreteRandomVariable(
-            np.arange(len(self.probabilities)), self.probabilities
-        )
-        ind = Y.icdf(np.random.rand(int(n)))
+        #Y = DiscreteRandomVariable(
+        #    np.arange(len(self.probabilities)), self.probabilities
+        #)
+        #ind = Y.icdf(np.random.rand(int(n)))
+        ind = np.random.choice(len(self.probabilities),n,p = self.probabilities)
         return np.squeeze(self.values[ind.astype(int), :], 1)

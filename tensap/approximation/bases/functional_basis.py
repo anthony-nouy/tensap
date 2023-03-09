@@ -278,7 +278,7 @@ class FunctionalBasis:
         Provide the magic points associated with a functional basis f selected
         in a given set of points x.
 
-        The method uses magicIndices(F,numel(f)) on the matrix F of evaluations
+        The method uses tensap.magic_indices(F,self.cardinal()) on the matrix F of evaluations
         of f at points x.
 
         Parameters
