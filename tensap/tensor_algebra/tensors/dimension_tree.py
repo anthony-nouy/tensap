@@ -546,7 +546,7 @@ class DimensionTree:
         self.plot_with_labels_at_nodes(self.nodes_indices, **args)
 
     def plot_with_labels_at_nodes(
-        self, labels, node_color="red", colored_nodes=None, title=None
+        self, labels, node_color="red", colored_nodes=None, title=None, fname=None
     ):
         """
         Plot the tree with labels at nodes.
@@ -563,6 +563,8 @@ class DimensionTree:
             Colored nodes. The default is [].
         title : str, optional
             The title of the plot. The default is None.
+        fname : str, optional
+            The file where to save the plot. The default is None.
 
         Returns
         -------
@@ -613,7 +615,10 @@ class DimensionTree:
         plt.title(title)
         axes = plt.gca()
         axes.set_ylim([0, 1])
-        plt.show()
+        if fname:
+            plt.savefig(fname, transparent=True)
+        else:
+            plt.show()
 
     def plot_dims(self, nodes=None, **args):
         """
