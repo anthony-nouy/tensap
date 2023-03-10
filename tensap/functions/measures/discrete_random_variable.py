@@ -281,5 +281,5 @@ class DiscreteRandomVariable(tensap.RandomVariable):
 
         """
 
-        ind = np.random.choice(len(self.probabilities), n, p=self.probabilities)
+        ind = np.random.choice(len(self.probabilities), int(n), p=self.probabilities)
         return np.squeeze(self.values[ind.astype(int), :], 1)
