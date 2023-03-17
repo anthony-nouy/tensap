@@ -126,6 +126,11 @@ print(
     f"Its sparse conversion has a storage complexity of {TENSOR_8.sparse().storage()}"
 )
 
+# %% Evaluation at indices
+x = tensap.FullTensor.rand([4,4,4])
+print("[x(1,2,3) x(2,3,2)] = ",x.eval_at_indices([[1,2,3], [2,3,2]]))
+print("x(1,2,:) = " , x.eval_at_indices([1,2],[0,1]))
+
 # %% Sum along given dimensions
 x = tensap.FullTensor.rand([2, 3, 4, 5])
 print("Initial tensor x")
@@ -140,3 +145,5 @@ x2 = x.reduce_sum((1, 3))
 print(x2)
 print("Squeeze the resulting tensor (removing modes with size 1)")
 print(x2.squeeze())
+
+

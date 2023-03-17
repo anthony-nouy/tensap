@@ -1214,47 +1214,70 @@ class TreeBasedTensor:
             diagonal evaluated.
 
         """
-        if dims is not None:
-            raise NotImplementedError("Method not implemented.")
-
-        tree = self.tree
-        tensors = np.array(self.tensors)
-
-        for level in np.arange(np.max(tree.level) - 1, -1, -1):
-            for nod in tensap.fast_intersect(
-                tree.nodes_with_level(level), tree.internal_nodes
-            ):
-                children = tree.children(nod)
-                are_ch_active = self.is_active_node[children - 1]
-                ind_active = np.nonzero(are_ch_active)[0]
-
-                if np.all(np.logical_not(are_ch_active)):
-                    tensors[nod - 1] = tensors[nod - 1].eval_diag(range(len(children)))
-                else:
-                    tmp = tensors[children[ind_active[0]] - 1]
-                    for ind in np.arange(1, ind_active.size):
-                        tmp = tmp.outer_product_eval_diag(
-                            tensors[children[ind_active[ind]] - 1], 0, 0
-                        )
-                    ind_inactive = np.nonzero(np.logical_not(are_ch_active))[0]
-                    if ind_inactive.size != 0:
-                        tensors[nod - 1] = tmp.tensordot_eval_diag(
-                            tensors[nod - 1],
-                            np.arange(1, tmp.order),
-                            ind_active,
-                            0,
-                            ind_inactive,
-                        )
+        if dims is None:
+            tree = self.tree
+            tensors = np.array(self.tensors)
+        
+            for level in np.arange(np.max(tree.level) - 1, -1, -1):
+                for nod in tensap.fast_intersect(
+                    tree.nodes_with_level(level), tree.internal_nodes
+                ):
+                    children = tree.children(nod)
+                    are_ch_active = self.is_active_node[children - 1]
+                    ind_active = np.nonzero(are_ch_active)[0]
+        
+                    if np.all(np.logical_not(are_ch_active)):
+                        tensors[nod - 1] = tensors[nod - 1].eval_diag(range(len(children)))
                     else:
-                        tensors[nod - 1] = tmp.tensordot(
-                            tensors[nod - 1], np.arange(1, tmp.order), ind_active
-                        )
-                if nargout == 1:
-                    tensors[children[ind_active] - 1] = None
-        diag = tensors[tree.root - 1]
-        if isinstance(diag, tensap.FullTensor) and diag.order == 1:
-            diag = diag.numpy()
-        return diag if nargout == 1 else (diag, tensors.tolist())
+                        tmp = tensors[children[ind_active[0]] - 1]
+                        for ind in np.arange(1, ind_active.size):
+                            tmp = tmp.outer_product_eval_diag(
+                                tensors[children[ind_active[ind]] - 1], 0, 0
+                            )
+                        ind_inactive = np.nonzero(np.logical_not(are_ch_active))[0]
+                        if ind_inactive.size != 0:
+                            tensors[nod - 1] = tmp.tensordot_eval_diag(
+                                tensors[nod - 1],
+                                np.arange(1, tmp.order),
+                                ind_active,
+                                0,
+                                ind_inactive,
+                            )
+                        else:
+                            tensors[nod - 1] = tmp.tensordot(
+                                tensors[nod - 1], np.arange(1, tmp.order), ind_active
+                            )
+                    if nargout == 1:
+                        tensors[children[ind_active] - 1] = None
+            diag = tensors[tree.root - 1]
+            if isinstance(diag, tensap.FullTensor) and diag.order == 1:
+                diag = diag.numpy()
+            return diag if nargout == 1 else (diag, tensors.tolist())
+                        
+        else:
+            
+            tree = self.tree
+            alpha = tree.node_with_dims(dims)  
+            
+            if len(alpha)==0:
+                raise NotImplementedError("Method not implemented.")
+            alpha = alpha[0]
+            subtree , nodes = tree.sub_dimension_tree(alpha); 
+            xs = tensap.TreeBasedTensor(self.tensors[nodes-1], subtree);  
+            xs = xs.eval_diag(); 
+            self.tensors[alpha-1] = xs; 
+            keep_ind = tensap.fast_setdiff(np.arange(tree.nb_nodes), tree.descendants(alpha)-1) # indices of the nodes that are kept
+            adj = tree.adjacency_matrix[np.ix_(keep_ind,keep_ind)]  # extract submatrix of the adjacency matrix 
+            remaining_dims = tensap.fast_setdiff(np.arange(self.order) , tree.dims[alpha-1])
+            dim2ind = [
+                np.nonzero(x == keep_ind + 1)[0][0] + 1
+                for x in tree.dim2ind[remaining_dims]
+            ]
+            mu = np.where(alpha == keep_ind + 1)[0][0] + 1 #  mu is the location of node alpha in keepind
+            dim2ind.insert(0,mu)
+            newtree = tensap.DimensionTree(dim2ind,adj)  
+            return TreeBasedTensor(self.tensors[keep_ind],newtree)
+       
 
     def cat(self, tensor2):
         """
