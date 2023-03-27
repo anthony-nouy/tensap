@@ -200,10 +200,5 @@ print(T.eval_at_indices(I.random(3)))
 print("partial evaluation - squeezing the tensor")
 print(T.eval_at_indices([1,2],[0,1]))
 print(T.eval_at_indices([1,2],[0,4]))
-
-# %% Evaluation at indices
-print("partial evaluation")
-print(T.eval_at_indices([1,2],[0,1]))
-print(T.eval_at_indices([1],[1]))
-print(T.eval_at_indices([[1] , [3]],[1]))
-print(T.eval_at_indices([[1,2] , [2,3]],[0,1]))
+print("partial evaluation at multiple indices")
+print(T.eval_at_indices([[1,2] , [2,3]],[1,2]))
