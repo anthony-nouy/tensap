@@ -127,9 +127,9 @@ print(
 )
 
 # %% Evaluation at indices
-x = tensap.FullTensor.rand([4,4,4])
-print("[x(1,2,3) x(2,3,2)] = ",x.eval_at_indices([[1,2,3], [2,3,2]]))
-print("x(1,2,:) = " , x.eval_at_indices([1,2],[0,1]))
+x = tensap.FullTensor.rand([4, 4, 4])
+print("[x(1,2,3) x(2,3,2)] = ", x.eval_at_indices([[1, 2, 3], [2, 3, 2]]))
+print("x(1,2,:) = ", x.eval_at_indices([1, 2], [0, 1]))
 
 # %% Sum along given dimensions
 x = tensap.FullTensor.rand([2, 3, 4, 5])
