@@ -190,16 +190,15 @@ subT = tensap.TreeBasedTensor(T.tensors[nodes - 1], subTREE)
 
 # %% Evaluation at indices
 ORDER = 5
-SIZE = [10]*ORDER
+SIZE = [10] * ORDER
 TREE = tensap.DimensionTree.balanced(ORDER)
-T = tensap.TreeBasedTensor.rand(TREE,shape = SIZE)
+T = tensap.TreeBasedTensor.rand(TREE, shape=SIZE)
 
 print("evaluation at 3 entries drawn at random")
-I = tensap.random_multi_indices(SIZE)
-print(T.eval_at_indices(I.random(3)))
+Ind = tensap.random_multi_indices(SIZE)
+print(T.eval_at_indices(Ind.random(3)))
 print("partial evaluation - squeezing the tensor")
 print(T.eval_at_indices([1, 2], [0, 1]))
 print(T.eval_at_indices([1, 2], [0, 4]))
 print("partial evaluation at multiple indices")
 print(T.eval_at_indices([[1, 2], [2, 3]], [1, 2]))
-

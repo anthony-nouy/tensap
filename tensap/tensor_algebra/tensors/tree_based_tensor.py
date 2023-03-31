@@ -1270,7 +1270,7 @@ class TreeBasedTensor:
             keep_ind = tensap.fast_setdiff(
                 np.arange(tree.nb_nodes), tree.descendants(alpha) - 1)
             # extract submatrix of the adjacency matrix
-            adj = tree.adjacency_matrix[np.ix_(keep_ind,keep_ind)]  
+            adj = tree.adjacency_matrix[np.ix_(keep_ind, keep_ind)]
             remaining_dims = tensap.fast_setdiff(
                 np.arange(self.order), tree.dims[alpha - 1]
             )
@@ -1283,7 +1283,6 @@ class TreeBasedTensor:
             dim2ind.insert(0, mu)
             newtree = tensap.DimensionTree(dim2ind, adj)
             return TreeBasedTensor(self.tensors[keep_ind], newtree)
-       
 
     def cat(self, tensor2):
         """

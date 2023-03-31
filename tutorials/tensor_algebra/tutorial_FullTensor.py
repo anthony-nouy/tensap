@@ -145,5 +145,3 @@ x2 = x.reduce_sum((1, 3))
 print(x2)
 print("Squeeze the resulting tensor (removing modes with size 1)")
 print(x2.squeeze())
-
-
