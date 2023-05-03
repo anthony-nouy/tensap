@@ -1,18 +1,27 @@
 name: Build
 on: [push, pull_request]
 jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Lint
+        run: |
+          sudo apt-get install python3-pip
+          pip3 install flake8
+          flake8 --ignore=W503 --max-line-length=100
+
   conda-linux:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - uses: conda-incubator/setup-miniconda@v2
         with:
           miniforge-version: latest
       - name: Build
         shell: bash -l {0}
         run: |
-          conda install -y tensorflow scikit-learn pytest networkx matplotlib sphinx numpydoc pytest-cov codecov flake8
-          flake8 --ignore=W503 --max-line-length=100
+          conda install -y tensorflow scikit-learn pytest networkx matplotlib sphinx numpydoc pytest-cov codecov
           python setup.py install
           make html -C doc
           mv tensap tensap_code && pytest --cov-report=xml --cov=tensap --capture=no test && codecov && mv tensap_code tensap
@@ -35,7 +44,7 @@ jobs:
   conda-windows:
     runs-on: windows-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - uses: conda-incubator/setup-miniconda@v2
         with:
           miniforge-version: latest
