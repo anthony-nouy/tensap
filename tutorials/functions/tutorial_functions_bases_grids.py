@@ -79,7 +79,7 @@ Psix = Psi.eval(x)
 
 for i in range(I0.cardinal()):
     finegrid.plot(Psix[:, i])
-    plt.title(I0.array[i, :])
+    plt.title(str(I0.array[i, :]))
 
 # %% Projection on polynomial space through quadrature
 d = 3
