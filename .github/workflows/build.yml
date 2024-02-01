@@ -4,7 +4,7 @@ jobs:
   lint:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Lint
         run: |
           sudo apt-get install python3-pip
@@ -14,7 +14,7 @@ jobs:
   conda-linux:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - uses: conda-incubator/setup-miniconda@v2
         with:
           miniforge-version: latest
@@ -44,11 +44,10 @@ jobs:
   conda-windows:
     runs-on: windows-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - uses: conda-incubator/setup-miniconda@v2
         with:
           miniforge-version: latest
-          python-version: 3.9
       - name: Build
         run: |
           conda install -y scikit-learn pytest networkx matplotlib pip
