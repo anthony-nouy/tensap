@@ -21,7 +21,7 @@ jobs:
       - name: Build
         shell: bash -l {0}
         run: |
-          conda install -y tensorflow scikit-learn pytest networkx matplotlib sphinx numpydoc pytest-cov codecov
+          conda install -y "tensorflow>=2.15,<2.16" "keras>=2.15,<2.16" "numpy>=1.20,<2" scikit-learn pytest networkx matplotlib-base sphinx numpydoc pytest-cov codecov
           python setup.py install
           make html -C doc
           mv tensap tensap_code && pytest --cov-report=xml --cov=tensap --capture=no test && codecov && mv tensap_code tensap
@@ -48,9 +48,10 @@ jobs:
       - uses: conda-incubator/setup-miniconda@v3
         with:
           miniforge-version: latest
+          python-version: '3.10'
       - name: Build
         run: |
-          conda install -y scikit-learn pytest networkx matplotlib pip
-          pip install tensorflow
+          conda install -y scikit-learn pytest networkx matplotlib pip "numpy>=1.20,<2"
+          pip install "tensorflow>=2.15,<2.16" "keras>=2.15,<2.16"
           python setup.py install
           pytest -s
