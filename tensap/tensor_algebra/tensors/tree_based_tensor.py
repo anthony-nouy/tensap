@@ -731,7 +731,8 @@ class TreeBasedTensor:
                     ),
                     unique_asc,
                 )
-                cost[beta - 1] = ranks[gamma - 1] * np.prod(ranks[children - 1])
+                rank_prod = np.prod(ranks[children - 1])
+                cost[beta - 1] = ranks[gamma - 1] * rank_prod
         return cost
 
     def optimize_dimension_tree(self, tolerance, max_iter):
