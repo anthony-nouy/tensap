@@ -20,6 +20,7 @@ Module orthonormal_polynomials.
 """
 
 from abc import abstractmethod
+import math
 import numpy as np
 import tensap
 
@@ -476,7 +477,7 @@ class HermitePolynomials(OrthonormalPolynomials):
         """
         recurr = np.zeros((2, n + 1))
         recurr[1, :] = np.arange(n + 1)
-        norms = np.array([np.sqrt(float(np.math.factorial(x))) for x in range(n + 1)])
+        norms = np.array([np.sqrt(float(math.factorial(x))) for x in range(n + 1)])
         return recurr, norms
 
 
@@ -531,8 +532,8 @@ class LegendrePolynomials(OrthonormalPolynomials):
             [
                 np.sqrt(1 / (2 * x + 1))
                 * 2 ** x
-                * np.math.factorial(x) ** 2
-                / np.math.factorial(2 * x)
+                * math.factorial(x) ** 2
+                / math.factorial(2 * x)
                 for x in range(n + 1)
             ]
         )
@@ -591,8 +592,8 @@ class LegendrePolynomialsLebesgue(OrthonormalPolynomials):
             [
                 np.sqrt(1 / (2 * x + 1))
                 * 2 ** x
-                * np.math.factorial(x) ** 2
-                / np.math.factorial(2 * x)
+                * math.factorial(x) ** 2
+                / math.factorial(2 * x)
                 * np.sqrt(2)
                 for x in range(n + 1)
             ]

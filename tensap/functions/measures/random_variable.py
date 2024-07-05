@@ -210,7 +210,7 @@ class RandomVariable(tensap.ProbabilityMeasure):
             x = s[0] + u * (s[1] - s[0])
         else:
             x = n
-        v = np.concatenate((-np.Inf, (x[1:] + x[:-1]) / 2, np.Inf), axis=None)
+        v = np.concatenate((-np.inf, (x[1:] + x[:-1]) / 2, np.inf), axis=None)
         p = self.cdf(v[1:]) - self.cdf(v[:-1])
 
         return tensap.DiscreteRandomVariable(x, p)
