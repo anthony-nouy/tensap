@@ -197,5 +197,5 @@ print(
 )
 print(
     "Model selected using the slope heuristic:   %i, test error = %2.5e."
-    % (M_HAT, OUTPUT["test_error_iterations"][M_HAT])
+    % (M_HAT, OUTPUT["test_error_iterations"][M_HAT][0])
 )
