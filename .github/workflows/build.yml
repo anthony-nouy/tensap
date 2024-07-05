@@ -51,7 +51,7 @@ jobs:
           python-version: '3.10'
       - name: Build
         run: |
-          conda install -y scikit-learn pytest networkx matplotlib pip
+          conda install -y scikit-learn pytest networkx matplotlib-base pip
           pip install "tensorflow>=2.15,<2.16" "keras>=2.15,<2.16"
           python setup.py install
           pytest -s
