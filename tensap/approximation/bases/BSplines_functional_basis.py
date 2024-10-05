@@ -94,12 +94,12 @@ class BSplinesFunctionalBasis(tensap.FunctionalBasis):
         m = t.size
         n = x.size
 
-        Bx = np.zeros((n, m-1, self.degree + 1))
+        Bx = np.zeros((n, m - 1, self.degree + 1))
         for i in range(m-1):
             Bx[:, i, 0] = (x > t[i]) & (x <= t[i+1])
 
         for j in np.arange(1,self.degree+1):
-            for i in range(m-1-j):
+            for i in range(m - 1 - j):
                 Bx[:, i, j] = (x - t[i]) / (t[i+j] - t[i]) * Bx[:, i, j-1] + \
                                  (t[i+j+1] - x) / (t[i+j+1] - t[i+1]) * Bx[:, i+1, j-1]
         
@@ -123,7 +123,7 @@ class BSplinesFunctionalBasis(tensap.FunctionalBasis):
         t = self.knots
         
         Bx = self.eval_sequence(x)
-        Bx = Bx[:, :t.size-1-self.degree, -1]  # Last layer
+        Bx = Bx[:, :t.size - 1 - self.degree, -1]  # Last layer
         return Bx
 
     def eval_derivative(self, n, x):
@@ -153,12 +153,12 @@ class BSplinesFunctionalBasis(tensap.FunctionalBasis):
 
             for j in np.arange(1,self.degree+1):
                 for i in range(t.size-1-j):
-                    dBx[:, i, j] = k / (t[i+j] - t[i]) * dBx_old[:, i, j-1] - \
-                                     k / (t[i+j+1] - t[i+1]) * dBx_old[:, i+1, j-1] + \
-                                     (x - t[i]) / (t[i+j] - t[i]) * dBx[:, i, j-1] + \
-                                     (t[i+j+1] - x) / (t[i+j+1] - t[i+1]) * dBx[:, i+1, j-1]
+                    dBx[:, i, j] = k / (t[i + j] - t[i]) * dBx_old[:, i, j - 1] - \
+                                     k / (t[i + j + 1] - t[i + 1]) * dBx_old[:, i + 1, j - 1] + \
+                                     (x - t[i]) / (t[i+j] - t[i]) * dBx[:, i, j - 1] + \
+                                     (t[i + j + 1] - x) / (t[i + j + 1] - t[i + 1]) * dBx[:, i+1, j-1]
 
-        return dBx[:, :t.size-1-self.degree, -1]
+        return dBx[:, :t.size - 1 - self.degree, -1]
 
     def gauss_integration_rule(self, n):
         """
@@ -193,7 +193,7 @@ class BSplinesFunctionalBasis(tensap.FunctionalBasis):
         BSplinesFunctionalBasis
             The cardinal B-Spline basis of degree `m`.
         """
-        return BSplinesFunctionalBasis(np.arange(m+2), m)
+        return BSplinesFunctionalBasis(np.arange(m + 2), m)
 
     @staticmethod
     def with_extra_knots(t, m):
@@ -214,6 +214,7 @@ class BSplinesFunctionalBasis(tensap.FunctionalBasis):
         """
         t = np.ravel(t)
         tl = t[0] + np.arange(-m, 0) * (t[1] - t[0])
-        tr = t[-1] + np.arange(1, m+1) * (t[-1] - t[-2])
+        tr = t[-1] + np.arange(1, m + 1) * (t[-1] - t[-2])
         t_full = np.concatenate((tl, t, tr))
         return tensap.BSplinesFunctionalBasis(t_full, m)
+    

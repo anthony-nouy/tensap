@@ -75,6 +75,9 @@ class ProductMeasure(tensap.Measure):
     def __eq__(self, measure_2):
         return np.all([x == y for x, y in zip(self.measures, measure_2.measures)])
 
+    def is_discrete(self):
+        return np.all([x.is_discrete() for x in self.measures])
+
     def random_vector(self):
         """
         Return, if self is a ProbabilityMeasure, the associated RandomVector.
@@ -150,7 +153,7 @@ class ProductMeasure(tensap.Measure):
         raise NotImplementedError("Method not implemented.")
 
     def random(self, n=1):        
-        x = [np.reshape(mu.random(n),(n,mu.ndim())) for mu in self.measures]
+        x = [np.reshape(mu.random(n), (n, mu.ndim())) for mu in self.measures]
         x = np.hstack(x)
         return x
 

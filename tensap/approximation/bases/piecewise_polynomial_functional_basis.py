@@ -22,7 +22,7 @@ Module piecewise_polynomial_functional_basis.
 
 import numpy as np
 import tensap
-from scipy.sparse import lil_matrix
+#from scipy.sparse import lil_matrix
 
 class PiecewisePolynomialFunctionalBasis(tensap.FunctionalBasis):
 
@@ -95,16 +95,16 @@ class PiecewisePolynomialFunctionalBasis(tensap.FunctionalBasis):
         l = p2 - p1
         u = (x - p1[pos]) / l[pos]
         U = tensap.LebesgueMeasure(0, 1)
-        pol = tensap.PolynomialFunctionalBasis(U.orthonormal_polynomials(), np.arange(np.max(self.p)+1))
+        pol = tensap.PolynomialFunctionalBasis(U.orthonormal_polynomials(), np.arange(np.max(self.p) + 1))
         pu = pol.eval_derivative(k, u)
         hx = np.zeros((x.size, self.cardinal()))
 
         for i in range(self.points.size - 1):
-            I = np.where(pos == i)[0]
-            if  I.size > 0:
-                J = np.sum(self.p[:i]+1) + np.arange(self.p[i] + 1)
+            loc = np.where(pos == i)[0]
+            if  loc.size > 0:
+                J = np.sum(self.p[:i] + 1) + np.arange(self.p[i] + 1)
                 scale = l[i]
-                hx[np.ix_(I, J)] = pu[I, :self.p[i] + 1] / np.sqrt(scale) * l[i]**(-k)
+                hx[np.ix_(loc, J)] = pu[loc, :self.p[i] + 1] / np.sqrt(scale) * l[i]**(-k)
         
         if indices is not None:
             hx = hx[:, indices]
@@ -133,7 +133,7 @@ class PiecewisePolynomialFunctionalBasis(tensap.FunctionalBasis):
         p2 = self.points[1:]
         l = p2 - p1
         m = np.zeros(self.cardinal())
-        q = np.cumsum(np.concatenate((0,self.p[:-1] + 1)))
+        q = np.cumsum(np.concatenate((0, self.p[:-1] + 1)))
         m[q] = np.sqrt(l)
         return m
 
@@ -162,14 +162,14 @@ class PiecewisePolynomialFunctionalBasis(tensap.FunctionalBasis):
 
         p1 = self.points[:-1]
         p2 = self.points[1:]
-        l = p2 - p1
+        h = p2 - p1
         x = np.zeros(self.cardinal())
 
         for i in range(self.points.size - 1):
             loc = np.where(self.p[i] == unique_p)[0][0]
             ui = np.ravel(u[loc])
             J = np.sum(self.p[:i] + 1) + np.arange(self.p[i] + 1)
-            x[J] = p1[i] + ui * l[i]
+            x[J] = p1[i] + ui * h[i]
         
         return x
 
@@ -186,14 +186,14 @@ class PiecewisePolynomialFunctionalBasis(tensap.FunctionalBasis):
 
         p1 = self.points[:-1]
         p2 = self.points[1:]
-        l = p2 - p1
+        h = p2 - p1
         x = np.zeros(self.cardinal())
 
         for i in range(self.points.size - 1):
             loc = np.where(self.p[i] == unique_p)[0][0]
             ui = np.ravel(u[loc])
             J = np.sum(self.p[:i] + 1) + np.arange(self.p[i] + 1)
-            x[J] = p1[i] + ui * l[i]
+            x[J] = p1[i] + ui * h[i]
 
         return x
 
@@ -207,7 +207,7 @@ class PiecewisePolynomialFunctionalBasis(tensap.FunctionalBasis):
         for i in range(n):
             mask = (x >= self.points[i]) & (x < self.points[i+1])
             pos[mask] = i
-        pos[x >= self.points[-1]] = n-1
+        pos[x >= self.points[-1]] = n - 1
         pos[x < self.points[0]] = 0
         return pos
 
@@ -234,7 +234,7 @@ class PiecewisePolynomialFunctionalBasis(tensap.FunctionalBasis):
         Creates a PiecewisePolynomialFunctionalBasis adapted around singularities.
         """
         s = np.ravel(s)
-        e = np.concatenate((np.concatenate(([a],s)),[b]))
+        e = np.concatenate((np.concatenate(([a], s)),[b]))
         e = np.unique(e)
         
         x = []
@@ -246,16 +246,16 @@ class PiecewisePolynomialFunctionalBasis(tensap.FunctionalBasis):
             li = bi - ai
             ne = int(np.ceil(np.log2(1/h)))
             if ai in s and bi in s:
-                pi = np.concatenate([np.arange(ne), np.arange(ne-1, -1, -1)])
-                xi = np.concatenate([[0], 2.0**-np.arange(ne, 1, -1), \
-                                     [1/2], 1-2.0**-np.arange(2,ne+1,1), [1]])
+                pi = np.concatenate([np.arange(ne), np.arange(ne - 1, -1, -1)])
+                xi = np.concatenate([[0], 2.0**(-np.arange(ne, 1, -1)), 
+                                     [1/2], 1-2.0**(-np.arange(2,ne + 1,1)), [1]])
             elif ai in s:
                 pi = np.arange(0, ne)
-                xi = np.concatenate([[0], 2.0**-np.arange(ne, 0, -1), [1]])
+                xi = np.concatenate([[0], 2.0**(-np.arange(ne, 0, -1)), [1]])
                 pi = np.arange(xi.size-1)
             elif bi in s:
-                xi = np.concatenate([[0], 1 - 2.0**-np.arange(1, ne+1), [1]])
-                pi = np.arange(xi.size-2,-1,-1)
+                xi = np.concatenate([[0], 1 - 2.0**(-np.arange(1, ne + 1)), [1]])
+                pi = np.arange(xi.size - 2,-1,-1)
             if i < e.size-2:
                 xi = xi[:-1]
             xi = ai + xi * li

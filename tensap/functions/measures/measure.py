@@ -28,6 +28,9 @@ class Measure(ABC):
 
     """
 
+    def is_discrete(self):
+        return False
+
     @abstractmethod
     def __eq__(self, measure_2):
         pass

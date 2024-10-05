@@ -89,7 +89,7 @@ print("L2 error = %2.5e" % L2error[0])
 d = 2
 f = tensap.UserDefinedFunction("np.cos(4*np.pi*x0)*np.cos(2*np.pi*x1)", d)   
 f.evaluation_at_multiple_points = True 
-h = 2**-5
+h = 2**-4
 p = 3
 bases = tensap.PiecewisePolynomialFunctionalBasis.hp(0, 1, h, p)
 bases = tensap.FunctionalBases.duplicate(bases, d)
@@ -98,3 +98,9 @@ If, OUTPUT = H.tensor_product_interpolation(f)
 ERR_L2, ERR_L_INF = f.test_error(If, 100, If.measure)
 
 print("Mean squared error = %2.5e" % ERR_L2)
+
+f.measure = If.measure
+axf = f.surf([100,100])
+axf.set_title('f')
+axIf = If.surf([100,100])
+axIf.set_title('If')

@@ -150,6 +150,9 @@ class DiscreteRandomVariable(tensap.RandomVariable):
             raise ValueError("Wront argument value.")
         plt.show()
 
+    def is_discrete(self):
+        return True
+
     def integration_rule(self):
         """
         Return the integration rule object associated with the discrete random

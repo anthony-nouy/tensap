@@ -122,6 +122,9 @@ class EmpiricalRandomVariable(tensap.RandomVariable):
     def support(self):
         return np.array([-np.inf, np.inf])
 
+    def is_discrete(self):
+        return True
+
     def integration_rule(self, n):
         """
         Return the integration rule object associated with the empirical random

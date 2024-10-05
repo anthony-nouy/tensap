@@ -93,6 +93,9 @@ class DiscreteMeasure(tensap.Measure):
     def support(self):
         return np.vstack((np.min(self.values, 0), np.max(self.values, 0)))
 
+    def is_discrete(self):
+        return True
+
     def truncated_support(self):
         return self.support()
 
