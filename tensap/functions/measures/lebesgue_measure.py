@@ -19,6 +19,7 @@ Module lebesgue_variable.
 
 """
 
+import numpy as np
 from numpy import array
 from numpy.random import rand
 import tensap
@@ -107,7 +108,22 @@ class LebesgueMeasure(tensap.Measure):
 
         """
         return array([self.a, self.b])
+    
+    def truncated_support(self):
+        """
+        Return the support of the measure.
 
+        Returns
+        -------
+        numpy.ndarray
+
+        """
+        if self.mass() == np.inf:
+            raise ValueError("truncated support not defined \
+                             for Lebesgue measure on unbounded domain.") 
+
+        return self.support()
+    
     def __eq__(self, L2):
         if not (isinstance(self, LebesgueMeasure) and isinstance(L2, LebesgueMeasure)):
             is_equal = False

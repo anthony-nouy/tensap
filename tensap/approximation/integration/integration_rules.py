@@ -135,7 +135,7 @@ class FullTensorProductIntegrationRule(IntegrationRule):
     """
 
     def __init__(self, points, weights):
-        tensap.IntegrationRule.__init__(self, points, weights)
+        tensap.IntegrationRule.__init__(self, [], [])
 
         if isinstance(points, list):
             points = tensap.FullTensorGrid(points)
@@ -153,17 +153,13 @@ class FullTensorProductIntegrationRule(IntegrationRule):
         return self.points.ndim()
 
     def integrate(self, fun):
+        I = self.integration_rule()
+        return I.integrate(fun)
+    
+    def integration_rule(self):
         points = self.points.array()
         weights = self.weights_on_grid()
-        try:
-            f_x = fun.eval(points)
-        except Exception:
-            try:
-                f_x = fun(points)
-            except Exception:
-                raise ValueError("The function must be evaluable.")
-
-        return np.dot(weights.T, f_x)
+        return tensap.IntegrationRule(points, weights)
 
     def weights_on_grid(self):
         """
@@ -178,4 +174,4 @@ class FullTensorProductIntegrationRule(IntegrationRule):
         weights = tensap.CanonicalTensor(
             [np.reshape(x, [-1, 1]) for x in self.weights], [1]
         )
-        return np.ravel(weights.full().numpy())
+        return np.ravel(weights.full().numpy(),'F')

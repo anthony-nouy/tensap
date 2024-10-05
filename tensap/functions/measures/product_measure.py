@@ -97,6 +97,36 @@ class ProductMeasure(tensap.Measure):
     def ndim(self):
         return np.sum([x.ndim() for x in self.measures])
 
+    def gauss_integration_rule(self, n):
+        """
+        Return the tensorized gauss integration rule associated with the
+        measure self
+
+        Parameters
+        ----------
+        n : int or list or numpy.ndarray
+            The number of integration points per dimension.
+
+        Returns
+        -------
+        tensap.FullTensorProductIntegrationRule
+            The integration rule associated with the measure self.
+
+        """
+        n = np.ravel(n)  
+        if n.size == 1:
+            n = np.tile(n, len(self.measures))
+        elif n.size != len(self.measures):
+            raise ValueError("number of points should be equal to the number of measures.")
+        points = []
+        weights = []
+        for i in range(n.size):
+            G = self.measures[i].gauss_integration_rule(n[i])
+            points.append(G.points)
+            weights.append(G.weights)
+        
+        return tensap.FullTensorProductIntegrationRule(points,weights)    
+    
     def support(self):
         return [x.support() for x in self.measures]
 
@@ -119,9 +149,10 @@ class ProductMeasure(tensap.Measure):
         # TODO pdf
         raise NotImplementedError("Method not implemented.")
 
-    def random(self, x):
-        # TODO random
-        raise NotImplementedError("Method not implemented.")
+    def random(self, n=1):        
+        x = [np.reshape(mu.random(n),(n,mu.ndim())) for mu in self.measures]
+        x = np.hstack(x)
+        return x
 
     def random_sequential(self, x):
         # TODO random_sequential
