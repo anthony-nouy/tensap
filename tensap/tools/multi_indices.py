@@ -120,7 +120,7 @@ class MultiIndices:
         tensap.MultiIndices
 
         """
-        return MultiIndices.product_set([self.array,J.array])
+        return MultiIndices.product_set([self.array, J.array])
     
     def to_list(self):
         """
@@ -745,7 +745,7 @@ class MultiIndices:
             elif not isinstance(L[i], MultiIndices):
                 L[i] = np.array(L[i]) 
             if np.ndim(L[i]) == 1:
-                L[i] = np.reshape(L[i], (L[i].size,1))
+                L[i] = np.reshape(L[i], (L[i].size, 1))
             elif np.ndim(L[i]) >2:
                 raise ValueError("Array should be at most 2D.")    
 
@@ -753,11 +753,11 @@ class MultiIndices:
         dims = np.array([x.shape[1] for x in L])
 
         ind = list(np.unravel_index(range(np.prod(N)), N, order="F"))
-        I = np.zeros((np.prod(N),np.sum(dims)), dtype = int)        
+        I = np.zeros((np.prod(N), np.sum(dims)), dtype = int)        
 
         for i in range(len(L)):
             J = np.sum(dims[:i]) + np.arange(dims[i])
-            I[:,J] = L[i][ind[i],:]
+            I[:, J] = L[i][ind[i], :]
 
         return MultiIndices(I)
 
