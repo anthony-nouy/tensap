@@ -249,12 +249,14 @@ X = tensap.UniformRandomVariable(0, 1)
 
 # Approximation basis: Hermite polynomials of maximal degree P
 P = 10
-H = tensap.PolynomialFunctionalBasis(tensap.HermitePolynomials(), range(P + 1))
+H = tensap.PolynomialFunctionalBasis(X.orthonormal_polynomials(), range(P + 1))
 
 # Solver
 SOLVER = tensap.LinearModelLearningSquareLoss()
-SOLVER.regularization = False
+SOLVER.regularization = True
+SOLVER.regularization_type = "l1"
 SOLVER.basis_adaptation = False
+SOLVER.model_selection = True
 
 # Training sample
 X_TRAIN = X.random(100)
@@ -268,7 +270,7 @@ F, OUTPUT = SOLVER.solve()
 # Displays and error
 print("\nLeast-squares approximation")
 plt.figure()
-X_PLOT = np.linspace(-1, 1, 100)
+X_PLOT = np.linspace(0, 1, 100)
 plt.plot(X_PLOT, FUN(X_PLOT))
 plt.plot(X_PLOT, F(X_PLOT))
 plt.legend(("True function", "Interpolation"))
@@ -280,3 +282,4 @@ print(
     "Mean squared error = %2.5e"
     % (np.linalg.norm(Y_TEST - F_X_TEST) / np.linalg.norm(Y_TEST))
 )
+

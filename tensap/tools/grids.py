@@ -182,8 +182,10 @@ class FullTensorGrid(TensorGrid):
                 np.ndim(grids) == 1
             ), "The first argument must be a unidimensional grid."
             grids = [np.reshape(grids, (-1, 1))] * dim
-        grids = [np.atleast_2d(x) for x in grids]
-
+        for i in range(len(grids)):
+            if len(grids[i].shape)==1:
+                grids[i] = np.reshape(grids[i], (-1, 1))
+                
         self.dim = dim
         self.shape = np.array([x.shape[0] for x in grids])
         self.grids = grids
