@@ -98,7 +98,7 @@ class BSplinesFunctionalBasis(tensap.FunctionalBasis):
         for i in range(m-1):
             Bx[:, i, 0] = (x > t[i]) & (x <= t[i+1])
 
-        for j in np.arange(1,self.degree+1):
+        for j in np.arange(1, self.degree+1):
             for i in range(m - 1 - j):
                 Bx[:, i, j] = (x - t[i]) / (t[i+j] - t[i]) * Bx[:, i, j-1] + \
                                  (t[i+j+1] - x) / (t[i+j+1] - t[i+1]) * Bx[:, i+1, j-1]
