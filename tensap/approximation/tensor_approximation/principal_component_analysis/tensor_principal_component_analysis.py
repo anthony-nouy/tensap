@@ -145,8 +145,9 @@ class TensorPrincipalComponentAnalysis:
             )
             for k in range(N):
                 product_grid = tensap.FullTensorGrid(
-                    [I_alpha, I_not_alpha[k, :]]
+                    [I_alpha, np.reshape(I_not_alpha[k, :], (1,-1))]
                 ).array()
+                
                 A_k = np.linalg.solve(B_alpha, fun(product_grid[:, ind]))
                 A.data = np.column_stack((A.data, A_k))
                 pc, sin_val = A.principal_components(tol)
@@ -157,6 +158,8 @@ class TensorPrincipalComponentAnalysis:
             output["number_of_evaluations"] = I_alpha.shape[0] * (k + 1)
         else:
             product_grid = tensap.FullTensorGrid([I_alpha, I_not_alpha]).array()
+            print('product',product_grid)
+            print('ind',ind)
             A = fun(product_grid[:, ind])
             A = np.reshape(A, [B_alpha.shape[0], N], "F")
             A = np.linalg.solve(B_alpha, A)
