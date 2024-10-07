@@ -23,10 +23,11 @@ Module BSplines_functional_basis.
 import numpy as np
 import tensap
 
+
 class BSplinesFunctionalBasis(tensap.FunctionalBasis):
     """
     BSplinesFunctionalBasis class representing B-splines with given knots and degree.
- 
+
     Attributes
     ----------
     knots : numpy.ndarray
@@ -36,7 +37,7 @@ class BSplinesFunctionalBasis(tensap.FunctionalBasis):
         The degree of the spline.
     """
 
-    def __init__(self, knots = [], degree = []):
+    def __init__(self, knots=[], degree=[]):
         """
         Initializes the B-Splines with the given knots and degree.
 
@@ -97,10 +98,10 @@ class BSplinesFunctionalBasis(tensap.FunctionalBasis):
         for i in range(m - 1):
             Bx[:, i, 0] = (x > t[i]) & (x <= t[i + 1])
 
-        for j in np.arange(1, self.degree+1):
+        for j in np.arange(1, self.degree + 1):
             for i in range(m - 1 - j):
-                Bx[:, i, j] = (x - t[i]) / (t[i + j] - t[i]) * Bx[:, i, j-1] + \
-                (t[i + j + 1] - x) / (t[i + j + 1] - t[i + 1]) * Bx[:, i + 1, j - 1]
+                Bx[:, i, j] = (x - t[i]) / (t[i + j] - t[i]) * Bx[:, i, j - 1] + \
+                    (t[i + j + 1] - x) / (t[i + j + 1] - t[i + 1]) * Bx[:, i + 1, j - 1]
 
         return Bx
 
@@ -146,16 +147,16 @@ class BSplinesFunctionalBasis(tensap.FunctionalBasis):
 
         dBx = self.eval_sequence(x)
 
-        for k in np.arange(1, n+1):
+        for k in np.arange(1, n + 1):
             dBx_old = dBx
             dBx = np.zeros((x.size, t.size - 1, self.degree + 1))
 
             for j in np.arange(1, self.degree + 1):
                 for i in range(t.size - 1 - j):
                     dBx[:, i, j] = k / (t[i + j] - t[i]) * dBx_old[:, i, j - 1] - \
-                    k / (t[i + j + 1] - t[i + 1]) * dBx_old[:, i + 1, j - 1] + \
-                    (x - t[i]) / (t[i+j] - t[i]) * dBx[:, i, j - 1] + \
-                    (t[i + j + 1] - x) / (t[i + j + 1] - t[i + 1]) * dBx[:, i+1, j-1]
+                        k / (t[i + j + 1] - t[i + 1]) * dBx_old[:, i + 1, j - 1] + \
+                        (x - t[i]) / (t[i+j] - t[i]) * dBx[:, i, j - 1] + \
+                        (t[i + j + 1] - x) / (t[i + j + 1] - t[i + 1]) * dBx[:, i + 1, j - 1]
 
         return dBx[:, :t.size - 1 - self.degree, -1]
 

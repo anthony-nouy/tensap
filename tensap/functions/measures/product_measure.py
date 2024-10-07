@@ -152,7 +152,7 @@ class ProductMeasure(tensap.Measure):
         # TODO pdf
         raise NotImplementedError("Method not implemented.")
 
-    def random(self, n=1):    
+    def random(self, n=1):
         x = [np.reshape(mu.random(n), (n, mu.ndim())) for mu in self.measures]
         x = np.hstack(x)
         return x

@@ -38,7 +38,7 @@ print("Ip.array = \n%s\n" % Ip.array)
 
 # %% Product of sets
 I1 = tensap.MultiIndices.with_bounded_norm(2, 1, 2)
-I2 = tensap.MultiIndices.with_bounded_norm(2, 1/2, 6)
+I2 = tensap.MultiIndices.with_bounded_norm(2, 1 / 2, 6)
 Iprod = I1.product(I2)
 print("I1.array = \n%s\n" % I1.array)
 print("I2.array = \n%s\n" % I2.array)

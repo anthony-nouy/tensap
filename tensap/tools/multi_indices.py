@@ -747,13 +747,13 @@ class MultiIndices:
             if np.ndim(L[i]) == 1:
                 L[i] = np.reshape(L[i], (L[i].size, 1))
             elif np.ndim(L[i]) > 2:
-                raise ValueError("Array should be at most 2D.") 
+                raise ValueError("Array should be at most 2D.")
 
         N = np.array([x.shape[0] for x in L])
         dims = np.array([x.shape[1] for x in L])
 
         loc = list(np.unravel_index(range(np.prod(N)), N, order="F"))
-        Indices = np.zeros((np.prod(N), np.sum(dims)), dtype=int)   
+        Indices = np.zeros((np.prod(N), np.sum(dims)), dtype=int)
 
         for i in range(len(L)):
             J = np.sum(dims[:i]) + np.arange(dims[i])

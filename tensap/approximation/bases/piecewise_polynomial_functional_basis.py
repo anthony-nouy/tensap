@@ -24,8 +24,8 @@ import numpy as np
 import tensap
 # from scipy.sparse import lil_matrix
 
-class PiecewisePolynomialFunctionalBasis(tensap.FunctionalBasis):
 
+class PiecewisePolynomialFunctionalBasis(tensap.FunctionalBasis):
 
     def __init__(self, points, p):
         """
@@ -69,8 +69,9 @@ class PiecewisePolynomialFunctionalBasis(tensap.FunctionalBasis):
 
         u = (x - p1[pos]) / h[pos]
         U = tensap.LebesgueMeasure(0, 1)
-        pol = tensap.PolynomialFunctionalBasis(\
-            U.orthonormal_polynomials(), np.arange(np.max(self.p)+1))
+        pol = tensap.PolynomialFunctionalBasis(
+            U.orthonormal_polynomials(), 
+            np.arange(np.max(self.p) + 1))
         pu = pol.eval(u)
         hx = np.zeros((x.size, self.cardinal()))
 
@@ -97,8 +98,9 @@ class PiecewisePolynomialFunctionalBasis(tensap.FunctionalBasis):
         h = p2 - p1
         u = (x - p1[pos]) / h[pos]
         U = tensap.LebesgueMeasure(0, 1)
-        pol = tensap.PolynomialFunctionalBasis(\
-            U.orthonormal_polynomials(), np.arange(np.max(self.p) + 1))
+        pol = tensap.PolynomialFunctionalBasis(
+            U.orthonormal_polynomials(), 
+            np.arange(np.max(self.p) + 1))
         pu = pol.eval_derivative(k, u)
         hx = np.zeros((x.size, self.cardinal()))
 
@@ -134,15 +136,15 @@ class PiecewisePolynomialFunctionalBasis(tensap.FunctionalBasis):
         """
         p1 = self.points[:-1]
         p2 = self.points[1:]
-        l = p2 - p1
+        h = p2 - p1
         m = np.zeros(self.cardinal())
         q = np.cumsum(np.concatenate((0, self.p[:-1] + 1)))
-        m[q] = np.sqrt(l)
+        m[q] = np.sqrt(h)
         return m
 
     def gauss_integration_rule(self, n):
         """
-        Returns an Integration Rule that integrates 
+        Returns an Integration Rule that integrates
         exactly piecewise polynomials of degree 2*n-1, using n-points
         gauss integration rule per interval.
         """
@@ -159,11 +161,11 @@ class PiecewisePolynomialFunctionalBasis(tensap.FunctionalBasis):
 
     def interpolation_points(self):
         """
-        Returns interpolation points for the 
+        Returns interpolation points for the
         PiecewisePolynomialFunctionalBasis.
         """
         unique_p = np.unique(self.p)
-        u = [0.5 * (1 + tensap.chebyshev_points(p + 1)) for p in unique_p]  
+        u = [0.5 * (1 + tensap.chebyshev_points(p + 1)) for p in unique_p]
 
         p1 = self.points[:-1]
         p2 = self.points[1:]
@@ -186,7 +188,7 @@ class PiecewisePolynomialFunctionalBasis(tensap.FunctionalBasis):
         u = []
         for i in range(unique_p.size):
             U = tensap.UniformRandomVariable(0, 1)
-            pol = tensap.PolynomialFunctionalBasis(U.orthonormal_polynomials(), \
+            pol = tensap.PolynomialFunctionalBasis(U.orthonormal_polynomials(),
                                                    np.arange(unique_p[i] + 1))
             u.append(pol.magic_points()[0])
 
@@ -254,14 +256,14 @@ class PiecewisePolynomialFunctionalBasis(tensap.FunctionalBasis):
             if ai in s and bi in s:
                 pi = np.concatenate([np.arange(ne), np.arange(ne - 1, -1, -1)])
                 xi = np.concatenate([[0], 2.0**(-np.arange(ne, 1, -1)),
-                                     [1/2], 1 - 2.0**(-np.arange(2,ne + 1, 1)), [1]])
+                                     [1 / 2], 1 - 2.0**(-np.arange(2, ne + 1, 1)), [1]])
             elif ai in s:
                 pi = np.arange(0, ne)
                 xi = np.concatenate([[0], 2.0**(-np.arange(ne, 0, -1)), [1]])
                 pi = np.arange(xi.size - 1)
             elif bi in s:
                 xi = np.concatenate([[0], 1 - 2.0**(-np.arange(1, ne + 1)), [1]])
-                pi = np.arange(xi.size - 2,-1,-1)
+                pi = np.arange(xi.size - 2, -1, -1)
             if i < e.size - 2:
                 xi = xi[:-1]
             xi = ai + xi * li
