@@ -116,7 +116,7 @@ class ProductMeasure(tensap.Measure):
             The integration rule associated with the measure self.
 
         """
-        n = np.ravel(n)  
+        n = np.ravel(n)
         if n.size == 1:
             n = np.tile(n, len(self.measures))
         elif n.size != len(self.measures):
@@ -127,9 +127,9 @@ class ProductMeasure(tensap.Measure):
             G = self.measures[i].gauss_integration_rule(n[i])
             points.append(G.points)
             weights.append(G.weights)
-        
-        return tensap.FullTensorProductIntegrationRule(points,weights)    
-    
+
+        return tensap.FullTensorProductIntegrationRule(points, weights)
+
     def support(self):
         return [x.support() for x in self.measures]
 
@@ -152,7 +152,7 @@ class ProductMeasure(tensap.Measure):
         # TODO pdf
         raise NotImplementedError("Method not implemented.")
 
-    def random(self, n=1):        
+    def random(self, n=1):    
         x = [np.reshape(mu.random(n), (n, mu.ndim())) for mu in self.measures]
         x = np.hstack(x)
         return x

@@ -110,8 +110,8 @@ class MultiIndices:
 
         """
         return self.array.shape[0]
-    
-    def product(self,J):
+
+    def product(self, J):
         """
         Return the product of MultiIndices.
 
@@ -121,7 +121,7 @@ class MultiIndices:
 
         """
         return MultiIndices.product_set([self.array, J.array])
-    
+
     def to_list(self):
         """
         Convert the MultiIndices' array into a list of arrays.
@@ -743,23 +743,23 @@ class MultiIndices:
             if isinstance(L[i], MultiIndices):
                 L[i] = L[i].array
             elif not isinstance(L[i], MultiIndices):
-                L[i] = np.array(L[i]) 
+                L[i] = np.array(L[i])
             if np.ndim(L[i]) == 1:
                 L[i] = np.reshape(L[i], (L[i].size, 1))
-            elif np.ndim(L[i]) >2:
-                raise ValueError("Array should be at most 2D.")    
+            elif np.ndim(L[i]) > 2:
+                raise ValueError("Array should be at most 2D.") 
 
         N = np.array([x.shape[0] for x in L])
         dims = np.array([x.shape[1] for x in L])
 
-        ind = list(np.unravel_index(range(np.prod(N)), N, order="F"))
-        I = np.zeros((np.prod(N), np.sum(dims)), dtype = int)        
+        loc = list(np.unravel_index(range(np.prod(N)), N, order="F"))
+        Indices = np.zeros((np.prod(N), np.sum(dims)), dtype=int)   
 
         for i in range(len(L)):
             J = np.sum(dims[:i]) + np.arange(dims[i])
-            I[:, J] = L[i][ind[i], :]
+            Indices[:, J] = L[i][loc[i], :]
 
-        return MultiIndices(I)
+        return MultiIndices(Indices)
 
     @staticmethod
     def ind2sub(shape, ind):

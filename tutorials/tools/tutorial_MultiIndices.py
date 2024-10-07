@@ -18,7 +18,6 @@
 Tutorial on MultiIndices.
 
 """
-import numpy as np
 import tensap
 
 # %% Product set
@@ -40,10 +39,10 @@ print("Ip.array = \n%s\n" % Ip.array)
 # %% Product of sets
 I1 = tensap.MultiIndices.with_bounded_norm(2, 1, 2)
 I2 = tensap.MultiIndices.with_bounded_norm(2, 1/2, 6)
-I = I1.product(I2)
+Iprod = I1.product(I2)
 print("I1.array = \n%s\n" % I1.array)
 print("I2.array = \n%s\n" % I2.array)
-print("(I1.product(I2)).array = \n%s\n" % I.array)
+print("(I1.product(I2)).array = \n%s\n" % Iprod.array)
 
 # %% Operations on indices
 I1 = tensap.MultiIndices.bounded_by([1, 3])
@@ -95,5 +94,3 @@ I2 = tensap.MultiIndices.bounded_by([7, 5, 3, 4, 2])
 I0 = I1.add_indices(I2)
 I_marg = I0.get_reduced_margin()
 print("I1.add_indices(I2).get_reduced_margin().array = \n%s\n" % I_marg.array)
-
-

@@ -108,7 +108,7 @@ class LebesgueMeasure(tensap.Measure):
 
         """
         return array([self.a, self.b])
-    
+
     def truncated_support(self):
         """
         Return the support of the measure.
@@ -120,10 +120,10 @@ class LebesgueMeasure(tensap.Measure):
         """
         if self.mass() == np.inf:
             raise ValueError("truncated support not defined \
-                             for Lebesgue measure on unbounded domain.") 
+                             for Lebesgue measure on unbounded domain.")
 
         return self.support()
-    
+
     def __eq__(self, L2):
         if not (isinstance(self, LebesgueMeasure) and isinstance(L2, LebesgueMeasure)):
             is_equal = False
@@ -152,7 +152,8 @@ class LebesgueMeasure(tensap.Measure):
 
     def gauss_integration_rule(self, nb_pts):
         """
-        Return the nb_pts-points gauss integration rule associated with the
+        Return the nb_pts-points gauss integration
+        rule associated with the
         measure of self, using Golub-Welsch algorithm.
 
         Parameters

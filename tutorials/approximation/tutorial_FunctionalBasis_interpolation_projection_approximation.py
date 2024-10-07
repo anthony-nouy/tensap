@@ -282,4 +282,3 @@ print(
     "Mean squared error = %2.5e"
     % (np.linalg.norm(Y_TEST - F_X_TEST) / np.linalg.norm(Y_TEST))
 )
-

@@ -1,8 +1,8 @@
 import numpy as np
 import matplotlib.pyplot as plt
-import tensap 
+import tensap
 
-# %% Cardinal BSplines 
+# %% Cardinal BSplines
 plt.figure(1)
 mmax = 5
 fig, axes = plt.subplots(2, mmax, figsize=(15, 5))
@@ -17,9 +17,9 @@ for m in range(mmax):
     axes[1, m].set_xlim([0, m + 1])
 plt.show()
 
-# %% BSplines with extra knots 
+# %% BSplines with extra knots
 knots = np.linspace(-1, 1, 3)
-s = 3 # degree 
+s = 3  # degree
 h = tensap.BSplinesFunctionalBasis.with_extra_knots(knots, s)
 
 xplot = np.linspace(-1, 1, 400)
@@ -52,7 +52,7 @@ axes[2].set_xlim([-1, 1])
 plt.tight_layout()
 plt.show()
 
-# %% Interpolation of a function 
+# %% Interpolation of a function
 knots = np.linspace(-1, 1, 30)
 s = 4
 H = tensap.BSplinesFunctionalBasis.with_extra_knots(knots, s)
@@ -60,9 +60,9 @@ f = tensap.UserDefinedFunction("np.cos(4*np.pi*x0)", 1)
 
 X = tensap.UniformRandomVariable(-1, 1)
 a = H.magic_points(np.linspace(-1, 1, 1000))[0]
-If = H.interpolate(f,a)
+If = H.interpolate(f, a)
 
-plt.plot(xplot, If.eval(xplot), xplot, f.eval(xplot) , a , f.eval(a),'.')
+plt.plot(xplot, If.eval(xplot), xplot, f.eval(xplot), a, f.eval(a), '.')
 plt.legend(["If", "f"])
 
 ERR_L2, ERR_L_INF = f.test_error(If, 1000, X)

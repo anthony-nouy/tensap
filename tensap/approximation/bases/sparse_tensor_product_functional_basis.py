@@ -332,7 +332,7 @@ class SparseTensorProductFunctionalBasis(tensap.FunctionalBasis):
             A dictionnary of outputs of the method.
 
         """
-         
+
         grid = self.bases.interpolation_points(*args)
         grid = tensap.SparseTensorGrid(grid, self.indices)
         x_grid = grid.array()

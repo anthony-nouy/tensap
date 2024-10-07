@@ -153,9 +153,9 @@ class FullTensorProductIntegrationRule(IntegrationRule):
         return self.points.ndim()
 
     def integrate(self, fun):
-        I = self.integration_rule()
-        return I.integrate(fun)
-    
+        Irule = self.integration_rule()
+        return Irule.integrate(fun)
+
     def integration_rule(self):
         points = self.points.array()
         weights = self.weights_on_grid()
@@ -174,4 +174,4 @@ class FullTensorProductIntegrationRule(IntegrationRule):
         weights = tensap.CanonicalTensor(
             [np.reshape(x, [-1, 1]) for x in self.weights], [1]
         )
-        return np.ravel(weights.full().numpy(),'F')
+        return np.ravel(weights.full().numpy(), 'F')
