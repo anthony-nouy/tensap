@@ -155,7 +155,7 @@ class BSplinesFunctionalBasis(tensap.FunctionalBasis):
                 for i in range(t.size - 1 - j):
                     dBx[:, i, j] = k / (t[i + j] - t[i]) * dBx_old[:, i, j - 1] - \
                         k / (t[i + j + 1] - t[i + 1]) * dBx_old[:, i + 1, j - 1] + \
-                        (x - t[i]) / (t[i+j] - t[i]) * dBx[:, i, j - 1] + \
+                        (x - t[i]) / (t[i + j] - t[i]) * dBx[:, i, j - 1] + \
                         (t[i + j + 1] - x) / (t[i + j + 1] - t[i + 1]) * dBx[:, i + 1, j - 1]
 
         return dBx[:, :t.size - 1 - self.degree, -1]

@@ -77,8 +77,7 @@ ERR_L2, ERR_L_INF = f.test_error(If, 100, X)
 print("Mean squared error (random sample) = %2.5e" % ERR_L2)
 
 g = H.gauss_integration_rule(20)
-L1error = np.dot(g.weights, 
-   abs(f.eval(g.points) - If.eval(g.points))) 
+L1error = np.dot(g.weights, abs(f.eval(g.points) - If.eval(g.points))) \
    / np.dot(g.weights, abs(f.eval(g.points)))
 print("L1 error = %2.5e" % L1error[0])
 L2error = np.sqrt(np.dot(g.weights, 

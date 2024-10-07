@@ -70,7 +70,7 @@ class PiecewisePolynomialFunctionalBasis(tensap.FunctionalBasis):
         u = (x - p1[pos]) / h[pos]
         U = tensap.LebesgueMeasure(0, 1)
         pol = tensap.PolynomialFunctionalBasis(
-            U.orthonormal_polynomials(), 
+            U.orthonormal_polynomials(),
             np.arange(np.max(self.p) + 1))
         pu = pol.eval(u)
         hx = np.zeros((x.size, self.cardinal()))
@@ -99,7 +99,7 @@ class PiecewisePolynomialFunctionalBasis(tensap.FunctionalBasis):
         u = (x - p1[pos]) / h[pos]
         U = tensap.LebesgueMeasure(0, 1)
         pol = tensap.PolynomialFunctionalBasis(
-            U.orthonormal_polynomials(), 
+            U.orthonormal_polynomials(),
             np.arange(np.max(self.p) + 1))
         pu = pol.eval_derivative(k, u)
         hx = np.zeros((x.size, self.cardinal()))
