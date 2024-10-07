@@ -76,7 +76,7 @@ class PiecewisePolynomialFunctionalBasis(tensap.FunctionalBasis):
 
         for i in range(self.points.size - 1):
             I_rows = np.where(pos == i)[0]
-            if I.size > 0:
+            if I_rows.size > 0:
                 J = np.sum(self.p[:i] + 1) + np.arange(self.p[i] + 1)
                 hx[np.ix_(I_rows, J)] = \
                     pu[I_rows, :self.p[i] + 1] / np.sqrt(h[i])

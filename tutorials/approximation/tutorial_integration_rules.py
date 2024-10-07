@@ -9,7 +9,7 @@ G = mu.gauss_integration_rule(10)
 f = tensap.UserDefinedFunction("np.exp(x0)", 1)
 Iapp = G.integrate(f)
 Iex = np.exp(2) - 1
-print("Error = %2.5e" % (np.abs(app - Iex) / np.abs(Iex)))
+print("Error = %2.5e" % (np.abs(Iapp - Iex) / np.abs(Iex)))
 
 # %% Tensor product integration rule
 mu = tensap.ProductMeasure([tensap.LebesgueMeasure(0, 5), tensap.LebesgueMeasure(0, 1)])
