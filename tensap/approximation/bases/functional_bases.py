@@ -67,8 +67,8 @@ class FunctionalBases:
         """
         if bases is not None:
             if isinstance(bases, FunctionalBases):
-                measure = bases.measure
-                bases = bases.bases
+                measure = deepcopy(bases.measure)
+                bases = deepcopy(bases.bases)
             elif np.all([isinstance(x, tensap.FunctionalBasis) for x in bases]):
                 measure = tensap.ProductMeasure([x.measure for x in bases])
             else:

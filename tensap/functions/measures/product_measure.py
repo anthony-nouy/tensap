@@ -34,11 +34,6 @@ class ProductMeasure(tensap.Measure):
 
     """
 
-    def __new__(cls, measures):
-        if np.all([isinstance(x, tensap.ProbabilityMeasure) for x in measures]):
-            return tensap.RandomVector(measures)
-        else:
-            return object.__new__(cls)
 
     def __init__(self, measures):
         """
@@ -65,10 +60,11 @@ class ProductMeasure(tensap.Measure):
             measures = measures.random_variables
         elif not isinstance(measures, list):
             raise ValueError("measures must be a list of Measure.")
+
         self.measures = measures
 
     def __repr__(self):
-        return ("<{}:{n}" + "{t}random_variables = {},{n}").format(
+        return ("<{}:{n}" + "{t}measures = {},{n}").format(
             self.__class__.__name__, self.measures, t="\t", n="\n"
         )
 

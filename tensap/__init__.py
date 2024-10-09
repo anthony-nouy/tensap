@@ -72,6 +72,8 @@ from .approximation.bases.functional_basis import FunctionalBasis
 from .approximation.bases.polynomial_functional_basis import PolynomialFunctionalBasis
 from .approximation.bases.piecewise_polynomial_functional_basis import PiecewisePolynomialFunctionalBasis
 from .approximation.bases.BSplines_functional_basis import BSplinesFunctionalBasis
+from .approximation.bases.BSplines_functional_basis import DilatedBSplines
+from .approximation.bases.BSplines_functional_basis import DilatedBSplinesFunctionalBasis
 from .approximation.bases.sub_functional_basis import SubFunctionalBasis
 from .approximation.bases.user_defined_functional_basis import (
     UserDefinedFunctionalBasis,

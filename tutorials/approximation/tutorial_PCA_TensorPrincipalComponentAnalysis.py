@@ -178,3 +178,33 @@ X_TEST = X.random(1e3)
 F_X_TEST = F.eval_at_indices(X_TEST)
 Y_TEST = fun(X_TEST)
 print("Error = %2.5e" % (np.linalg.norm(Y_TEST - F_X_TEST) / np.linalg.norm(Y_TEST)))
+
+# %% Comparison of different subsampling schemes
+X_TEST = X.random(1e3)
+Y_TEST = fun(X_TEST)
+
+TPCA = tensap.TensorPrincipalComponentAnalysis()
+TPCA.pca_sampling_factor = 3
+TPCA.pca_adaptive_sampling = False
+TPCA.tol = np.inf
+TPCA.max_rank = np.random.randint(1, 9, D - 1)
+TPCA.display = False
+
+print("random:")
+TPCA.subsampling = "random"
+F, OUTPUT = TPCA.tt_approximation(fun, SIZE)
+F_X_TEST = F.eval_at_indices(X_TEST)
+print("Error = %2.5e" % (np.linalg.norm(Y_TEST - F_X_TEST) / np.linalg.norm(Y_TEST)))
+
+print("eim:")
+TPCA.subsampling = "eim"
+F, OUTPUT = TPCA.tt_approximation(fun, SIZE)
+F_X_TEST = F.eval_at_indices(X_TEST)
+print("Error = %2.5e" % (np.linalg.norm(Y_TEST - F_X_TEST) / np.linalg.norm(Y_TEST)))
+
+print("maxvol:")
+TPCA.subsampling = "maxvol"
+TPCA.subsampling_tol = 1.
+F, OUTPUT = TPCA.tt_approximation(fun, SIZE)
+F_X_TEST = F.eval_at_indices(X_TEST)
+print("Error = %2.5e" % (np.linalg.norm(Y_TEST - F_X_TEST) / np.linalg.norm(Y_TEST)))

@@ -50,6 +50,7 @@ class PiecewisePolynomialFunctionalBasis(tensap.FunctionalBasis):
             respect to the measure.
 
         """
+        tensap.FunctionalBasis.__init__(self)
         self.points = np.ravel(points)  # Flatten points
         if np.isscalar(p):
             p = np.tile(p, self.points.size - 1)  # Replicate if p is scalar

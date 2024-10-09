@@ -22,6 +22,7 @@ Module tensor_principal_component_analysis.
 from copy import deepcopy
 import numpy as np
 import tensap
+from maxvolpy.maxvol import maxvol
 
 
 class TensorPrincipalComponentAnalysis:
@@ -70,6 +71,8 @@ class TensorPrincipalComponentAnalysis:
         self.pca_adaptive_sampling = False
         self.tol = 1e-8
         self.max_rank = np.inf
+        self.subsampling = 'eim'
+        self.subsampling_tol = 1.05
 
     def alpha_principal_components(self, fun, shape, alpha, tol, B_alpha, I_alpha):
         """
@@ -158,8 +161,6 @@ class TensorPrincipalComponentAnalysis:
             output["number_of_evaluations"] = I_alpha.shape[0] * (k + 1)
         else:
             product_grid = tensap.FullTensorGrid([I_alpha, I_not_alpha]).array()
-            print('product', product_grid)
-            print('ind', ind)
             A = fun(product_grid[:, ind])
             A = np.reshape(A, [B_alpha.shape[0], N], "F")
             A = np.linalg.solve(B_alpha, A)
@@ -436,7 +437,17 @@ class TensorPrincipalComponentAnalysis:
                 tensors[alpha - 1] = tensap.FullTensor(pc_alpha, 2, shape_alpha)
 
                 B_alpha = np.matmul(B_alpha, pc_alpha)
-                I_alpha = tensap.magic_indices(B_alpha)[0]
+
+                if self.subsampling == "eim":
+                    I_alpha = tensap.magic_indices(B_alpha)[0]
+                elif self.subsampling == "maxvol":
+                    I_alpha = maxvol(B_alpha, tol=self.subsampling_tol)[0]
+                elif self.subsampling == "random":
+                    I_alpha = np.random.choice(range(B_alpha.shape[0]), \
+                            size=B_alpha.shape[1],replace=False)
+                else:
+                    raise ValueError('Wrong subsampling type')                                                           
+
                 alpha_grids[alpha - 1] = grids[nu][I_alpha, :]
                 alpha_basis[alpha - 1] = B_alpha[I_alpha, :]
 

@@ -22,6 +22,7 @@ Module BSplines_functional_basis.
 
 import numpy as np
 import tensap
+from copy import deepcopy
 
 
 class BSplinesFunctionalBasis(tensap.FunctionalBasis):
@@ -48,10 +49,11 @@ class BSplinesFunctionalBasis(tensap.FunctionalBasis):
         degree : int
             The degree of the spline.
         """
+        tensap.FunctionalBasis.__init__(self)
         self.knots = np.ravel(knots)
         self.degree = degree
-        self.is_orthonormal = False
         self.measure = tensap.LebesgueMeasure(self.knots[0], self.knots[-1])
+        self.is_orthonormal = False
 
     def cardinal(self):
         """
@@ -216,4 +218,221 @@ class BSplinesFunctionalBasis(tensap.FunctionalBasis):
         tl = t[0] + np.arange(-m, 0) * (t[1] - t[0])
         tr = t[-1] + np.arange(1, m + 1) * (t[-1] - t[-2])
         t_full = np.concatenate((tl, t, tr))
-        return tensap.BSplinesFunctionalBasis(t_full, m)
+        B = tensap.BSplinesFunctionalBasis(t_full, m)
+        B.measure = tensap.LebesgueMeasure(t[0], t[-1])
+        
+        return B
+
+
+class DilatedBSplines:
+    def __init__(self, n, b=2):
+        self.degree = n  # Degree 
+        self.base = b  # base of dilation
+
+    def eval(self, i, x):
+        """
+        Evaluate tthe dilated B-Splines of indices i=[l,j]
+        at points x, with l the level and j the local index
+
+        Parameters
+        ----------
+        k : int
+            The order of the derivative.
+        i : list of numpry arrays
+            i[0] is the level l (numpy array of shape (m, ))
+            i[1] is the local index (numpy array of shape (m, ))
+        x : numpy ndarray of shape (n,)
+            The points.
+
+        Returns
+        -------
+        Bx : numpy ndarray of shape (n,m)
+
+        """        
+        x = np.ravel(x)
+        m = self.degree
+        b = self.base
+        psi = BSplinesFunctionalBasis.cardinal_bspline(m)
+        level = np.ravel(i[0])
+        local_index  = np.ravel(i[1])
+        X = np.outer(x, b ** level) - np.outer(np.ones(x.size), local_index)
+        S = np.outer(np.ones(x.size), b ** (level / 2))
+
+        Bx = psi.eval(X.ravel()).ravel() * S.ravel()
+        Bx = np.reshape(Bx, (x.size, level.size))
+        
+        return Bx
+
+    def eval_derivative(self, k, i, x):
+        """
+        Evaluate the k-th derivative of dilated B-Splines of indices i=[l,j]
+        at points x, with l the level and j the local index
+
+        Parameters
+        ----------
+        k : int
+            The order of the derivative.
+        i : list of numpry arrays
+            i[0] is the level l (numpy array of shape (m, ))
+            i[1] is the local index (numpy array of shape (m, ))
+        x : numpy ndarray of shape (n,)
+            The points.
+
+        Returns
+        -------
+        dBx : numpy ndarray of shape (n,m)
+
+        """
+        x = np.ravel(x)
+        m = self.degree
+        b = self.base
+        psi = BSplinesFunctionalBasis.cardinal_bspline(m)
+        level = np.ravel(i[0])
+        local_index  = np.ravel(i[1])
+        X = np.outer(x, b ** level) - np.outer(np.ones(x.size), local_index)
+        S = np.outer(np.ones(x.size), b ** (level * (k + 1/2)))
+        
+        dBx = psi.eval_derivative(k, X.ravel()).ravel() * S.ravel()
+        dBx = np.reshape(dBx, (x.size, level.size))
+
+        return dBx
+
+    def indices_with_level_bounded_by(self, L):
+        """
+        Returns the indices of Dilated BSplines of level less or equal to L
+
+        Parameters
+        ----------
+        L : int
+            The level.
+
+        Returns
+        -------
+        level : numpy array
+            The level.
+        local_index : numpy array
+            The local index within the level.
+
+        """
+    
+        level = np.zeros(0, dtype=int)
+        local_index = np.zeros(0, dtype=int)
+        for k in range(L + 1):
+            lk, jk = self.indices_with_level(k)
+            level = np.concatenate((level, lk))
+            local_index = np.concatenate((local_index, jk))
+        return level, local_index
+
+    def indices_with_level(self, L):
+        """
+        Returns the indices of Dilated BSplines of level L
+
+        Parameters
+        ----------
+        L : int
+            The level.
+
+        Returns
+        -------
+        level : numpy array
+            The level.
+        local_index : numpy array
+            The local index within the level.
+        """
+            
+        m = self.degree
+        b = self.base
+        local_index = np.arange(-m, b**L, dtype=int)
+        level = np.full(local_index.size, L, dtype=int)
+        return level, local_index
+
+
+class DilatedBSplinesFunctionalBasis(tensap.FunctionalBasis):
+
+    def __init__(self, B, I):
+        """
+        Functional basis of DilatedBSplines of degree n on 
+        (0,1), using b-adic dilations
+        I = [L,J] is a list of numpy arrays of size (n,)
+
+        Parameters
+        ----------
+        B : DilatedBSplines
+            
+        I : list of 2 numpy arrays
+            I[0] and I[1] are of shape (n,)
+
+        Returns
+        -------
+        DilatedBSplinesFunctionalBasis.
+
+        """
+
+        tensap.FunctionalBasis.__init__(self)
+        if not isinstance(B, DilatedBSplines):
+            raise ValueError('must provide a DilatedBSplines')
+        
+        if isinstance(I, tuple):
+            I = list(I)
+        elif not isinstance(I, list):
+            raise ValueError('must provide a list or tuple')
+
+        I[0] = np.ravel(I[0])
+        I[1] = np.ravel(I[1])
+
+        self.basis = B
+        self.indices = I
+
+    def eval(self, x):
+        return self.basis.eval(self.indices, x)
+
+    def cardinal(self):
+        return self.indices[0].size
+
+    def ndims(self):
+        return 1
+
+    def eval_derivative(self, k, x):
+        """
+        Evaluates the k-th derivative of the functional basis at points x
+
+        Parameters
+        ----------
+        k : int
+            The order of derivation.
+        x : numpy array
+            The points.
+
+        Returns
+        -------
+        numpy array of shape (x.size ,self.cardinal())
+
+        """
+        return self.basis.eval_derivative(k, self.indices, x)
+
+    @staticmethod
+    def with_level_bounded_by(n, b, level):
+        """
+        Creates a DilatedBSplinesFunctionalBasis with degree n
+        b-adic dilation, and functions with level less than level
+
+        Parameters
+        ----------
+        n : int
+            The degree of the splines.
+        b : int
+            The base of dilation.
+        level : int
+            maximum level.
+
+        Returns
+        -------
+        DilatedBSplinesFunctionalBasis
+
+        """
+        
+
+        B = DilatedBSplines(n, b)
+        I = B.indices_with_level_bounded_by(level)
+        return DilatedBSplinesFunctionalBasis(B, I)
+

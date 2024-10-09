@@ -67,3 +67,41 @@ plt.legend(["If", "f"])
 
 ERR_L2, ERR_L_INF = f.test_error(If, 1000, X)
 print("Mean squared error (magic points)  = %2.5e" % ERR_L2)
+
+
+# %% Dilated BSplines
+s = 0  # degree 
+l = 2  # resolution
+b = 2  # base of dilation
+h = tensap.DilatedBSplinesFunctionalBasis.with_level_bounded_by(s, b, l)
+
+plt.figure(2)
+plt.clf()
+x = np.linspace(0, 1, 100)
+plt.plot(x, h.eval(x))
+plt.legend(range(h.cardinal()))
+
+
+# %% Dilated BSplines
+s = 2  # degree 
+l = 2  # resolution
+b = 2  # base of dilation
+h = tensap.DilatedBSplinesFunctionalBasis.with_level_bounded_by(s, b, l)
+
+plt.figure(3)
+x = np.linspace(0, 1, 100)
+y = h.eval(x)
+plt.plot(x, y)
+plt.title('BSplines')
+
+plt.figure(4)
+y_derivative_1 = h.eval_derivative(1, x)  
+plt.plot(x, y_derivative_1)
+plt.title('BSplines first derivative')
+
+plt.figure(5)
+# Placeholder for second derivative evaluation
+y_derivative_2 = h.eval_derivative(2, x)  # Example second derivative
+plt.plot(x, y_derivative_2)
+plt.title('BSplines second derivative')
+
