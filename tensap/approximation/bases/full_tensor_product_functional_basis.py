@@ -182,9 +182,9 @@ class FullTensorProductFunctionalBasis(tensap.FunctionalBasis):
             y *= Hx[i][:, ind.array[:, i]]
         return y
 
-    def gram_matrix(self, dims=None):
+    def gram_matrices(self, dims=None):
         """
-        Return the gram matrix of each basis of self, or of a selection of
+        Return the gram matrices of each basis of self, or of a selection of
         them if dims is provided.
 
         Parameters
@@ -199,9 +199,9 @@ class FullTensorProductFunctionalBasis(tensap.FunctionalBasis):
             The gram matrix of the selected bases.
 
         """
-        return self.bases.gram_matrix(dims)
+        return self.bases.gram_matrices(dims)
 
-    def projection(self, fun, I0):
+    def tensor_product_projection(self, fun, I0):
         """
         Compute the projection of the function fun on the basis functions of
         self.

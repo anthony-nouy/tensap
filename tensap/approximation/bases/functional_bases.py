@@ -450,9 +450,9 @@ class FunctionalBases:
             dims = range(len(self))
         return [x.one() for x in self.bases[dims]]
 
-    def gram_matrix(self, dims=None):
+    def gram_matrices(self, dims=None):
         """
-        Return the gram matrix of each basis of self, or of a selection of
+        Return the gram matrices of each basis of self, or of a selection of
         them if dims is provided.
 
         Parameters
@@ -464,7 +464,7 @@ class FunctionalBases:
         Returns
         -------
         list
-            The gram matrix of the selected bases.
+            The gram matrices of the selected bases.
 
         """
         if dims is None:

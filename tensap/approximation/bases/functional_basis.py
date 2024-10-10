@@ -219,6 +219,28 @@ class FunctionalBasis:
         """
         NotImplementedError("Method not implemented.")
 
+    def gram_matrix(self, G):
+        """
+        Compute the Gram matrix using the integration rule G.
+
+        Parameters
+        ----------
+        G : tensap.IntegrationRule
+            The integration rule used for the projection.
+
+        Returns
+        -------
+        numpy ndarray
+            The projection of the function fun onto the functional basis using
+            the integration rule G.
+
+        """
+
+        A = self.eval(G.points)
+        W = diags(G.weights)
+        return np.matmul(np.transpose(A), W.dot(A))
+
+    
     def projection(self, fun, G):
         """
         Compute the L^2-projection of the function fun onto the functional basis
