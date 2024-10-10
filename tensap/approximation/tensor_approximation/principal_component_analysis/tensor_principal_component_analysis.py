@@ -22,7 +22,7 @@ Module tensor_principal_component_analysis.
 from copy import deepcopy
 import numpy as np
 import tensap
-from maxvolpy.maxvol import maxvol
+#from maxvolpy.maxvol import maxvol
 
 
 class TensorPrincipalComponentAnalysis:
@@ -440,8 +440,8 @@ class TensorPrincipalComponentAnalysis:
 
                 if self.subsampling == "eim":
                     I_alpha = tensap.magic_indices(B_alpha)[0]
-                elif self.subsampling == "maxvol":
-                    I_alpha = maxvol(B_alpha, tol=self.subsampling_tol)[0]
+#                elif self.subsampling == "maxvol":
+#                    I_alpha = maxvol(B_alpha, tol=self.subsampling_tol)[0]
                 elif self.subsampling == "random":
                     I_alpha = np.random.choice(range(B_alpha.shape[0]), \
                             size=B_alpha.shape[1],replace=False)
