@@ -51,6 +51,7 @@ setuptools.setup(
         "numpy",
         "scipy",
         "networkx",
+        "maxvolpy",
     ],
     python_requires=">=3.6",
     include_package_data=True,
