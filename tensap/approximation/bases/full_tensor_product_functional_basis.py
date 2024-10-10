@@ -229,7 +229,7 @@ class FullTensorProductFunctionalBasis(tensap.FunctionalBasis):
 
         """
         if not isinstance(I0, tensap.FullTensorProductIntegrationRule):
-            raise NotImplementedError("Method not implemented.")
+            raise NotImplementedError("Must provide a FullTensorProductIntegrationRule.")
 
         u = fun.eval_on_tensor_grid(I0.points)
         output = {"number_of_evaluations": u.storage()}
