@@ -65,7 +65,7 @@ from .functions.compositional_model_function import CompositionalModelFunction
 from .functions.multivariate_functions_benchmark import multivariate_functions_benchmark
 
 from .approximation.tools.model_selection import ModelSelection
-#from .approximation.tools.interpolation_points_feature_map import interpolation_points_feature_map
+# from .approximation.tools.interpolation_points_feature_map import interpolation_points_feature_map
 from .approximation.bases.functional_basis_array import FunctionalBasisArray
 from .approximation.bases.functional_bases import FunctionalBases
 from .approximation.bases.functional_basis import FunctionalBasis
