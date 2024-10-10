@@ -22,7 +22,7 @@ Module tensor_principal_component_analysis.
 from copy import deepcopy
 import numpy as np
 import tensap
-#from maxvolpy.maxvol import maxvol
+# from maxvolpy.maxvol import maxvol
 
 
 class TensorPrincipalComponentAnalysis:
