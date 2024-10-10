@@ -162,23 +162,6 @@ class BSplinesFunctionalBasis(tensap.FunctionalBasis):
 
         return dBx[:, :t.size - 1 - self.degree, -1]
 
-    def gauss_integration_rule(self, n):
-        """
-        Returns a Gaussian integration rule with n-points per interval.
-
-        Parameters
-        ----------
-        n : int
-            The number of points for the Gaussian quadrature rule.
-
-        Returns
-        -------
-        IntegrationRule
-            A rule for integrating over the spline basis.
-        """
-        # Assuming a PiecewisePolynomialFunctionalBasis exists
-        p = tensap.PiecewisePolynomialFunctionalBasis(self.knots, 0)
-        return p.gauss_integration_rule(n)
 
     @staticmethod
     def cardinal_bspline(m):

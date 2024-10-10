@@ -143,23 +143,6 @@ class PiecewisePolynomialFunctionalBasis(tensap.FunctionalBasis):
         m[q] = np.sqrt(h)
         return m
 
-    def gauss_integration_rule(self, n):
-        """
-        Returns an Integration Rule that integrates
-        exactly piecewise polynomials of degree 2*n-1, using n-points
-        gauss integration rule per interval.
-        """
-        w = np.array([])
-        x = np.array([])
-
-        for k in range(self.points.size - 1):
-            supp = self.points[k:k + 2]
-            g = tensap.LebesgueMeasure(supp[0], supp[1]).gauss_integration_rule(n)
-            x = np.append(x, g.points)
-            w = np.append(w, g.weights)
-
-        return tensap.IntegrationRule(x, w)
-
     def interpolation_points(self):
         """
         Returns interpolation points for the

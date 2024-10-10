@@ -221,13 +221,13 @@ class FunctionalBasis:
 
     def projection(self, fun, G):
         """
-        Compute the projection of the function fun onto the functional basis
+        Compute the L^2-projection of the function fun onto the functional basis
         using the integration rule G.
 
         Parameters
         ----------
-        fun : function or tensap.Function
-            The function to project.
+        fun : function or tensap.Function or numpy.array
+            The function to project or its values at points G.points.
         G : tensap.IntegrationRule
             The integration rule used for the projection.
 
@@ -241,8 +241,11 @@ class FunctionalBasis:
 
         A = self.eval(G.points)
         W = diags(G.weights)
+        try:
+            y = fun(G.points)
+        except Exception:
+            pass
 
-        y = fun(G.points)
         if self.is_orthonormal:
             u = np.matmul(np.transpose(A), W.dot(y))
         else:
@@ -253,6 +256,40 @@ class FunctionalBasis:
         if u.ndim == 1:
             u = np.reshape(u, [-1, 1])
         return tensap.FunctionalBasisArray(u, self, u.shape[1])
+
+    def quasi_projection(self, fun, G):
+        """
+        Compute the quasi L2-projection of the function fun onto the functional basis
+        using the integration rule G.
+
+        Parameters
+        ----------
+        fun : function or tensap.Function or numpy.array
+            The function to project or its values at points G.points.
+        G : tensap.IntegrationRule
+            The integration rule used for the projection.
+
+        Returns
+        -------
+        tensap.FunctionalBasisArray
+            The quasi-projection of the function fun onto the functional basis using
+            the integration rule G.
+
+        """
+
+        A = self.eval(G.points)
+        W = diags(G.weights)
+        try:
+            y = fun(G.points)
+        except Exception:
+            pass
+        
+        u = np.matmul(np.transpose(A), W.dot(y))
+
+        if u.ndim == 1:
+            u = np.reshape(u, [-1, 1])
+        return tensap.FunctionalBasisArray(u, self, u.shape[1])
+
 
     def interpolation_points(self, *args):
         """
