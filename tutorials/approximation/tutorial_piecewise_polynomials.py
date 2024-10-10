@@ -32,6 +32,7 @@ xplot = np.linspace(0, 1, 1000)
 plt.plot(xplot, H.eval(xplot))
 plt.legend(np.arange(H.cardinal()))
 
+
 # %% Interpolation of a function
 
 H = tensap.PiecewisePolynomialFunctionalBasis.np(0, 1, 4, 3)
@@ -53,14 +54,6 @@ If = H.interpolate(f, g)
 ERR_L2, ERR_L_INF = f.test_error(If, 1000, X)
 print("Mean squared error (magic points) = %2.5e" % ERR_L2)
 
-# %% Quadrature
-H = tensap.PiecewisePolynomialFunctionalBasis.np(0, 1, 4, 2)
-f = tensap.UserDefinedFunction("np.exp(x0)", 1)
-g = H.gauss_integration_rule(4)
-Iapp = g.integrate(f)
-Iex = np.exp(1) - 1
-
-print("Integration error = %2.5e" % (np.abs(Iapp - Iex) / np.abs(Iex)))
 
 # %% Singularity adapted Piecewise polynomial basis
 f = tensap.UserDefinedFunction("np.sqrt(x0)", 1)
@@ -76,7 +69,7 @@ X = tensap.UniformRandomVariable(0, 1)
 ERR_L2, ERR_L_INF = f.test_error(If, 100, X)
 print("Mean squared error (random sample) = %2.5e" % ERR_L2)
 
-g = H.gauss_integration_rule(20)
+g = tensap.IntegrationRule.gauss_legendre_composite(H.points, 20)
 L1error = (np.dot(g.weights, abs(f.eval(g.points) - If.eval(g.points)))
            / np.dot(g.weights, abs(f.eval(g.points))))
 print("L1 error = %2.5e" % L1error[0])
