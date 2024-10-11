@@ -95,7 +95,7 @@ h = tensap.PolynomialFunctionalBasis(tensap.HermitePolynomials(), range(p + 1))
 H = tensap.FunctionalBases.duplicate(h, d)
 H = tensap.FullTensorProductFunctionalBasis(H)
 
-f, _ = H.projection(fun, I0)
+f, _ = H.tensor_product_projection(fun, I0)
 
 N_test = 100
 x_test = X.random(N_test)
