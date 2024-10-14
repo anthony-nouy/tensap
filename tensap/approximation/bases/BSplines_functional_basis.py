@@ -22,7 +22,6 @@ Module BSplines_functional_basis.
 
 import numpy as np
 import tensap
-from copy import deepcopy
 
 
 class BSplinesFunctionalBasis(tensap.FunctionalBasis):
@@ -160,8 +159,8 @@ class BSplinesFunctionalBasis(tensap.FunctionalBasis):
                         (x - t[i]) / (t[i + j] - t[i]) * dBx[:, i, j - 1] + \
                         (t[i + j + 1] - x) / (t[i + j + 1] - t[i + 1]) * dBx[:, i + 1, j - 1]
 
-        return dBx[:, :t.size - 1 - self.degree, -1]
-
+        dBx = dBx[:, :t.size - 1 - self.degree, -1]
+        return dBx
 
     @staticmethod
     def cardinal_bspline(m):
@@ -203,13 +202,13 @@ class BSplinesFunctionalBasis(tensap.FunctionalBasis):
         t_full = np.concatenate((tl, t, tr))
         B = tensap.BSplinesFunctionalBasis(t_full, m)
         B.measure = tensap.LebesgueMeasure(t[0], t[-1])
-        
+
         return B
 
 
 class DilatedBSplines:
     def __init__(self, n, b=2):
-        self.degree = n  # Degree 
+        self.degree = n  # Degree
         self.base = b  # base of dilation
 
     def eval(self, i, x):
@@ -231,19 +230,19 @@ class DilatedBSplines:
         -------
         Bx : numpy ndarray of shape (n,m)
 
-        """        
+        """
         x = np.ravel(x)
         m = self.degree
         b = self.base
         psi = BSplinesFunctionalBasis.cardinal_bspline(m)
         level = np.ravel(i[0])
         local_index  = np.ravel(i[1])
-        X = np.outer(x, b ** level) - np.outer(np.ones(x.size), local_index)
-        S = np.outer(np.ones(x.size), b ** (level / 2))
+        X = np.outer(x, b**level) - np.outer(np.ones(x.size), local_index)
+        S = np.outer(np.ones(x.size), b**(level / 2))
 
         Bx = psi.eval(X.ravel()).ravel() * S.ravel()
         Bx = np.reshape(Bx, (x.size, level.size))
-        
+
         return Bx
 
     def eval_derivative(self, k, i, x):
@@ -272,9 +271,9 @@ class DilatedBSplines:
         psi = BSplinesFunctionalBasis.cardinal_bspline(m)
         level = np.ravel(i[0])
         local_index  = np.ravel(i[1])
-        X = np.outer(x, b ** level) - np.outer(np.ones(x.size), local_index)
-        S = np.outer(np.ones(x.size), b ** (level * (k + 1/2)))
-        
+        X = np.outer(x, b**level) - np.outer(np.ones(x.size), local_index)
+        S = np.outer(np.ones(x.size), b**(level * (k + 1 / 2)))
+
         dBx = psi.eval_derivative(k, X.ravel()).ravel() * S.ravel()
         dBx = np.reshape(dBx, (x.size, level.size))
 
@@ -297,7 +296,7 @@ class DilatedBSplines:
             The local index within the level.
 
         """
-    
+
         level = np.zeros(0, dtype=int)
         local_index = np.zeros(0, dtype=int)
         for k in range(L + 1):
@@ -322,7 +321,7 @@ class DilatedBSplines:
         local_index : numpy array
             The local index within the level.
         """
-            
+
         m = self.degree
         b = self.base
         local_index = np.arange(-m, b**L, dtype=int)
@@ -332,16 +331,16 @@ class DilatedBSplines:
 
 class DilatedBSplinesFunctionalBasis(tensap.FunctionalBasis):
 
-    def __init__(self, B, I):
+    def __init__(self, B, Ind):
         """
-        Functional basis of DilatedBSplines of degree n on 
+        Functional basis of DilatedBSplines of degree n on
         (0,1), using b-adic dilations
-        I = [L,J] is a list of numpy arrays of size (n,)
+        Ind = [L,J] is a list of numpy arrays of size (n,)
 
         Parameters
         ----------
         B : DilatedBSplines
-            
+
         I : list of 2 numpy arrays
             I[0] and I[1] are of shape (n,)
 
@@ -354,17 +353,17 @@ class DilatedBSplinesFunctionalBasis(tensap.FunctionalBasis):
         tensap.FunctionalBasis.__init__(self)
         if not isinstance(B, DilatedBSplines):
             raise ValueError('must provide a DilatedBSplines')
-        
-        if isinstance(I, tuple):
-            I = list(I)
+
+        if isinstance(Ind, tuple):
+            Ind = list(Ind)
         elif not isinstance(I, list):
             raise ValueError('must provide a list or tuple')
 
-        I[0] = np.ravel(I[0])
-        I[1] = np.ravel(I[1])
+        Ind[0] = np.ravel(Ind[0])
+        Ind[1] = np.ravel(Ind[1])
 
         self.basis = B
-        self.indices = I
+        self.indices = Ind
 
     def eval(self, x):
         return self.basis.eval(self.indices, x)
@@ -413,9 +412,7 @@ class DilatedBSplinesFunctionalBasis(tensap.FunctionalBasis):
         DilatedBSplinesFunctionalBasis
 
         """
-        
 
         B = DilatedBSplines(n, b)
-        I = B.indices_with_level_bounded_by(level)
-        return DilatedBSplinesFunctionalBasis(B, I)
-
+        Ind = B.indices_with_level_bounded_by(level)
+        return DilatedBSplinesFunctionalBasis(B, Ind)

@@ -240,11 +240,38 @@ class FunctionalBasis:
         W = diags(G.weights)
         return np.matmul(np.transpose(A), W.dot(A))
 
-    
     def projection(self, fun, G):
         """
         Compute the L^2-projection of the function fun onto the functional basis
-        using the integration rule G.
+        using the integration rule G. If the basis is orthonormal,
+        then it returns a quasi-projection. If not, it returns a least-squares
+        projection
+
+        Parameters
+        ----------
+        fun : function or tensap.Function or numpy.array
+            The function to project or its values at points G.points.
+        G : tensap.IntegrationRule
+            The integration rule used for the projection.
+
+        Returns
+        -------
+        tensap.FunctionalBasisArray
+            The projection of the function fun onto the functional basis using
+            the integration rule G.
+
+        """
+        
+        if self.is_orthonormal:
+            return self.quasi_projection(fun, G)
+        else:
+            return self.least_squares_projection(fun, G)
+
+    def least_squares_projection(self, fun, G):
+        """
+        Compute the least-squares projection of the function fun
+        onto the functional basis
+        using the integration rule G. 
 
         Parameters
         ----------
@@ -261,22 +288,20 @@ class FunctionalBasis:
 
         """
 
-        A = self.eval(G.points)
-        W = diags(G.weights)
         try:
             y = fun(G.points)
         except Exception:
             pass
 
-        if self.is_orthonormal:
-            u = np.matmul(np.transpose(A), W.dot(y))
-        else:
-            u = np.linalg.solve(
-                np.matmul(np.transpose(A), W.dot(A)),
-                np.matmul(np.transpose(A), W.dot(y)),
-            )
+        A = self.eval(G.points)
+        W = diags(np.sqrt(G.weights))
+        A = W.dot(A)
+        y = W.dot(y)
+        
+        u = np.linalg.lstsq(A, y, None)[0]
         if u.ndim == 1:
             u = np.reshape(u, [-1, 1])
+ 
         return tensap.FunctionalBasisArray(u, self, u.shape[1])
 
     def quasi_projection(self, fun, G):
@@ -305,13 +330,12 @@ class FunctionalBasis:
             y = fun(G.points)
         except Exception:
             pass
-        
+
         u = np.matmul(np.transpose(A), W.dot(y))
 
         if u.ndim == 1:
             u = np.reshape(u, [-1, 1])
         return tensap.FunctionalBasisArray(u, self, u.shape[1])
-
 
     def interpolation_points(self, *args):
         """

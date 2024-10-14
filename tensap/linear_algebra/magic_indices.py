@@ -21,7 +21,7 @@ Module magic_indices.
 """
 
 import numpy as np
-
+import scipy as sp
 
 def magic_indices(F, n=None, option="left_right"):
     """
@@ -63,6 +63,8 @@ def magic_indices(F, n=None, option="left_right"):
         The magic indices.
 
     """
+    if sp.sparse.issparse(F):
+        F = F.toarray()
     F = np.atleast_2d(F)
     if n is None:
         n = np.min(F.shape)

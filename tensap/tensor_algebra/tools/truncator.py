@@ -73,6 +73,26 @@ class Truncator:
         self.thresholding_parameter = thresholding_parameter
         self._hsvd_type = 2  # 1 for root to leaves, 2 for leaves to root
 
+    def __repr__(self):
+        return (
+            "<{}:{n}"
+            + "{t}tolerance = {},{n}"
+            + "{t}max_rank = {},{n}"
+            + "{t}thresholding_type = {},{n}"
+            + "{t}thresholding_parameter = {},{n}"
+            + "{t}_hsvd_type = {}>"
+        ).format(
+            self.__class__.__name__,
+            self.tolerance,
+            self.max_rank,
+            self.thresholding_type,
+            self.thresholding_parameter,
+            self._hsvd_type,
+            t="\t",
+            n="\n",
+        )
+            
+            
     def truncate(self, tensor):
         """
         Compute the truncation of the tensor with relative precision

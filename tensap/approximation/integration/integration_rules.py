@@ -126,20 +126,20 @@ class IntegrationRule:
 
         """
         return random_variable.gauss_integration_rule(*args)
-    
+
     def gauss_legendre_composite(knots, n):
         """
-        Returns a piecewise Gauss-Legendre quadrature associated 
+        Returns a piecewise Gauss-Legendre quadrature associated
         with given (sorted) points knots[0] ... knots[m]. It uses a n-points
         gauss integration rule per interval.
-        
+
         Parameters
         ----------
-        knots : numpy.array or list 
+        knots : numpy.array or list
             The list of points that define the intervals.
         n : int or list or numpy array
-            The number of integration points per interval. 
-            If n is an integer, the same 
+            The number of integration points per interval.
+            If n is an integer, the same
             number of points is used per interval.
 
         Returns
@@ -148,12 +148,12 @@ class IntegrationRule:
             The integration rule.
 
         """
-        
+
         w = np.array([])
         x = np.array([])
-        
+
         knots = np.sort(np.ravel(knots))
-        
+
         if np.isscalar(n):
             n = np.tile(n, knots.size - 1)  # Replicate if p is scalar
         n = np.ravel(n)  # Ensure p is 1D
@@ -164,7 +164,7 @@ class IntegrationRule:
             x = np.append(x, g.points)
             w = np.append(w, g.weights)
 
-        return tensap.IntegrationRule(x, w)        
+        return tensap.IntegrationRule(x, w)
 
 
 class FullTensorProductIntegrationRule(IntegrationRule):
@@ -217,20 +217,20 @@ class FullTensorProductIntegrationRule(IntegrationRule):
 
     def gauss_legendre_composite(knots, n):
         """
-        Returns a d-dimensional Gauss-Legendre quadrature associated 
+        Returns a d-dimensional Gauss-Legendre quadrature associated
         with d-dimensional uniform grid. It uses tensorization of n-points
         gauss integration rule per hyperrectangle.
         knots is a list of length d: the resulting rule is the tensorization
-        of 1-dimensional Piecewise Gauss Legendre integration rules 
+        of 1-dimensional Piecewise Gauss Legendre integration rules
         associated with grids knots[0] ... knots[d-1]
-        
+
         Parameters
         ----------
         knots : list or tuple of length d
             The tuple of grids.
         n : int
-            The number of integration points per interval 
-            for 1-dimensional rules. 
+            The number of integration points per interval
+            for 1-dimensional rules.
 
         Returns
         -------
@@ -243,9 +243,9 @@ class FullTensorProductIntegrationRule(IntegrationRule):
         if not isinstance(knots, tuple):
             raise ValueError("must provide a tuple of length d.")
 
-        g = [tensap.IntegrationRule.gauss_legendre_composite(x, n) \
+        g = [tensap.IntegrationRule.gauss_legendre_composite(x, n)
              for x in knots]
         points = [x.points for x in g]
         weights = [x.weights for x in g]
-        
-        return tensap.FullTensorProductIntegrationRule(points, weights)        
+
+        return tensap.FullTensorProductIntegrationRule(points, weights)

@@ -234,6 +234,7 @@ class FullTensorProductFunctionalBasis(tensap.FunctionalBasis):
         u = fun.eval_on_tensor_grid(I0.points)
         output = {"number_of_evaluations": u.storage()}
         Hx = self.bases.eval(np.hstack(I0.points.grids))
+        
         Mx = [
             np.matmul(np.transpose(x), np.matmul(np.diag(y), x))
             for x, y in zip(Hx, I0.weights)
