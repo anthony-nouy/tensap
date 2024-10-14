@@ -23,6 +23,7 @@ Module magic_indices.
 import numpy as np
 import scipy as sp
 
+
 def magic_indices(F, n=None, option="left_right"):
     """
     Return the set of n magic indices (i_1, j_1), ..., (i_n, j_n) constructed
