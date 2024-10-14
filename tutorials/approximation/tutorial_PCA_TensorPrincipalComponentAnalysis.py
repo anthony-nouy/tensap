@@ -202,9 +202,9 @@ F, OUTPUT = TPCA.tt_approximation(fun, SIZE)
 F_X_TEST = F.eval_at_indices(X_TEST)
 print("Error = %2.5e" % (np.linalg.norm(Y_TEST - F_X_TEST) / np.linalg.norm(Y_TEST)))
 
-#print("maxvol:")
-#TPCA.subsampling = "maxvol"
-#TPCA.subsampling_tol = 1.
-#F, OUTPUT = TPCA.tt_approximation(fun, SIZE)
-#F_X_TEST = F.eval_at_indices(X_TEST)
-#print("Error = %2.5e" % (np.linalg.norm(Y_TEST - F_X_TEST) / np.linalg.norm(Y_TEST)))
+# print("maxvol:")
+# TPCA.subsampling = "maxvol"
+# TPCA.subsampling_tol = 1.
+# F, OUTPUT = TPCA.tt_approximation(fun, SIZE)
+# F_X_TEST = F.eval_at_indices(X_TEST)
+# print("Error = %2.5e" % (np.linalg.norm(Y_TEST - F_X_TEST) / np.linalg.norm(Y_TEST)))

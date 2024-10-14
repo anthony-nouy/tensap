@@ -261,7 +261,7 @@ class FunctionalBasis:
             the integration rule G.
 
         """
-        
+
         if self.is_orthonormal:
             return self.quasi_projection(fun, G)
         else:
@@ -271,7 +271,7 @@ class FunctionalBasis:
         """
         Compute the least-squares projection of the function fun
         onto the functional basis
-        using the integration rule G. 
+        using the integration rule G.
 
         Parameters
         ----------
@@ -297,11 +297,11 @@ class FunctionalBasis:
         W = diags(np.sqrt(G.weights))
         A = W.dot(A)
         y = W.dot(y)
-        
+
         u = np.linalg.lstsq(A, y, None)[0]
         if u.ndim == 1:
             u = np.reshape(u, [-1, 1])
- 
+
         return tensap.FunctionalBasisArray(u, self, u.shape[1])
 
     def quasi_projection(self, fun, G):

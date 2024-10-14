@@ -21,8 +21,6 @@ Module multi_indices.
 
 import numpy as np
 
-# import tensap
-
 
 class MultiIndices:
     """

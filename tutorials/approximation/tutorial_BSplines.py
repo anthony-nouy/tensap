@@ -70,10 +70,10 @@ print("Mean squared error (magic points)  = %2.5e" % ERR_L2)
 
 
 # %% Dilated BSplines
-s = 0  # degree 
-l = 2  # resolution
+s = 0  # degree
+r = 2  # resolution
 b = 2  # base of dilation
-h = tensap.DilatedBSplinesFunctionalBasis.with_level_bounded_by(s, b, l)
+h = tensap.DilatedBSplinesFunctionalBasis.with_level_bounded_by(s, b, r)
 
 plt.figure(2)
 plt.clf()
@@ -83,10 +83,10 @@ plt.legend(range(h.cardinal()))
 
 
 # %% Dilated BSplines
-s = 2  # degree 
-l = 2  # resolution
+s = 2  # degree
+r = 2  # resolution
 b = 2  # base of dilation
-h = tensap.DilatedBSplinesFunctionalBasis.with_level_bounded_by(s, b, l)
+h = tensap.DilatedBSplinesFunctionalBasis.with_level_bounded_by(s, b, r)
 
 plt.figure(3)
 x = np.linspace(0, 1, 100)
@@ -95,7 +95,7 @@ plt.plot(x, y)
 plt.title('BSplines')
 
 plt.figure(4)
-y_derivative_1 = h.eval_derivative(1, x)  
+y_derivative_1 = h.eval_derivative(1, x)
 plt.plot(x, y_derivative_1)
 plt.title('BSplines first derivative')
 
@@ -104,4 +104,3 @@ plt.figure(5)
 y_derivative_2 = h.eval_derivative(2, x)  # Example second derivative
 plt.plot(x, y_derivative_2)
 plt.title('BSplines second derivative')
-

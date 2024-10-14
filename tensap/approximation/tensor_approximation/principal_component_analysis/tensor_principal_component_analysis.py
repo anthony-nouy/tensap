@@ -443,10 +443,12 @@ class TensorPrincipalComponentAnalysis:
 #                elif self.subsampling == "maxvol":
 #                    I_alpha = maxvol(B_alpha, tol=self.subsampling_tol)[0]
                 elif self.subsampling == "random":
-                    I_alpha = np.random.choice(range(B_alpha.shape[0]), \
-                            size=B_alpha.shape[1],replace=False)
+                    I_alpha = np.random.choice(
+                            range(B_alpha.shape[0]),
+                            size=B_alpha.shape[1], replace=False
+                            )
                 else:
-                    raise ValueError('Wrong subsampling type')                                                           
+                    raise ValueError('Wrong subsampling type')
 
                 alpha_grids[alpha - 1] = grids[nu][I_alpha, :]
                 alpha_basis[alpha - 1] = B_alpha[I_alpha, :]

@@ -91,8 +91,7 @@ class Truncator:
             t="\t",
             n="\n",
         )
-            
-            
+
     def truncate(self, tensor):
         """
         Compute the truncation of the tensor with relative precision

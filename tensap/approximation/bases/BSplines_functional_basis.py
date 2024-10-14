@@ -236,7 +236,7 @@ class DilatedBSplines:
         b = self.base
         psi = BSplinesFunctionalBasis.cardinal_bspline(m)
         level = np.ravel(i[0])
-        local_index  = np.ravel(i[1])
+        local_index = np.ravel(i[1])
         X = np.outer(x, b**level) - np.outer(np.ones(x.size), local_index)
         S = np.outer(np.ones(x.size), b**(level / 2))
 
@@ -270,7 +270,7 @@ class DilatedBSplines:
         b = self.base
         psi = BSplinesFunctionalBasis.cardinal_bspline(m)
         level = np.ravel(i[0])
-        local_index  = np.ravel(i[1])
+        local_index = np.ravel(i[1])
         X = np.outer(x, b**level) - np.outer(np.ones(x.size), local_index)
         S = np.outer(np.ones(x.size), b**(level * (k + 1 / 2)))
 
@@ -356,7 +356,7 @@ class DilatedBSplinesFunctionalBasis(tensap.FunctionalBasis):
 
         if isinstance(Ind, tuple):
             Ind = list(Ind)
-        elif not isinstance(I, list):
+        elif not isinstance(Ind, list):
             raise ValueError('must provide a list or tuple')
 
         Ind[0] = np.ravel(Ind[0])

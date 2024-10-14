@@ -34,7 +34,6 @@ class ProductMeasure(tensap.Measure):
 
     """
 
-
     def __init__(self, measures):
         """
         Constructor for the class ProductMeasure.
