@@ -241,6 +241,31 @@ class SparseTensorProductFunctionalBasis(tensap.FunctionalBasis):
         out.is_orthonormal = np.all([x.is_orthonormal for x in out.bases.bases])
         return out
 
+    def eval_jacobian(self, x):
+        """
+        Compute evaluations of the Jacobian matrix of self at points x.
+
+        Parameters
+        ----------
+        x : numpy.ndarray
+            The input points.
+
+        Returns
+        -------
+        out : numpy.ndarray
+            Evaluations of the Jacobian matrix of self.
+            out[k,i,j] is the evaluation of df_i/dx_j at the k-th sample.
+
+        """
+        dnHx_lst = []
+        for ind in range(self.length()):
+            n = self.length() * [0]
+            n[ind] = 1
+            dnHx_i = self.eval_derivative(n, x)[:, :, None]  # add an axis to concatenate
+            dnHx_lst.append(dnHx_i)
+        out = np.concatenate(dnHx_lst, axis=2)
+        return out
+
     def adaptation_path(self, p=1):
         """
         Create an adaptation path associated with increasing p-norm of
