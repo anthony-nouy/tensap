@@ -165,3 +165,6 @@ class SubFunctionalBasis(tensap.FunctionalBasis):
 
     def mean(self):
         return np.matmul(self.underlying_basis.mean(), self.basis)
+
+    def gram_matrix(self):
+        return self.basis.T @ self.underlying_basis.gram_matrix() @ self.basis
