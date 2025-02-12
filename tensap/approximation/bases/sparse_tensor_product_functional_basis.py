@@ -278,7 +278,7 @@ class SparseTensorProductFunctionalBasis(tensap.FunctionalBasis):
         if self.is_orthonormal:
             M = speye(self.indices.cardinal())
         else:
-            G = self.bases.gram_matrix()
+            G = self.bases.gram_matrices()
             ind = self.indices.array
             M = G[0][np.ix_(ind[:, 0], ind[:, 0])]
             for i in np.arange(1, ind.shape[1]):
