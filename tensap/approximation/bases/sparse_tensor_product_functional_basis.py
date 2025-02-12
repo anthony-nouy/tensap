@@ -238,6 +238,7 @@ class SparseTensorProductFunctionalBasis(tensap.FunctionalBasis):
     def derivative(self, n):
         out = deepcopy(self)
         out.bases = out.bases.derivative(n)
+        out.is_orthonormal = np.all([x.is_orthonormal for x in out.bases.bases])
         return out
 
     def adaptation_path(self, p=1):
