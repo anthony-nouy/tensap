@@ -349,7 +349,7 @@ class FunctionalBases:
 
         """
         out = deepcopy(self)
-        out.bases = [x.derivative(m) for x, m in zip(self.bases, n)]
+        out.bases = np.array([x.derivative(m) for x, m in zip(self.bases, n)])
         return out
 
     def random(self, *args, **kwargs):
