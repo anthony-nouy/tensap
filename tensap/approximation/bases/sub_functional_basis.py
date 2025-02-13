@@ -188,3 +188,6 @@ class SubFunctionalBasis(tensap.FunctionalBasis):
 
     def gram_matrix(self):
         return self.basis.T @ self.underlying_basis.gram_matrix() @ self.basis
+
+    def gram_matrix_h1_0(self):
+        return self.basis.T @ self.underlying_basis.gram_matrix_h1_0() @ self.basis

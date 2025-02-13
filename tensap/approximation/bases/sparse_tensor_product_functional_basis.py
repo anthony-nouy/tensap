@@ -311,6 +311,24 @@ class SparseTensorProductFunctionalBasis(tensap.FunctionalBasis):
                 M *= G[i][np.ix_(ind[:, i], ind[:, i])]
         return M
 
+    def gram_matrix_h1_0(self):
+        """
+        Return the gram matrix of the basis with respect to the L2(H1_0) inner product.
+        In other words G[i,j] is E(grad(Bi)(X).T @ grad(Bj)(X)).
+
+        Returns
+        -------
+        G : numpy.ndarray
+            The gram matrix of the basis with respect to the L2(H1_0) inner product.
+
+        """
+        ndim, cardinal = self.ndim(), self.cardinal()
+        G = np.zeros((cardinal, cardinal))
+        for i in range(ndim):
+            didB = self.derivative([1 * (j == i) for j in range(ndim)])
+            G = G + didB.gram_matrix()
+        return G
+
     def plot_multi_indices(self, *args):
         """
         PLot the multi-index set of the object.
