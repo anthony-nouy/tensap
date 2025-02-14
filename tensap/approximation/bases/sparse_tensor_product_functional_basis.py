@@ -238,6 +238,32 @@ class SparseTensorProductFunctionalBasis(tensap.FunctionalBasis):
     def derivative(self, n):
         out = deepcopy(self)
         out.bases = out.bases.derivative(n)
+        out.is_orthonormal = np.all([x.is_orthonormal for x in out.bases.bases])
+        return out
+
+    def eval_jacobian(self, x):
+        """
+        Compute evaluations of the Jacobian matrix of self at points x.
+
+        Parameters
+        ----------
+        x : numpy.ndarray
+            The input points.
+
+        Returns
+        -------
+        out : numpy.ndarray
+            Evaluations of the Jacobian matrix of self.
+            out[k,i,j] is the evaluation of df_i/dx_j at the k-th sample.
+
+        """
+        dnHx_lst = []
+        for ind in range(self.length()):
+            n = self.length() * [0]
+            n[ind] = 1
+            dnHx_i = self.eval_derivative(n, x)[:, :, None]  # add an axis to concatenate
+            dnHx_lst.append(dnHx_i)
+        out = np.concatenate(dnHx_lst, axis=2)
         return out
 
     def adaptation_path(self, p=1):
@@ -278,12 +304,30 @@ class SparseTensorProductFunctionalBasis(tensap.FunctionalBasis):
         if self.is_orthonormal:
             M = speye(self.indices.cardinal())
         else:
-            G = self.bases.gram_matrix()
+            G = self.bases.gram_matrices()
             ind = self.indices.array
             M = G[0][np.ix_(ind[:, 0], ind[:, 0])]
             for i in np.arange(1, ind.shape[1]):
                 M *= G[i][np.ix_(ind[:, i], ind[:, i])]
         return M
+
+    def gram_matrix_h1_0(self):
+        """
+        Return the gram matrix of the basis with respect to the L2(H1_0) inner product.
+        In other words G[i,j] is E(grad(Bi)(X).T @ grad(Bj)(X)).
+
+        Returns
+        -------
+        G : numpy.ndarray
+            The gram matrix of the basis with respect to the L2(H1_0) inner product.
+
+        """
+        ndim, cardinal = self.ndim(), self.cardinal()
+        G = np.zeros((cardinal, cardinal))
+        for i in range(ndim):
+            didB = self.derivative([1 * (j == i) for j in range(ndim)])
+            G = G + didB.gram_matrix()
+        return G
 
     def plot_multi_indices(self, *args):
         """
