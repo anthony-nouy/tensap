@@ -150,7 +150,7 @@ def poincare_minimize_pymanopt(G0, jac_u, jac_basis, use_precond=False, precond_
     """
     K = jac_basis.shape[1]
     if G0.ndim == 1:
-        G0mat = G0.Reshape((K, G0.shape[0] // K))
+        G0mat = G0.reshape((K, G0.shape[0] // K))
     else:
         G0mat = G0
     m = G0mat.shape[1]
@@ -203,7 +203,7 @@ def _build_pymanopt_problem(jac_u, jac_basis, m, use_precond=False, optimizer_kw
     """
     import pymanopt
     K = jac_basis.shape[1]
-    manifold = pymanopt.manifold.grassmann.Grassmann(K, m)
+    manifold = pymanopt.manifolds.grassmann.Grassmann(K, m)
 
     @pymanopt.function.numpy(manifold)
     def cost(G): return poincare_loss_vector_space(G, jac_u, jac_basis)
