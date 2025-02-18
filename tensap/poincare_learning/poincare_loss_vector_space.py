@@ -604,9 +604,13 @@ class PoincareLossVectorSpace:
         Has shape (N, K, d).
     basis : instance of class with eval method
         Object such that g(x) = G.T @ basis.eval(x)
+    R : numpy.ndarray, optional
+        The inner product matrix wrt which the coefficient matrix G
+        should be orthonormal, i.e G.T @ R @ G = Im
+        The default is None, corresponding to identity matrix.
     """
 
-    def __init__(self, jac_u, jac_basis, basis=None):
+    def __init__(self, jac_u, jac_basis, basis=None, R=None):
         assert jac_u.ndim >1
         assert jac_u.shape[0] == jac_basis.shape[0]
         assert jac_u.shape[-1] == jac_basis.shape[-1]
@@ -614,6 +618,7 @@ class PoincareLossVectorSpace:
         self.jac_u = jac_u
         self.jac_basis = jac_basis
         self.basis = basis
+        self.R = R
 
         if jac_u.ndim == 2:
             self.jac_u = self.jac_u[:, None, :]
@@ -651,6 +656,6 @@ class PoincareLossVectorSpace:
     def eval_surrogate(self, G, jac_g=None, G0=None, jac_g0=None):
         return poincare_loss_surrogate_vector_space(G, self.jac_u, self.jac_basis, G0, jac_g, jac_g0)
     
-    def eval_surrogate_matrices(self, G0=None, R=None):
-        return _eval_surrogate_matrices(self.jac_u, self.jac_basis, G0, R)
+    def eval_surrogate_matrices(self, G0=None):
+        return _eval_surrogate_matrices(self.jac_u, self.jac_basis, G0, self.R)
     
