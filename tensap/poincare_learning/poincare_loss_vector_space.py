@@ -464,7 +464,7 @@ def _eval_HessG_full(G, jac_u, jac_basis, jac_g=None):
 
 
 
-def poincare_loss_surrogate_vector_space(G, jac_u, jac_basis, G0=None, jac_g=None, jac_g0=None, weight=0):
+def poincare_loss_surrogate_vector_space(G, jac_u, jac_basis, G0=None, jac_g=None, jac_g0=None):
     """
 
     Evaluate the covex surrogate to the Poincare based loss for a feature map from a vector space of nonlinear feature maps, 
@@ -496,11 +496,6 @@ def poincare_loss_surrogate_vector_space(G, jac_u, jac_basis, G0=None, jac_g=Non
         jac_g[k,i,j] is dg_i / dx_j evaluated at the k-th sample. 
         If not provided, it is computed from G and jac_basis.
         Has shape (N, m, d).
-    weight : int, optional
-        Choice for the weights in the expectation of the surrogate.
-        0 is for 1, which corresponds to the definition of the surrogate.
-        1 is for 1 / \|grad(u)(x)\|_2^2, which defines an alternative surrogate with less theoretical guarentees.
-        The default is 0.
 
     Returns
     -------
@@ -512,11 +507,11 @@ def poincare_loss_surrogate_vector_space(G, jac_u, jac_basis, G0=None, jac_g=Non
         jac_g = _eval_jac_g(G, jac_basis)
     if jac_g0 is None and not(G0 is None):
         jac_g0 = _eval_jac_g(G0, jac_basis)
-    out = poincare_loss_surrogate(jac_u, jac_g, jac_g0, weight)
+    out = poincare_loss_surrogate(jac_u, jac_g, jac_g0)
     return out
 
 
-def _eval_surrogate_matrices(jac_u, jac_basis, G0=None, R=None, weight=0):
+def _eval_surrogate_matrices(jac_u, jac_basis, G0=None, R=None):
     """
     Build the matrices for to the convex surrogate to Poincare loss.
     Handles both the one feature and the multiple features cases where
@@ -538,11 +533,6 @@ def _eval_surrogate_matrices(jac_u, jac_basis, G0=None, R=None, weight=0):
     R : numpy.ndarray, optional
         The inner product matrix with respect to which G0 is orthonormal.
         The default is None.
-    weight : int, optional
-        Choice for the weights in the expectation of the surrogate.
-        0 is for 1, which corresponds to the definition of the surrogate.
-        1 is for 1 / \|grad(u)(x)\|_2^2, which defines an alternative surrogate with less theoretical guarentees.
-        The default is 0.
 
     Returns
     -------
@@ -579,12 +569,7 @@ def _eval_surrogate_matrices(jac_u, jac_basis, G0=None, R=None, weight=0):
         Ax = v1 @ v1.T
         Bx = jb @ P_g0_perp @ jb.T
 
-        if weight == 0:
-            w = np.linalg.norm(P_g0_perp @ ju.T)**2
-        elif weight == 1:
-            w = 1.
-        else:
-            raise NotImplementedError("Not implemented weights for surrogate")
+        w = np.linalg.norm(P_g0_perp @ ju.T)**2
         A += w * Ax / jac_u.shape[0]
         B += w * Bx / jac_u.shape[0]
 
@@ -663,9 +648,9 @@ class PoincareLossVectorSpace:
     def eval_SGinv_X(self, G, X, jac_g=None, **cg_kwargs):
         return _eval_SGinv_X(G, X, self.jac_u, self.jac_basis, jac_g, **cg_kwargs)
 
-    def eval_surrogate(self, G, jac_g=None, G0=None, jac_g0=None, weight=0):
-        return poincare_loss_surrogate_vector_space(G, self.jac_u, self.jac_basis, G0, jac_g, jac_g0, weight)
+    def eval_surrogate(self, G, jac_g=None, G0=None, jac_g0=None):
+        return poincare_loss_surrogate_vector_space(G, self.jac_u, self.jac_basis, G0, jac_g, jac_g0)
     
-    def eval_surrogate_matrices(self, G0=None, R=None, weight=0):
-        return _eval_surrogate_matrices(self.jac_u, self.jac_basis, G0, R, weight)
+    def eval_surrogate_matrices(self, G0=None, R=None):
+        return _eval_surrogate_matrices(self.jac_u, self.jac_basis, G0, R)
     
