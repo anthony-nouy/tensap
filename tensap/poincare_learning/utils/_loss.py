@@ -68,7 +68,7 @@ def poincare_loss_augmented(jac_u, jac_g, alpha=1):
     return out
 
 
-def poincare_loss_surrogate(jac_u, jac_g, jac_g0=None, weight=0):
+def poincare_loss_surrogate(jac_u, jac_g, jac_g0=None):
     """
     Evaluate the covex surrogate to the Poincare based loss for 
     a general feature map from samples. 
@@ -88,12 +88,7 @@ def poincare_loss_surrogate(jac_u, jac_g, jac_g0=None, weight=0):
         Samples of the jacobian of the previously learnt feature maps.
         jac_g0[k,i,j] is dg0_i / dx_j evaluated at the k-th sample.
         Has shape (N, j, d). The default is None.
-    weight : int, optional
-        Choice for the weights in the expectation of the surrogate.
-        0 is for 1, which corresponds to the definition of the surrogate.
-        1 is for 1 / \|grad(u)(x)\|_2^2, which defines an alternative surrogate with less theoretical guarentees.
-        The default is 0.
-        
+
     Returns
     -------
     out : float
@@ -112,11 +107,7 @@ def poincare_loss_surrogate(jac_u, jac_g, jac_g0=None, weight=0):
         w0 = jg.T - proj_g0 @ jg.T
         proj_v0 = v0 @ scipy.linalg.pinv(v0)
         res = np.linalg.norm(w0 - proj_v0 @ w0) ** 2 / N
-        if weight == 0:
-            c = np.linalg.norm(v0)**2
-        elif weight == 1:
-            c = 1.
+        c = np.linalg.norm(v0)**2
         out += c * res
     return out
-
 
