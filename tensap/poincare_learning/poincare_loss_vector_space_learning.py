@@ -2,7 +2,7 @@
 
 import numpy as np
 import scipy
-from tensap.poincare_learning.utils._loss_vector_space import _eval_HG_X, _eval_SGinv_X, _eval_jac_g, poincare_loss_vector_space, poincare_loss_vector_space_gradient, _eval_surrogate_matrices
+from tensap.poincare_learning.utils._loss_vector_space import _eval_HG_X, _eval_SGinv_X, _eval_jac_g, poincare_loss_vector_space, poincare_loss_vector_space_gradient, _eval_surrogate_matrices, poincare_loss_surrogate_vector_space
 
 
 def _iteration_qn(G, jac_u, jac_basis, R=None, **cg_kwargs):
@@ -328,8 +328,9 @@ def _minimize_surrogate_greedy(jac_u, jac_basis, m_max, R=None, optimize_poincar
     if verbose >=1: print(f"Greedy iteration {1}")
 
     # Learn first feature from surrogate
-    G, surrogates[0] = _minimize_surrogate(jac_u, jac_basis, None, R)
+    G = _minimize_surrogate(jac_u, jac_basis, None, R)
     losses[0] = poincare_loss_vector_space(G, jac_u, jac_basis)
+    surrogates[0] = poincare_loss_surrogate_vector_space(G, jac_u, jac_basis)
     
     # Run minimization of Poincare loss if necessary
     if optimize_poincare:
@@ -353,8 +354,9 @@ def _minimize_surrogate_greedy(jac_u, jac_basis, m_max, R=None, optimize_poincar
         if verbose >=1: print(f"Greedy iteration {j+1}")
 
         # Learn the j-th feature from surrogate and previous features
-        G, surrogates[j] = _minimize_surrogate(jac_u, jac_basis, G, R)
+        G = _minimize_surrogate(jac_u, jac_basis, G, R)
         losses[j] = poincare_loss_vector_space(G, jac_u, jac_basis)
+        surrogates[j] = poincare_loss_surrogate_vector_space(G, jac_u, jac_basis)
 
         # Run minimization of Poincare loss on all features if necessary
         if optimize_poincare:
