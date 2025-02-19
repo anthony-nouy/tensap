@@ -180,7 +180,7 @@ def _build_exp_mean_sin_exp_cos(d=8):
     return fun_torch, X
 
 
-def _build_exp_mean_sin_squared(d=8, m_features=1):
+def _build_exp_mean_squared_sin_cubic(d=8, m_features=1):
 
     X = tensap.RandomVector(tensap.UniformRandomVariable(0,1), d)
     G = np.random.RandomState(0).normal(
@@ -255,8 +255,8 @@ def build_benchmark_torch(case, **kwargs):
     elif case == "exp_mean_sin_exp_cos":
         fun_torch, X = _build_exp_mean_sin_exp_cos(**kwargs)
 
-    elif case == "exp_mean_sin_squared":
-        fun_torch, X = _build_exp_mean_sin_squared(**kwargs)
+    elif case == "exp_mean_squared_sin_cubic":
+        fun_torch, X = _build_exp_mean_squared_sin_cubic(**kwargs)
 
     else:
         raise NotImplementedError("Function not implemented.")
