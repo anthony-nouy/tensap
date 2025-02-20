@@ -2,30 +2,17 @@
 
 # %% Imports
 import numpy as np
-import tensap
 import matplotlib.pyplot as plt
-import scipy
 from tensap.poincare_learning.benchmarks.poincare_benchmarks_torch import build_benchmark_torch
+from tensap.poincare_learning.utils._loss_vector_space import _build_ortho_poly_basis
+from tensap.poincare_learning.poincare_loss_vector_space import PoincareLossVectorSpace
 from sklearn.kernel_ridge import KernelRidge
 from sklearn.model_selection import GridSearchCV
 
 
-# %% Build orthonormal polynomial basis of the feature space
-
-def build_basis(X, max_deg=2, p_norm=1):
-    bases = tensap.FunctionalBases([
-        tensap.PolynomialFunctionalBasis(poly, range(max_deg + 1))
-        for poly in X.orthonormal_polynomials()
-    ])
-    I0 = tensap.MultiIndices.with_bounded_norm(X.ndim(), p_norm, max_deg)
-    I0 = I0.remove_indices(0)
-    basis = tensap.SparseTensorProductFunctionalBasis(bases, I0)
-    return basis
-
-
 # %% Build samples
 
-def build_samples(N, X, fun, jac_fun, basis, R=None):
+def generate_samples(N, X, fun, jac_fun, basis, R=None):
     x_set = X.lhs_random(N)
     fun_set = fun(x_set)
     jac_fun_set = jac_fun(x_set)
@@ -45,7 +32,7 @@ def build_samples(N, X, fun, jac_fun, basis, R=None):
 
 # %% Fit kernel ridge regressor
 
-def build_krr_rergessor(z_set, u_set):
+def fit_krr_regressor(z_set, u_set):
 
     kr = GridSearchCV(
         KernelRidge(kernel="rbf", gamma=0.1),
@@ -71,19 +58,19 @@ u, jac_u, X = build_benchmark_torch("borehole")
 # %% build a polynomial basis
 
 max_deg = 2
-basis = build_basis(X, max_deg=max_deg, p_norm=0.8)
+basis = _build_ortho_poly_basis(X, p=1, m=max_deg)
 K = basis.cardinal()
 R = basis.gram_matrix_h1_0()
 
 # %% Sampling
 
 N_train = 300
-x_train, u_train, jac_u_train, basis_train, jac_basis_train, loss_train = build_samples(
+x_train, u_train, jac_u_train, basis_train, jac_basis_train, loss_train = generate_samples(
     N_train, X, u, jac_u, basis, R)
 
 
 N_test = 500
-x_test, u_test, jac_u_test, basis_test, jac_basis_test, loss_test = build_samples(
+x_test, u_test, jac_u_test, basis_test, jac_basis_test, loss_test = generate_samples(
     N_test, X, u, jac_u, basis, R)
 
 
@@ -115,7 +102,7 @@ plt.show()
 
 # %% Fit Kernel Ridge regression with sklearn
 
-kr_regressor_surr = build_krr_rergessor(z_surr_train, u_train)
+kr_regressor_surr = fit_krr_regressor(z_surr_train, u_train)
 def f_surr(z) : return kr_regressor_surr.predict(z)
 
 
@@ -169,7 +156,7 @@ plt.show()
 
 # %% Fit Kernel Ridge regression with sklearn
 
-kr_regressor_opt = build_krr_rergessor(z_opt_train, u_train)
+kr_regressor_opt = fit_krr_regressor(z_opt_train, u_train)
 def f_opt(z) : return kr_regressor_opt.predict(z)
 
 
