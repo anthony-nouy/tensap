@@ -25,7 +25,7 @@ def generate_samples(N, X, fun, jac_fun, basis, R=None):
     if jac_fun_set.ndim == 2:
         jac_fun_set = jac_fun_set[:,None,:]
 
-    loss_set = tensap.PoincareLossVectorSpace(jac_fun_set, jac_basis_set, basis, R)
+    loss_set = PoincareLossVectorSpace(jac_fun_set, jac_basis_set, basis, R)
 
     return x_set, fun_set, jac_fun_set, basis_set, jac_basis_set, loss_set
 
@@ -75,7 +75,7 @@ x_test, u_test, jac_u_test, basis_test, jac_basis_test, loss_test = generate_sam
 
 
 # %% Minimize the surrogate
-G_surr = loss_train.minimize_surrogate()
+G_surr, _, _ = loss_train.minimize_surrogate()
 
 
 # %% Eval Poincare loss and surrogate
@@ -136,9 +136,14 @@ plt.show()
 
 # %% (Optional) Run Minimization of the Poincare loss on the grassmann manifold
 
-optimizer_kwargs = {'max_iterations': 50, 'verbosity':2}
-G_opt = loss_train.minimize_pymanopt(G_surr, use_precond=True, optimizer_kwargs=optimizer_kwargs)
+optimizer_kwargs = {
+    'beta_rule': 'PolakRibiere',
+    'orth_value': 10,
+    'max_iterations': 10, 
+    'verbosity':2
+    }
 
+G_opt, _ = loss_train.minimize_pymanopt(G_surr, use_precond=True, optimizer_kwargs=optimizer_kwargs)
 
 # %% Plot for eyeball regression wrt first feature
 

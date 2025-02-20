@@ -74,19 +74,23 @@ x_test, u_test, jac_u_test, basis_test, jac_basis_test, loss_test = generate_sam
 
 
 # %% Initialize minimization algorithm
-m = 1
-G0 = np.random.normal(size=(K, m))
-G0 = np.linalg.svd(G0, full_matrices=False)[0]
 
-print(f"Random {m} features")
-print("Poincare loss on train set: ", loss_train.eval(G0))
-print("Poincare loss on test set: ", loss_test.eval(G0))
 
 # %% Minimize the Poicare loss using CG on Grassmann Manifold
-optimizer_kwargs = {'max_iterations': 50, 'verbosity':2}
-G = loss_train.minimize_pymanopt(
-    G0, use_precond=True, optimizer_kwargs=optimizer_kwargs)
+optimizer_kwargs = {
+    'beta_rule': 'PolakRibiere',
+    'orth_value': 10,
+    'max_iterations': 50, 
+    'verbosity':2
+    }
 
+m = 1
+n_try = 2
+G0_lst = np.random.normal(size=(n_try, K, m))
+
+#G_lst, loss_lst = loss_train.minimize_pymanopt(G0_lst, use_precond=True, optimizer_kwargs=optimizer_kwargs)
+G_lst, loss_lst = loss_train.minimize_qn(G0_lst)
+G = G_lst[loss_lst.argmin()]
 
 # %% Plot for eyeball regression wrt first feature
 
