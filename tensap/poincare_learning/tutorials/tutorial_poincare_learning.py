@@ -88,8 +88,8 @@ m = 1
 n_try = 2
 G0_lst = np.random.normal(size=(n_try, K, m))
 
-#G_lst, loss_lst = loss_train.minimize_pymanopt(G0_lst, use_precond=True, optimizer_kwargs=optimizer_kwargs)
-G_lst, loss_lst = loss_train.minimize_qn(G0_lst)
+G_lst, loss_lst = loss_train.minimize_pymanopt(G0_lst, m, n_try, use_precond=True, optimizer_kwargs=optimizer_kwargs)
+
 G = G_lst[loss_lst.argmin()]
 
 # %% Plot for eyeball regression wrt first feature
