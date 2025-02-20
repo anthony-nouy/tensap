@@ -46,7 +46,7 @@ def _iteration_qn(jac_u, jac_basis, G, R=None, cg_kwargs={}):
     return Gnext
 
 
-def _minimize_qn_(jac_u, jac_basis, G0, R=None, maxiter_qn=50, tol_qn=1e-5, verbosity=2, cg_kwargs={}):
+def _minimize_qn_(jac_u, jac_basis, G0, R=None, maxiter_qn=100, tol_qn=1e-5, verbosity=2, cg_kwargs={}):
     """
     Perform the quasi Newton algorithm described in Bigoni et al. 2022, 
     starting at a single initial point.
@@ -109,7 +109,7 @@ def _minimize_qn_(jac_u, jac_basis, G0, R=None, maxiter_qn=50, tol_qn=1e-5, verb
     return G, loss
 
 
-def _minimize_qn(jac_u, jac_basis, G0, R=None, maxiter_qn=100, tol_qn=1e-5, verbosity=2, cg_kwargs={}):
+def _minimize_qn(jac_u, jac_basis, G0=None, m=None, n_try=None, R=None, maxiter_qn=100, tol_qn=1e-5, verbosity=2, cg_kwargs={}):
     """
     Perform the quasi Newton algorithm described in Bigoni et al. 2022, 
     starting at potentially multiple initial points.
@@ -122,9 +122,17 @@ def _minimize_qn(jac_u, jac_basis, G0, R=None, maxiter_qn=100, tol_qn=1e-5, verb
         Has shape (N, n, d).
     jac_basis : numpy.ndarray.
         Has shape (N, K, d).
-    G0 : numpy.ndarray
+    G0 : numpy.ndarray, optional
         Initialization point of the algorithm.
-        Has shape (l, K, m) or (K, m).
+        If None, the algorithm takes n_try random initial points.
+        Has shape (n_try, K, m) or (K, m).
+        The default is None.
+    m : int, optional
+        Only used if G0 is None.
+        The default is None.
+    n_try : in, optional
+        Only used if G0 is None
+        The default is None.
     R : numpy.ndarray, optional
         The inner product matrix with respect to which G is orthonormal.
         The default is None, corresponding to identity matrix.
@@ -144,23 +152,33 @@ def _minimize_qn(jac_u, jac_basis, G0, R=None, maxiter_qn=100, tol_qn=1e-5, verb
     -------
     G : numpy.ndarray
         Result of the QN algorithm.
-        Has shape .
+        Has shape (n_try, K, m) or (K, m).
 
     """
-    if G0.ndim == 2:
+    K = jac_basis.shape[1]
+
+    if G0 is None:
+        assert not(m is None)
+        G0 = np.random.normal(size=(n_try, K, m))
+
+    elif G0.ndim == 2:
         G0 = G0[None, :, :]
-    l, K, m = G0.shape
+        
+    l, _, m = G0.shape
     loss = np.inf * np.ones(l)
     G = 0 * G0
+
     for i in range(l):
         G[i], loss[i] = _minimize_qn_(jac_u, jac_basis, G0[i], R, maxiter_qn, tol_qn, verbosity, cg_kwargs)
+        
     if l == 1:
         loss = loss[0]
         G = G[0]
+
     return G, loss
 
 
-def _minimize_pymanopt(jac_u, jac_basis, G0, use_precond=True, precond_kwargs={}, optimizer_kwargs={}, ls_kwargs={}):
+def _minimize_pymanopt(jac_u, jac_basis, G0=None, m=None, n_try=None, use_precond=True, precond_kwargs={}, optimizer_kwargs={}, ls_kwargs={}):
     """
     Minimize the Poincare loss using a conjugate gradient algorithm on 
     the Grassmann manifold Grass(K, m).
@@ -173,9 +191,17 @@ def _minimize_pymanopt(jac_u, jac_basis, G0, use_precond=True, precond_kwargs={}
         Has shape (N, n, d).
     jac_basis : numpy.ndarray.
         Has shape (N, K, d).
-    G0 : numpy.ndarray,
-        Initialization points of the algorithm.
-        Has shape (l, K, m) or (K, m)..
+    G0 : numpy.ndarray, optional
+        Initialization point of the algorithm.
+        If None, the algorithm takes n_try random initial points.
+        Has shape (n_try, K, m) or (K, m).
+        The default is None.
+    m : int, optional
+        Only used if G0 is None.
+        The default is None.
+    n_try : in, optional
+        Only used if G0 is None
+        The default is None.
     use_precond : bool, optional
         If True, use the precond from the quasi Newton algorithm escribed in 
         Bigoni et al. 2022, meaning taking S(G) as approximate Hessian.
@@ -197,25 +223,37 @@ def _minimize_pymanopt(jac_u, jac_basis, G0, use_precond=True, precond_kwargs={}
 
     Returns
     -------
-    G : numpy.ndarray
+    G : numpy.ndarray0 = G0[None, :, :]
+        
         Minimizers for each initial point.
-        Has shape (l, K, m) of (K, m).
+        Has shape (n_try, K, m) of (K, m).
     loss : numpy.ndarray
         Minimal costs for initial point.
+
     """
-    if G0.ndim == 2:
+    K = jac_basis.shape[1]
+
+    if G0 is None:
+        assert not(m is None)
+        G0 = np.random.normal(size=(n_try, K, m))
+
+    elif G0.ndim == 2:
         G0 = G0[None, :, :]
-    l, K, m = G0.shape
+
+    l, _, m = G0.shape
     problem, optimizer = _build_pymanopt_problem(jac_u, jac_basis, m, use_precond, optimizer_kwargs, precond_kwargs, ls_kwargs)
     loss = np.inf * np.ones(l)
     G = 0 * G0
+
     for i in range(l):
         optim_result = optimizer.run(problem, initial_point=G0[i])
         loss[i] = optim_result.cost
         G[i] = optim_result.point
+
     if l == 1:
         loss = loss[0]
         G = G[0]
+        
     return G, loss
 
 
