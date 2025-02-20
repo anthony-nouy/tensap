@@ -3,6 +3,40 @@
 import numpy as np
 import scipy
 from tensap.poincare_learning.utils._loss import poincare_loss, poincare_loss_surrogate
+from tensap.approximation.bases.functional_bases import FunctionalBases
+from tensap.approximation.bases.polynomial_functional_basis import PolynomialFunctionalBasis
+from tensap.approximation.bases.sparse_tensor_product_functional_basis import SparseTensorProductFunctionalBasis
+from tensap.tools.multi_indices import MultiIndices
+
+
+def _build_ortho_poly_basis(X, p, m):
+    """
+    Build an orthonormal polynomial basis with bounded p_norm of the degree,
+    where the constant polynomial has been removed.
+
+    Parameters
+    ----------
+    X : RandomVector
+        The random vector wrt which the basis should be orthonormal.
+    p : float or numpy.inf
+            The p of the p-norm, either a positive real scalar or numpy.inf.
+    m : float
+        The bound of the norm, a positive real scalar.
+
+    Returns
+    -------
+    basis : SparseTensorProductFunctionalBasis
+        The orthonormal basis.
+
+    """
+    bases = FunctionalBases([
+        PolynomialFunctionalBasis(poly, range(m + 1))
+        for poly in X.orthonormal_polynomials()
+    ])
+    I0 = MultiIndices.with_bounded_norm(X.ndim(), p, m)
+    I0 = I0.remove_indices(0)
+    basis = SparseTensorProductFunctionalBasis(bases, I0)
+    return basis
 
 
 def _eval_jac_g(G, jac_basis):
