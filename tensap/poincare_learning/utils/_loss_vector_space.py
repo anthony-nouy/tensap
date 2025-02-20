@@ -279,7 +279,7 @@ def _eval_SG_diag(G, jac_u, jac_basis, jac_g=None):
     return diag
 
 
-def _eval_SGinv_X(G, X, jac_u, jac_basis, jac_g=None, **cg_kwargs):
+def _eval_SGinv_X(G, X, jac_u, jac_basis, jac_g=None, cg_kwargs={}):
     """
     Apply the inverse of the matrix Sigma(G) from Bigoni et al. 2022 
     to a vector X.
@@ -300,7 +300,7 @@ def _eval_SGinv_X(G, X, jac_u, jac_basis, jac_g=None, **cg_kwargs):
         jac_g[k,i,j] is dg_i / dx_j evaluated at the k-th sample. 
         If not provided, it is computed from G and jac_basis.
         Has shape (N, m, d).
-    **cg_kwargs : dict
+    cg_kwargs : dict
         Key word arguments for scipy.sparse.linalg.cg.
 
     Returns

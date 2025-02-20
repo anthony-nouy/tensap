@@ -5,7 +5,7 @@ import scipy
 from tensap.poincare_learning.utils._loss_vector_space import _eval_HG_X, _eval_SGinv_X, _eval_jac_g, poincare_loss_vector_space, poincare_loss_vector_space_gradient, _eval_surrogate_matrices, poincare_loss_surrogate_vector_space
 
 
-def _iteration_qn(G, jac_u, jac_basis, R=None, **cg_kwargs):
+def _iteration_qn(G, jac_u, jac_basis, R=None, cg_kwargs={}):
     """
     Perform one iteration of the quasi Newton algorithm described in 
     Bigoni et al. 2022.
@@ -24,7 +24,7 @@ def _iteration_qn(G, jac_u, jac_basis, R=None, **cg_kwargs):
     R : numpy.ndarray, optional
         The inner product matrix with respect to which G is orthonormal.
         The default is None, corresponding to identity matrix.
-    **cg_kwargs : dict
+    cg_kwargs : dict
         Key word arguments for scipy.sparse.linalg.cg to solve S(G)x=b
 
     Returns
@@ -40,13 +40,13 @@ def _iteration_qn(G, jac_u, jac_basis, R=None, **cg_kwargs):
     Gmat = G.reshape(K, -1, order='F')
     jac_g = _eval_jac_g(Gmat, jac_basis)
     b = _eval_HG_X(Gmat, Gmat, jac_u, jac_basis, jac_g)
-    Gaux = _eval_SGinv_X(Gmat, b, jac_u, jac_basis, jac_g, **cg_kwargs)
+    Gaux = _eval_SGinv_X(Gmat, b, jac_u, jac_basis, jac_g, cg_kwargs)
     M = Gaux.T @ R @ Gaux
     Gnext = Gaux @ np.linalg.inv(np.linalg.cholesky(M).T)
     return Gnext
 
 
-def _minimize_qn(G0, jac_u, jac_basis, R=None, maxiter_qn=100, tol_qn=1e-5, verbosity=2, **cg_kwargs):
+def _minimize_qn(G0, jac_u, jac_basis, R=None, maxiter_qn=100, tol_qn=1e-5, verbosity=2, cg_kwargs={}):
     """
     Perform one iteration of the quasi Newton algorithm described in 
     Bigoni et al. 2022.
@@ -73,7 +73,7 @@ def _minimize_qn(G0, jac_u, jac_basis, R=None, maxiter_qn=100, tol_qn=1e-5, verb
         The default is 1e-5
     verbosity : int, optional
         Verbosity parameter.
-    **cg_kwargs : dict
+    cg_kwargs : dict
         Key word arguments for scipy.sparse.linalg.cg to solve S(G)x=b
         at each iteration.
 
@@ -97,7 +97,7 @@ def _minimize_qn(G0, jac_u, jac_basis, R=None, maxiter_qn=100, tol_qn=1e-5, verb
         print("Optimizing Poincare loss with QN from Bigoni et al.")
     while i < maxiter_qn and delta >= tol_qn:
         i = i+1
-        Gnext = _iteration_qn(Gnow, jac_u, jac_basis, R, **cg_kwargs)
+        Gnext = _iteration_qn(Gnow, jac_u, jac_basis, R, cg_kwargs)
         # delta = np.linalg.norm(Gnext - Gnow)
         delta = 1 - np.linalg.svd(Gnext.T @ R @ Gnow)[1].min()
         Gnow[:] = Gnext[:]
@@ -211,7 +211,7 @@ def _build_pymanopt_problem(jac_u, jac_basis, m, use_precond=True, optimizer_kwa
 
     precond = None
     if use_precond:
-        def precond(G, x): return _eval_SGinv_X(G, x, jac_u, jac_basis, **precond_kwargs)
+        def precond(G, x): return _eval_SGinv_X(G, x, jac_u, jac_basis, precond_kwargs)
 
     problem = pymanopt.Problem(manifold, cost, euclidean_gradient=euclidean_gradient, preconditioner=precond)
     line_search = pymanopt.optimizers.line_search.BackTrackingLineSearcher(**ls_kwargs)
@@ -268,7 +268,7 @@ def _minimize_surrogate(jac_u, jac_basis, G0=None, R=None, m=1):
     return G
 
 
-def _minimize_surrogate_greedy(jac_u, jac_basis, m_max, R=None, optimize_poincare=True, tol=1e-7, verbose=2, **pmo_kwargs):
+def _minimize_surrogate_greedy(jac_u, jac_basis, m_max, R=None, optimize_poincare=True, tol=1e-7, verbose=2, pmo_kwargs={}):
     """
     Greedy algorithm to learn multiple features, as proposed in 
     Nouy et al. 2025.
@@ -298,7 +298,7 @@ def _minimize_surrogate_greedy(jac_u, jac_basis, m_max, R=None, optimize_poincar
     verbose : int, optional
         Verbosity level.
         The default is 2.
-    **pmo_kwargs
+    pmo_kwargs
         Key word arguments for the minimization algorithm with pymanopt.
         For more details see poincare_minimize_pymanopt.
 
@@ -334,7 +334,7 @@ def _minimize_surrogate_greedy(jac_u, jac_basis, m_max, R=None, optimize_poincar
     
     # Run minimization of Poincare loss if necessary
     if optimize_poincare:
-        G = _minimize_pymanopt(G, jac_u, jac_basis,**pmo_kwargs).point
+        G = _minimize_pymanopt(G, jac_u, jac_basis, pmo_kwargs).point
         losses_optimized[0] = poincare_loss_vector_space(G, jac_u, jac_basis)
         if not(R is None):
             G = G @ np.linalg.inv(np.linalg.cholesky(G.T @ R @ G).T)
@@ -360,7 +360,7 @@ def _minimize_surrogate_greedy(jac_u, jac_basis, m_max, R=None, optimize_poincar
 
         # Run minimization of Poincare loss on all features if necessary
         if optimize_poincare:
-            G = _minimize_pymanopt(G, jac_u, jac_basis,**pmo_kwargs).point
+            G = _minimize_pymanopt(G, jac_u, jac_basis, pmo_kwargs).point
             losses_optimized[j] = poincare_loss_vector_space(G, jac_u, jac_basis)
             if not(R is None):
                 G = G @ np.linalg.inv(np.linalg.cholesky(G.T @ R @ G).T)

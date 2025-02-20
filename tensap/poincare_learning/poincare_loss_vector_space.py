@@ -72,8 +72,8 @@ class PoincareLossVectorSpace:
     def eval_HessG_full(self, G, jac_g=None):
         return _eval_HessG_full(G, self.jac_u, self.jac_basis, jac_g)
 
-    def eval_SGinv_X(self, G, X, jac_g=None, **cg_kwargs):
-        return _eval_SGinv_X(G, X, self.jac_u, self.jac_basis, jac_g, **cg_kwargs)
+    def eval_SGinv_X(self, G, X, jac_g=None, cg_kwargs={}):
+        return _eval_SGinv_X(G, X, self.jac_u, self.jac_basis, jac_g, cg_kwargs)
 
     def eval_surrogate(self, G, jac_g=None, G0=None, jac_g0=None):
         return poincare_loss_surrogate_vector_space(G, self.jac_u, self.jac_basis, G0, jac_g, jac_g0)
@@ -81,8 +81,8 @@ class PoincareLossVectorSpace:
     def eval_surrogate_matrices(self, G0=None):
         return _eval_surrogate_matrices(self.jac_u, self.jac_basis, G0, self.R)
     
-    def minimize_qn(self, G0=None, maxiter_qn=100, tol_qn=1e-5, verbosity=2, **cg_kwargs):
-        return _minimize_qn(G0, self.jac_u, self.jac_basis, self.R, maxiter_qn=100, tol_qn=1e-5, verbosity=2, **cg_kwargs)
+    def minimize_qn(self, G0=None, maxiter_qn=100, tol_qn=1e-5, verbosity=2, cg_kwargs={}):
+        return _minimize_qn(G0, self.jac_u, self.jac_basis, self.R, maxiter_qn, tol_qn, verbosity, cg_kwargs)
     
     def minimize_pymanopt(self, G0=None, use_precond=True, 
     precond_kwargs={}, optimizer_kwargs={}, ls_kwargs={}):
@@ -91,6 +91,6 @@ class PoincareLossVectorSpace:
     def minimize_surrogate(self, G0=None, m=1):
         return _minimize_surrogate(self.jac_u, self.jac_basis, G0, self.R, m=1)
     
-    def minimize_surrogate_greedy(self, m_max, optimize_poincare=True, tol=1e-7, verbose=2, **pmo_kwargs):
-        return _minimize_surrogate_greedy(self.jac_u, self.jac_basis, m_max, self.R, optimize_poincare, tol, verbose, **pmo_kwargs)
+    def minimize_surrogate_greedy(self, m_max, optimize_poincare=True, tol=1e-7, verbose=2, pmo_kwargs={}):
+        return _minimize_surrogate_greedy(self.jac_u, self.jac_basis, m_max, self.R, optimize_poincare, tol, verbose, pmo_kwargs)
 
