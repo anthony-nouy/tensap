@@ -1,11 +1,14 @@
 
 
 import numpy as np
-from sklearn.base import RegressorMixin, BaseEstimator
+from sklearn.base import RegressorMixin, BaseEstimator, clone
+from sklearn.metrics import mean_squared_error
 from sklearn.kernel_ridge import KernelRidge
+from sklearn.model_selection import GridSearchCV
 from tensap.poincare_learning.benchmarks.poincare_benchmarks_torch import build_benchmark_torch
 from tensap.poincare_learning.utils._loss_vector_space import _build_ortho_poly_basis
 from tensap.poincare_learning.poincare_loss_vector_space import PoincareLossVectorSpace
+
 
 
 class PoincareEstimator(RegressorMixin, BaseEstimator):
@@ -52,7 +55,8 @@ class PoincareEstimator(RegressorMixin, BaseEstimator):
 
     """
 
-    def __init__(self, p_norm, max_p_norm, innerp, alpha, gamma, benchmark_name, benchmark_kwargs={}, fit_method='pymanopt', fit_parameters={}):
+    def __init__(self, p_norm, max_p_norm, innerp, alpha, gamma, benchmark_name, benchmark_kwargs={}, 
+                 fit_method='pymanopt', fit_parameters={}, krr_param_grid={}):
         
         self.p_norm = p_norm  
         self.max_p_norm = max_p_norm
@@ -63,6 +67,7 @@ class PoincareEstimator(RegressorMixin, BaseEstimator):
         self.benchmark_kwargs = benchmark_kwargs
         self.fit_method = fit_method
         self.fit_parameters = fit_parameters
+        self.krr_param_grid = krr_param_grid
 
         self.G = None
 
@@ -74,7 +79,13 @@ class PoincareEstimator(RegressorMixin, BaseEstimator):
         self.basis = _build_ortho_poly_basis(rand_vec, p_norm, max_p_norm)
 
         # initialise kernel ridge reressor
-        self.regressor = KernelRidge(kernel="rbf", alpha=alpha, gamma=gamma)
+        self.regressor = cv_model = GridSearchCV(
+            KernelRidge(kernel="rbf"),
+            param_grid=krr_param_grid,
+            scoring="neg_mean_squared_error",
+            verbose=0,
+            cv=10
+        )
 
         # Compute the inner pdocut matrix if necessary
         if self.innerp == "l2":
@@ -120,10 +131,10 @@ class PoincareEstimator(RegressorMixin, BaseEstimator):
         self.G = G
 
         # learning the kernel ridge regressor on the features
+    
         Z = self.basis.eval(X) @ G
-        self.regressor.set_params(alpha=self.alpha, gamma=self.gamma)
         self.regressor.fit(Z, y)
-        
+
         return self
 
 
