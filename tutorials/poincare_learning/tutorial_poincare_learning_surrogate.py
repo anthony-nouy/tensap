@@ -75,7 +75,7 @@ x_test, u_test, jac_u_test, basis_test, jac_basis_test, loss_test = generate_sam
 
 
 # %% Minimize the surrogate
-G_surr, _, _ = loss_train.minimize_surrogate(m=2)
+G_surr, _, _ = loss_train.minimize_surrogate(m=1)
 G_surr = np.linalg.svd(G_surr, full_matrices=False)[0]
 
 # %% Eval Poincare loss and surrogate
