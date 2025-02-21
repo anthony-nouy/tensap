@@ -157,6 +157,9 @@ def _minimize_qn(jac_u, jac_basis, G0=None, m=None, n_try=None, R=None, maxiter_
     """
     K = jac_basis.shape[1]
 
+    if R is None:
+        R = np.eye(K)
+
     if G0 is None:
         assert not(m is None)
         G0 = np.random.normal(size=(n_try, K, m))
@@ -352,6 +355,12 @@ def _minimize_surrogate(jac_u, jac_basis, G0=None, R=None, m=1):
         Has shape (K, m).
 
     """
+
+    K = jac_basis.shape[1]
+    
+    if R is None:
+        R = np.eye(K)
+    
     # Orthonormalize G0 if necessary
     if not(G0 is None):
         M = G0.T @ R @ G0
@@ -424,6 +433,8 @@ def _minimize_surrogate_greedy(jac_u, jac_basis, m_max, R=None, optimize_poincar
 
     """
     N, K, d = jac_basis.shape
+    if R is None:
+        R = np.eye(K)
     losses = -np.ones(m_max)
     losses_optimized = -np.ones(m_max)
     surrogates = -np.ones(m_max)
@@ -431,14 +442,11 @@ def _minimize_surrogate_greedy(jac_u, jac_basis, m_max, R=None, optimize_poincar
     if verbose >=1: print(f"Greedy iteration {1}")
 
     # Learn first feature from surrogate
-    G = _minimize_surrogate(jac_u, jac_basis, None, R)
-    losses[0] = poincare_loss_vector_space(G, jac_u, jac_basis)
-    surrogates[0] = poincare_loss_surrogate_vector_space(G, jac_u, jac_basis)
+    G, losses[0], surrogates[0] = _minimize_surrogate(jac_u, jac_basis, None, R)
     
     # Run minimization of Poincare loss if necessary
     if optimize_poincare:
-        G = _minimize_pymanopt(G, jac_u, jac_basis, pmo_kwargs).point
-        losses_optimized[0] = poincare_loss_vector_space(G, jac_u, jac_basis)
+        G, losses_optimized[0] = _minimize_pymanopt(jac_u, jac_basis, G, **pmo_kwargs)
         if not(R is None):
             G = G @ np.linalg.inv(np.linalg.cholesky(G.T @ R @ G).T)
     else:
@@ -457,14 +465,11 @@ def _minimize_surrogate_greedy(jac_u, jac_basis, m_max, R=None, optimize_poincar
         if verbose >=1: print(f"Greedy iteration {j+1}")
 
         # Learn the j-th feature from surrogate and previous features
-        G = _minimize_surrogate(jac_u, jac_basis, G, R)
-        losses[j] = poincare_loss_vector_space(G, jac_u, jac_basis)
-        surrogates[j] = poincare_loss_surrogate_vector_space(G, jac_u, jac_basis)
+        G, losses[j], surrogates[j] = _minimize_surrogate(jac_u, jac_basis, G, R)
 
         # Run minimization of Poincare loss on all features if necessary
         if optimize_poincare:
-            G = _minimize_pymanopt(G, jac_u, jac_basis, pmo_kwargs).point
-            losses_optimized[j] = poincare_loss_vector_space(G, jac_u, jac_basis)
+            G, losses_optimized[j] = _minimize_pymanopt(jac_u, jac_basis, G, pmo_kwargs)
             if not(R is None):
                 G = G @ np.linalg.inv(np.linalg.cholesky(G.T @ R @ G).T)
         else:
