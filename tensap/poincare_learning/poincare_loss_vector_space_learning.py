@@ -353,7 +353,10 @@ def _minimize_surrogate(jac_u, jac_basis, G0=None, R=None, m=1):
     G : numpy.ndarray
         Coefficients in the basis of feature maps.
         Has shape (K, m).
-
+    loss : float
+        The Poincare loss of the minimizer of the surrogate.
+    surrogate : float
+        The minimum of the surrogate.
     """
 
     K = jac_basis.shape[1]
@@ -412,7 +415,7 @@ def _minimize_surrogate_greedy(jac_u, jac_basis, m_max, R=None, optimize_poincar
         The default is 2.
     pmo_kwargs
         Key word arguments for the minimization algorithm with pymanopt.
-        For more details see poincare_minimize_pymanopt.
+        For more details see _minimize_pymanopt.
 
     Returns
     -------
@@ -469,7 +472,7 @@ def _minimize_surrogate_greedy(jac_u, jac_basis, m_max, R=None, optimize_poincar
 
         # Run minimization of Poincare loss on all features if necessary
         if optimize_poincare:
-            G, losses_optimized[j] = _minimize_pymanopt(jac_u, jac_basis, G, pmo_kwargs)
+            G, losses_optimized[j] = _minimize_pymanopt(jac_u, jac_basis, G, **pmo_kwargs)
             if not(R is None):
                 G = G @ np.linalg.inv(np.linalg.cholesky(G.T @ R @ G).T)
         else:
