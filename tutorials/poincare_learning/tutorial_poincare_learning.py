@@ -80,13 +80,13 @@ x_test, u_test, jac_u_test, basis_test, jac_basis_test, loss_test = generate_sam
 optimizer_kwargs = {
     'beta_rule': 'PolakRibiere',
     'orth_value': 10,
-    'max_iterations': 25, 
+    'max_iterations': 10, 
     'verbosity':2
     }
 
-m = 2
-n_try = 2
-G0_lst = np.random.normal(size=(n_try, K, m))
+m = 2   # number of features to learn
+n_try = 2   # number of random initializations
+G0_lst = np.random.normal(size=(n_try, K, m)) # random initializations
 
 G_lst, loss_lst = loss_train.minimize_pymanopt(G0_lst, m, n_try, use_precond=True, optimizer_kwargs=optimizer_kwargs)
 
@@ -110,7 +110,7 @@ for i in range(z_train.shape[1]):
     ax[i].set_xlabel(f'g_{i}(X)')
 
 fig.suptitle(f"Degree {max_deg} poly features on {x_train.shape[0]} train samples", y=0.)
-fig.show()
+plt.show()
 
 
 # %% Fit Kernel Ridge regression with sklearn

@@ -108,7 +108,7 @@ for i in range(z_train.shape[1]):
     ax[i].set_xlabel(f'g_{i}(X)')
 
 fig.suptitle(f"Degree {max_deg} poly features on {x_train.shape[0]} train samples", y=0.)
-fig.show()
+plt.show()
 
 
 # %% Fit Kernel Ridge regression with sklearn
