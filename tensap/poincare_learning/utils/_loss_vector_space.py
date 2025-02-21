@@ -19,7 +19,7 @@ def _build_ortho_poly_basis(X, p, m):
     X : RandomVector
         The random vector wrt which the basis should be orthonormal.
     p : float or numpy.inf
-            The p of the p-norm, either a positive real scalar or numpy.inf.
+        The p-norm used for the degrees, either a positive real scalar or numpy.inf.
     m : float
         The bound of the norm, a positive real scalar.
 
