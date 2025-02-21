@@ -147,7 +147,9 @@ class PoincareEstimator(RegressorMixin, BaseEstimator):
             raise NotImplementedError('Method not implemented')
         
         G, losses = minimizer(**self.fit_parameters)[:2]
-        G = G[losses.argmin()]
+        
+        if G.ndim == 3:
+            G = G[losses.argmin()]
 
         return G
     
