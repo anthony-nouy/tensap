@@ -75,8 +75,8 @@ x_test, u_test, jac_u_test, basis_test, jac_basis_test, loss_test = generate_sam
 
 
 # %% Minimize the surrogate
-G_surr, _, _ = loss_train.minimize_surrogate()
-
+G_surr, _, _ = loss_train.minimize_surrogate(m=2)
+G_surr = np.linalg.svd(G_surr, full_matrices=False)[0]
 
 # %% Eval Poincare loss and surrogate
 print("Learning 1 feature by minimizing surrogate")
@@ -86,19 +86,23 @@ print("Surrogate on test set:       ", loss_test.eval_surrogate(G_surr))
 print("Poincare loss on test set:   ", loss_test.eval(G_surr))
 
 
-# %% Plot for eyeball regression wrt first feature
+# %% Plot for eyeball regression
 
-G_surr = np.linalg.svd(G_surr, full_matrices=False)[0]
 z_surr_train = basis.eval(x_train) @ G_surr
 z_surr_test = basis.eval(x_test) @ G_surr
 
-plt.scatter(z_surr_train[:,:1], u_train, label='train')
-plt.scatter(z_surr_test[:,:1], u_test, label='test')
-plt.xlabel('g_1(X)')
-plt.ylabel('u(X)')
-plt.legend()
-plt.title(f"Surrogate only - Degree {max_deg} poly features on {x_train.shape[0]} train samples")
-plt.show()
+fig, ax = plt.subplots(1, z_surr_train.shape[1])
+if z_surr_train.shape[1] == 1: ax = [ax]
+ax[0].set_ylabel('u(X)')
+
+for i in range(z_surr_train.shape[1]):
+    ax[i].scatter(z_surr_train[:,i], u_train, label='train')
+    ax[i].scatter(z_surr_test[:,i], u_test, label='test')
+    ax[i].set_xlabel(f'g_{i}(X)')
+
+fig.suptitle(f"Degree {max_deg} poly features on {x_train.shape[0]} train samples", y=0.)
+fig.show()
+
 
 # %% Fit Kernel Ridge regression with sklearn
 
@@ -139,24 +143,28 @@ plt.show()
 optimizer_kwargs = {
     'beta_rule': 'PolakRibiere',
     'orth_value': 10,
-    'max_iterations': 10, 
+    'max_iterations': 25, 
     'verbosity':2
     }
 
 G_opt, _ = loss_train.minimize_pymanopt(G_surr, use_precond=True, optimizer_kwargs=optimizer_kwargs)
 
-# %% Plot for eyeball regression wrt first feature
+# %% Plot for eyeball regression
 
 z_opt_train = basis.eval(x_train) @ G_opt
 z_opt_test = basis.eval(x_test) @ G_opt
 
-plt.scatter(z_opt_train[:,:1], u_train, label='train')
-plt.scatter(z_opt_test[:,:1], u_test, label='test')
-plt.xlabel('g_1(X)')
-plt.ylabel('u(X)')
-plt.legend()
-plt.title(f"Surrogate as init - Degree {max_deg} poly features on {x_train.shape[0]} train samples")
-plt.show()
+fig, ax = plt.subplots(1, z_opt_train.shape[1])
+if z_surr_train.shape[1] == 1: ax = [ax]
+ax[0].set_ylabel('u(X)')
+
+for i in range(z_opt_train.shape[1]):
+    ax[i].scatter(z_opt_train[:,i], u_train, label='train')
+    ax[i].scatter(z_opt_test[:,i], u_test, label='test')
+    ax[i].set_xlabel(f'g_{i}(X)')
+
+fig.suptitle(f"Degree {max_deg} poly features on {x_train.shape[0]} train samples", y=0.)
+fig.show()
 
 
 # %% Fit Kernel Ridge regression with sklearn
@@ -192,3 +200,5 @@ plt.legend()
 plt.title(f"Surrogate as init - Degree {max_deg} poly features and kernel ridge regression on {x_train.shape[0]} train samples")
 plt.show()
 
+
+# %%
