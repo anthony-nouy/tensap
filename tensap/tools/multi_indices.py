@@ -21,6 +21,8 @@ Module multi_indices.
 
 import numpy as np
 
+# import tensap
+
 
 class MultiIndices:
     """
@@ -109,6 +111,7 @@ class MultiIndices:
         """
         return self.array.shape[0]
 
+
     def product(self, J):
         """
         Return the product of MultiIndices.
@@ -118,8 +121,12 @@ class MultiIndices:
         tensap.MultiIndices
 
         """
-        return MultiIndices.product_set([self.array, J.array])
-
+        if J is None:
+            return MultiIndices(self.array)
+        else:
+            return MultiIndices.product_set([self.array, J.array])
+    
+    
     def to_list(self):
         """
         Convert the MultiIndices' array into a list of arrays.
@@ -758,7 +765,6 @@ class MultiIndices:
             Indices[:, J] = L[i][loc[i], :]
 
         return MultiIndices(Indices)
-
     @staticmethod
     def ind2sub(shape, ind):
         """
@@ -781,3 +787,106 @@ class MultiIndices:
         """
         ind = np.unravel_index(np.ravel(ind), shape, order="F")
         return MultiIndices(np.transpose(ind))
+    
+    @staticmethod    
+    def hyperbolic_cross_set(d, m):
+        """
+        Create the set of multi-indices in N^d with p-norm bounded by m, p>0.
+
+        Parameters
+        ----------
+        d : int
+            The dimension, a positive integer.
+        m : int
+            The degree, a positive integer.
+
+        Returns
+        -------
+        ind : tensap.MultiIndices
+            The hyperbolic cross set.
+
+        """
+        ind = MultiIndices(np.zeros((1,d), dtype=int))
+        add = True
+        while add:
+            M = ind.get_margin()
+            n = np.prod((M.array + 1), axis=-1)
+            k = np.nonzero(n <= m+1)[0]
+            if len(k)==0:
+                add = False
+            else:
+                j = np.argsort(n[k])
+                M = M.keep_indices(k[j])
+                ind = ind.add_indices(M)
+        return ind
+    
+    
+    @staticmethod    
+    def low_order_interactions(d, p, m):
+        """
+        Create the set of multi-indices in N^d with p-norm bounded by m, p>0.
+
+        Parameters
+        ----------
+        d : int
+            The dimension, a positive integer.
+        m : int
+            Bound of the set \{ k : \alpha_k \not= 0 \}.
+        p : degree of polynomials
+
+        Returns
+        -------
+        ind : tensap.MultiIndices
+            The hyperbolic cross set.
+
+        """
+        ind = MultiIndices(np.zeros(d, dtype=int))
+        add = True
+        while add:
+            M = ind.get_margin()
+            n = np.count_nonzero(M.array, axis=-1)
+            rem = np.where(~(M <= MultiIndices(p)))[0]
+            M = M.remove_indices(rem)
+            n = np.delete(n, rem)
+            k = np.nonzero(n <= m)[0]
+            if np.all(np.logical_not(k)):
+                add = False
+            else:
+                j = np.argsort(n[k])
+                M = M.keep_indices(k[j])
+                ind = ind.add_indices(M)
+        return ind
+    
+    
+    @staticmethod
+    def weighted_hyperbolic_cross_set(d, m, w):
+        """
+        Create the set of multi-indices in N^d with p-norm bounded by m, p>0.
+
+        Parameters
+        ----------
+        d : int
+            The dimension, a positive integer.
+        m : int
+            The bound of the norm, a positive real scalar.
+
+        Returns
+        -------
+        ind : tensap.MultiIndices
+            The hyperbolic cross set.
+
+        """
+        ind = MultiIndices(np.zeros(d, dtype=int))
+        add = True
+        while add:
+            M = ind.get_margin()
+            n = np.prod((M.array + 1)**w, axis=-1)
+            k = np.nonzero(n <= m)[0]
+            if np.all(np.logical_not(k)):
+                add = False
+            else:
+                j = np.argsort(n[k])
+                M = M.keep_indices(k[j])
+                ind = ind.add_indices(M)
+        return ind
+
