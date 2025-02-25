@@ -226,8 +226,7 @@ def _minimize_pymanopt(jac_u, jac_basis, G0=None, m=None, n_try=None, use_precon
 
     Returns
     -------
-    G : numpy.ndarray0 = G0[None, :, :]
-        
+    G : numpy.ndarray
         Minimizers for each initial point.
         Has shape (n_try, K, m) of (K, m).
     loss : numpy.ndarray
