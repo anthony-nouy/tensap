@@ -106,15 +106,14 @@ class IntegrationRule:
         return tensap.FullTensorProductIntegrationRule(points, weights)
 
     @staticmethod
-    def gauss(random_variable, *args):
+    def gauss(measure, *args):
         """
-        Call the method gauss_integration_rule of tensap.RandomVariable or
-        tensap.RandomVector.
+        Call the method gauss_integration_rule of a measure.
 
         Parameters
         ----------
-        random_variable : tensap.RandomVariable or tensap.RandomVector
-            The random variable or vector associated to which the integration
+        measure : tensap.Measure 
+            The measure associated to which the integration
             rule is to be computed.
         *args : misc
             Additional arguments.
@@ -122,10 +121,10 @@ class IntegrationRule:
         Returns
         -------
         tensap.IntegrationRule
-            The integration rule associated with the random variable or vector.
+            The integration rule associated with the measure.
 
         """
-        return random_variable.gauss_integration_rule(*args)
+        return measure.gauss_integration_rule(*args)
 
     def gauss_legendre_composite(knots, n):
         """

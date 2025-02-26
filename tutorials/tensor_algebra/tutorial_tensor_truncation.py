@@ -59,6 +59,7 @@ U = tensap.FullTensor(U, ORDER, np.full(ORDER, NK))
 TR = tensap.Truncator()
 TR.tolerance = 1e-8
 UR = TR.hosvd(U)
+print("Tucker format - Compression at tolerance %2.5e" % TR.tolerance)
 print("Error = %2.5e" % ((UR.full() - U).norm() / U.norm()))
 print("Storage = %d" % UR.storage())
 print("Dimension of spaces = %s\n" % UR.tensors[0].shape)
@@ -67,12 +68,21 @@ print("Dimension of spaces = %s\n" % UR.tensors[0].shape)
 ARITY_INTERVAL = [2, 3]
 TREE = tensap.DimensionTree.random(ORDER, ARITY_INTERVAL)
 TR = tensap.Truncator()
-TR.tolerance = 1e-8
+TR.tolerance = 1e-15
 UR = TR.hsvd(U, TREE)
 
+print("Tree-based format - Compression at tolerance %2.5e" % TR.tolerance)
 print("Error = %2.5e" % ((UR.full() - U).norm() / U.norm()))
 print("Storage = %d" % UR.storage())
 print("Ranks = %s\n" % UR.ranks)
+
+TR.tolerance = 1e-6
+URR = TR.hsvd(UR, TREE)
+print("Rounding at tolerance %2.5e" % TR.tolerance)
+print("Error = %2.5e" % ((URR.full() - U).norm() / U.norm()))
+print("Storage = %d" % URR.storage())
+print("Ranks = %s\n" % URR.ranks)
+
 
 # %% Truncation in tensor-train format
 TR = tensap.Truncator()
@@ -82,6 +92,7 @@ print(UR)
 
 SIN_VAL = UR.singular_values()
 
+print("Tensor Train format - Compression at tolerance %2.5e" % TR.tolerance)
 print("Error = %2.5e" % ((UR.full() - U).norm() / U.norm()))
 print("Storage = %d" % UR.storage())
 print("TT-rank = %s\n" % UR.ranks)

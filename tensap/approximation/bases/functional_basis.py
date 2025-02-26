@@ -487,7 +487,8 @@ class FunctionalBasis:
         if indices is None:
             hx = self.eval(x)
         else:
-            hx = self.eval(x, indices)
+            hx = self.eval(x)
+            hx = hx[:, indices]
 
         plt.plot(x, hx, *args)
         plt.show()

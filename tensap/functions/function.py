@@ -195,6 +195,7 @@ class Function:
 
         """
         assert self.measure is not None, "Attribute measure is empty."
+        
         assert self.dim == 2, (
             "The function should be a bivariate function, use the partial "
             + "evaluation for higher-dimensional function."
