@@ -173,7 +173,7 @@ class RandomVector(tensap.ProbabilityMeasure):
         b = [x.iso_probabilistic_grid(y) for x, y in zip(self.random_variables, n)]
         return tensap.FullTensorGrid(b)
 
-    def lhs_random(self, n, rng=None):
+    def lhs_random(self, n, seed=None):
         """
         Latin Hypercube Sampling of the RandomVector of n points.
 
@@ -183,8 +183,8 @@ class RandomVector(tensap.ProbabilityMeasure):
         ----------
         n : int
             Number of points.
-        rng : int or numpy.random.Generator, optional
-            Random Number generator.
+        seed : int, optional
+            seed for the random number generator.
             See scipy documentation of LatinHypercube for more details.
             Default is None.
         Returns
@@ -196,7 +196,7 @@ class RandomVector(tensap.ProbabilityMeasure):
         """
         from scipy.stats import qmc
 
-        sampler = qmc.LatinHypercube(d=self.size, rng=rng)
+        sampler = qmc.LatinHypercube(d=self.size, seed=seed)
         A = sampler.random(n=n)
         A = RandomVector(tensap.UniformRandomVariable(0, 1), self.size).transfer(
             self, A
