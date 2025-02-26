@@ -52,8 +52,8 @@ class PolynomialFeatureEstimator(BaseEstimator):
 
         # build orthonormal basis
         self.basis = _build_ortho_poly_basis(random_vector, p_norm, max_p_norm)
-        self.G = None
-        self.g = None
+        self.G = np.zeros((self.basis.cardinal(), 1))
+        self.g = SubFunctionalBasis(self.basis, self.G)
 
         # Compute the inner pdocut matrix if necessary
         if self.innerp == "l2":
@@ -111,7 +111,7 @@ class PolynomialFeatureEstimator(BaseEstimator):
     
     
     def score(self, X, jac_u):
-
+        
         ploss = PoincareLossVectorSpace(
             jac_u, self.basis.eval_jacobian(X), self.basis, self.R)
 
