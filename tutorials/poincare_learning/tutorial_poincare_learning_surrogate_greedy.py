@@ -92,7 +92,7 @@ pmo_kwargs = {
 # %% Minimize the Poicare loss greedy surrogate
 m_max = 3
 G, losses_optimized, losses, surrogates = loss_train.minimize_surrogate_greedy(
-    m_max, optimize_poincare=True, tol=1e-7, verbose=2, pmo_kwargs=pmo_kwargs)
+    m_max, optimize_poincare=True, tol=1e-7, pmo_kwargs=pmo_kwargs)
 
 
 # %% Plot for eyeball regression

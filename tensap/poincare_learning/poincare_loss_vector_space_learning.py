@@ -47,7 +47,7 @@ def _iteration_qn(jac_u, jac_basis, G, R=None, cg_kwargs={}):
     return Gnext
 
 
-def _minimize_qn_(jac_u, jac_basis, G0, R=None, maxiter_qn=100, tol_qn=1e-5, verbosity=2, cg_kwargs={}):
+def _minimize_qn_(jac_u, jac_basis, G0, R=None, maxiter_qn=100, tol_qn=1e-5, cg_kwargs={}):
     """
     Perform the quasi Newton algorithm described in Bigoni et al. 2022, 
     starting at a single initial point.
@@ -72,8 +72,6 @@ def _minimize_qn_(jac_u, jac_basis, G0, R=None, maxiter_qn=100, tol_qn=1e-5, ver
     tol_qn : float, optional
         Tolerance for QN algorithm.
         The default is 1e-5
-    verbosity : int, optional
-        Verbosity parameter.
     cg_kwargs : dict
         Key word arguments for scipy.sparse.linalg.cg to solve S(G)x=b
         at each iteration.
@@ -108,7 +106,7 @@ def _minimize_qn_(jac_u, jac_basis, G0, R=None, maxiter_qn=100, tol_qn=1e-5, ver
     return G, loss
 
 
-def _minimize_qn(jac_u, jac_basis, G0=None, m=None, n_try=None, R=None, maxiter_qn=100, tol_qn=1e-5, verbosity=2, cg_kwargs={}):
+def _minimize_qn(jac_u, jac_basis, G0=None, m=None, n_try=None, R=None, maxiter_qn=100, tol_qn=1e-5, cg_kwargs={}):
     """
     Perform the quasi Newton algorithm described in Bigoni et al. 2022, 
     starting at potentially multiple initial points.
@@ -141,8 +139,6 @@ def _minimize_qn(jac_u, jac_basis, G0=None, m=None, n_try=None, R=None, maxiter_
     tol_qn : float, optional
         Tolerance for QN algorithm.
         The default is 1e-5
-    verbosity : int, optional
-        Verbosity parameter.
     cg_kwargs : dict
         Key word arguments for scipy.sparse.linalg.cg to solve S(G)x=b
         at each iteration.
@@ -172,7 +168,7 @@ def _minimize_qn(jac_u, jac_basis, G0=None, m=None, n_try=None, R=None, maxiter_
 
     for i in range(l):
         logging.info(f"Minimizing Poincare loss with Quasi-Newton")
-        G[i], loss[i] = _minimize_qn_(jac_u, jac_basis, G0[i], R, maxiter_qn, tol_qn, verbosity, cg_kwargs)
+        G[i], loss[i] = _minimize_qn_(jac_u, jac_basis, G0[i], R, maxiter_qn, tol_qn, cg_kwargs)
         
     if l == 1:
         loss = loss[0]
@@ -383,7 +379,7 @@ def _minimize_surrogate(jac_u, jac_basis, G0=None, R=None, m=1):
     return G, loss, surrogate
 
 
-def _minimize_surrogate_greedy(jac_u, jac_basis, m_max, R=None, optimize_poincare=True, tol=1e-7, verbose=2, pmo_kwargs={}):
+def _minimize_surrogate_greedy(jac_u, jac_basis, m_max, R=None, optimize_poincare=True, tol=1e-7, pmo_kwargs={}):
     """
     Greedy algorithm to learn multiple features, as proposed in 
     Nouy et al. 2025.
@@ -410,9 +406,6 @@ def _minimize_surrogate_greedy(jac_u, jac_basis, m_max, R=None, optimize_poincar
     tol : float, optional
         The greedy algorithm stops if the Poincare loss is smaller.
         The default is 1e-7
-    verbose : int, optional
-        Verbosity level.
-        The default is 2.
     pmo_kwargs
         Key word arguments for the minimization algorithm with pymanopt.
         For more details see _minimize_pymanopt.
