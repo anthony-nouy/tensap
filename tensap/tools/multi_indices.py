@@ -788,7 +788,7 @@ class MultiIndices:
         return MultiIndices(np.transpose(ind))
 
     @staticmethod
-    def hyperbolic_cross_set(d, m):
+    def hyperbolic_cross_set(d, p):
         """
         Create the hyperbolic cross set.
 
@@ -796,7 +796,7 @@ class MultiIndices:
         ----------
         d : int
             The dimension, a positive integer.
-        m : int
+        p : int
             The degree, a positive integer.
 
         Returns
@@ -810,7 +810,7 @@ class MultiIndices:
         while add:
             M = ind.get_margin()
             n = np.prod((M.array + 1), axis=-1)
-            k = np.nonzero(n <= m + 1)[0]
+            k = np.nonzero(n <= p + 1)[0]
             if len(k) == 0:
                 add = False
             else:
@@ -856,7 +856,7 @@ class MultiIndices:
         return ind
 
     @staticmethod
-    def weighted_hyperbolic_cross_set(d, m, w_k):
+    def weighted_hyperbolic_cross_set(d, p, w_k):
         """
         Create the set of weighted (anisotropic) hyperbolic cross.
 
@@ -864,15 +864,15 @@ class MultiIndices:
         ----------
         d : int
             The dimension, a positive integer.
-        m : int
-            The bound of the norm, a positive real scalar.
+        p : int
+            The degree, a positive integer.
 
         w_k : list of length d containing the weights.
 
         Returns
         -------
         ind : tensap.MultiIndices
-            The hyperbolic cross set.
+            The set of multi-indices with weighted hyperbolic cross.
 
 
         """
@@ -881,7 +881,7 @@ class MultiIndices:
         while add:
             M = ind.get_margin()
             n = np.prod((M.array + 1) ** w_k, axis=-1)
-            k = np.nonzero(n <= m)[0]
+            k = np.nonzero(n <= p + 1)[0]
             if np.all(np.logical_not(k)):
                 add = False
             else:
