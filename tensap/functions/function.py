@@ -195,10 +195,10 @@ class Function:
 
         """
         assert self.measure is not None, "Attribute measure is empty."
-        
+
         assert self.dim == 2, (
-            "The function should be a bivariate function, use the partial "
-            + "evaluation for higher-dimensional function."
+                "The function should be a bivariate function, use the partial "
+                + "evaluation for higher-dimensional function."
         )
 
         import matplotlib.pyplot as plt
@@ -404,8 +404,8 @@ class Function:
                     g_x_test = g.eval(x_test)
                 else:
                     assert np.shape(g)[0] == n, (
-                        "The number of evaluations does not match the "
-                        + "number of points."
+                            "The number of evaluations does not match the "
+                            + "number of points."
                     )
                     g_x_test = np.array(g)
 
