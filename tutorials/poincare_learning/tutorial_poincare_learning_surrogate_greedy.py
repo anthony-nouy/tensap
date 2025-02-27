@@ -8,7 +8,8 @@ from tensap.poincare_learning.utils._loss_vector_space import _build_ortho_poly_
 from tensap.poincare_learning.poincare_loss_vector_space import PoincareLossVectorSpace
 from sklearn.kernel_ridge import KernelRidge
 from sklearn.model_selection import GridSearchCV
-
+import logging
+logging.basicConfig(level=logging.INFO)
 
 # %% Build samples
 

@@ -2,6 +2,7 @@
 
 import numpy as np
 import scipy
+import logging
 from tensap.poincare_learning.utils._loss_vector_space import _eval_HG_X, _eval_SGinv_X, _eval_jac_g, poincare_loss_vector_space, poincare_loss_vector_space_gradient, _eval_surrogate_matrices, poincare_loss_surrogate_vector_space
 
 
@@ -91,17 +92,15 @@ def _minimize_qn_(jac_u, jac_basis, G0, R=None, maxiter_qn=100, tol_qn=1e-5, ver
     G_now = G0 @ np.linalg.inv(np.linalg.cholesky(M0).T)
     i = -1
     delta = np.inf
-    if verbosity >= 1:
-        print("Optimizing Poincare loss with QN from Bigoni et al.")
+    logging.info("Optimizing Poincare loss with QN from Bigoni et al.")
     while i < maxiter_qn and delta >= tol_qn:
         i = i+1
         G_next = _iteration_qn(jac_u, jac_basis, G_now, R, cg_kwargs)
         # delta = np.linalg.norm(Gnext - Gnow)
         delta = 1 - np.linalg.svd(G_next.T @ R @ G_now)[1].min()
         G_now[:] = G_next[:]
-        if verbosity >= 2:
-            err = poincare_loss_vector_space(G_now, jac_u, jac_basis)
-            print(f"| Iter:{i} loss:{err:.3e} step_size:{delta:.3e}")
+        err = poincare_loss_vector_space(G_now, jac_u, jac_basis)
+        logging.info(f"| Iter:{i} loss:{err:.3e} step_size:{delta:.3e}")
     
     G = G_now
     loss = poincare_loss_vector_space(G, jac_u, jac_basis)
@@ -172,6 +171,7 @@ def _minimize_qn(jac_u, jac_basis, G0=None, m=None, n_try=None, R=None, maxiter_
     G = 0 * G0
 
     for i in range(l):
+        logging.info(f"Minimizing Poincare loss with Quasi-Newton")
         G[i], loss[i] = _minimize_qn_(jac_u, jac_basis, G0[i], R, maxiter_qn, tol_qn, verbosity, cg_kwargs)
         
     if l == 1:
@@ -248,6 +248,7 @@ def _minimize_pymanopt(jac_u, jac_basis, G0=None, m=None, n_try=None, use_precon
     G = 0 * G0
 
     for i in range(l):
+        logging.info(f"Minimizing Poincare loss with pymanopt")
         optim_result = optimizer.run(problem, initial_point=G0[i])
         loss[i] = optim_result.cost
         G[i] = optim_result.point
@@ -441,7 +442,8 @@ def _minimize_surrogate_greedy(jac_u, jac_basis, m_max, R=None, optimize_poincar
     losses_optimized = -np.ones(m_max)
     surrogates = -np.ones(m_max)
 
-    if verbose >=1: print(f"Greedy iteration {1}")
+    logging.info(f"Starting surrogate greedy iterations with optimize_poincare={optimize_poincare}")
+    logging.info(f"Greedy iteration {1}")
 
     # Learn first feature from surrogate
     G, losses[0], surrogates[0] = _minimize_surrogate(jac_u, jac_basis, None, R)
@@ -454,17 +456,15 @@ def _minimize_surrogate_greedy(jac_u, jac_basis, m_max, R=None, optimize_poincar
     else:
         losses_optimized[0] = losses[0]
 
-    if verbose >=2: 
-            print(f"=Surrogate   : {surrogates[0]:.3e}")
-            print(f"=Loss        : {losses[0]:.3e}")
-            if optimize_poincare:
-                print(f"=Loss optim  : {losses_optimized[0]:.3e}")
+    logging.info(f"Surrogate   : {surrogates[0]:.3e}")
+    logging.info(f"Loss        : {losses[0]:.3e}")
+    logging.info(f"Loss optim  : {losses_optimized[0]:.3e}")
 
     j = 1
 
     while j < m_max and losses_optimized[j-1] > tol:
 
-        if verbose >=1: print(f"Greedy iteration {j+1}")
+        logging.info(f"Greedy iteration {j+1}")
 
         # Learn the j-th feature from surrogate and previous features
         G, losses[j], surrogates[j] = _minimize_surrogate(jac_u, jac_basis, G, R)
@@ -477,11 +477,9 @@ def _minimize_surrogate_greedy(jac_u, jac_basis, m_max, R=None, optimize_poincar
         else:
             losses_optimized[j] = losses[j]
 
-        if verbose >=2: 
-            print(f"=Surrogate   : {surrogates[j]:.3e}")
-            print(f"=Loss        : {losses[j]:.3e}")
-            if optimize_poincare:
-                print(f"=Loss optim  : {losses_optimized[j]:.3e}")
+        logging.info(f"Surrogate   : {surrogates[j]:.3e}")
+        logging.info(f"Loss        : {losses[j]:.3e}")
+        logging.info(f"Loss optim  : {losses_optimized[j]:.3e}")
 
         j += 1
 
