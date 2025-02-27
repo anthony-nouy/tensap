@@ -50,8 +50,13 @@ class PolynomialFeatureEstimator(BaseEstimator):
         self.fit_method = fit_method
         self.fit_parameters = fit_parameters
 
+        self.__build_basis()
+
+
+    def __build_basis(self):
+
         # build orthonormal basis
-        self.basis = _build_ortho_poly_basis(random_vector, p_norm, max_p_norm)
+        self.basis = _build_ortho_poly_basis(self.random_vector, self.p_norm, self.max_p_norm)
         self.G = np.zeros((self.basis.cardinal(), 1))
         self.g = SubFunctionalBasis(self.basis, self.G)
 
@@ -85,7 +90,9 @@ class PolynomialFeatureEstimator(BaseEstimator):
         -------
         self : PoincareEstimator
             The fitted estimator.
+
         """
+        self.__build_basis()
 
         # Learning the feature map by minizming Poincare loss with pymanopt
         ploss = PoincareLossVectorSpace(
@@ -113,9 +120,30 @@ class PolynomialFeatureEstimator(BaseEstimator):
     
     
     def score(self, X, jac_u):
-        
+        """
+        Compute the negative Poincare loss from samples.
+
+        Parameters
+        ----------
+        X : numpy.ndarray
+            Sample points.
+            Has shape (N, d).
+        jac_u : numpy.ndarray
+            Evaluations of jac_u at sample points.
+            jac_u[k,i,j] is du_i / dx_j evaluated at the k-th sample.
+            Has shape (N, n, d).
+    
+        Returns
+        -------
+        out : float
+            Negative Poincare loss.
+
+        """
         ploss = PoincareLossVectorSpace(
             jac_u, self.basis.eval_jacobian(X), self.basis, self.R)
 
-        return ploss.eval(self.G)
+        # negative Poincare loss
+        out = - ploss.eval(self.G)
+
+        return out
 
