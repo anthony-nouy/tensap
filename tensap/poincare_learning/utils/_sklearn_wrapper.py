@@ -97,8 +97,8 @@ class PolynomialFeatureEstimator(BaseEstimator):
             minimizer = ploss.minimize_qn
         elif self.fit_method == 'surrogate':
             minimizer = ploss.minimize_surrogate
-        elif self.fit_method == 'surrogate':
-            minimizer = ploss.minimize_surrogate
+        elif self.fit_method == 'surrogate_greedy':
+            minimizer = ploss.minimize_surrogate_greedy
         else:
             raise NotImplementedError('Method not implemented')
             
