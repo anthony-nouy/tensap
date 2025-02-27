@@ -111,7 +111,7 @@ print("Test error = %2.5e" % ERR)
 # Here polynomial spaces V_i with total degre <=i, for i=0...P
 B = np.zeros((H.cardinal(), P + 1), dtype=bool)
 for i in range(P + 1):
-    B[:,i]= np.sum(IND.array, axis = 1) <= i
+    B[:, i] = np.sum(IND.array, axis=1) <= i
  
 SOLVER.basis_adaptation_path = B
 F, OUTPUT = SOLVER.solve()
