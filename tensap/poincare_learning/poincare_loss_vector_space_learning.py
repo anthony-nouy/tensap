@@ -422,13 +422,13 @@ def _minimize_surrogate_greedy(jac_u, jac_basis, m_max, R=None, optimize_poincar
     G : numpy.ndarray
         Coefficients in the basis of feature maps.
         Has shape (K, m)
-    losses : numpy.ndarray
-        Poincare losses of the minimizers of the surrogates, 
-        at each iterations
-        Has shape (m, )
     losses_optimized : numpy.ndarray
         Poincare losses minimized starting from the minimizers of 
         the surrogates, at each iterations.
+        Has shape (m, )
+    losses : numpy.ndarray
+        Poincare losses of the minimizers of the surrogates, 
+        at each iterations
         Has shape (m, )
     surrogates : numpy.ndarray
         Values of the surrogates at each iterations.
@@ -488,5 +488,5 @@ def _minimize_surrogate_greedy(jac_u, jac_basis, m_max, R=None, optimize_poincar
     losses_optimized = losses_optimized[:j]
     surrogates = surrogates[:j]
 
-    return G, losses, losses_optimized, surrogates
+    return G, losses_optimized, losses, surrogates
 

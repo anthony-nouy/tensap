@@ -78,7 +78,7 @@ x_test, u_test, jac_u_test, basis_test, jac_basis_test, loss_test = generate_sam
 optimizer_kwargs = {
     'beta_rule': 'PolakRibiere',
     'orth_value': 10,
-    'max_iterations': 5, 
+    'max_iterations': 10, 
     'verbosity':2
     }
 
@@ -91,7 +91,7 @@ pmo_kwargs = {
 
 # %% Minimize the Poicare loss greedy surrogate
 m_max = 3
-G, losses, losses_optimized, surrogates = loss_train.minimize_surrogate_greedy(
+G, losses_optimized, losses, surrogates = loss_train.minimize_surrogate_greedy(
     m_max, optimize_poincare=True, tol=1e-7, verbose=2, pmo_kwargs=pmo_kwargs)
 
 
