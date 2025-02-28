@@ -739,7 +739,7 @@ class MultiIndices:
 
         if d is None:
             d = len(L)
-        if np.ndim(L) == 1 and d > 1:
+        if np.ndim(np.array(L)) == 1 and d > 1:
             L = [L] * d
 
         for i in range(len(L)):
