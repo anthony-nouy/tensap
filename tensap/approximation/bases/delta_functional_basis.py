@@ -89,14 +89,7 @@ class DeltaFunctionalBasis(tensap.FunctionalBasis):
         out = np.zeros((np.shape(x)[0], dim))
         for mu in range(dim):
             for i in range(x.shape[0]):
-                out[i, mu] = np.all(
-                    x[
-                        i,
-                    ]
-                    == self.values[
-                        mu,
-                    ]
-                )
+                out[i, mu] = np.all(x[i,] == self.values[mu,])
         return out
 
     def domain(self):

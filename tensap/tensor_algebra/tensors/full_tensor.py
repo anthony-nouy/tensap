@@ -223,7 +223,7 @@ class FullTensor:
 
     def __pow__(self, arg):
         assert np.isscalar(arg), "The power must be a scalar."
-        return FullTensor(self.data ** arg)
+        return FullTensor(self.data**arg)
 
     def hadamard_product(self, arg):
         """
@@ -343,8 +343,7 @@ class FullTensor:
                     (
                         np.arange(1, left_dims.size + 1),
                         [0],
-                        np.arange(left_dims.size + 1,
-                                  self.order - dims.size + 1),
+                        np.arange(left_dims.size + 1, self.order - dims.size + 1),
                     )
                 )
             )
@@ -382,8 +381,7 @@ class FullTensor:
                 [self.shape[x] == self.shape[dims[0]] for x in dims]
             ), "The shapes of the tensor in dimensions dims should be equal."
             ind = np.repeat(
-                np.reshape(
-                    np.arange(self.shape[dims[0]]), [-1, 1]), dims.size, 1
+                np.reshape(np.arange(self.shape[dims[0]]), [-1, 1]), dims.size, 1
             )
             data = self.eval_at_indices(ind, dims)
         return data
@@ -659,10 +657,8 @@ class FullTensor:
         order2 = tensor2.order
         order_max = np.max((order1, order2))
 
-        shape1 = np.concatenate(
-            (self.shape, np.ones(order_max - order1, dtype=int)))
-        shape2 = np.concatenate(
-            (tensor2.shape, np.ones(order_max - order2, dtype=int)))
+        shape1 = np.concatenate((self.shape, np.ones(order_max - order1, dtype=int)))
+        shape2 = np.concatenate((tensor2.shape, np.ones(order_max - order2, dtype=int)))
 
         data1 = np.reshape(self.data, [-1, 1])
         data2 = np.reshape(tensor2.data, [1, -1])
@@ -674,8 +670,7 @@ class FullTensor:
 
         data = np.reshape(
             np.transpose(
-                np.reshape(np.matmul(data1, data2),
-                           np.concatenate((shape1, shape2))),
+                np.reshape(np.matmul(data1, data2), np.concatenate((shape1, shape2))),
                 perm,
             ),
             shape1 * shape2,
@@ -710,8 +705,7 @@ class FullTensor:
         if dim == -1:
             dim = tensor.order - 1
 
-        dims = np.concatenate(
-            (np.arange(dim), np.arange(dim + 1, tensor.order), [dim]))
+        dims = np.concatenate((np.arange(dim), np.arange(dim + 1, tensor.order), [dim]))
         tensor = tensor.transpose(dims)
 
         shape0 = np.array(tensor.shape)
@@ -820,11 +814,9 @@ class FullTensor:
         else:
             dims2 = np.atleast_1d(dims2)
             assert np.all(
-                [self.shape[i] == tensor2.shape[j]
-                    for i, j in zip(dims1, dims2)]
+                [self.shape[i] == tensor2.shape[j] for i, j in zip(dims1, dims2)]
             ), "The dimensions of the tensors are not compatible."
-            out = FullTensor(np.tensordot(
-                self.data, tensor2.data, [dims1, dims2]))
+            out = FullTensor(np.tensordot(self.data, tensor2.data, [dims1, dims2]))
         return out
 
     def tensordot_eval_diag(
@@ -931,8 +923,7 @@ class FullTensor:
             assert isinstance(
                 matrices, (list, np.ndarray)
             ), "matrices should be a list or a numpy.ndarray."
-            assert len(
-                matrices) == self.order, "len(matrices) must be self.order."
+            assert len(matrices) == self.order, "len(matrices) must be self.order."
             dims = range(self.order)
         else:
             dims = np.atleast_1d(dims)
@@ -995,15 +986,13 @@ class FullTensor:
         """
         if dims is None:
             assert isinstance(vectors, list), "vectors should be a list."
-            assert len(
-                vectors) == self.order, "len(vectors) must be self.order."
+            assert len(vectors) == self.order, "len(vectors) must be self.order."
             dims = np.arange(self.order)
         else:
             dims = np.atleast_1d(dims)
             if not isinstance(vectors, list):
                 vectors = [vectors]
-            assert len(
-                vectors) == dims.size, "len(vectors) must be equal to dims.size."
+            assert len(vectors) == dims.size, "len(vectors) must be equal to dims.size."
 
         vectors = [FullTensor(x, 2, [1, -1]) for x in vectors]
         return self.tensor_matrix_product(vectors, dims).squeeze(dims.tolist())
@@ -1033,8 +1022,7 @@ class FullTensor:
         """
         if dims is None:
             assert isinstance(matrices, list), "matrices should be a list."
-            assert len(
-                matrices) == self.order, "len(matrices) must be self.order."
+            assert len(matrices) == self.order, "len(matrices) must be self.order."
             dims = np.arange(self.order)
         else:
             dims = np.atleast_1d(dims)
@@ -1077,8 +1065,7 @@ class FullTensor:
         """
         if dims is None:
             assert isinstance(matrices, list), "matrices should be a list."
-            assert len(
-                matrices) == self.order, "len(matrices) must be self.order."
+            assert len(matrices) == self.order, "len(matrices) must be self.order."
             dims = range(self.order)
         else:
             dims = np.atleast_1d(dims)

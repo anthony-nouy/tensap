@@ -119,8 +119,10 @@ class LebesgueMeasure(tensap.Measure):
 
         """
         if self.mass() == np.inf:
-            raise ValueError("truncated support not defined \
-                             for Lebesgue measure on unbounded domain.")
+            raise ValueError(
+                "truncated support not defined \
+                             for Lebesgue measure on unbounded domain."
+            )
 
         return self.support()
 

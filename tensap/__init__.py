@@ -65,15 +65,20 @@ from .functions.compositional_model_function import CompositionalModelFunction
 from .functions.multivariate_functions_benchmark import multivariate_functions_benchmark
 
 from .approximation.tools.model_selection import ModelSelection
+
 # from .approximation.tools.interpolation_points_feature_map import interpolation_points_feature_map
 from .approximation.bases.functional_basis_array import FunctionalBasisArray
 from .approximation.bases.functional_bases import FunctionalBases
 from .approximation.bases.functional_basis import FunctionalBasis
 from .approximation.bases.polynomial_functional_basis import PolynomialFunctionalBasis
-from .approximation.bases.piecewise_polynomial_functional_basis import PiecewisePolynomialFunctionalBasis
+from .approximation.bases.piecewise_polynomial_functional_basis import (
+    PiecewisePolynomialFunctionalBasis,
+)
 from .approximation.bases.BSplines_functional_basis import BSplinesFunctionalBasis
 from .approximation.bases.BSplines_functional_basis import DilatedBSplines
-from .approximation.bases.BSplines_functional_basis import DilatedBSplinesFunctionalBasis
+from .approximation.bases.BSplines_functional_basis import (
+    DilatedBSplinesFunctionalBasis,
+)
 from .approximation.bases.sub_functional_basis import SubFunctionalBasis
 from .approximation.bases.user_defined_functional_basis import (
     UserDefinedFunctionalBasis,

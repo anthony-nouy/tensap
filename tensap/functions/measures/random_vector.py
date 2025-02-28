@@ -64,8 +64,7 @@ class RandomVector(tensap.ProbabilityMeasure):
 
     def marginal(self, ind):
         if not isinstance(self.copula, tensap.IndependentCopula):
-            raise NotImplementedError(
-                "Not implemented for non IndenpendentCopula.")
+            raise NotImplementedError("Not implemented for non IndenpendentCopula.")
         return RandomVector(self.random_variables[ind])
 
     def ndim(self):
@@ -171,8 +170,7 @@ class RandomVector(tensap.ProbabilityMeasure):
         if np.size(n) != d:
             n = np.full(d, n)
 
-        b = [x.iso_probabilistic_grid(y)
-             for x, y in zip(self.random_variables, n)]
+        b = [x.iso_probabilistic_grid(y) for x, y in zip(self.random_variables, n)]
         return tensap.FullTensorGrid(b)
 
     def lhs_random(self, n):
@@ -360,8 +358,7 @@ class RandomVector(tensap.ProbabilityMeasure):
         y = np.zeros((x.shape[0], Y.size))
         for i in range(self.size):
             y[:, i] = np.ravel(
-                self.random_variables[i].transfer(
-                    Y.random_variables[i], x[:, i])
+                self.random_variables[i].transfer(Y.random_variables[i], x[:, i])
             )
         return y
 

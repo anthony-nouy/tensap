@@ -54,8 +54,7 @@ X = tp.NormalRandomVariable(mu, sigma)
 # support
 print("support ", X.support())
 print("truncated support ", X.truncated_support())
-print("truncated support with probability 1-2e-8",
-      X.truncated_support(p=1 - 2e-8))
+print("truncated support with probability 1-2e-8", X.truncated_support(p=1 - 2e-8))
 
 
 # plot
@@ -69,7 +68,7 @@ G = X.gauss_integration_rule(6)
 
 
 def fun(x):
-    return x ** 2
+    return x**2
 
 
 v = np.sum(fun(G.points) * G.weights)
@@ -88,7 +87,7 @@ Xd.pdf_plot()
 
 
 def fun(x):
-    return x ** 2
+    return x**2
 
 
 G = Xd.integration_rule()

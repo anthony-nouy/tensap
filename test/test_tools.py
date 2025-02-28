@@ -27,7 +27,7 @@ def test_integer2baseb():
     n = 85
     b = 3
     xb = integer2baseb(n, b)[0]
-    xb_sum = sum([xb[-i - 1] * b ** i for i in range(len(xb))])
+    xb_sum = sum([xb[-i - 1] * b**i for i in range(len(xb))])
     assert n == xb_sum, "wrong int > base conversion"
 
 

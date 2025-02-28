@@ -120,8 +120,7 @@ class FunctionalBasisArray(tensap.Function):
             The result of the matrix multiplication.
 
         """
-        data = np.transpose(np.linalg.solve(
-            np.transpose(v), np.transpose(self.data)))
+        data = np.transpose(np.linalg.solve(np.transpose(v), np.transpose(self.data)))
         return FunctionalBasisArray(data, self.basis, self.shape)
 
     def dot(self, g, dim=None):
@@ -203,8 +202,7 @@ class FunctionalBasisArray(tensap.Function):
         """
         M = self.basis.mean(measure)
         M = np.tile(np.ravel(M), np.concatenate((self.shape, [1])))
-        M = np.transpose(M, np.concatenate(
-            ([np.ndim(M) - 1], range(np.ndim(M) - 1))))
+        M = np.transpose(M, np.concatenate(([np.ndim(M) - 1], range(np.ndim(M) - 1))))
         return np.sum(self.data * M, 0, keepdims=True)
 
     def expectation(self, measure=None):
@@ -250,7 +248,7 @@ class FunctionalBasisArray(tensap.Function):
 
         """
         m = self.expectation(measure)
-        return self.dot_product_expectation(self, None, measure) - m ** 2
+        return self.dot_product_expectation(self, None, measure) - m**2
 
     def std(self, *args):
         """
@@ -395,7 +393,7 @@ class FunctionalBasisArray(tensap.Function):
                 v[i, :] = 0
             else:
                 mi = self.conditional_expectation(u)
-                vi = mi.dot_product_expectation(mi) - m ** 2
+                vi = mi.dot_product_expectation(mi) - m**2
                 v[i, :] = np.ravel(vi)
 
         return np.reshape(
@@ -593,8 +591,7 @@ class FunctionalBasisArray(tensap.Function):
             if isinstance(basis, tensap.FullTensorProductFunctionalBasis):
                 H = tensap.FullTensorProductIntegrationRule(basis.bases)
             elif isinstance(basis, tensap.SparseTensorProductFunctionalBasis):
-                H = tensap.SparseTensorProductFunctionalBasis(
-                    basis.bases, indices)
+                H = tensap.SparseTensorProductFunctionalBasis(basis.bases, indices)
             g = FunctionalBasisArray(d, H, self.shape)
         else:
             raise NotImplementedError("Method not implemented.")

@@ -94,8 +94,7 @@ class CanonicalTensorLearning(tensap.TensorLearning):
             or self.initialization_type == "mean_randomized"
         ):
             if not isinstance(self.training_data, list) or (
-                isinstance(self.training_data, list) and len(
-                    self.training_data) == 1
+                isinstance(self.training_data, list) and len(self.training_data) == 1
             ):
                 raise NotImplementedError(
                     "Initialization type not "
@@ -192,8 +191,7 @@ class CanonicalTensorLearning(tensap.TensorLearning):
             )
             strategy[strat_i, :] = np.array(strategy)
             strategy = np.concatenate(
-                (np.reshape(strategy, -1, order="F"),
-                 [self._number_of_parameters])
+                (np.reshape(strategy, -1, order="F"), [self._number_of_parameters])
             )
         return strategy
 
@@ -233,9 +231,9 @@ class CanonicalTensorLearning(tensap.TensorLearning):
                     np.tile(fH_mu[:, ind - 1], (f.tensor.shape[mu - 1], 1))
                 )
                 if self.linear_model_learning[mu - 1].basis_adaptation:
-                    self.linear_model_learning[
-                        mu - 1
-                    ].basis_adaptation_path = self.bases_adaptation_path[mu - 1]
+                    self.linear_model_learning[mu - 1].basis_adaptation_path = (
+                        self.bases_adaptation_path[mu - 1]
+                    )
             else:
                 coef = f.tensor.space[mu - 1]
                 grad = f.parameter_gradient_eval(mu).transpose([0, 2, 1])
@@ -246,9 +244,9 @@ class CanonicalTensorLearning(tensap.TensorLearning):
                         self.bases_adaptation_path[mu - 1], (self.rank, 1)
                     )
                 elif self.rank > 1:
-                    self.linear_model_learning[mu - 1].options[
-                        "non_zero_blocks"
-                    ] = np.empty(self.rank, dtype=object)
+                    self.linear_model_learning[mu - 1].options["non_zero_blocks"] = (
+                        np.empty(self.rank, dtype=object)
+                    )
                     for kk in range(self.rank):
                         shape_mu = f.tensor.shape[mu - 1]
                         self.linear_model_learning[mu - 1].options["non_zero_blocks"][
@@ -271,14 +269,12 @@ class CanonicalTensorLearning(tensap.TensorLearning):
     def set_parameter(self, f, mu, coef):
         if mu != self._number_of_parameters:
             if not self.alternating_minimization_parameters["one_by_one_factor"]:
-                coef = np.reshape(
-                    coef, [f.tensor.shape[mu - 1], self.rank], order="F")
-                norm_coef = np.sqrt(np.sum(coef ** 2, 0))
+                coef = np.reshape(coef, [f.tensor.shape[mu - 1], self.rank], order="F")
+                norm_coef = np.sqrt(np.sum(coef**2, 0))
                 ind = norm_coef != 0
                 if not np.all(ind):
                     print("Degenerate case: one factor is zero.")
-                coef[:, ind] = np.matmul(
-                    coef[:, ind], np.diag(1 / norm_coef[ind]))
+                coef[:, ind] = np.matmul(coef[:, ind], np.diag(1 / norm_coef[ind]))
                 f.tensor.space[mu - 1] = coef
                 f.tensor.core.data = np.ravel(norm_coef)
 
@@ -364,8 +360,7 @@ class CanonicalTensorLearning(tensap.TensorLearning):
             "identical_for_all_parameters"
         ] and not isinstance(self.linear_model_learning, (list, np.ndarray)):
             self.linear_model_learning = list(
-                map(deepcopy, [self.linear_model_learning]
-                    * self._number_of_parameters)
+                map(deepcopy, [self.linear_model_learning] * self._number_of_parameters)
             )
         elif (
             isinstance(self.linear_model_learning, (list, np.ndarray))

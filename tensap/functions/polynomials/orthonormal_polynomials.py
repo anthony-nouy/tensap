@@ -257,8 +257,7 @@ class OrthonormalPolynomials(tensap.UnivariatePolynomials):
             jacobi_matrix = np.diag(a)
         else:
             jacobi_matrix = (
-                np.diag(a) + np.diag(np.sqrt(b[1:]), -
-                                     1) + np.diag(np.sqrt(b[1:]), 1)
+                np.diag(a) + np.diag(np.sqrt(b[1:]), -1) + np.diag(np.sqrt(b[1:]), 1)
             )
         return np.sort(np.linalg.eig(jacobi_matrix)[0])
 
@@ -358,8 +357,7 @@ class ShiftedOrthonormalPolynomials(tensap.UnivariatePolynomials):
                 measure = ()
             else:
                 measure = tuple(
-                    [measure[0].shift(-self.shift /
-                                      self.scaling, 1 / self.scaling)]
+                    [measure[0].shift(-self.shift / self.scaling, 1 / self.scaling)]
                 )
         return self.polynomials.moment(ind, *measure)
 
@@ -373,7 +371,7 @@ class ShiftedOrthonormalPolynomials(tensap.UnivariatePolynomials):
 
     def dn_polyval(self, n, ind, x):
         x = (x - self.shift) / self.scaling
-        return self.polynomials.dn_polyval(n, ind, x) / (self.scaling ** n)
+        return self.polynomials.dn_polyval(n, ind, x) / (self.scaling**n)
 
     def random(self, ind, n=1, measure=None):
         """
@@ -432,7 +430,6 @@ class ShiftedOrthonormalPolynomials(tensap.UnivariatePolynomials):
 
 
 class HermitePolynomials(OrthonormalPolynomials):
-
     """
     Class HermitePolynomials.
 
@@ -479,8 +476,7 @@ class HermitePolynomials(OrthonormalPolynomials):
         """
         recurr = np.zeros((2, n + 1))
         recurr[1, :] = np.arange(n + 1)
-        norms = np.array([np.sqrt(float(math.factorial(x)))
-                         for x in range(n + 1)])
+        norms = np.array([np.sqrt(float(math.factorial(x))) for x in range(n + 1)])
         return recurr, norms
 
 
@@ -534,7 +530,7 @@ class LegendrePolynomials(OrthonormalPolynomials):
         norms = np.array(
             [
                 np.sqrt(1 / (2 * x + 1))
-                * 2 ** x
+                * 2**x
                 * math.factorial(x) ** 2
                 / math.factorial(2 * x)
                 for x in range(n + 1)
@@ -594,7 +590,7 @@ class LegendrePolynomialsLebesgue(OrthonormalPolynomials):
         norms = np.array(
             [
                 np.sqrt(1 / (2 * x + 1))
-                * 2 ** x
+                * 2**x
                 * math.factorial(x) ** 2
                 / math.factorial(2 * x)
                 * np.sqrt(2)
@@ -739,8 +735,7 @@ class EmpiricalPolynomials(OrthonormalPolynomials):
                 p_n_loc_m1 = x - a[0]
                 p_n_loc = np.array(p_n_loc_m1)
                 for N in np.arange(2, i + 1):
-                    p_n_loc = (x - a[N - 1]) * p_n_loc_m1 - \
-                        b[N - 1] * p_n_loc_m2
+                    p_n_loc = (x - a[N - 1]) * p_n_loc_m1 - b[N - 1] * p_n_loc_m2
                     p_n_loc_m2 = np.array(p_n_loc_m1)
                     p_n_loc_m1 = np.array(p_n_loc)
             return p_n_loc
@@ -777,7 +772,7 @@ class EmpiricalPolynomials(OrthonormalPolynomials):
             p_n_m1 = np.reshape(peval(i - 1, a, b, x_ij), x_ij.shape)
             p_n = np.reshape(peval(i, a, b, x_ij), x_ij.shape)
 
-            norms[i] = np.sum(np.matmul(p_n ** 2, weights))
+            norms[i] = np.sum(np.matmul(p_n**2, weights))
             a[i] = np.sum(np.matmul(p_n * x_ij * p_n, weights)) / norms[i]
             b[i] = norms[i] / norms[i - 1]
 
@@ -917,8 +912,8 @@ class DiscretePolynomials(OrthonormalPolynomials):
 
         i = 0
         cond = True
-        norms[0] = dot_product(lambda x: x ** 0, lambda x: x ** 0, measure)
-        a[0] = dot_product(lambda x: x ** 0, lambda x: x, measure) / norms[0]
+        norms[0] = dot_product(lambda x: x**0, lambda x: x**0, measure)
+        a[0] = dot_product(lambda x: x**0, lambda x: x, measure) / norms[0]
         b[0] = 0
         pnm1 = []
         pn = [lambda x: 1]
@@ -933,13 +928,11 @@ class DiscretePolynomials(OrthonormalPolynomials):
             if norms[i] == 0:
                 a[i] = np.nan
             else:
-                a[i] = dot_product(pn[i], lambda x: x * pn[i]
-                                   (x), measure) / norms[i]
+                a[i] = dot_product(pn[i], lambda x: x * pn[i](x), measure) / norms[i]
             b[i] = norms[i] / norms[i - 1]
 
             pnp1.append(
-                lambda x, a=a[i], b=b[i], pn=pn[i], pnm1=pnm1[i -
-                                                              1]: (x - a) * pn(x)
+                lambda x, a=a[i], b=b[i], pn=pn[i], pnm1=pnm1[i - 1]: (x - a) * pn(x)
                 - b * pnm1(x)
             )
 

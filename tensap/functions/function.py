@@ -125,16 +125,14 @@ class Function:
                 )
             y = np.reshape(
                 y,
-                np.concatenate(
-                    ([y.shape[0]], np.atleast_1d(self.output_shape))),
+                np.concatenate(([y.shape[0]], np.atleast_1d(self.output_shape))),
                 order="F",
             )
             if np.prod(self.output_shape) != 1:
                 self._y_stored = np.reshape(
                     self._y_stored,
                     np.concatenate(
-                        ([self._y_stored.shape[0]],
-                         np.atleast_1d(self.output_shape))
+                        ([self._y_stored.shape[0]], np.atleast_1d(self.output_shape))
                     ),
                     order="F",
                 )
@@ -413,11 +411,10 @@ class Function:
 
                 f_x_test = np.reshape(f_x_test, (n, -1), order="F")
                 g_x_test = np.reshape(g_x_test, (n, -1), order="F")
-                err_l2 = np.linalg.norm(
-                    f_x_test - g_x_test) / np.linalg.norm(g_x_test)
+                err_l2 = np.linalg.norm(f_x_test - g_x_test) / np.linalg.norm(g_x_test)
                 err_linf = np.linalg.norm(
                     np.sqrt(np.sum((f_x_test - g_x_test) ** 2, 1)), np.inf
-                ) / np.linalg.norm(np.sqrt(np.sum(g_x_test ** 2, 1)), np.inf)
+                ) / np.linalg.norm(np.sqrt(np.sum(g_x_test**2, 1)), np.inf)
 
         return err_l2, err_linf
 

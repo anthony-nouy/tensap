@@ -22,6 +22,7 @@ Module piecewise_polynomial_functional_basis.
 
 import numpy as np
 import tensap
+
 # from scipy.sparse import lil_matrix
 
 
@@ -71,8 +72,8 @@ class PiecewisePolynomialFunctionalBasis(tensap.FunctionalBasis):
         u = (x - p1[pos]) / h[pos]
         U = tensap.LebesgueMeasure(0, 1)
         pol = tensap.PolynomialFunctionalBasis(
-            U.orthonormal_polynomials(),
-            np.arange(np.max(self.p) + 1))
+            U.orthonormal_polynomials(), np.arange(np.max(self.p) + 1)
+        )
         pu = pol.eval(u)
         hx = np.zeros((x.size, self.cardinal()))
 
@@ -80,8 +81,7 @@ class PiecewisePolynomialFunctionalBasis(tensap.FunctionalBasis):
             I_rows = np.where(pos == i)[0]
             if I_rows.size > 0:
                 J = np.sum(self.p[:i] + 1) + np.arange(self.p[i] + 1)
-                hx[np.ix_(I_rows, J)] = \
-                    pu[I_rows, :self.p[i] + 1] / np.sqrt(h[i])
+                hx[np.ix_(I_rows, J)] = pu[I_rows, : self.p[i] + 1] / np.sqrt(h[i])
 
         if indices is not None:
             hx = hx[:, indices]
@@ -100,8 +100,8 @@ class PiecewisePolynomialFunctionalBasis(tensap.FunctionalBasis):
         u = (x - p1[pos]) / h[pos]
         U = tensap.LebesgueMeasure(0, 1)
         pol = tensap.PolynomialFunctionalBasis(
-            U.orthonormal_polynomials(),
-            np.arange(np.max(self.p) + 1))
+            U.orthonormal_polynomials(), np.arange(np.max(self.p) + 1)
+        )
         pu = pol.eval_derivative(k, u)
         hx = np.zeros((x.size, self.cardinal()))
 
@@ -110,8 +110,9 @@ class PiecewisePolynomialFunctionalBasis(tensap.FunctionalBasis):
             if loc.size > 0:
                 J = np.sum(self.p[:i] + 1) + np.arange(self.p[i] + 1)
                 scale = h[i]
-                hx[np.ix_(loc, J)] = \
-                    pu[loc, :self.p[i] + 1] / np.sqrt(scale) * h[i]**(-k)
+                hx[np.ix_(loc, J)] = (
+                    pu[loc, : self.p[i] + 1] / np.sqrt(scale) * h[i] ** (-k)
+                )
 
         if indices is not None:
             hx = hx[:, indices]
@@ -172,8 +173,9 @@ class PiecewisePolynomialFunctionalBasis(tensap.FunctionalBasis):
         u = []
         for i in range(unique_p.size):
             U = tensap.UniformRandomVariable(0, 1)
-            pol = tensap.PolynomialFunctionalBasis(U.orthonormal_polynomials(),
-                                                   np.arange(unique_p[i] + 1))
+            pol = tensap.PolynomialFunctionalBasis(
+                U.orthonormal_polynomials(), np.arange(unique_p[i] + 1)
+            )
             u.append(pol.magic_points()[0])
 
         p1 = self.points[:-1]
@@ -239,15 +241,21 @@ class PiecewisePolynomialFunctionalBasis(tensap.FunctionalBasis):
             ne = int(np.ceil(np.log2(1 / h)))
             if ai in s and bi in s:
                 pi = np.concatenate([np.arange(ne), np.arange(ne - 1, -1, -1)])
-                xi = np.concatenate([[0], 2.0**(-np.arange(ne, 1, -1)),
-                                     [1 / 2], 1 - 2.0**(-np.arange(2, ne + 1, 1)), [1]])
+                xi = np.concatenate(
+                    [
+                        [0],
+                        2.0 ** (-np.arange(ne, 1, -1)),
+                        [1 / 2],
+                        1 - 2.0 ** (-np.arange(2, ne + 1, 1)),
+                        [1],
+                    ]
+                )
             elif ai in s:
                 pi = np.arange(0, ne)
-                xi = np.concatenate([[0], 2.0**(-np.arange(ne, 0, -1)), [1]])
+                xi = np.concatenate([[0], 2.0 ** (-np.arange(ne, 0, -1)), [1]])
                 pi = np.arange(xi.size - 1)
             elif bi in s:
-                xi = np.concatenate(
-                    [[0], 1 - 2.0**(-np.arange(1, ne + 1)), [1]])
+                xi = np.concatenate([[0], 1 - 2.0 ** (-np.arange(1, ne + 1)), [1]])
                 pi = np.arange(xi.size - 2, -1, -1)
             if i < e.size - 2:
                 xi = xi[:-1]

@@ -183,8 +183,7 @@ class NormalRandomVariable(tensap.RandomVariable):
         poly = tensap.HermitePolynomials()
         if self != NormalRandomVariable(0, 1):
             # print('ShiftedOrthonormalPolynomials are created.')
-            poly = tensap.ShiftedOrthonormalPolynomials(
-                poly, self.mu, self.sigma)
+            poly = tensap.ShiftedOrthonormalPolynomials(poly, self.mu, self.sigma)
         return poly
 
     def get_parameters(self):
@@ -202,7 +201,7 @@ class NormalRandomVariable(tensap.RandomVariable):
         return self.mu, self.sigma
 
     def random_variable_statistics(self):
-        return self.mu, self.sigma ** 2
+        return self.mu, self.sigma**2
 
     def random(self, n):
         return randn(int(n)) * self.sigma + self.mu

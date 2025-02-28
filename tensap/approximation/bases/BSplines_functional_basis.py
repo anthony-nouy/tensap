@@ -101,9 +101,9 @@ class BSplinesFunctionalBasis(tensap.FunctionalBasis):
 
         for j in np.arange(1, self.degree + 1):
             for i in range(m - 1 - j):
-                Bx[:, i, j] = (x - t[i]) / (t[i + j] - t[i]) * Bx[:, i, j - 1] + \
-                    (t[i + j + 1] - x) / (t[i + j + 1] -
-                                          t[i + 1]) * Bx[:, i + 1, j - 1]
+                Bx[:, i, j] = (x - t[i]) / (t[i + j] - t[i]) * Bx[:, i, j - 1] + (
+                    t[i + j + 1] - x
+                ) / (t[i + j + 1] - t[i + 1]) * Bx[:, i + 1, j - 1]
 
         return Bx
 
@@ -125,7 +125,7 @@ class BSplinesFunctionalBasis(tensap.FunctionalBasis):
         t = self.knots
 
         Bx = self.eval_sequence(x)
-        Bx = Bx[:, :t.size - 1 - self.degree, -1]  # Last layer
+        Bx = Bx[:, : t.size - 1 - self.degree, -1]  # Last layer
         return Bx
 
     def eval_derivative(self, n, x):
@@ -155,13 +155,16 @@ class BSplinesFunctionalBasis(tensap.FunctionalBasis):
 
             for j in np.arange(1, self.degree + 1):
                 for i in range(t.size - 1 - j):
-                    dBx[:, i, j] = k / (t[i + j] - t[i]) * dBx_old[:, i, j - 1] - \
-                        k / (t[i + j + 1] - t[i + 1]) * dBx_old[:, i + 1, j - 1] + \
-                        (x - t[i]) / (t[i + j] - t[i]) * dBx[:, i, j - 1] + \
-                        (t[i + j + 1] - x) / (t[i + j + 1] -
-                                              t[i + 1]) * dBx[:, i + 1, j - 1]
+                    dBx[:, i, j] = (
+                        k / (t[i + j] - t[i]) * dBx_old[:, i, j - 1]
+                        - k / (t[i + j + 1] - t[i + 1]) * dBx_old[:, i + 1, j - 1]
+                        + (x - t[i]) / (t[i + j] - t[i]) * dBx[:, i, j - 1]
+                        + (t[i + j + 1] - x)
+                        / (t[i + j + 1] - t[i + 1])
+                        * dBx[:, i + 1, j - 1]
+                    )
 
-        dBx = dBx[:, :t.size - 1 - self.degree, -1]
+        dBx = dBx[:, : t.size - 1 - self.degree, -1]
         return dBx
 
     @staticmethod
@@ -240,7 +243,7 @@ class DilatedBSplines:
         level = np.ravel(i[0])
         local_index = np.ravel(i[1])
         X = np.outer(x, b**level) - np.outer(np.ones(x.size), local_index)
-        S = np.outer(np.ones(x.size), b**(level / 2))
+        S = np.outer(np.ones(x.size), b ** (level / 2))
 
         Bx = psi.eval(X.ravel()).ravel() * S.ravel()
         Bx = np.reshape(Bx, (x.size, level.size))
@@ -274,7 +277,7 @@ class DilatedBSplines:
         level = np.ravel(i[0])
         local_index = np.ravel(i[1])
         X = np.outer(x, b**level) - np.outer(np.ones(x.size), local_index)
-        S = np.outer(np.ones(x.size), b**(level * (k + 1 / 2)))
+        S = np.outer(np.ones(x.size), b ** (level * (k + 1 / 2)))
 
         dBx = psi.eval_derivative(k, X.ravel()).ravel() * S.ravel()
         dBx = np.reshape(dBx, (x.size, level.size))
@@ -354,12 +357,12 @@ class DilatedBSplinesFunctionalBasis(tensap.FunctionalBasis):
 
         tensap.FunctionalBasis.__init__(self)
         if not isinstance(B, DilatedBSplines):
-            raise ValueError('must provide a DilatedBSplines')
+            raise ValueError("must provide a DilatedBSplines")
 
         if isinstance(Ind, tuple):
             Ind = list(Ind)
         elif not isinstance(Ind, list):
-            raise ValueError('must provide a list or tuple')
+            raise ValueError("must provide a list or tuple")
 
         Ind[0] = np.ravel(Ind[0])
         Ind[1] = np.ravel(Ind[1])

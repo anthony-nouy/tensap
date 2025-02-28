@@ -12,7 +12,7 @@ Iex = np.exp(2) - 1
 print("Error = %2.5e" % (np.abs(Iapp - Iex) / np.abs(Iex)))
 
 # %% Piecewise Gauss-Legendre Integration Rule
-g = tensap.IntegrationRule.gauss_legendre_composite([0, .5, 1], 6)
+g = tensap.IntegrationRule.gauss_legendre_composite([0, 0.5, 1], 6)
 f = tensap.UserDefinedFunction("np.exp(x0)", 1)
 Iapp = g.integrate(f)
 Iex = np.exp(1) - 1
@@ -21,8 +21,7 @@ print("Integration error = %2.5e" % (np.abs(Iapp - Iex) / np.abs(Iex)))
 
 
 # %% Tensor product integration rule
-mu = tensap.ProductMeasure(
-    [tensap.LebesgueMeasure(0, 5), tensap.LebesgueMeasure(0, 1)])
+mu = tensap.ProductMeasure([tensap.LebesgueMeasure(0, 5), tensap.LebesgueMeasure(0, 1)])
 G = mu.gauss_integration_rule([10, 2])
 G = G.integration_rule()
 # Function f(x0,x1) = exp(x0)*x1

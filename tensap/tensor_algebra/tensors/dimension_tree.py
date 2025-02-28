@@ -264,8 +264,7 @@ class DimensionTree:
         chnod = chnod[chnod != 0]
         if len(chnod) != 0:
             for children in chnod:
-                dnod = np.concatenate(
-                    (dnod, [children], self.descendants(children)))
+                dnod = np.concatenate((dnod, [children], self.descendants(children)))
         return np.array(dnod)
 
     def change_root(self, nod):
@@ -581,8 +580,7 @@ class DimensionTree:
         nx.draw_networkx_nodes(
             g,
             pos,
-            nodelist=np.setdiff1d(
-                np.arange(1, self.nb_nodes + 1), colored_nodes) - 1,
+            nodelist=np.setdiff1d(np.arange(1, self.nb_nodes + 1), colored_nodes) - 1,
             node_color="w",
             edgecolors="k",
             node_size=100,
@@ -600,8 +598,7 @@ class DimensionTree:
 
         nx.draw_networkx_edges(g, pos)
         labels = dict(
-            zip(range(self.nb_nodes), [
-                x if x is not None else "" for x in labels])
+            zip(range(self.nb_nodes), [x if x is not None else "" for x in labels])
         )
         y = [x[1] for x in pos.values()]
         min_height = np.min(y)
@@ -662,8 +659,7 @@ class DimensionTree:
         self.nb_nodes = self.adjacency_matrix.shape[0]
         self.nodes_indices = np.arange(1, self.nb_nodes + 1)
         self.arity = np.max(np.sum(self.adjacency_matrix, 1))
-        self._parent = np.matmul(
-            range(1, self.nb_nodes + 1), self.adjacency_matrix)
+        self._parent = np.matmul(range(1, self.nb_nodes + 1), self.adjacency_matrix)
         self.root = self.nodes_indices[self._parent == 0][0]
         self.is_leaf = np.repeat(False, self.nb_nodes)
         self.is_leaf[self.dim2ind - 1] = True
@@ -671,7 +667,7 @@ class DimensionTree:
         _children = np.zeros([self.arity, self.nb_nodes], dtype=int)
         for i in range(self.nb_nodes):
             ind = np.nonzero(self.adjacency_matrix[i, :])[0]
-            _children[0: len(ind), i] = ind + 1
+            _children[0 : len(ind), i] = ind + 1
         self._children = _children
 
         _child_number = np.zeros(self.nb_nodes, dtype=int)
@@ -749,8 +745,7 @@ class DimensionTree:
             dim = order.size
             order -= 1
 
-        d2i = np.concatenate(
-            ([2 * dim - 2], 2 * np.arange(dim - 1, 0, -1) + 1))
+        d2i = np.concatenate(([2 * dim - 2], 2 * np.arange(dim - 1, 0, -1) + 1))
         adj_mat = np.zeros([2 * dim - 1] * 2, dtype=int)
         adj_mat[0, 1:3] = 1
         for level in range(dim - 2):
@@ -787,7 +782,7 @@ class DimensionTree:
         adj_mat = np.zeros([2 * dim - 1] * 2, dtype=int)
         adj_mat[0, 1:3] = 1
         for i in range(1, dim - 1):
-            adj_mat[i, 2 * i + 1: 2 * i + 3] = 1
+            adj_mat[i, 2 * i + 1 : 2 * i + 3] = 1
         d2i[order] = d2i.flatten()
         return DimensionTree(d2i, adj_mat)
 
@@ -831,8 +826,7 @@ class DimensionTree:
                 if len(dims) == 1:
                     dim2ind[dims - 1] = pnod
                 else:
-                    pnod_arity = np.min(
-                        np.append(np.random.randint(*arity), dims.size))
+                    pnod_arity = np.min(np.append(np.random.randint(*arity), dims.size))
                     for k in range(pnod_arity):
                         nb_nodes += 1
                         new_nodes.append(nb_nodes)
@@ -843,12 +837,10 @@ class DimensionTree:
                         else:
                             n_children = np.max(
                                 np.append(
-                                    np.random.randint(
-                                        len(dims) - pnod_arity + k + 2), 1
+                                    np.random.randint(len(dims) - pnod_arity + k + 2), 1
                                 )
                             )
-                            perm = np.random.permutation(len(dims))[
-                                :n_children]
+                            perm = np.random.permutation(len(dims))[:n_children]
                             dims_nodes.append(dims[perm])
                             dims = np.delete(dims, perm)
                         if len(dims) == 0:
