@@ -117,7 +117,8 @@ class TensorLearning(tensap.Learning):
             "early_stopping_factor": 10,
         }
         self.tolerance = {"on_error": 1e-6, "on_stagnation": 1e-6}
-        self.linear_model_learning_parameters = {"identical_for_all_parameters": True}
+        self.linear_model_learning_parameters = {
+            "identical_for_all_parameters": True}
         self.alternating_minimization_parameters = {
             "display": False,
             "max_iterations": 30,
@@ -272,10 +273,13 @@ class TensorLearning(tensap.Learning):
                 and self.test_data is not None
                 and self.bases_eval_test is None
             ):
-                if isinstance(self.test_data, list) and self.test_data[0] is not None:
+                if isinstance(self.test_data,
+                              list) and self.test_data[0] is not None:
                     self.bases_eval_test = self.bases.eval(self.test_data[0])
                 elif (
-                    not isinstance(self.test_data, list) and self.test_data is not None
+                    not isinstance(
+                        self.test_data,
+                        list) and self.test_data is not None
                 ):
                     self.bases_eval_test = self.bases.eval(self.test_data)
                 else:
@@ -355,7 +359,9 @@ class TensorLearning(tensap.Learning):
                         + " error: model #%i selected" % ind
                     )
             else:
-                print("Wrong model selection type, returning the last " + "iterate.")
+                print(
+                    "Wrong model selection type, returning the last " +
+                    "iterate.")
 
             if self.display:
                 if self.alternating_minimization_parameters["display"]:
@@ -364,7 +370,9 @@ class TensorLearning(tensap.Learning):
                 if "error" in output:
                     print(", error = %2.5e" % output["error"], end="")
                 if "test_error" in output:
-                    print(", test error = %2.5e" % output["test_error"], end="")
+                    print(
+                        ", test error = %2.5e" %
+                        output["test_error"], end="")
                 print("")
 
         return fun, output
@@ -398,7 +406,8 @@ class TensorLearning(tensap.Learning):
             "identical_for_all_parameters"
         ] and not isinstance(self.linear_model_learning, (list, np.ndarray)):
             self.linear_model_learning = list(
-                map(deepcopy, [self.linear_model_learning] * self._number_of_parameters)
+                map(deepcopy, [self.linear_model_learning]
+                    * self._number_of_parameters)
             )
         elif (
             isinstance(self.linear_model_learning, (list, np.ndarray))
@@ -443,12 +452,14 @@ class TensorLearning(tensap.Learning):
                 alpha_list = self._exploration_strategy
 
             for alpha in alpha_list:
-                self, A, b, f = self.prepare_alternating_minimization_system(f, alpha)
+                self, A, b, f = self.prepare_alternating_minimization_system(
+                    f, alpha)
                 self.linear_model_learning[alpha - 1].training_data = [None, b]
                 self.linear_model_learning[alpha - 1].basis = None
                 self.linear_model_learning[alpha - 1].basis_eval = A
 
-                coef, output_tmp = self.linear_model_learning[alpha - 1].solve()
+                coef, output_tmp = self.linear_model_learning[alpha - 1].solve(
+                )
                 if (
                     coef is None
                     or np.count_nonzero(coef) == 0
@@ -509,7 +520,9 @@ class TensorLearning(tensap.Learning):
                 if self.test_error:
                     if not np.isscalar(output["test_error"]):
                         output["test_error"] = output["test_error"].numpy()
-                    print(", test error = %2.5e" % output["test_error"], end="")
+                    print(
+                        ", test error = %2.5e" %
+                        output["test_error"], end="")
                 print("")
 
             if (
@@ -603,7 +616,8 @@ class TensorLearning(tensap.Learning):
 
             if self.store_iterates:
                 if isinstance(self.bases, tensap.FunctionalBases):
-                    iterates[iteration] = tensap.FunctionalTensor(f.tensor, self.bases)
+                    iterates[iteration] = tensap.FunctionalTensor(
+                        f.tensor, self.bases)
                 else:
                     iterates[iteration] = f
 
@@ -612,7 +626,9 @@ class TensorLearning(tensap.Learning):
                     print("")
                 print("\nRank adaptation, iteration %i:" % (iteration))
                 self.adaptation_display(f, enriched_nodes)
-                print("\tStorage complexity = %i" % f.tensor.storage(), flush=True)
+                print(
+                    "\tStorage complexity = %i" %
+                    f.tensor.storage(), flush=True)
 
                 if errors[iteration] != 0:
                     print("\tError      = %2.5e" % errors[iteration])
@@ -653,7 +669,9 @@ class TensorLearning(tensap.Learning):
                 if "error" in output_local:
                     print(", error = %2.5e" % errors[iteration], end="")
                 if self.test_error:
-                    print(", test error = %2.5e" % test_errors[iteration], end="")
+                    print(
+                        ", test error = %2.5e" %
+                        test_errors[iteration], end="")
                 print("\n")
                 iteration -= 1
                 f = f_old
@@ -685,7 +703,8 @@ class TensorLearning(tensap.Learning):
                             + "= %i" % f.tensor.storage()
                         )
                     if self.test_error:
-                        f_eval_test = tensap.FunctionalTensor(f, self.bases_eval_test)
+                        f_eval_test = tensap.FunctionalTensor(
+                            f, self.bases_eval_test)
                         test_errors[iteration] = self.loss_function.test_error(
                             f_eval_test, self.test_data
                         )

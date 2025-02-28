@@ -39,7 +39,8 @@ CHOICE = 1
 if CHOICE == 1:
 
     def FUN(x):
-        return np.sin(10 * np.pi * (2 * x + 0.5)) / (4 * x + 1) + (2 * x - 0.5) ** 4
+        return np.sin(10 * np.pi * (2 * x + 0.5)) / \
+            (4 * x + 1) + (2 * x - 0.5) ** 4
 
 elif CHOICE == 2:
 
@@ -57,7 +58,8 @@ TENSORIZED_FUN.fun.evaluation_at_multiple_points = True
 
 # %% Approximation basis
 DEGREE = 5
-H = tensap.PolynomialFunctionalBasis(Y.orthonormal_polynomials(), range(DEGREE + 1))
+H = tensap.PolynomialFunctionalBasis(
+    Y.orthonormal_polynomials(), range(DEGREE + 1))
 BASES = T.tensorized_function_functional_bases(H)
 
 # %% Training and test samples

@@ -150,6 +150,7 @@ class LinearModelLearningCustomLoss(tensap.LinearModelLearning):
             if np.ndim(sol) == 1:
                 sol = tensap.FunctionalBasisArray(sol, self.basis)
             else:
-                sol = tensap.FunctionalBasisArray(sol, self.basis, sol.shape[1])
+                sol = tensap.FunctionalBasisArray(
+                    sol, self.basis, sol.shape[1])
 
         return sol, output

@@ -91,4 +91,5 @@ class UserDefinedFunction(tensap.Function):
             for i in range(n):
                 y[i, :] = np.ravel(fun(np.atleast_2d(x[i, :])))
 
-        return np.reshape(y, np.concatenate(([n], np.atleast_1d(self.output_shape))))
+        return np.reshape(y, np.concatenate(
+            ([n], np.atleast_1d(self.output_shape))))

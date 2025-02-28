@@ -66,7 +66,8 @@ class UniformRandomVariable(tensap.RandomVariable):
         self.sup = sup
 
     def __repr__(self):
-        return ("<{} on [{}, {}]>").format(self.__class__.__name__, self.inf, self.sup)
+        return ("<{} on [{}, {}]>").format(
+            self.__class__.__name__, self.inf, self.sup)
 
     def cdf(self, x):
         """

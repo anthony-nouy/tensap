@@ -72,7 +72,8 @@ class SubFunctionalBasis(tensap.FunctionalBasis):
             if (
                 underlying_basis.is_orthonormal
                 and np.linalg.norm(
-                    np.matmul(np.transpose(basis), basis) - np.eye(basis.shape[1])
+                    np.matmul(np.transpose(basis), basis) -
+                    np.eye(basis.shape[1])
                 )
                 / np.sqrt(basis.shape[1])
                 < 1e-15
@@ -140,7 +141,8 @@ class SubFunctionalBasis(tensap.FunctionalBasis):
             self.basis of degrees in self.indices at points x.
 
         """
-        return np.matmul(self.underlying_basis.eval_derivative(x, n), self.basis)
+        return np.matmul(
+            self.underlying_basis.eval_derivative(x, n), self.basis)
 
     def derivative(self, n):
         """

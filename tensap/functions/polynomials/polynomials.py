@@ -98,7 +98,9 @@ class UnivariatePolynomials(ABC):
         coef = np.prod(
             np.tile(np.arange(np.max(ind) - n + 1), (n, 1))
             + np.tile(
-                np.expand_dims(np.arange(1, n + 1), axis=1), (1, np.max(ind) - n + 1)
+                np.expand_dims(
+                    np.arange(
+                        1, n + 1), axis=1), (1, np.max(ind) - n + 1)
             ),
             0,
         )
@@ -181,7 +183,8 @@ class UnivariatePolynomials(ABC):
             assert self.measure is not None, "Must provide a Measure."
             out = self.moment(np.reshape(ind, [-1, 1])) / self.measure.mass()
         else:
-            out = self.moment(np.reshape(ind, [-1, 1]), measure) / measure.mass()
+            out = self.moment(np.reshape(
+                ind, [-1, 1]), measure) / measure.mass()
         return out
 
     def moment(self, ind, measure=None):

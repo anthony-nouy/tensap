@@ -75,7 +75,8 @@ class TensorPrincipalComponentAnalysis:
         self.subsampling = "eim"
         self.subsampling_tol = 1.05
 
-    def alpha_principal_components(self, fun, shape, alpha, tol, B_alpha, I_alpha):
+    def alpha_principal_components(
+            self, fun, shape, alpha, tol, B_alpha, I_alpha):
         """
         Evaluate the alpha-principal components of a tensor f.
 
@@ -161,7 +162,8 @@ class TensorPrincipalComponentAnalysis:
                     break
             output["number_of_evaluations"] = I_alpha.shape[0] * (k + 1)
         else:
-            product_grid = tensap.FullTensorGrid([I_alpha, I_not_alpha]).array()
+            product_grid = tensap.FullTensorGrid(
+                [I_alpha, I_not_alpha]).array()
             A = fun(product_grid[:, ind])
             A = np.reshape(A, [B_alpha.shape[0], N], "F")
             A = np.linalg.solve(B_alpha, A)
@@ -342,7 +344,8 @@ class TensorPrincipalComponentAnalysis:
             solver.tol = np.zeros(tree.nb_nodes)
             solver.tol[rep_tt] = tol
         elif np.ndim(self.tol) == 1 and len(self.tol) > 1:
-            raise ValueError("tol should be a scalar or an array of length " + "d-1.")
+            raise ValueError(
+                "tol should be a scalar or an array of length " + "d-1.")
 
         if np.ndim(self.max_rank) == 1 and len(self.max_rank) == d - 1:
             rank = solver.max_rank
@@ -353,7 +356,8 @@ class TensorPrincipalComponentAnalysis:
                 "max_rank should be a scalar or an array of " + "length d-1."
             )
 
-        return solver.tree_based_approximation(fun, shape, tree, is_active_node)
+        return solver.tree_based_approximation(
+            fun, shape, tree, is_active_node)
 
     def tree_based_approximation(self, fun, shape, tree, is_active_node=None):
         """
@@ -429,13 +433,15 @@ class TensorPrincipalComponentAnalysis:
             alpha = tree.dim2ind[nu]
             B_alpha = np.eye(shape[nu])
             if is_active_node[alpha - 1]:
-                tol_alpha = np.min((solver.tol[alpha - 1], solver.max_rank[alpha - 1]))
+                tol_alpha = np.min(
+                    (solver.tol[alpha - 1], solver.max_rank[alpha - 1]))
                 pc_alpha, outputs[alpha - 1] = solver.alpha_principal_components(
                     fun, shape, nu, tol_alpha, B_alpha, grids[nu]
                 )
                 samples[alpha - 1] = outputs[alpha - 1]["samples"]
                 shape_alpha = [shape[nu], pc_alpha.shape[1]]
-                tensors[alpha - 1] = tensap.FullTensor(pc_alpha, 2, shape_alpha)
+                tensors[alpha -
+                        1] = tensap.FullTensor(pc_alpha, 2, shape_alpha)
 
                 B_alpha = np.matmul(B_alpha, pc_alpha)
 
@@ -453,7 +459,8 @@ class TensorPrincipalComponentAnalysis:
                 alpha_grids[alpha - 1] = grids[nu][I_alpha, :]
                 alpha_basis[alpha - 1] = B_alpha[I_alpha, :]
 
-                number_of_evaluations += outputs[alpha - 1]["number_of_evaluations"]
+                number_of_evaluations += outputs[alpha -
+                                                 1]["number_of_evaluations"]
                 if solver.display:
                     print(
                         "alpha = %i : rank = %i, nb_eval = %i"
@@ -479,7 +486,8 @@ class TensorPrincipalComponentAnalysis:
                     alpha_grids[S_alpha - 1]
                 ).array()
 
-                tol_alpha = np.min((solver.tol[alpha - 1], solver.max_rank[alpha - 1]))
+                tol_alpha = np.min(
+                    (solver.tol[alpha - 1], solver.max_rank[alpha - 1]))
                 pc_alpha, outputs[alpha - 1] = solver.alpha_principal_components(
                     fun,
                     shape,
@@ -503,7 +511,8 @@ class TensorPrincipalComponentAnalysis:
                 I_alpha = tensap.magic_indices(B_alpha)[0]
                 alpha_grids[alpha - 1] = alpha_grids[alpha - 1][I_alpha, :]
                 alpha_basis[alpha - 1] = B_alpha[I_alpha, :]
-                number_of_evaluations += outputs[alpha - 1]["number_of_evaluations"]
+                number_of_evaluations += outputs[alpha -
+                                                 1]["number_of_evaluations"]
                 if solver.display:
                     print(
                         "alpha = %i : rank = %i, nb_eval = %i"
@@ -523,7 +532,8 @@ class TensorPrincipalComponentAnalysis:
         shape_alpha = [x.shape[1] for x in alpha_basis[S_alpha - 1]]
         ind = [np.nonzero(tree.dims[alpha - 1] == x)[0][0] for x in range(d)]
         tensors[alpha - 1] = tensap.FullTensor(
-            np.linalg.solve(B_alpha, fun(I_alpha[:, ind])), len(S_alpha), shape_alpha
+            np.linalg.solve(B_alpha, fun(I_alpha[:, ind])), len(
+                S_alpha), shape_alpha
         )
         alpha_grids[alpha - 1] = I_alpha
         number_of_evaluations += I_alpha.shape[0]

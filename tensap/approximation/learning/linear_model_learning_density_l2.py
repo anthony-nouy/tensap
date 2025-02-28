@@ -125,7 +125,8 @@ class LinearModelLearningDensityL2(tensap.LinearModelLearning):
                     (N**2 - 2 * N) / (N - 1) ** 2 * np.linalg.norm(sol) ** 2
                     + 1 / (N - 1) ** 2 * np.linalg.norm(b) ** 2
                     - 2 / (N - 1) ** 2 * np.sum(np.matmul(A, b))
-                    + (2 * N - 1) / (N * (N - 1) ** 2) * np.sum(np.ravel(A) ** 2)
+                    + (2 * N - 1) / (N * (N - 1) ** 2) *
+                    np.sum(np.ravel(A) ** 2)
                     - 2 / (N - 1) * np.sum(np.matmul(A, sol))
                     + 2 * np.sum(sol * b)
                 )
@@ -167,10 +168,12 @@ class LinearModelLearningDensityL2(tensap.LinearModelLearning):
 
         if "included_coefficients" in self.regularization_options:
             incl_coef = self.regularization_options["included_coefficients"]
-            list_sort = list_sort[np.logical_not(np.in1d(list_sort, incl_coef))]
+            list_sort = list_sort[np.logical_not(
+                np.in1d(list_sort, incl_coef))]
 
             sol_incl_coef = np.array(sol_standard)
-            sol_incl_coef[np.setdiff1d(range(len(sol_incl_coef)), incl_coef)] = 0
+            sol_incl_coef[np.setdiff1d(
+                range(len(sol_incl_coef)), incl_coef)] = 0
 
             if np.size(b) == 0:
                 err_incl_coef = (-(N**2)) / (1 - N) ** 2 * np.linalg.norm(
@@ -181,9 +184,11 @@ class LinearModelLearningDensityL2(tensap.LinearModelLearning):
             else:
                 b_incl_coef = b[incl_coef]
                 err_incl_coef = (
-                    (N**2 - 2 * N) / (N - 1) ** 2 * np.linalg.norm(sol_incl_coef) ** 2
+                    (N**2 - 2 * N) / (N - 1) ** 2 *
+                    np.linalg.norm(sol_incl_coef) ** 2
                     + 1 / (N - 1) ** 2 * np.linalg.norm(b_incl_coef) ** 2
-                    - 2 / (N - 1) ** 2 * np.sum(np.matmul(A[:, incl_coef], b_incl_coef))
+                    - 2 / (N - 1) ** 2 *
+                    np.sum(np.matmul(A[:, incl_coef], b_incl_coef))
                     + (2 * N - 1)
                     / (N * (N - 1) ** 2)
                     * np.sum(np.ravel(A_square_sum)[incl_coef])
@@ -210,7 +215,8 @@ class LinearModelLearningDensityL2(tensap.LinearModelLearning):
                 ) / (N * (N - 1) ** 2) * np.sum(np.ravel(A_square_sum)[ind])
             else:
                 err[i] = (
-                    (N**2 - 2 * N) / (N - 1) ** 2 * np.linalg.norm(sol_red) ** 2
+                    (N**2 - 2 * N) / (N - 1) ** 2 *
+                    np.linalg.norm(sol_red) ** 2
                     + 1 / (N - 1) ** 2 * np.linalg.norm(b[ind]) ** 2
                     - 2 / (N - 1) ** 2 * np.sum(np.matmul(A[:, ind], b[ind]))
                     + (2 * N - 1)
@@ -339,7 +345,8 @@ class LinearModelLearningDensityL2(tensap.LinearModelLearning):
             else:
                 b_red = b[ind]
                 err[i] = (
-                    (N**2 - 2 * N) / (N - 1) ** 2 * np.linalg.norm(sol_red) ** 2
+                    (N**2 - 2 * N) / (N - 1) ** 2 *
+                    np.linalg.norm(sol_red) ** 2
                     + 1 / (N - 1) ** 2 * np.linalg.norm(b_red) ** 2
                     - 2 / (N - 1) ** 2 * np.sum(A_sum[ind] * b_red)
                     + (2 * N - 1)
@@ -356,7 +363,7 @@ class LinearModelLearningDensityL2(tensap.LinearModelLearning):
                 and err[i] > 2 * err[i - 1]
             ):
                 print("stop_if_error_increase")
-                err[i + 1 :] = np.inf
+                err[i + 1:] = np.inf
 
         ind = np.argmin(err)
 

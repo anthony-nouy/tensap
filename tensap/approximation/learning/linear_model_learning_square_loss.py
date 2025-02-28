@@ -182,13 +182,17 @@ class LinearModelLearningSquareLoss(tensap.LinearModelLearning):
             try:
                 sol = np.linalg.solve(B, np.matmul(np.transpose(A), y))
             except Exception:
-                sol = np.linalg.lstsq(B, np.matmul(np.transpose(A), y), None)[0]
+                sol = np.linalg.lstsq(
+                    B, np.matmul(
+                        np.transpose(A), y), None)[0]
         elif self.linear_solver == "qr":
             q_A, r_A = np.linalg.qr(A)
             try:
                 sol = np.linalg.solve(r_A, np.matmul(np.transpose(q_A), y))
             except Exception:
-                sol = np.linalg.lstsq(r_A, np.matmul(np.transpose(q_A), y), None)[0]
+                sol = np.linalg.lstsq(
+                    r_A, np.matmul(
+                        np.transpose(q_A), y), None)[0]
 
         if self.error_estimation:
             second_moment = np.var(y, 0) + np.mean(y, 0) ** 2
@@ -252,12 +256,14 @@ class LinearModelLearningSquareLoss(tensap.LinearModelLearning):
             solpath = np.atleast_2d(solpath)
             sol = np.matmul(diags(1 / D), solpath[:, -1])
         elif self.regularization_type == "l1":
-            reg = linear_model.LassoLars(copy_X=True, fit_intercept=False, **options)
+            reg = linear_model.LassoLars(
+                copy_X=True, fit_intercept=False, **options)
             reg.fit(A, y)
             sol = reg.coef_
             solpath = reg.coef_path_
         elif self.regularization_type == "l2":
-            reg = linear_model.Ridge(copy_X=True, fit_intercept=False, **options)
+            reg = linear_model.Ridge(
+                copy_X=True, fit_intercept=False, **options)
             reg.fit(A, y)
             sol = reg.coef_
         else:
@@ -410,7 +416,8 @@ class LinearModelLearningSquareLoss(tensap.LinearModelLearning):
             if self.linear_solver == "qr":
                 q_A, r_A = np.linalg.qr(A_red)
                 try:
-                    sol_red = np.linalg.solve(r_A, np.matmul(np.transpose(q_A), y))
+                    sol_red = np.linalg.solve(
+                        r_A, np.matmul(np.transpose(q_A), y))
                 except Exception:
                     sol_red = np.linalg.lstsq(
                         r_A, np.matmul(np.transpose(q_A), y), None
@@ -421,9 +428,11 @@ class LinearModelLearningSquareLoss(tensap.LinearModelLearning):
                 )
             elif self.linear_solver == "solve":
                 try:
-                    C_red = np.linalg.inv(np.matmul(np.transpose(A_red), A_red))
+                    C_red = np.linalg.inv(
+                        np.matmul(np.transpose(A_red), A_red))
                 except Exception:
-                    C_red = np.linalg.pinv(np.matmul(np.transpose(A_red), A_red))
+                    C_red = np.linalg.pinv(
+                        np.matmul(np.transpose(A_red), A_red))
 
                 sol_red = np.matmul(C_red, np.matmul(np.transpose(A_red), y))
                 err[i], delta[:, i] = self._compute_cv_error(
@@ -438,8 +447,8 @@ class LinearModelLearningSquareLoss(tensap.LinearModelLearning):
                 and err[i] > 2 * err[i - 1]
             ):
                 print("stop_if_error_increase")
-                err[i + 1 :] = np.inf
-                delta[:, i + 1 :] = np.inf
+                err[i + 1:] = np.inf
+                delta[:, i + 1:] = np.inf
 
         ind = np.argmin(err)
 
@@ -456,7 +465,8 @@ class LinearModelLearningSquareLoss(tensap.LinearModelLearning):
 
         return sol[:, ind], output
 
-    def _compute_cv_error(self, y, second_moment, A, sol, linear_solver=None, *args):
+    def _compute_cv_error(self, y, second_moment, A, sol,
+                          linear_solver=None, *args):
         """
         Relative cross-validation error estimates and residuals.
 
@@ -521,7 +531,8 @@ class LinearModelLearningSquareLoss(tensap.LinearModelLearning):
 
         if self.error_estimation_type == "k_fold":
             if "number_of_folds" not in self.error_estimation_options:
-                self.error_estimation_options["number_of_folds"] = np.min([10, N])
+                self.error_estimation_options["number_of_folds"] = np.min([
+                                                                          10, N])
             if self.error_estimation_options["number_of_folds"] == N:
                 self.error_estimation_type = "leave_out"
 
@@ -569,7 +580,8 @@ class LinearModelLearningSquareLoss(tensap.LinearModelLearning):
         elif self.error_estimation_type == "k_fold":
             from sklearn.model_selection import KFold
 
-            n_folds = np.min((N, self.error_estimation_options["number_of_folds"]))
+            n_folds = np.min(
+                (N, self.error_estimation_options["number_of_folds"]))
 
             if N * (1 - 1 / n_folds) < P:
                 # print('Not enough samples for performing OLS on the ' +
@@ -614,7 +626,8 @@ class LinearModelLearningSquareLoss(tensap.LinearModelLearning):
             delta = np.squeeze(delta)
         else:
             raise NotImplementedError(
-                "Cross-validation {} not implemented".format(self.error_estimation_type)
+                "Cross-validation {} not implemented".format(
+                    self.error_estimation_type)
             )
 
         # Compute the relative cross-validation error
@@ -624,7 +637,8 @@ class LinearModelLearningSquareLoss(tensap.LinearModelLearning):
         # sensitivity of the error estimate to overfitting (the non-corrected
         # cross-validation error estimate underpredicts the error in L^2-norm
         # (generalization error))
-        if linear_solver == "qr" and 1 / np.linalg.cond(r_A) < np.finfo(float).eps:
+        if linear_solver == "qr" and 1 / \
+                np.linalg.cond(r_A) < np.finfo(float).eps:
             pass
         elif self.error_estimation_options["correction"]:
             if N != P:
@@ -644,7 +658,8 @@ class LinearModelLearningSquareLoss(tensap.LinearModelLearning):
                     corr = (N / (N - P)) * (
                         1
                         + np.trace(
-                            np.matmul(C, self.error_estimation_options["gram_matrix"])
+                            np.matmul(
+                                C, self.error_estimation_options["gram_matrix"])
                         )
                     )
                 else:

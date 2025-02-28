@@ -86,7 +86,8 @@ class SparseTensor:
                     np.hstack([np.reshape(x, [-1, 1]) for x in rep])
                 )
             elif np.all(
-                [hasattr(data, x) for x in ["data", "order", "shape", "indices"]]
+                [hasattr(data, x)
+                 for x in ["data", "order", "shape", "indices"]]
             ):
                 self.data = data.data
                 self.order = data.order
@@ -305,13 +306,15 @@ class SparseTensor:
         """
         if dims is None:
             assert isinstance(vectors, list), "vectors should be a list."
-            assert len(vectors) == self.order, "len(vectors) must be self.order."
+            assert len(
+                vectors) == self.order, "len(vectors) must be self.order."
             dims = np.arange(self.order)
         else:
             dims = np.array(dims)
             if not isinstance(vectors, list):
                 vectors = [vectors]
-            assert len(vectors) == dims.size, "len(vectors) must be equal to dims.size."
+            assert len(
+                vectors) == dims.size, "len(vectors) must be equal to dims.size."
 
         vectors = [np.ravel(x) for x in vectors]
 
@@ -372,7 +375,8 @@ class SparseTensor:
             assert isinstance(
                 matrices, (list, np.ndarray)
             ), "matrices should be a list or a numpy.ndarray."
-            assert len(matrices) == self.order, "len(matrices) must be self.order."
+            assert len(
+                matrices) == self.order, "len(matrices) must be self.order."
             dims = range(self.order)
         else:
             dims = np.atleast_1d(dims)
@@ -385,7 +389,8 @@ class SparseTensor:
         k = 0
         out = deepcopy(self)
         for mu in dims:
-            perm_dims = np.concatenate(([mu], np.setdiff1d(np.arange(out.order), mu)))
+            perm_dims = np.concatenate(
+                ([mu], np.setdiff1d(np.arange(out.order), mu)))
             out = out.transpose(perm_dims)
             if out.order == 1:
                 out.shape[1] = 1
@@ -524,7 +529,8 @@ class SparseTensor:
             matrices = [matrices[:, i] for i in range(np.shape(matrices)[1])]
 
         if dims is None:
-            assert len(matrices) == self.order, "len(matrices) must be self.order."
+            assert len(
+                matrices) == self.order, "len(matrices) must be self.order."
             dims = range(self.order)
         else:
             dims = np.array(dims)
@@ -532,7 +538,8 @@ class SparseTensor:
                 len(matrices) == dims.size
             ), "len(matrices) must be equal to dims.size."
 
-        matrices = [tensap.FullTensor(np.diag(np.reshape(x, [-1]))) for x in matrices]
+        matrices = [tensap.FullTensor(
+            np.diag(np.reshape(x, [-1]))) for x in matrices]
         return self.tensor_matrix_product(matrices, dims)
 
     def dot(self, y):
@@ -737,7 +744,8 @@ class SparseTensor:
             assert np.all(
                 [self.shape[x] == self.shape[dims[0]] for x in dims]
             ), "The shapes of the tensor in dimensions dims should be equal."
-            ind = np.repeat(np.reshape(np.arange(self.shape[0]), [-1, 1]), dims.size, 1)
+            ind = np.repeat(np.reshape(
+                np.arange(self.shape[0]), [-1, 1]), dims.size, 1)
             data = self.eval_at_indices(ind, dims)
         return data
 

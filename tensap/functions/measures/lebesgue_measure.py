@@ -64,7 +64,8 @@ class LebesgueMeasure(tensap.Measure):
         self.b = b
 
     def __repr__(self):
-        return ("<{} on [{}, {}]>").format(self.__class__.__name__, self.a, self.b)
+        return ("<{} on [{}, {}]>").format(
+            self.__class__.__name__, self.a, self.b)
 
     def shift(self, m, s):
         """
@@ -127,7 +128,8 @@ class LebesgueMeasure(tensap.Measure):
         return self.support()
 
     def __eq__(self, L2):
-        if not (isinstance(self, LebesgueMeasure) and isinstance(L2, LebesgueMeasure)):
+        if not (isinstance(self, LebesgueMeasure)
+                and isinstance(L2, LebesgueMeasure)):
             is_equal = False
         else:
             is_equal = True

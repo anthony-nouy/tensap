@@ -38,7 +38,8 @@ TREE.plot_dims(title="Nodes dimensions")
 # %% TreeBasedTensor: random generation
 TENSOR = tensap.TreeBasedTensor.rand(TREE)
 TENSOR.plot(title="Active nodes")
-TENSOR.plot([x.storage() for x in TENSOR.tensors], title="Tensors' storage complexity")
+TENSOR.plot([x.storage() for x in TENSOR.tensors],
+            title="Tensors' storage complexity")
 TENSOR.plot(TENSOR.representation_rank, title="Representation ranks")
 
 # %% Truncation of a TreeBasedTensor with prescribed rank
@@ -142,7 +143,8 @@ print("norm of T1*T2", Ttimes.norm())
 print("\nSum of T1 along dimensions:\n-------------------------")
 print("dimensions of T1        : ", T1.shape)
 print("dimensions of T1.reduce_sum(0) : ", T1.reduce_sum(0).shape)
-print("dimensions of T1.reduce_sum([2,5,7]) : ", T1.reduce_sum([2, 5, 7]).shape)
+print("dimensions of T1.reduce_sum([2,5,7]) : ",
+      T1.reduce_sum([2, 5, 7]).shape)
 print("sum of all entries = ", T1.reduce_sum())
 
 
@@ -162,7 +164,8 @@ T3 = T1.change_root(num3)
 T3.plot(title="Nodes indices with root" + str(num3))
 T3bis = T2.change_root(num3)
 T3bis.plot(
-    title="Nodes indices with root " + str(num3) + " from format with root " + str(num2)
+    title="Nodes indices with root " +
+    str(num3) + " from format with root " + str(num2)
 )
 print((T3 - T3bis).norm() / (T3.norm() + T3bis.norm()) * 2)
 

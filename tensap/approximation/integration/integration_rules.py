@@ -158,8 +158,11 @@ class IntegrationRule:
         n = np.ravel(n)  # Ensure p is 1D
 
         for k in range(knots.size - 1):
-            supp = knots[k : k + 2]
-            g = tensap.LebesgueMeasure(supp[0], supp[1]).gauss_integration_rule(n[k])
+            supp = knots[k: k + 2]
+            g = tensap.LebesgueMeasure(
+                supp[0],
+                supp[1]).gauss_integration_rule(
+                n[k])
             x = np.append(x, g.points)
             w = np.append(w, g.weights)
 
@@ -242,7 +245,9 @@ class FullTensorProductIntegrationRule(IntegrationRule):
         if not isinstance(knots, tuple):
             raise ValueError("must provide a tuple of length d.")
 
-        g = [tensap.IntegrationRule.gauss_legendre_composite(x, n) for x in knots]
+        g = [
+            tensap.IntegrationRule.gauss_legendre_composite(
+                x, n) for x in knots]
         points = [x.points for x in g]
         weights = [x.weights for x in g]
 

@@ -79,7 +79,12 @@ class CanonicalTensor:
 
     def __add__(self, arg):
         core = np.concatenate((self.core.data, arg.core.data))
-        space = [np.hstack((x, y)) for x, y in zip(list(self.space), list(arg.space))]
+        space = [
+            np.hstack(
+                (x, y)) for x, y in zip(
+                list(
+                    self.space), list(
+                    arg.space))]
         return CanonicalTensor(space, core)
 
     def __radd__(self, arg):
@@ -190,13 +195,15 @@ class CanonicalTensor:
         """
         if dims is None:
             assert isinstance(vectors, list), "vectors should be a list."
-            assert len(vectors) == self.order, "len(vectors) must be self.order."
+            assert len(
+                vectors) == self.order, "len(vectors) must be self.order."
             dims = np.arange(self.order)
         else:
             dims = np.atleast_1d(dims)
             if not isinstance(vectors, list):
                 vectors = [vectors]
-            assert len(vectors) == dims.size, "len(vectors) must be equal to dims.size."
+            assert len(
+                vectors) == dims.size, "len(vectors) must be equal to dims.size."
 
         vectors = [np.reshape(x, [1, -1]) for x in vectors]
         return self.tensor_matrix_product(vectors, dims).squeeze(dims.tolist())
@@ -268,7 +275,8 @@ class CanonicalTensor:
             assert isinstance(
                 matrices, (list, np.ndarray)
             ), "matrices should be a list or a numpy.ndarray."
-            assert len(matrices) == self.order, "len(matrices) must be self.order."
+            assert len(
+                matrices) == self.order, "len(matrices) must be self.order."
             dims = range(self.order)
         else:
             dims = np.atleast_1d(dims)
@@ -538,7 +546,8 @@ class CanonicalTensor:
             ch = tree.children(nod)
             if tree.parent(nod) == 0:
                 order = ch.size
-                tensors[nod - 1] = tensap.FullTensor.diag(self.core.data, order)
+                tensors[nod -
+                        1] = tensap.FullTensor.diag(self.core.data, order)
             else:
                 order = ch.size + 1
                 tensors[nod - 1] = tensap.FullTensor.diag(np.ones(rank), order)
@@ -636,7 +645,8 @@ class CanonicalTensor:
             The created tensor.
 
         """
-        return CanonicalTensor.create(lambda x: np.random.rand(*x), rank, shape)
+        return CanonicalTensor.create(
+            lambda x: np.random.rand(*x), rank, shape)
 
     @staticmethod
     def randn(rank, shape):
@@ -657,4 +667,5 @@ class CanonicalTensor:
             The created tensor.
 
         """
-        return CanonicalTensor.create(lambda x: np.random.randn(*x), rank, shape)
+        return CanonicalTensor.create(
+            lambda x: np.random.randn(*x), rank, shape)

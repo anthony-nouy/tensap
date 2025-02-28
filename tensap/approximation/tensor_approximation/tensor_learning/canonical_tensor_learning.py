@@ -94,7 +94,10 @@ class CanonicalTensorLearning(tensap.TensorLearning):
             or self.initialization_type == "mean_randomized"
         ):
             if not isinstance(self.training_data, list) or (
-                isinstance(self.training_data, list) and len(self.training_data) == 1
+                isinstance(
+                    self.training_data,
+                    list) and len(
+                    self.training_data) == 1
             ):
                 raise NotImplementedError(
                     "Initialization type not "
@@ -146,7 +149,8 @@ class CanonicalTensorLearning(tensap.TensorLearning):
             s_ini.linear_model_learning.error_estimation = False
             s_ini.test_error = False
             s_ini.display = False
-            if isinstance(s_ini.training_data, list) and len(s_ini.training_data) == 2:
+            if isinstance(s_ini.training_data, list) and len(
+                    s_ini.training_data) == 2:
                 s_ini.training_data[1] -= fx
             elif isinstance(s_ini.loss_function, tensap.DensityL2LossFunction):
                 s_ini.training_data = [s_ini.training_data, fx]
@@ -191,7 +195,8 @@ class CanonicalTensorLearning(tensap.TensorLearning):
             )
             strategy[strat_i, :] = np.array(strategy)
             strategy = np.concatenate(
-                (np.reshape(strategy, -1, order="F"), [self._number_of_parameters])
+                (np.reshape(strategy, -1, order="F"),
+                 [self._number_of_parameters])
             )
         return strategy
 
@@ -269,12 +274,14 @@ class CanonicalTensorLearning(tensap.TensorLearning):
     def set_parameter(self, f, mu, coef):
         if mu != self._number_of_parameters:
             if not self.alternating_minimization_parameters["one_by_one_factor"]:
-                coef = np.reshape(coef, [f.tensor.shape[mu - 1], self.rank], order="F")
+                coef = np.reshape(
+                    coef, [f.tensor.shape[mu - 1], self.rank], order="F")
                 norm_coef = np.sqrt(np.sum(coef**2, 0))
                 ind = norm_coef != 0
                 if not np.all(ind):
                     print("Degenerate case: one factor is zero.")
-                coef[:, ind] = np.matmul(coef[:, ind], np.diag(1 / norm_coef[ind]))
+                coef[:, ind] = np.matmul(
+                    coef[:, ind], np.diag(1 / norm_coef[ind]))
                 f.tensor.space[mu - 1] = coef
                 f.tensor.core.data = np.ravel(norm_coef)
 
@@ -360,7 +367,8 @@ class CanonicalTensorLearning(tensap.TensorLearning):
             "identical_for_all_parameters"
         ] and not isinstance(self.linear_model_learning, (list, np.ndarray)):
             self.linear_model_learning = list(
-                map(deepcopy, [self.linear_model_learning] * self._number_of_parameters)
+                map(deepcopy, [self.linear_model_learning]
+                    * self._number_of_parameters)
             )
         elif (
             isinstance(self.linear_model_learning, (list, np.ndarray))

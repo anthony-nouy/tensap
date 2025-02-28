@@ -206,7 +206,8 @@ class MultiIndices:
         else:
             norm = np.power(
                 np.sum(
-                    (self.array[k, :] * np.tile(np.ravel(w), (np.size(k), 1))) ** p,
+                    (self.array[k, :] *
+                     np.tile(np.ravel(w), (np.size(k), 1))) ** p,
                     axis=1,
                 ),
                 1 / p,
@@ -339,7 +340,8 @@ class MultiIndices:
 
         """
         if isinstance(J, MultiIndices):
-            ind = np.nonzero(np.all(self.array == J.array[:, np.newaxis], axis=2))[1]
+            ind = np.nonzero(
+                np.all(self.array == J.array[:, np.newaxis], axis=2))[1]
         else:
             ind = J
         array = self.array[np.setdiff1d(range(self.cardinal()), ind), :]
@@ -384,7 +386,8 @@ class MultiIndices:
             The indices of the multi-indices in J common to self and J.
 
         """
-        ind_J, ind_I = np.nonzero(np.all(self.array == J.array[:, np.newaxis], axis=2))
+        ind_J, ind_I = np.nonzero(
+            np.all(self.array == J.array[:, np.newaxis], axis=2))
 
         return MultiIndices(self.array[ind_I, :]), ind_I, ind_J
 
@@ -520,8 +523,11 @@ class MultiIndices:
         neighbours = np.tile(
             np.transpose(np.expand_dims(self.array, 2), [0, 2, 1]), [1, dim, 1]
         ) + np.tile(np.transpose(np.expand_dims(np.eye(dim), 2), [2, 0, 1]), [n, 1, 1])
-        neighbours = np.reshape(neighbours, [n * dim, dim], order="F").astype(int)
-        ok = np.any(np.all(neighbours == self.array[:, np.newaxis], axis=2), axis=0)
+        neighbours = np.reshape(
+            neighbours, [
+                n * dim, dim], order="F").astype(int)
+        ok = np.any(
+            np.all(neighbours == self.array[:, np.newaxis], axis=2), axis=0)
         ok = np.reshape(ok, [n, dim], order="F")
         ind_max = self.array[np.logical_not(np.any(ok, axis=1)), :]
         return MultiIndices(ind_max.astype(int))
@@ -543,12 +549,15 @@ class MultiIndices:
         neighbours = np.tile(
             np.transpose(np.expand_dims(self.array, 2), [0, 2, 1]), [1, dim, 1]
         ) + np.tile(np.transpose(np.expand_dims(np.eye(dim), 2), [2, 0, 1]), [n, 1, 1])
-        neighbours = np.reshape(neighbours, [n * dim, dim], order="F").astype(int)
+        neighbours = np.reshape(
+            neighbours, [
+                n * dim, dim], order="F").astype(int)
 
         ind_marg = np.nonzero(np.all(neighbours == self.array[:, np.newaxis], axis=2))[
             1
         ]
-        ind_marg = neighbours[np.setdiff1d(range(neighbours.shape[0]), ind_marg), :]
+        ind_marg = neighbours[np.setdiff1d(
+            range(neighbours.shape[0]), ind_marg), :]
 
         ind = np.unique(ind_marg, axis=0, return_index=True)[1]
         ind_marg = np.array([ind_marg[index, :] for index in sorted(ind)])
@@ -571,16 +580,23 @@ class MultiIndices:
         I_marg = self.get_margin()
         dim = self.ndim()
         neighbours = np.tile(
-            np.transpose(np.expand_dims(I_marg.array, 2), [0, 2, 1]), [1, dim, 1]
+            np.transpose(
+                np.expand_dims(
+                    I_marg.array, 2), [
+                    0, 2, 1]), [
+                1, dim, 1]
         ) - np.tile(
             np.transpose(np.expand_dims(np.eye(dim), 2), [2, 0, 1]),
             [I_marg.cardinal(), 1, 1],
         )
 
         n = neighbours.shape[0]
-        neighbours = np.reshape(neighbours, [n * dim, dim], order="F").astype(int)
+        neighbours = np.reshape(
+            neighbours, [
+                n * dim, dim], order="F").astype(int)
 
-        ok = np.any(np.all(neighbours == self.array[:, np.newaxis], axis=2), axis=0)
+        ok = np.any(
+            np.all(neighbours == self.array[:, np.newaxis], axis=2), axis=0)
         is_out = np.any(neighbours < 0, axis=1)
         ok = np.logical_or(ok, is_out)
         ok = np.reshape(ok, [n, dim], order="F")
