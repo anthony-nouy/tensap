@@ -90,9 +90,11 @@ class EmpiricalRandomVariable(tensap.RandomVariable):
 
         # If Y is the standard random variable associated to X
         if (
-            isinstance(Y, (EmpiricalRandomVariable, tensap.EmpiricalRandomVariable))
+            isinstance(Y, (EmpiricalRandomVariable,
+                       tensap.EmpiricalRandomVariable))
             and np.linalg.norm(
-                Y.sample - (self.sample - np.mean(self.sample)) / np.std(self.sample)
+                Y.sample - (self.sample - np.mean(self.sample)) /
+                np.std(self.sample)
             )
             / np.linalg.norm(Y.sample)
             < np.finfo(float).eps
@@ -139,7 +141,8 @@ class EmpiricalRandomVariable(tensap.RandomVariable):
         """
         G = tensap.NormalRandomVariable().gauss_integration_rule(int(n))
         xi = self.sample
-        weights = np.tile(np.reshape(G.weights, [1, -1]), (xi.size, 1)) / xi.size
+        weights = np.tile(np.reshape(
+            G.weights, [1, -1]), (xi.size, 1)) / xi.size
 
         points = self.bandwidth * np.tile(
             np.reshape(G.points, [1, -1]), (xi.size, 1)

@@ -53,14 +53,16 @@ TPCA.pca_adaptive_sampling = False
 print("\nPrescribed tolerance")
 TPCA.tol = TOL
 SUB_BASES, OUTPUTS = TPCA.hopca(fun, SIZE)
-print("Number of evaluations = \n%s" % [x["number_of_evaluations"] for x in OUTPUTS])
+print("Number of evaluations = \n%s" %
+      [x["number_of_evaluations"] for x in OUTPUTS])
 print("Ranks {1, ..., d} = \n%s" % [x.shape[1] for x in SUB_BASES])
 
 print("\nPrescribed ranks")
 TPCA.tol = np.inf
 TPCA.max_rank = np.random.randint(1, 5, D)
 SUB_BASES, OUTPUTS = TPCA.hopca(fun, SIZE)
-print("Number of evaluations = \n%s" % [x["number_of_evaluations"] for x in OUTPUTS])
+print("Number of evaluations = \n%s" %
+      [x["number_of_evaluations"] for x in OUTPUTS])
 print("Ranks {1, ..., d} = \n%s" % [x.shape[1] for x in SUB_BASES])
 
 # %% Approximation in Tucker Format
@@ -80,7 +82,8 @@ print("Ranks = %s" % F.ranks[F.tree.dim2ind - 1])
 X_TEST = X.random(1e4)
 F_X_TEST = F.eval_at_indices(X_TEST)
 Y_TEST = fun(X_TEST)
-print("Error = %2.5e" % (np.linalg.norm(Y_TEST - F_X_TEST) / np.linalg.norm(Y_TEST)))
+print("Error = %2.5e" %
+      (np.linalg.norm(Y_TEST - F_X_TEST) / np.linalg.norm(Y_TEST)))
 
 print("\nPrescribed tolerance")
 TPCA.tol = TOL
@@ -92,7 +95,8 @@ print("Ranks = %s" % F.ranks[F.tree.dim2ind - 1])
 X_TEST = X.random(1e4)
 F_X_TEST = F.eval_at_indices(X_TEST)
 Y_TEST = fun(X_TEST)
-print("Error = %2.5e" % (np.linalg.norm(Y_TEST - F_X_TEST) / np.linalg.norm(Y_TEST)))
+print("Error = %2.5e" %
+      (np.linalg.norm(Y_TEST - F_X_TEST) / np.linalg.norm(Y_TEST)))
 
 # %% Approximation in tree based format
 print("\n--- Approximation in tree based format ---")
@@ -114,7 +118,8 @@ print("Ranks = %s" % F.ranks)
 X_TEST = X.random(1e3)
 F_X_TEST = F.eval_at_indices(X_TEST)
 Y_TEST = fun(X_TEST)
-print("Error = %2.5e" % (np.linalg.norm(Y_TEST - F_X_TEST) / np.linalg.norm(Y_TEST)))
+print("Error = %2.5e" %
+      (np.linalg.norm(Y_TEST - F_X_TEST) / np.linalg.norm(Y_TEST)))
 
 print("\nPrescribed tolerance")
 TPCA.tol = TOL
@@ -127,7 +132,8 @@ print("Ranks = %s" % F.ranks)
 X_TEST = X.random(1e3)
 F_X_TEST = F.eval_at_indices(X_TEST)
 Y_TEST = fun(X_TEST)
-print("Error = %2.5e" % (np.linalg.norm(Y_TEST - F_X_TEST) / np.linalg.norm(Y_TEST)))
+print("Error = %2.5e" %
+      (np.linalg.norm(Y_TEST - F_X_TEST) / np.linalg.norm(Y_TEST)))
 
 print("\nPrescribed tolerance (adaptive sampling)")
 TPCA.tol = TOL
@@ -142,7 +148,8 @@ print("Ranks = %s" % F.ranks)
 X_TEST = X.random(1e3)
 F_X_TEST = F.eval_at_indices(X_TEST)
 Y_TEST = fun(X_TEST)
-print("Error = %2.5e" % (np.linalg.norm(Y_TEST - F_X_TEST) / np.linalg.norm(Y_TEST)))
+print("Error = %2.5e" %
+      (np.linalg.norm(Y_TEST - F_X_TEST) / np.linalg.norm(Y_TEST)))
 
 # %% Approximation in Tensor Train format
 print("\n--- Approximation in tensor train format ---")
@@ -162,7 +169,8 @@ print("TT-ranks = %s" % TT_RANKS[:-1])
 X_TEST = X.random(1e3)
 F_X_TEST = F.eval_at_indices(X_TEST)
 Y_TEST = fun(X_TEST)
-print("Error = %2.5e" % (np.linalg.norm(Y_TEST - F_X_TEST) / np.linalg.norm(Y_TEST)))
+print("Error = %2.5e" %
+      (np.linalg.norm(Y_TEST - F_X_TEST) / np.linalg.norm(Y_TEST)))
 
 print("\nPrescribed ranks")
 TPCA.tol = np.inf
@@ -177,7 +185,8 @@ print("TT-ranks = %s" % TT_RANKS[:-1])
 X_TEST = X.random(1e3)
 F_X_TEST = F.eval_at_indices(X_TEST)
 Y_TEST = fun(X_TEST)
-print("Error = %2.5e" % (np.linalg.norm(Y_TEST - F_X_TEST) / np.linalg.norm(Y_TEST)))
+print("Error = %2.5e" %
+      (np.linalg.norm(Y_TEST - F_X_TEST) / np.linalg.norm(Y_TEST)))
 
 # %% Comparison of different subsampling schemes
 X_TEST = X.random(1e3)
@@ -194,13 +203,15 @@ print("random:")
 TPCA.subsampling = "random"
 F, OUTPUT = TPCA.tt_approximation(fun, SIZE)
 F_X_TEST = F.eval_at_indices(X_TEST)
-print("Error = %2.5e" % (np.linalg.norm(Y_TEST - F_X_TEST) / np.linalg.norm(Y_TEST)))
+print("Error = %2.5e" %
+      (np.linalg.norm(Y_TEST - F_X_TEST) / np.linalg.norm(Y_TEST)))
 
 print("eim:")
 TPCA.subsampling = "eim"
 F, OUTPUT = TPCA.tt_approximation(fun, SIZE)
 F_X_TEST = F.eval_at_indices(X_TEST)
-print("Error = %2.5e" % (np.linalg.norm(Y_TEST - F_X_TEST) / np.linalg.norm(Y_TEST)))
+print("Error = %2.5e" %
+      (np.linalg.norm(Y_TEST - F_X_TEST) / np.linalg.norm(Y_TEST)))
 
 # print("maxvol:")
 # TPCA.subsampling = "maxvol"

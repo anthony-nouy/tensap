@@ -77,7 +77,8 @@ class FunctionalBases:
         self.bases = np.atleast_1d(bases)
         self.measure = measure
         if not np.all([isinstance(x, tensap.FunctionalBasis) for x in self.bases]):
-            raise ValueError("Bases must contain objects of type FunctionalBasis")
+            raise ValueError(
+                "Bases must contain objects of type FunctionalBasis")
 
     def __repr__(self):
         return ("<{}:{n}" + "{t}bases = {},{n}" + "{t}measure = {}>").format(
@@ -327,7 +328,8 @@ class FunctionalBases:
             ind = np.atleast_1d(self.ndim())
             x = np.hsplit(x, np.cumsum(ind[dims])[:-1])
 
-        out = [y.eval_derivative(m, z) for y, m, z in zip(self.bases[dims], n, x)]
+        out = [y.eval_derivative(m, z)
+               for y, m, z in zip(self.bases[dims], n, x)]
         if nargout == 1:
             return out
         return out, x

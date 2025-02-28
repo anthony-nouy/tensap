@@ -79,5 +79,6 @@ F, OUTPUT = SOLVER.solve()
 
 TEST_ERROR = SOLVER.loss_function.test_error(F, [X_TEST, Y_TEST])
 print(
-    "\nCanonical rank = %i, test error = %2.5e" % (len(F.tensor.core.data), TEST_ERROR)
+    "\nCanonical rank = %i, test error = %2.5e" % (
+        len(F.tensor.core.data), TEST_ERROR)
 )

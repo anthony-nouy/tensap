@@ -385,7 +385,8 @@ class FunctionalBasis:
         """
         if x is None:
             if isinstance(
-                self.measure, (tensap.DiscreteMeasure, tensap.DiscreteRandomVariable)
+                self.measure, (tensap.DiscreteMeasure,
+                               tensap.DiscreteRandomVariable)
             ):
                 x = self.measure.values
             else:

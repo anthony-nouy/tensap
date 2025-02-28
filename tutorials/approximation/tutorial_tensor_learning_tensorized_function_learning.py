@@ -57,7 +57,8 @@ TENSORIZED_FUN.fun.evaluation_at_multiple_points = True
 
 # %% Approximation basis
 DEGREE = 5
-H = tensap.PolynomialFunctionalBasis(Y.orthonormal_polynomials(), range(DEGREE + 1))
+H = tensap.PolynomialFunctionalBasis(
+    Y.orthonormal_polynomials(), range(DEGREE + 1))
 BASES = T.tensorized_function_functional_bases(H)
 
 # %% Training and test samples

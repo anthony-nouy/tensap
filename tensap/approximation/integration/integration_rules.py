@@ -112,7 +112,7 @@ class IntegrationRule:
 
         Parameters
         ----------
-        measure : tensap.Measure 
+        measure : tensap.Measure
             The measure associated to which the integration
             rule is to be computed.
         *args : misc
@@ -159,7 +159,8 @@ class IntegrationRule:
 
         for k in range(knots.size - 1):
             supp = knots[k:k + 2]
-            g = tensap.LebesgueMeasure(supp[0], supp[1]).gauss_integration_rule(n[k])
+            g = tensap.LebesgueMeasure(
+                supp[0], supp[1]).gauss_integration_rule(n[k])
             x = np.append(x, g.points)
             w = np.append(w, g.weights)
 

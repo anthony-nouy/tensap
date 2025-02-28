@@ -41,7 +41,8 @@ print(TENSOR_2)
 
 print("\nNorm of TENSOR_1 = %f" % TENSOR_1.norm())
 print("Number of entries of TENSOR_1 = %i" % TENSOR_1.storage())
-print("Number of non-zero entries of TENSOR_1 = %i" % TENSOR_1.sparse_storage())
+print("Number of non-zero entries of TENSOR_1 = %i" %
+      TENSOR_1.sparse_storage())
 
 # %% Operations on FullTensor
 # Contraction of the tensors TENSOR_1 and TENSOR_2, in the dimensions 0 and 2,
@@ -60,7 +61,8 @@ print(TENSOR_3)
 # of dimensions TENSOR_4.shape = [3, 5, 2, 3, 4]
 TENSOR_4 = TENSOR_1.tensordot_eval_diag(TENSOR_2, [0, 2], [5, 3], 1, 4)
 print(
-    "\nTENSOR_4 = TENSOR_1.tensordot_eval_diag(TENSOR_2, [0, 2], " + "[5, 3], 1, 4) ="
+    "\nTENSOR_4 = TENSOR_1.tensordot_eval_diag(TENSOR_2, [0, 2], " +
+    "[5, 3], 1, 4) ="
 )
 print(TENSOR_4)
 

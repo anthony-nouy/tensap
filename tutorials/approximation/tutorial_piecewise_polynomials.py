@@ -58,7 +58,8 @@ print("Mean squared error (magic points) = %2.5e" % ERR_L2)
 # %% Singularity adapted Piecewise polynomial basis
 f = tensap.UserDefinedFunction("np.sqrt(x0)", 1)
 h = 2**(-12)
-H = tensap.PiecewisePolynomialFunctionalBasis.singularityhp_adapted(0, 1, [0], h)
+H = tensap.PiecewisePolynomialFunctionalBasis.singularityhp_adapted(0, 1, [
+                                                                    0], h)
 
 xI = H.interpolation_points()
 If = H.interpolate(f, xI)

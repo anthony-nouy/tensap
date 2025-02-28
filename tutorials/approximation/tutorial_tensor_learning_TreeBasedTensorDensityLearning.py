@@ -39,7 +39,8 @@ S = np.array(
     ]
 )
 # Reference measure
-REF = tensap.RandomVector([tensap.UniformRandomVariable(-x, x) for x in 5 * np.diag(S)])
+REF = tensap.RandomVector(
+    [tensap.UniformRandomVariable(-x, x) for x in 5 * np.diag(S)])
 
 
 # Density, defined with respect to the reference measure
@@ -61,7 +62,8 @@ XI = REF.random(NUM_REF)
 DEGREE = 20
 # Orthonormal bases in each dimension, with respect to the reference measure
 BASES = [
-    tensap.PolynomialFunctionalBasis(x.orthonormal_polynomials(), range(DEGREE + 1))
+    tensap.PolynomialFunctionalBasis(
+        x.orthonormal_polynomials(), range(DEGREE + 1))
     for x in REF.random_variables
 ]
 BASES = tensap.FunctionalBases(BASES)

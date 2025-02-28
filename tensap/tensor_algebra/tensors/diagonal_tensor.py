@@ -131,7 +131,8 @@ class DiagonalTensor:
             elif tree.is_leaf[nod - 1] and is_active_node[nod - 1]:
                 tensors[nod - 1] = tensap.FullTensor(np.eye(r), 2, [r, r])
             elif is_active_node[nod - 1]:
-                tensors[nod - 1] = tensap.FullTensor.diag(np.ones(r), ch.size + 1)
+                tensors[nod -
+                        1] = tensap.FullTensor.diag(np.ones(r), ch.size + 1)
             elif not tree.is_leaf[nod - 1] and not is_active_node[nod - 1]:
                 raise ValueError("The internal nodes should be active.")
         return tensap.TreeBasedTensor(tensors, tree)

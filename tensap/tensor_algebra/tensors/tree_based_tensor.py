@@ -271,18 +271,21 @@ class TreeBasedTensor:
 
         for nod in np.arange(1, tree.nb_nodes + 1):
             if tree.is_leaf[nod - 1] and self.is_active_node[nod - 1]:
-                tensors[nod - 1] = tensors[nod - 1].cat(arg.tensors[nod - 1], 1)
+                tensors[nod - 1] = tensors[nod -
+                                           1].cat(arg.tensors[nod - 1], 1)
             elif not tree.is_leaf[nod - 1]:
                 children = tree.children(nod)
                 non_active_leaves = [
                     a and not b
                     for a, b in zip(
-                        tree.is_leaf[children - 1], self.is_active_node[children - 1]
+                        tree.is_leaf[children -
+                                     1], self.is_active_node[children - 1]
                     )
                 ]
                 if nod == tree.root:
                     ind = np.nonzero(np.logical_not(non_active_leaves))[0]
-                    tensors[nod - 1] = tensors[nod - 1].cat(arg.tensors[nod - 1], ind)
+                    tensors[nod - 1] = tensors[nod -
+                                               1].cat(arg.tensors[nod - 1], ind)
                 elif np.any(non_active_leaves):
                     other_dims = np.arange(children.size)
                     other_dims = other_dims[np.logical_not(non_active_leaves)]
@@ -294,7 +297,8 @@ class TreeBasedTensor:
                         arg.tensors[nod - 1], other_dims
                     )
                 else:
-                    tensors[nod - 1] = tensors[nod - 1].cat(arg.tensors[nod - 1])
+                    tensors[nod - 1] = tensors[nod -
+                                               1].cat(arg.tensors[nod - 1])
         return TreeBasedTensor(tensors, tree)
 
     def __radd__(self, arg):
@@ -308,7 +312,8 @@ class TreeBasedTensor:
 
     def __neg__(self):
         tensor = copy.deepcopy(self)
-        tensor.tensors[tensor.tree.root - 1] = -tensor.tensors[tensor.tree.root - 1]
+        tensor.tensors[tensor.tree.root - 1] = - \
+            tensor.tensors[tensor.tree.root - 1]
         return tensor
 
     def __mul__(self, arg):
@@ -454,7 +459,8 @@ class TreeBasedTensor:
                 children = tree.children(nod)
                 active_ch = tensap.fast_intersect(children, self.active_nodes)
 
-                ch_admiss[nod - 1] = [ranks[nod - 1] <= np.prod(ranks[children - 1])]
+                ch_admiss[nod - 1] = [ranks[nod - 1]
+                                      <= np.prod(ranks[children - 1])]
                 for child in active_ch:
                     ch_no_nod = tensap.fast_setdiff(children, child)
                     ch_admiss[nod - 1].append(
@@ -466,7 +472,8 @@ class TreeBasedTensor:
             for nod in tensap.fast_intersect(
                 np.nonzero(tree.is_leaf)[0] + 1, self.active_nodes
             ):
-                ch_admiss[nod - 1] = ranks[nod - 1] <= self.tensors[nod - 1].shape[0]
+                ch_admiss[nod - 1] = ranks[nod -
+                                           1] <= self.tensors[nod - 1].shape[0]
                 is_admiss = is_admiss and ch_admiss[nod - 1]
         if nargout == 1:
             return is_admiss
@@ -533,7 +540,8 @@ class TreeBasedTensor:
         tensors = np.array(self.tensors)
 
         for level in np.arange(np.max(tree.level), -1, -1):
-            nod_level = tensap.fast_setdiff(tree.nodes_with_level(level), tree.dim2ind)
+            nod_level = tensap.fast_setdiff(
+                tree.nodes_with_level(level), tree.dim2ind)
             for nod in nod_level:
                 children = tree.children(nod)
                 dims = np.array([], dtype=int)
@@ -605,7 +613,8 @@ class TreeBasedTensor:
         if nod == x.tree.root:
             return x
 
-        assert x.is_active_node[nod - 1], "Can not make an inactive node the root node."
+        assert x.is_active_node[nod -
+                                1], "Can not make an inactive node the root node."
 
         if x.ranks[x.tree.root - 1] > 1:
             x.tree = x.tree.addChild(x.tree.root)
@@ -625,7 +634,8 @@ class TreeBasedTensor:
                     pnew = pnew[pnew != 0]
                     chnew = tnew.children(k)
                     chpnew = np.concatenate((chnew, pnew))
-                    r = np.concatenate([np.where(chp == l0)[0] for l0 in chpnew])
+                    r = np.concatenate([np.where(chp == l0)[0]
+                                       for l0 in chpnew])
                     x.tensors[k - 1] = x.tensors[k - 1].transpose(r)
             if t.is_leaf[nod - 1]:
                 tensors = np.empty(tnew.nb_nodes, dtype=object)
@@ -686,7 +696,8 @@ class TreeBasedTensor:
                     indices[dim], child_nb - 1
                 )
             else:
-                tensors[nod - 1] = tensors[nod - 1].eval_at_indices(indices[dim], 0)
+                tensors[nod - 1] = tensors[nod -
+                                           1].eval_at_indices(indices[dim], 0)
         return TreeBasedTensor(tensors, tree)
 
     def nodes_permutation_cost(self, alpha):
@@ -722,7 +733,8 @@ class TreeBasedTensor:
             ):
                 common_asc = tensap.fast_intersect(asc_alpha, asc_beta)
                 gamma = common_asc[
-                    tree.level[common_asc - 1] == np.max(tree.level[common_asc - 1])
+                    tree.level[common_asc -
+                               1] == np.max(tree.level[common_asc - 1])
                 ]
                 unique_asc = np.unique(np.concatenate((asc_alpha, asc_beta)))
                 children = tensap.fast_setdiff(
@@ -731,7 +743,8 @@ class TreeBasedTensor:
                     ),
                     unique_asc,
                 )
-                cost[beta - 1] = ranks[gamma - 1] * np.prod(ranks[children - 1])
+                cost[beta - 1] = ranks[gamma - 1] * \
+                    np.prod(ranks[children - 1])
         return cost
 
     def optimize_dimension_tree(self, tolerance, max_iter):
@@ -784,9 +797,11 @@ class TreeBasedTensor:
             i = 0
             while i < m_current:
                 proba_alpha = (
-                    tensor_current.ranks[tensor_current.tree.parent(nodes) - 1] ** 2
+                    tensor_current.ranks[tensor_current.tree.parent(
+                        nodes) - 1] ** 2
                 )
-                alpha = np.random.choice(nodes, p=proba_alpha / np.sum(proba_alpha))
+                alpha = np.random.choice(
+                    nodes, p=proba_alpha / np.sum(proba_alpha))
 
                 cost = tensor_current.nodes_permutation_cost(alpha)
                 if np.any(cost != 0):
@@ -853,7 +868,8 @@ class TreeBasedTensor:
         if tree.parent(alpha) != tree.parent(beta):
             common_asc = tensap.fast_intersect(asc_alpha, asc_beta)
             gamma = common_asc[
-                tree.level[common_asc - 1] == np.max(tree.level[common_asc - 1])
+                tree.level[common_asc -
+                           1] == np.max(tree.level[common_asc - 1])
             ][0]
             common_asc = tensap.fast_setdiff(common_asc, gamma)
             sub_nod = np.unique(np.concatenate((asc_alpha, asc_beta)))
@@ -913,16 +929,19 @@ class TreeBasedTensor:
                     new_rank = tmp.core.shape[0]
 
                     shape_nod = np.concatenate(
-                        ([tensors[gamma - 1].shape[x] for x in ind], [new_rank])
+                        ([tensors[gamma - 1].shape[x]
+                         for x in ind], [new_rank])
                     )
                     tensors[nod - 1] = tensap.FullTensor(tmp.space[0])
                     tensors[nod - 1] = tensors[nod - 1].reshape(shape_nod)
 
                     shape_gamma = np.concatenate(
-                        ([tensors[gamma - 1].shape[x] for x in not_ind], [new_rank])
+                        ([tensors[gamma - 1].shape[x]
+                         for x in not_ind], [new_rank])
                     )
                     tensors[gamma - 1] = tensap.FullTensor(tmp.space[1])
-                    tensors[gamma - 1] = tensors[gamma - 1].reshape(shape_gamma)
+                    tensors[gamma - 1] = tensors[gamma -
+                                                 1].reshape(shape_gamma)
 
                     perm = np.arange(tensors[gamma - 1].order)
                     perm = np.concatenate(
@@ -1006,9 +1025,11 @@ class TreeBasedTensor:
             tensor_current = copy.deepcopy(tensor_sigma)
             for i in range(m_current):
                 proba_alpha = (
-                    tensor_current.ranks[tensor_current.tree.parent(nodes) - 1] ** 2
+                    tensor_current.ranks[tensor_current.tree.parent(
+                        nodes) - 1] ** 2
                 )
-                alpha = np.random.choice(nodes, p=proba_alpha / np.sum(proba_alpha))
+                alpha = np.random.choice(
+                    nodes, p=proba_alpha / np.sum(proba_alpha))
 
                 cost = tensor_current.nodes_permutation_cost(alpha)
                 cost[np.logical_not(self.tree.is_leaf)] = 0
@@ -1104,13 +1125,15 @@ class TreeBasedTensor:
                     parent = tree.parent(nod)
                     child_nb = tree.child_number(nod)
                     tensors[parent - 1] = tensors[nod - 1].tensordot(
-                        tensors[parent - 1], tensors[nod - 1].order - 1, child_nb - 1
+                        tensors[parent - 1], tensors[nod -
+                                                     1].order - 1, child_nb - 1
                     )
                     ind = np.concatenate(
                         (
                             [child_nb - 1],
                             tensap.fast_setdiff(
-                                np.arange(tensors[parent - 1].order), child_nb - 1
+                                np.arange(
+                                    tensors[parent - 1].order), child_nb - 1
                             ),
                         )
                     )
@@ -1227,14 +1250,16 @@ class TreeBasedTensor:
                     ind_active = np.nonzero(are_ch_active)[0]
 
                     if np.all(np.logical_not(are_ch_active)):
-                        tensors[nod - 1] = tensors[nod - 1].eval_diag(range(len(children)))
+                        tensors[nod - 1] = tensors[nod -
+                                                   1].eval_diag(range(len(children)))
                     else:
                         tmp = tensors[children[ind_active[0]] - 1]
                         for ind in np.arange(1, ind_active.size):
                             tmp = tmp.outer_product_eval_diag(
                                 tensors[children[ind_active[ind]] - 1], 0, 0
                             )
-                        ind_inactive = np.nonzero(np.logical_not(are_ch_active))[0]
+                        ind_inactive = np.nonzero(
+                            np.logical_not(are_ch_active))[0]
                         if ind_inactive.size != 0:
                             tensors[nod - 1] = tmp.tensordot_eval_diag(
                                 tensors[nod - 1],
@@ -1245,7 +1270,8 @@ class TreeBasedTensor:
                             )
                         else:
                             tensors[nod - 1] = tmp.tensordot(
-                                tensors[nod - 1], np.arange(1, tmp.order), ind_active
+                                tensors[nod -
+                                        1], np.arange(1, tmp.order), ind_active
                             )
                     if nargout == 1:
                         tensors[children[ind_active] - 1] = None
@@ -1302,7 +1328,8 @@ class TreeBasedTensor:
         tensors = np.array(self.tensors)
         for nod in np.arange(1, self.tree.nb_nodes + 1):
             if self.is_active_node[nod - 1]:
-                tensors[nod - 1] = tensors[nod - 1].cat(tensor2.tensors[nod - 1])
+                tensors[nod - 1] = tensors[nod -
+                                           1].cat(tensor2.tensors[nod - 1])
         return TreeBasedTensor(tensors, self.tree)
 
     def kron(self, tensor2):
@@ -1325,7 +1352,8 @@ class TreeBasedTensor:
         tensors = np.array(self.tensors)
         for nod in np.arange(1, self.tree.nb_nodes + 1):
             if self.is_active_node[nod - 1]:
-                tensors[nod - 1] = tensors[nod - 1].kron(tensor2.tensors[nod - 1])
+                tensors[nod - 1] = tensors[nod -
+                                           1].kron(tensor2.tensors[nod - 1])
         return TreeBasedTensor(tensors, self.tree)
 
     def tensor_matrix_product(self, matrices, dims=None):
@@ -1351,7 +1379,8 @@ class TreeBasedTensor:
         """
         if dims is None:
             assert isinstance(matrices, list), "matrices should be a list."
-            assert len(matrices) == self.order, "len(matrices) must be self.order."
+            assert len(
+                matrices) == self.order, "len(matrices) must be self.order."
             dims = np.arange(self.order)
         else:
             dims = np.atleast_1d(dims)
@@ -1400,7 +1429,8 @@ class TreeBasedTensor:
         """
         if dims is None:
             assert isinstance(matrices, list), "matrices should be a list."
-            assert len(matrices) == self.order, "len(matrices) must be self.order."
+            assert len(
+                matrices) == self.order, "len(matrices) must be self.order."
             dims = range(self.order)
         else:
             dims = np.array(dims)
@@ -1437,13 +1467,15 @@ class TreeBasedTensor:
         """
         if dims is None:
             assert isinstance(vectors, list), "vectors should be a list."
-            assert len(vectors) == self.order, "len(vectors) must be self.order."
+            assert len(
+                vectors) == self.order, "len(vectors) must be self.order."
             dims = np.arange(self.order)
         else:
             dims = np.atleast_1d(dims)
             if not isinstance(vectors, list):
                 vectors = [vectors]
-            assert len(vectors) == dims.size, "len(vectors) must be equal to dims.size."
+            assert len(
+                vectors) == dims.size, "len(vectors) must be equal to dims.size."
 
         vectors = [np.reshape(x, [1, -1]) for x in vectors]
 
@@ -1486,7 +1518,8 @@ class TreeBasedTensor:
                 nod_level = tensap.fast_intersect(nod_level, self.active_nodes)
                 for nod in nod_level:
                     children = tree.children(nod)
-                    active_ch = tensap.fast_intersect(children, self.active_nodes)
+                    active_ch = tensap.fast_intersect(
+                        children, self.active_nodes)
                     inactive_ch = children
                     inactive_ch = inactive_ch[
                         np.logical_not(self.is_active_node[inactive_ch - 1])
@@ -1507,7 +1540,8 @@ class TreeBasedTensor:
                         ind = np.nonzero(tree.dim2ind == inactive_ch[0])[0][0]
                         tmp = tensap.FullTensor(matrices[ind])
                         for k in np.arange(1, inactive_ch.size):
-                            ind = np.nonzero(tree.dim2ind == inactive_ch[k])[0][0]
+                            ind = np.nonzero(
+                                tree.dim2ind == inactive_ch[k])[0][0]
                             tmp = tmp.outer_product_eval_diag(
                                 tensap.FullTensor(matrices[ind]), 0, 0
                             )
@@ -1579,7 +1613,8 @@ class TreeBasedTensor:
                     for num, child in enumerate(children):
                         if self.is_active_node[child - 1] and children_r[num]:
                             if tensors[child - 1].order == 1:
-                                tensors[child - 1] = tensors[child - 1].reshape([1, -1])
+                                tensors[child - 1] = tensors[child -
+                                                             1].reshape([1, -1])
                             tensors[nod - 1] = tensors[nod - 1].tensor_matrix_product(
                                 tensors[child - 1], num
                             )
@@ -1635,7 +1670,8 @@ class TreeBasedTensor:
                     adj[nod - 1, :] = 0
                 tensors[nod - 1] = tensap.FullTensor([])
                 dim2ind[dim2ind == nod] = parent
-        keep_ind = tensap.fast_setdiff(np.arange(tree.nb_nodes), unique_children - 1)
+        keep_ind = tensap.fast_setdiff(
+            np.arange(tree.nb_nodes), unique_children - 1)
         dim2ind = [np.nonzero(x == keep_ind + 1)[0][0] + 1 for x in dim2ind]
         tensors = tensors[keep_ind]
         adj = adj[np.ix_(keep_ind, keep_ind)]
@@ -1712,7 +1748,8 @@ class TreeBasedTensor:
             alpha = np.atleast_1d(alpha)
             max_level = np.max(tree.level[alpha - 1])
             ascendants = np.array(
-                [asc for nod in np.nditer(alpha) for asc in tree.ascendants(nod)],
+                [asc for nod in np.nditer(alpha)
+                 for asc in tree.ascendants(nod)],
                 dtype=alpha.dtype,
             )
             list_nodes = tensap.fast_intersect(
@@ -1720,7 +1757,8 @@ class TreeBasedTensor:
             )
 
         for level in range(max_level + 1):
-            nod_level = tensap.fast_intersect(tree.nodes_with_level(level), list_nodes)
+            nod_level = tensap.fast_intersect(
+                tree.nodes_with_level(level), list_nodes)
             nod_level = tensap.fast_setdiff(nod_level, tree.dim2ind)
 
             for nod in nod_level:
@@ -1729,14 +1767,16 @@ class TreeBasedTensor:
                     tmp = tmp.tensor_matrix_product(
                         gram[nod - 1], tensor.tensors[nod - 1].order - 1
                     )
-                children = tensap.fast_intersect(list_nodes, tree.children(nod))
+                children = tensap.fast_intersect(
+                    list_nodes, tree.children(nod))
                 for child in children:
                     c_list = tensap.fast_setdiff(
                         np.arange(tensor.tensors[nod - 1].order),
                         tree.child_number(child) - 1,
                     )
                     gram[child - 1] = (
-                        tensor.tensors[nod - 1].tensordot(tmp, c_list, c_list).numpy()
+                        tensor.tensors[nod -
+                                       1].tensordot(tmp, c_list, c_list).numpy()
                     )
         if alpha is not None:
             if alpha.size == 1:
@@ -1932,7 +1972,8 @@ class TreeBasedTensor:
 
         """
         ind = self.tree.dim2ind(dim - 1)
-        out = self.reduce_dot_with_rank_one_metric_at_node(tensor2, matrices, ind)
+        out = self.reduce_dot_with_rank_one_metric_at_node(
+            tensor2, matrices, ind)
         return out[0]
 
     # def reduce_dot_with_rank_one_metric_at_node(self, tensor2, matrices,
@@ -2081,11 +2122,13 @@ class TreeBasedTensor:
         for level in np.arange(np.max(tree.level) - 1, -1, -1):
             nod_level = reduce(
                 tensap.fast_intersect,
-                (tree.nodes_with_level(level), tree.internal_nodes, self.active_nodes),
+                (tree.nodes_with_level(level),
+                 tree.internal_nodes, self.active_nodes),
             )
             nod_level = tensap.fast_setdiff(nod_level, exclude_list)
             for nod in nod_level:
-                children = tensap.fast_setdiff(tree.children(nod), exclude_list)
+                children = tensap.fast_setdiff(
+                    tree.children(nod), exclude_list)
                 active_ch = children[self.is_active_node[children - 1]]
                 inactive_ch = tensap.fast_setdiff(children, active_ch)
                 if active_ch.size != 0:
@@ -2111,7 +2154,8 @@ class TreeBasedTensor:
                 else:
                     ch_nb = tree.child_number(inactive_ch) - 1
                     if np.size(inactive_ch) > 1:
-                        diag_below[nod - 1] = diag_below[nod - 1].eval_diag(ch_nb)
+                        diag_below[nod - 1] = diag_below[nod -
+                                                         1].eval_diag(ch_nb)
                     perm = np.concatenate(
                         (
                             [ch_nb[0]],
@@ -2201,7 +2245,8 @@ class TreeBasedTensor:
                         np.arange(diag_above[nod - 1].order),
                         tree.child_number(inactive_ch[0]) - 1,
                     )
-                    ind = np.concatenate(([tree.child_number(inactive_ch[0]) - 1], ind))
+                    ind = np.concatenate(
+                        ([tree.child_number(inactive_ch[0]) - 1], ind))
                     diag_above[nod - 1] = diag_above[nod - 1].transpose(ind)
                 else:
                     ind = tensap.fast_setdiff(
@@ -2217,7 +2262,8 @@ class TreeBasedTensor:
                         diag_above[nod - 1], 1, 2, 0, 0
                     )
                     if diag_above[nod - 1].order == 3:
-                        diag_above[nod - 1] = diag_above[nod - 1].transpose([0, 2, 1])
+                        diag_above[nod - 1] = diag_above[nod -
+                                                         1].transpose([0, 2, 1])
         if alpha is not None:
             diag_above = diag_above[alpha - 1]
         return diag_above
@@ -2289,7 +2335,8 @@ class TreeBasedTensor:
                     else:
                         ind = tree.child_number(child) - 1
                         tmp = tmp.outer_product_eval_diag(
-                            tensap.FullTensor(np.eye(tensors[alpha - 1].shape[ind])),
+                            tensap.FullTensor(
+                                np.eye(tensors[alpha - 1].shape[ind])),
                             [],
                             [],
                             True,
@@ -2356,7 +2403,8 @@ class TreeBasedTensor:
                 else:
                     ind = tree.child_number(child) - 1
                     tmp = tmp.outer_product_eval_diag(
-                        tensap.FullTensor(np.eye(self.tensors[gamma - 1].shape[ind])),
+                        tensap.FullTensor(
+                            np.eye(self.tensors[gamma - 1].shape[ind])),
                         [],
                         [],
                         True,
@@ -2384,7 +2432,8 @@ class TreeBasedTensor:
                 )
             else:
                 g_alpha = g_alpha.outer_product_eval_diag(
-                    tensap.FullTensor(np.eye(u_alpha[alpha - 1].shape[0])), [], [], True
+                    tensap.FullTensor(
+                        np.eye(u_alpha[alpha - 1].shape[0])), [], [], True
                 )
             # g_alpha = g_alpha.squeeze()
         else:
@@ -2431,10 +2480,12 @@ class TreeBasedTensor:
 
         """
         self.ranks = np.zeros(self.tree.nb_nodes, dtype="int")
-        self.is_active_node = np.array([x.storage() != 0 for x in self.tensors])
+        self.is_active_node = np.array(
+            [x.storage() != 0 for x in self.tensors])
 
         if not np.all([self.is_active_node[i - 1] for i in self.tree.internal_nodes]):
-            raise NotImplementedError("Method not implemented for this " "format.")
+            raise NotImplementedError(
+                "Method not implemented for this " "format.")
 
         for nod in self.tree.internal_nodes:
             children = self.tree.children(nod)
@@ -2537,7 +2588,8 @@ class TreeBasedTensor:
                     shape_i = np.concatenate((shape_i, [ranks[nod]]))
                 tensors[nod] = tensap.FullTensor(generator(shape_i.tolist()))
             elif is_active_node[nod] and tree.is_leaf[nod]:
-                shape_i = np.concatenate((shape[tree.dim2ind == nod + 1], [ranks[nod]]))
+                shape_i = np.concatenate(
+                    (shape[tree.dim2ind == nod + 1], [ranks[nod]]))
                 tensors[nod] = tensap.FullTensor(generator(shape_i.tolist()))
             elif not is_active_node[nod] and not tree.is_leaf[nod]:
                 raise ValueError("Inactive nodes should be leaves.")

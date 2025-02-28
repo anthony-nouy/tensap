@@ -60,7 +60,8 @@ D = 2
 P1 = tensap.PolynomialFunctionalBasis(tensap.LegendrePolynomials(), range(21))
 BASES = tensap.FunctionalBases.duplicate(P1, D)
 W = [1, 2]  # Weights for the anisotropic sparsity
-IND = tensap.MultiIndices.with_bounded_weighted_norm(2, 1, P1.cardinal() - 1, W)
+IND = tensap.MultiIndices.with_bounded_weighted_norm(
+    2, 1, P1.cardinal() - 1, W)
 P = tensap.SparseTensorProductFunctionalBasis(BASES, IND)
 
 if not TENSORIZATION_OF_MAGIC_POINTS:

@@ -65,7 +65,8 @@ class LinearModelLearning(tensap.Learning):
                 if isinstance(self.test_data, list) and self.test_data[0] is not None:
                     self.basis_eval_test = self.basis.eval(self.test_data[0])
                 elif (
-                    not isinstance(self.test_data, list) and self.test_data is not None
+                    not isinstance(
+                        self.test_data, list) and self.test_data is not None
                 ):
                     self.basis_eval_test = self.basis.eval(self.test_data)
                 else:

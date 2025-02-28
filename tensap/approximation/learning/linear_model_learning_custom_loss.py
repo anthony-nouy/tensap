@@ -130,7 +130,8 @@ class LinearModelLearningCustomLoss(tensap.LinearModelLearning):
             var0 = self.var.numpy()
             self.optimizer.minimize(risk, var_list=[self.var])
 
-            stagnation = (tf.linalg.norm(var0 - self.var) / tf.linalg.norm(var0)).numpy()
+            stagnation = (tf.linalg.norm(var0 - self.var) /
+                          tf.linalg.norm(var0)).numpy()
             if stagnation < self.options["stagnation"]:
                 break
 
@@ -148,6 +149,7 @@ class LinearModelLearningCustomLoss(tensap.LinearModelLearning):
             if np.ndim(sol) == 1:
                 sol = tensap.FunctionalBasisArray(sol, self.basis)
             else:
-                sol = tensap.FunctionalBasisArray(sol, self.basis, sol.shape[1])
+                sol = tensap.FunctionalBasisArray(
+                    sol, self.basis, sol.shape[1])
 
         return sol, output

@@ -174,7 +174,8 @@ class FunctionalTensor(tensap.Function):
         """
         mean = self.expectation(*measure)
         if np.isscalar(mean):
-            var = self.dot_product_expectation(self, None, *measure) - mean ** 2
+            var = self.dot_product_expectation(
+                self, None, *measure) - mean ** 2
         else:
             raise NotImplementedError("Method not implemented.")
         return var
@@ -269,7 +270,8 @@ class FunctionalTensor(tensap.Function):
 
         """
         if not self.evaluated_bases:
-            gram_matrix = self.bases.gram_matrix(range(self.tensor.order), *measure)
+            gram_matrix = self.bases.gram_matrix(
+                range(self.tensor.order), *measure)
         else:
             gram_matrix = [np.eye(x.shape[1]) for x in self.bases]
         tensor = self.tensor.tensor_matrix_product(
@@ -315,7 +317,8 @@ class FunctionalTensor(tensap.Function):
 
         dims = np.sort(dims)
         assert np.size(self.fdims) == d and np.array_equal(self.fdims, range(d)), (
-            "Method not implemented for self.fdims different from " + "range(d)."
+            "Method not implemented for self.fdims different from " +
+            "range(d)."
         )
 
         dims_C = np.setdiff1d(range(len(self.bases)), dims)
@@ -473,7 +476,8 @@ class FunctionalTensor(tensap.Function):
                 children = tree.children(alpha)
                 ind = tensap.fast_intersect(
                     tree.dim2ind,
-                    children[np.logical_not(self.tensor.is_active_node[children - 1])],
+                    children[np.logical_not(
+                        self.tensor.is_active_node[children - 1])],
                 )
                 dims = dims[np.logical_not(np.isin(tree.dim2ind, ind))]
 
@@ -505,7 +509,8 @@ class FunctionalTensor(tensap.Function):
                         )
                     )
                 ):
-                    ind = tensap.fast_intersect(tree.dim2ind[dims], tree.children(pa))
+                    ind = tensap.fast_intersect(
+                        tree.dim2ind[dims], tree.children(pa))
                     ind = tensap.fast_setdiff(ind, self.tensor.active_nodes)
                     dims_loc = np.array(
                         [np.nonzero(x == tree.dim2ind)[0][0] for x in ind]
@@ -522,7 +527,8 @@ class FunctionalTensor(tensap.Function):
                         )
                         if np.all(
                             np.logical_not(
-                                self.tensor.is_active_node[tree.children(pa) - 1]
+                                self.tensor.is_active_node[tree.children(
+                                    pa) - 1]
                             )
                         ):
                             dim2ind[dims_loc[0]] = tree.parent(
@@ -558,7 +564,8 @@ class FunctionalTensor(tensap.Function):
                 dim2ind = dim2ind[dim2ind != 0]
 
                 ind = np.zeros(tree.nb_nodes)
-                ind[tensap.fast_setdiff(np.arange(tree.nb_nodes), keep_ind)] = 1
+                ind[tensap.fast_setdiff(
+                    np.arange(tree.nb_nodes), keep_ind)] = 1
                 ind = np.cumsum(ind).astype(int)
                 dim2ind -= ind[dim2ind - 1]
                 alpha = alpha - ind[alpha - 1]
@@ -570,7 +577,8 @@ class FunctionalTensor(tensap.Function):
         else:
             if alpha <= self.tensor.order:
                 dims = np.delete(dims, alpha - 1)
-            fH = self.tensor.tensor_matrix_product([bases_eval[x] for x in dims], dims)
+            fH = self.tensor.tensor_matrix_product(
+                [bases_eval[x] for x in dims], dims)
 
         grad = fH.parameter_gradient_eval_diag(alpha, bases_eval)
         if (
@@ -584,7 +592,8 @@ class FunctionalTensor(tensap.Function):
                 np.concatenate(
                     (
                         np.atleast_1d(ch[fH.is_active_node[ch - 1]]),
-                        np.atleast_1d(ch[np.logical_not(fH.is_active_node[ch - 1])]),
+                        np.atleast_1d(
+                            ch[np.logical_not(fH.is_active_node[ch - 1])]),
                     )
                 )
             )
@@ -629,17 +638,21 @@ class FunctionalTensor(tensap.Function):
                 children = tree.children(alpha)
                 ind = tensap.fast_intersect(
                     tree.dim2ind,
-                    children[np.logical_not(self.tensor.is_active_node[children - 1])],
+                    children[np.logical_not(
+                        self.tensor.is_active_node[children - 1])],
                 )
                 dims = dims[np.logical_not(np.isin(tree.dim2ind, ind))]
 
-            fH = self.tensor.tensor_matrix_product([bases_eval[x] for x in dims], dims)
+            fH = self.tensor.tensor_matrix_product(
+                [bases_eval[x] for x in dims], dims)
         else:
             if alpha <= self.tensor.order:
                 dims = np.delete(dims, alpha - 1)
-            fH = self.tensor.tensor_matrix_product([bases_eval[x] for x in dims], dims)
+            fH = self.tensor.tensor_matrix_product(
+                [bases_eval[x] for x in dims], dims)
 
-        grad, g_alpha, g_gamma = fH.parameter_gradient_eval_diag_dmrg(alpha, bases_eval)
+        grad, g_alpha, g_gamma = fH.parameter_gradient_eval_diag_dmrg(
+            alpha, bases_eval)
 
         if isinstance(self.tensor, tensap.TreeBasedTensor):
             # If the order of the children has been modified in grad, compute
@@ -665,7 +678,8 @@ class FunctionalTensor(tensap.Function):
                 np.concatenate(
                     (
                         np.atleast_1d(ch[fH.is_active_node[ch - 1]]),
-                        np.atleast_1d(ch[np.logical_not(fH.is_active_node[ch - 1])]),
+                        np.atleast_1d(
+                            ch[np.logical_not(fH.is_active_node[ch - 1])]),
                     )
                 )
             )
@@ -675,13 +689,15 @@ class FunctionalTensor(tensap.Function):
                 perm_2 = []
                 if alpha != tree.root and gamma != tree.root:
                     perm_2 = [
-                        fH.tensors[alpha - 1].order + fH.tensors[gamma - 1].order - 2
+                        fH.tensors[alpha - 1].order +
+                        fH.tensors[gamma - 1].order - 2
                     ]
                 perm_3 = []
                 if alpha != tree.root and self.tensor.ranks[tree.root - 1] > 1:
                     perm_3 = [grad.order - 1]
                 grad = grad.transpose(
-                    np.concatenate(([0], perm_1 + 1, perm_2, perm_3)).astype(int)
+                    np.concatenate(
+                        ([0], perm_1 + 1, perm_2, perm_3)).astype(int)
                 )
             elif dmrg_type == "dmrg_low_rank":
                 g_alpha = g_alpha.transpose(np.concatenate(([0], perm_1 + 1)))
@@ -693,7 +709,8 @@ class FunctionalTensor(tensap.Function):
                 if alpha != tree.root and self.tensor.ranks[tree.root - 1] > 1:
                     perm_3 = [grad.order - 1]
                 g_gamma = g_gamma.transpose(
-                    np.concatenate(([0], perm_1b + 1, perm_2, perm_3)).astype(int)
+                    np.concatenate(
+                        ([0], perm_1b + 1, perm_2, perm_3)).astype(int)
                 )
 
                 grad = [g_alpha, g_gamma]
@@ -775,7 +792,8 @@ class FunctionalTensor(tensap.Function):
             out = deepcopy(self)
             out.tensor = self.tensor.tensor_matrix_product(H, dims)
             out.bases = out.bases.remove_bases(dims)
-            out.fdims = out.fdims[np.setdiff1d(np.range(np.size(out.fdims)), dims)]
+            out.fdims = out.fdims[np.setdiff1d(
+                np.range(np.size(out.fdims)), dims)]
             if np.size(out.fdims) == 0:
                 out = out.tensor
         return out
@@ -848,7 +866,8 @@ class FunctionalTensor(tensap.Function):
         if len(dims) == 1 and not isinstance(bases_eval, list):
             bases_eval = [bases_eval]
         if len(dims) == self.tensor.order:
-            out = self.tensor.tensor_matrix_product_eval_diag(bases_eval).numpy()
+            out = self.tensor.tensor_matrix_product_eval_diag(
+                bases_eval).numpy()
         else:
             out = deepcopy(self)
             fdims_eval = out.fdims[dims]

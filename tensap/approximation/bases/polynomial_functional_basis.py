@@ -67,7 +67,8 @@ class PolynomialFunctionalBasis(tensap.FunctionalBasis):
         self.measure = basis.measure
 
         if isinstance(
-            basis, (tensap.OrthonormalPolynomials, tensap.ShiftedOrthonormalPolynomials)
+            basis, (tensap.OrthonormalPolynomials,
+                    tensap.ShiftedOrthonormalPolynomials)
         ):
             self.is_orthonormal = True
 

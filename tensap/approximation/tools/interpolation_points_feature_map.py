@@ -19,8 +19,6 @@
 Module interpolation_points_feature_map.
 
 """
-
-import numpy as np
 import tensap
 
 
@@ -46,9 +44,10 @@ def interpolation_points_feature_map(F, x):
     F_eval = F.eval(x)
 
     # Apply the greedy algorithm to select points (assuming greedyAlgorithml2 is defined)
-    I = tensap.greedy_algorithml2(F_eval.T, [])  # Transpose to match the MATLAB behavior
+    # Transpose to match the MATLAB behavior
+    L = tensap.greedy_algorithml2(F_eval.T, [])
 
     # Select the corresponding rows from x
-    xI = x[I, :]
+    xI = x[L, :]
 
     return xI

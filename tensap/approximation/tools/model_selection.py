@@ -73,7 +73,8 @@ class ModelSelection:
         comp = np.array(self.data["complexity"])
         risk = np.array(self.data["empirical_risk"])
         return np.array(
-            [np.argmin(risk + l0 * self.pen_shape(comp)) for l0 in np.atleast_1d(lbda)]
+            [np.argmin(risk + l0 * self.pen_shape(comp)) for
+             l0 in np.atleast_1d(lbda)]
         )
 
     def lambda_path(self):
@@ -283,7 +284,8 @@ class ModelSelection:
         elif c_type == "grassman":
             comp = eval("x." + fun + "()") - np.sum(x.ranks ** 2)
         elif c_type == "stiefel":
-            comp = eval("x." + fun + "()") - np.sum(x.ranks * (x.ranks + 1) / 2)
+            comp = eval("x." + fun + "()") - \
+                np.sum(x.ranks * (x.ranks + 1) / 2)
         else:
             raise ValueError("Wrong argument.")
         return comp

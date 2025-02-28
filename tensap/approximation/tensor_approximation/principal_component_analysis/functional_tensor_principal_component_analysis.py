@@ -355,7 +355,8 @@ class FunctionalTensorPrincipalComponentAnalysis:
             alpha = tensor.tree.dim2ind[nu]
             if tensor.is_active_node[alpha - 1]:
                 data = np.matmul(P[nu], tensor.tensors[alpha - 1].data)
-                tensor.tensors[alpha - 1] = tensap.FullTensor(data, 2, data.shape)
+                tensor.tensors[alpha -
+                               1] = tensap.FullTensor(data, 2, data.shape)
             else:
                 pa = tensor.tree.parent(alpha)
                 ch = tensor.tree.child_number(alpha)

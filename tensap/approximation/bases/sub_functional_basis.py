@@ -72,7 +72,8 @@ class SubFunctionalBasis(tensap.FunctionalBasis):
             if (
                 underlying_basis.is_orthonormal
                 and np.linalg.norm(
-                    np.matmul(np.transpose(basis), basis) - np.eye(basis.shape[1])
+                    np.matmul(np.transpose(basis), basis) -
+                    np.eye(basis.shape[1])
                 )
                 / np.sqrt(basis.shape[1])
                 < 1e-15

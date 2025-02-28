@@ -128,7 +128,8 @@ class Truncator:
             elif isinstance(tensor, tensap.TreeBasedTensor):
                 out = self.hsvd(tensor)
             else:
-                raise NotImplementedError("Not implemented with this tensor format.")
+                raise NotImplementedError(
+                    "Not implemented with this tensor format.")
         else:
             raise ValueError("Wrong tensor order.")
         return out
@@ -185,7 +186,8 @@ class Truncator:
                     np.min(
                         [
                             ind,
-                            np.nonzero(sin_val >= self.thresholding_parameter)[0][-1]
+                            np.nonzero(sin_val >= self.thresholding_parameter)[
+                                0][-1]
                             + 1,
                         ]
                     )
@@ -270,11 +272,13 @@ class Truncator:
                 vec = np.empty(order, dtype=object)
                 for dim in range(order):
                     self.max_rank = max_rank[dim]
-                    vec[dim] = self.trunc_svd(tensor.matricize(dim).numpy(), local_tol)
+                    vec[dim] = self.trunc_svd(
+                        tensor.matricize(dim).numpy(), local_tol)
                     vec[dim] = vec[dim].space[0]
                 core = tensor.tensor_matrix_product(np.transpose(vec[0]), 0)
                 for dim in np.arange(1, order):
-                    core = core.tensor_matrix_product(np.transpose(vec[dim]), dim)
+                    core = core.tensor_matrix_product(
+                        np.transpose(vec[dim]), dim)
                 tensors = [core] + [tensap.FullTensor(x) for x in vec]
                 tree = tensap.DimensionTree.trivial(order)
                 out = tensap.TreeBasedTensor(tensors, tree)
@@ -329,7 +333,8 @@ class Truncator:
             max_rank = np.repeat(max_rank, tree.nb_nodes)
             max_rank[tree.root - 1] = 1
 
-        local_tol = self.tolerance / np.sqrt(np.count_nonzero(is_active_node) - 1)
+        local_tol = self.tolerance / \
+            np.sqrt(np.count_nonzero(is_active_node) - 1)
 
         if isinstance(tensor, tensap.FullTensor):
             root_rank_greater_than_one = tensor.order == len(tree.dim2ind) + 1
@@ -349,13 +354,15 @@ class Truncator:
                             rep = [
                                 np.nonzero(np.isin(nodes_x, x))[0][0] for x in children
                             ]
-                        rep_c = tensap.fast_setdiff(np.arange(nodes_x.size), rep)
+                        rep_c = tensap.fast_setdiff(
+                            np.arange(nodes_x.size), rep)
 
                         if root_rank_greater_than_one:
                             rep_c = np.concatenate((rep_c, [tensor.order - 1]))
 
                         self.max_rank = max_rank[nod - 1]
-                        tmp = self.trunc_svd(tensor.matricize(rep).numpy(), local_tol)
+                        tmp = self.trunc_svd(
+                            tensor.matricize(rep).numpy(), local_tol)
                         tensors[nod - 1] = tmp.space[0]
                         ranks[nod - 1] = tensors[nod - 1].shape[1]
                         shape_loc = np.hstack((shape[rep], ranks[nod - 1]))
@@ -399,14 +406,16 @@ class Truncator:
                     # of Frobenius norm of the tensor
                     if gram[nod] is not None:
                         self.max_rank = max_rank[nod]
-                        tmp = self.trunc_svd(gram[nod], tolerance=local_tol ** 2, power=1)
+                        tmp = self.trunc_svd(
+                            gram[nod], tolerance=local_tol ** 2, power=1)
                         shape[nod] = tmp.core.shape[0]
                         mat[nod] = np.transpose(tmp.space[0])
 
                 # Interior nodes without the root
                 for level in np.arange(1, np.max(tree.level)):
                     nod_level = tensap.fast_setdiff(
-                        tree.nodes_with_level(level), np.nonzero(tree.is_leaf)[0] + 1
+                        tree.nodes_with_level(level), np.nonzero(
+                            tree.is_leaf)[0] + 1
                     )
                     for nod in tree.nodes_indices[nod_level - 1]:
                         order = out.tensors[nod - 1].order
@@ -445,7 +454,8 @@ class Truncator:
                         # Truncation of the Gramian in trace norm for a control
                         # of Frobenius norm of the tensor
                         self.max_rank = max_rank[nod - 1]
-                        tmp = self.trunc_svd(gram[nod - 1], local_tol ** 2, power=1)
+                        tmp = self.trunc_svd(
+                            gram[nod - 1], local_tol ** 2, power=1)
                         tmp = np.transpose(tmp.space[0])
                         order = out.tensors[nod - 1].order
                         out.tensors[nod - 1] = out.tensors[
