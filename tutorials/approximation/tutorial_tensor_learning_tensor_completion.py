@@ -63,14 +63,13 @@ print(FTBT)
 FEATURES_TRAIN = []
 for i in range(ORDER):
     M = np.zeros((NUM_TRAIN, sz[i]))
-    np.put_along_axis(M, indices_TRAIN.array[:, i : i + 1], 1.0, axis=1)
+    np.put_along_axis(M, indices_TRAIN.array[:, i: i + 1], 1.0, axis=1)
     FEATURES_TRAIN.append(M)
-
 
 FEATURES_TEST = []
 for i in range(ORDER):
     M = np.zeros((NUM_TEST, sz[i]))
-    np.put_along_axis(M, indices_TEST.array[:, i : i + 1], 1.0, axis=1)
+    np.put_along_axis(M, indices_TEST.array[:, i: i + 1], 1.0, axis=1)
     FEATURES_TEST.append(M)
 
 
@@ -130,7 +129,6 @@ guess = guess.reshape(sz, order="F")
 guess = tensap.FullTensor(guess, order=ORDER, shape=sz)
 tr = tensap.Truncator(tolerance=0, max_rank=1)
 guess = tr.hsvd(guess, SOLVER.tree, SOLVER.is_active_node)
-
 
 # %% Learning in tree-based tensor format
 SOLVER.bases_eval = FEATURES_TRAIN

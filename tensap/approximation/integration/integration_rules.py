@@ -158,7 +158,7 @@ class IntegrationRule:
         n = np.ravel(n)  # Ensure p is 1D
 
         for k in range(knots.size - 1):
-            supp = knots[k : k + 2]
+            supp = knots[k: k + 2]
             g = tensap.LebesgueMeasure(supp[0], supp[1]).gauss_integration_rule(n[k])
             x = np.append(x, g.points)
             w = np.append(w, g.weights)
@@ -181,7 +181,7 @@ class FullTensorProductIntegrationRule(IntegrationRule):
             raise ValueError("The points must be a FullTensorGrid or a list.")
 
         assert (
-            isinstance(weights, list) and len(weights) == points.ndim()
+                isinstance(weights, list) and len(weights) == points.ndim()
         ), "The weights must be a list of length the length of points."
 
         self.points = points
