@@ -784,6 +784,7 @@ class MultiIndices:
             The MultiIndices created using the flat indices ind and shape.
 
         """
+
         ind = np.unravel_index(np.ravel(ind), shape, order="F")
         return MultiIndices(np.transpose(ind))
 
@@ -805,6 +806,7 @@ class MultiIndices:
             The hyperbolic cross set.
 
         """
+
         ind = MultiIndices(np.zeros((1, d), dtype=int))
         add = True
         while add:
@@ -838,6 +840,7 @@ class MultiIndices:
             The set of multi-indices with low-order interactions.
 
         """
+
         ind = MultiIndices(np.zeros(d, dtype=int))
         add = True
         while add:
@@ -874,8 +877,8 @@ class MultiIndices:
         ind : tensap.MultiIndices
             The set of multi-indices with weighted hyperbolic cross.
 
-
         """
+
         ind = MultiIndices(np.zeros(d, dtype=int))
         add = True
         while add:
