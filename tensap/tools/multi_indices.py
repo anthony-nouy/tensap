@@ -831,7 +831,7 @@ class MultiIndices:
         d : int
             The dimension, a positive integer.
         m : int
-            Bound of the set { k : \alpha_k \not= 0 }, maximum number of interactions.
+            Bound of the set { k : alpha_k \not= 0 }.
         p : degree of polynomials
 
         Returns
