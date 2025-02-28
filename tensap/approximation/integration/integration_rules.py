@@ -181,7 +181,7 @@ class FullTensorProductIntegrationRule(IntegrationRule):
             raise ValueError("The points must be a FullTensorGrid or a list.")
 
         assert (
-                isinstance(weights, list) and len(weights) == points.ndim()
+            isinstance(weights, list) and len(weights) == points.ndim()
         ), "The weights must be a list of length the length of points."
 
         self.points = points

@@ -40,7 +40,7 @@ DATA = np.array(
             [
                 np.ravel(
                     np.reshape(DATA[k, :], [8] * 2)[
-                    PS[0] * i: PS[0] * i + PS[0], PS[1] * j: PS[1] * j + PS[1]
+                        PS[0] * i:PS[0] * i + PS[0], PS[1] * j:PS[1] * j + PS[1]
                     ]
                 )
                 for i in range(int(8 / PS[0]))
@@ -115,8 +115,8 @@ def error_function(y_pred, sample):
     except Exception:
         pass
     return (
-            np.count_nonzero(np.argmax(y_pred, 1) - np.argmax(sample[1], 1))
-            / sample[1].numpy().shape[0]
+        np.count_nonzero(np.argmax(y_pred, 1) - np.argmax(sample[1], 1))
+        / sample[1].numpy().shape[0]
     )
 
 

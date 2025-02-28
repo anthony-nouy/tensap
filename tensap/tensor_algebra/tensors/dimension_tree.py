@@ -97,11 +97,11 @@ class DimensionTree:
 
     def __repr__(self):
         return (
-                "<DimensionTree:{n}"
-                + "{t}nb_nodes = {},{n}"
-                + "{t}arity = {},{n}"
-                + "{t}dim2ind = {},{n}"
-                + "{t}is_leaf = {},{n}"
+            "<DimensionTree:{n}"
+            + "{t}nb_nodes = {},{n}"
+            + "{t}arity = {},{n}"
+            + "{t}dim2ind = {},{n}"
+            + "{t}is_leaf = {},{n}"
         ).format(self.nb_nodes, self.arity, self.dim2ind, self.is_leaf, t="\t", n="\n")
 
     def permute(self, sigma):
@@ -144,9 +144,9 @@ class DimensionTree:
 
     def __eq__(self, T):
         is_equal = (
-                (len(self.dim2ind) == len(T.dim2ind))
-                and (self.nb_nodes == T.nb_nodes)
-                and (np.max(self.level) == np.max(T.level))
+            (len(self.dim2ind) == len(T.dim2ind))
+            and (self.nb_nodes == T.nb_nodes)
+            and (np.max(self.level) == np.max(T.level))
         )
 
         if is_equal:
@@ -546,7 +546,7 @@ class DimensionTree:
         self.plot_with_labels_at_nodes(self.nodes_indices, **args)
 
     def plot_with_labels_at_nodes(
-            self, labels, node_color="red", colored_nodes=None, title=None, fname=None
+        self, labels, node_color="red", colored_nodes=None, title=None, fname=None
     ):
         """
         Plot the tree with labels at nodes.
@@ -667,7 +667,7 @@ class DimensionTree:
         _children = np.zeros([self.arity, self.nb_nodes], dtype=int)
         for i in range(self.nb_nodes):
             ind = np.nonzero(self.adjacency_matrix[i, :])[0]
-            _children[0: len(ind), i] = ind + 1
+            _children[0:len(ind), i] = ind + 1
         self._children = _children
 
         _child_number = np.zeros(self.nb_nodes, dtype=int)
@@ -782,7 +782,7 @@ class DimensionTree:
         adj_mat = np.zeros([2 * dim - 1] * 2, dtype=int)
         adj_mat[0, 1:3] = 1
         for i in range(1, dim - 1):
-            adj_mat[i, 2 * i + 1: 2 * i + 3] = 1
+            adj_mat[i, 2 * i + 1:2 * i + 3] = 1
         d2i[order] = d2i.flatten()
         return DimensionTree(d2i, adj_mat)
 
