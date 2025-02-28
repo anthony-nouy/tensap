@@ -830,9 +830,10 @@ class MultiIndices:
         ----------
         d : int
             The dimension, a positive integer.
+        p : degree of polynomials
+
         m : int
             Bound of the set { k : alpha_k \not= 0 }.
-        p : degree of polynomials
 
         Returns
         -------
