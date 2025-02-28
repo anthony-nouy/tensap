@@ -67,8 +67,7 @@ class PolynomialFunctionalBasis(tensap.FunctionalBasis):
         self.measure = basis.measure
 
         if isinstance(
-            basis, (tensap.OrthonormalPolynomials,
-                    tensap.ShiftedOrthonormalPolynomials)
+            basis, (tensap.OrthonormalPolynomials, tensap.ShiftedOrthonormalPolynomials)
         ):
             self.is_orthonormal = True
 
@@ -138,8 +137,7 @@ class PolynomialFunctionalBasis(tensap.FunctionalBasis):
 
         measure = b.measure
         int_rule = measure.gauss_integration_rule(2 * m)
-        return tensap.SubFunctionalBasis(
-            b, self.projection(fun, int_rule).data)
+        return tensap.SubFunctionalBasis(b, self.projection(fun, int_rule).data)
 
     def derivative(self, k, measure=None):
         """

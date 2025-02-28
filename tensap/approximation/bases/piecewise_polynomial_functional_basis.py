@@ -81,8 +81,7 @@ class PiecewisePolynomialFunctionalBasis(tensap.FunctionalBasis):
             I_rows = np.where(pos == i)[0]
             if I_rows.size > 0:
                 J = np.sum(self.p[:i] + 1) + np.arange(self.p[i] + 1)
-                hx[np.ix_(I_rows, J)] = pu[I_rows,
-                                           : self.p[i] + 1] / np.sqrt(h[i])
+                hx[np.ix_(I_rows, J)] = pu[I_rows, : self.p[i] + 1] / np.sqrt(h[i])
 
         if indices is not None:
             hx = hx[:, indices]
@@ -256,8 +255,7 @@ class PiecewisePolynomialFunctionalBasis(tensap.FunctionalBasis):
                 xi = np.concatenate([[0], 2.0 ** (-np.arange(ne, 0, -1)), [1]])
                 pi = np.arange(xi.size - 1)
             elif bi in s:
-                xi = np.concatenate(
-                    [[0], 1 - 2.0 ** (-np.arange(1, ne + 1)), [1]])
+                xi = np.concatenate([[0], 1 - 2.0 ** (-np.arange(1, ne + 1)), [1]])
                 pi = np.arange(xi.size - 2, -1, -1)
             if i < e.size - 2:
                 xi = xi[:-1]

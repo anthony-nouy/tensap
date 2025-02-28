@@ -43,8 +43,7 @@ DEGREE = 8
 ORTHONORMAL_BASES = True
 if ORTHONORMAL_BASES:
     BASES = [
-        tensap.PolynomialFunctionalBasis(
-            x.orthonormal_polynomials(), range(DEGREE + 1))
+        tensap.PolynomialFunctionalBasis(x.orthonormal_polynomials(), range(DEGREE + 1))
         for x in X.random_variables
     ]
 else:

@@ -68,8 +68,7 @@ class ProductMeasure(tensap.Measure):
         )
 
     def __eq__(self, measure_2):
-        return np.all([x == y for x, y in zip(
-            self.measures, measure_2.measures)])
+        return np.all([x == y for x, y in zip(self.measures, measure_2.measures)])
 
     def is_discrete(self):
         return np.all([x.is_discrete() for x in self.measures])

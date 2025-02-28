@@ -30,8 +30,7 @@ FUN = tensap.UserDefinedFunction("(1+x0)**2+(2+x0)/(2+x1)", D)
 FUN.evaluation_at_multiple_points = True
 V = tensap.UniformRandomVariable(-1.5, 2)
 X = tensap.RandomVector(V, D)
-BASIS = tensap.PolynomialFunctionalBasis(
-    V.orthonormal_polynomials(), range(P + 1))
+BASIS = tensap.PolynomialFunctionalBasis(V.orthonormal_polynomials(), range(P + 1))
 BASES = tensap.FunctionalBases.duplicate(BASIS, D)
 
 # %% Sparse tensor product functional basis

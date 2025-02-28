@@ -72,8 +72,7 @@ NEWTREE.plot(title="Nodes indices after changing the root to node 5")
 NEWTREE.plot_dims(title="Nodes dimensions after changing the root to node 5")
 NEWTREE, modified_nodes = TREE.change_root(11)
 NEWTREE.plot(title="Nodes indices after changing the root to leaf node 11")
-NEWTREE.plot_dims(
-    title="Nodes dimensions after changing the root to leaf node 11")
+NEWTREE.plot_dims(title="Nodes dimensions after changing the root to leaf node 11")
 
 
 # %% Add a child to a node

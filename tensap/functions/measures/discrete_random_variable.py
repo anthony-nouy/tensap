@@ -80,8 +80,7 @@ class DiscreteRandomVariable(tensap.RandomVariable):
 
         self.probabilities = np.array(probabilities)
         if np.abs(np.sum(self.probabilities) - 1) > np.finfo(float).eps:
-            self.probabilities = self.probabilities / \
-                np.sum(self.probabilities)
+            self.probabilities = self.probabilities / np.sum(self.probabilities)
 
     def get_standard_random_variable(self):
         """
@@ -285,6 +284,5 @@ class DiscreteRandomVariable(tensap.RandomVariable):
 
         """
 
-        ind = np.random.choice(len(self.probabilities),
-                               int(n), p=self.probabilities)
+        ind = np.random.choice(len(self.probabilities), int(n), p=self.probabilities)
         return np.squeeze(self.values[ind.astype(int), :], 1)

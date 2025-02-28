@@ -291,8 +291,7 @@ def multivariate_functions_benchmark(case, *args):
             return (
                 0.5 * np.sum(x**2, 1)
                 + 0.2 * np.sum(x[:, :-1] * x[:, 1:] ** 2 - x[:, :-1] ** 3, 1)
-                + 0.2**2 / 16 *
-                np.sum((x[:, :-1] ** 2 + x[:, 1:] ** 2) ** 2, 1)
+                + 0.2**2 / 16 * np.sum((x[:, :-1] ** 2 + x[:, 1:] ** 2) ** 2, 1)
             )
 
     elif case == "sobol":

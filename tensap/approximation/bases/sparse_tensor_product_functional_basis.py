@@ -73,9 +73,7 @@ class SparseTensorProductFunctionalBasis(tensap.FunctionalBasis):
         if not isinstance(G, SparseTensorProductFunctionalBasis):
             out = False
         else:
-            out = np.all(
-                self.bases == G.bases) and np.all(
-                self.indices == G.indices)
+            out = np.all(self.bases == G.bases) and np.all(self.indices == G.indices)
         return out
 
     def length(self):
@@ -240,8 +238,7 @@ class SparseTensorProductFunctionalBasis(tensap.FunctionalBasis):
     def derivative(self, n):
         out = deepcopy(self)
         out.bases = out.bases.derivative(n)
-        out.is_orthonormal = np.all(
-            [x.is_orthonormal for x in out.bases.bases])
+        out.is_orthonormal = np.all([x.is_orthonormal for x in out.bases.bases])
         return out
 
     def eval_jacobian(self, x):

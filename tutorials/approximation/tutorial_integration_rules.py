@@ -21,8 +21,7 @@ print("Integration error = %2.5e" % (np.abs(Iapp - Iex) / np.abs(Iex)))
 
 
 # %% Tensor product integration rule
-mu = tensap.ProductMeasure(
-    [tensap.LebesgueMeasure(0, 5), tensap.LebesgueMeasure(0, 1)])
+mu = tensap.ProductMeasure([tensap.LebesgueMeasure(0, 5), tensap.LebesgueMeasure(0, 1)])
 G = mu.gauss_integration_rule([10, 2])
 G = G.integration_rule()
 # Function f(x0,x1) = exp(x0)*x1

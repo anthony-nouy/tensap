@@ -92,18 +92,14 @@ class Tensorizer:
                 X = tensap.RandomVector(X, self.dim)
             self.X = X
         else:
-            self.X = tensap.RandomVector(
-                tensap.UniformRandomVariable(
-                    0, 1), self.dim)
+            self.X = tensap.RandomVector(tensap.UniformRandomVariable(0, 1), self.dim)
 
         if Y is not None:
             if isinstance(Y, tensap.RandomVariable):
                 Y = tensap.RandomVector(Y, self.dim)
             self.Y = Y
         else:
-            self.Y = tensap.RandomVector(
-                tensap.UniformRandomVariable(
-                    0, 1), self.dim)
+            self.Y = tensap.RandomVector(tensap.UniformRandomVariable(0, 1), self.dim)
 
     def map(self, x, nargout=1):
         """
@@ -180,8 +176,7 @@ class Tensorizer:
 
             zk = z[:, -self.dim + k]
             zk = self.Y.random_variables[k].cdf(zk)
-            u.append(Tensorizer.z2u(
-                np.hstack((ik, np.reshape(zk, [-1, 1]))), self.b))
+            u.append(Tensorizer.z2u(np.hstack((ik, np.reshape(zk, [-1, 1]))), self.b))
             u[k] = self.X.random_variables[k].icdf(u[k])
         return np.transpose(u)
 
@@ -206,11 +201,8 @@ class Tensorizer:
             The tensorized function.
 
         """
-        if not isinstance(fun, tensap.Function) and not hasattr(
-                fun, "__call__"):
-            raise ValueError(
-                "The argument must be a tensap.Function or " +
-                "function.")
+        if not isinstance(fun, tensap.Function) and not hasattr(fun, "__call__"):
+            raise ValueError("The argument must be a tensap.Function or " + "function.")
 
         if not isinstance(fun, tensap.Function) and hasattr(fun, "__call__"):
             fun = tensap.UserDefinedFunction(fun, self.dim)
@@ -259,12 +251,10 @@ class Tensorizer:
             ]
             h = tensap.FunctionalBases(h)
 
-        assert isinstance(
-            h, tensap.FunctionalBases), "Wrong type of argument for h."
+        assert isinstance(h, tensap.FunctionalBases), "Wrong type of argument for h."
 
         p = tensap.DiscretePolynomials(
-            tensap.DiscreteRandomVariable(
-                np.reshape(np.arange(self.b), [-1, 1]))
+            tensap.DiscreteRandomVariable(np.reshape(np.arange(self.b), [-1, 1]))
         )
         p = tensap.PolynomialFunctionalBasis(p, np.arange(self.b))
 

@@ -99,6 +99,5 @@ f, _ = H.tensor_product_projection(fun, I0)
 
 N_test = 100
 x_test = X.random(N_test)
-err_test = np.linalg.norm(f(x_test) - fun(x_test)) / \
-    np.linalg.norm(fun(x_test))
+err_test = np.linalg.norm(f(x_test) - fun(x_test)) / np.linalg.norm(fun(x_test))
 print("Test error = %2.5e\n" % err_test)
