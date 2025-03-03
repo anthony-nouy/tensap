@@ -111,6 +111,10 @@ class PolynomialFeatureEstimator(BaseEstimator):
             
         G, losses = minimizer(**self.fit_parameters)[:2]
 
+        # if several initial points
+        if G.ndim == 3:
+            G = G[losses.argmin()]
+
         # Re-orthonormalize G wrt euclidean inner product
         G = np.linalg.svd(G, full_matrices=False)[0]
         self.G = G
