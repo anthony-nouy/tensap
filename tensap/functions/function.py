@@ -195,7 +195,7 @@ class Function:
 
         """
         assert self.measure is not None, "Attribute measure is empty."
-        
+
         assert self.dim == 2, (
             "The function should be a bivariate function, use the partial "
             + "evaluation for higher-dimensional function."
@@ -414,7 +414,7 @@ class Function:
                 err_l2 = np.linalg.norm(f_x_test - g_x_test) / np.linalg.norm(g_x_test)
                 err_linf = np.linalg.norm(
                     np.sqrt(np.sum((f_x_test - g_x_test) ** 2, 1)), np.inf
-                ) / np.linalg.norm(np.sqrt(np.sum(g_x_test ** 2, 1)), np.inf)
+                ) / np.linalg.norm(np.sqrt(np.sum(g_x_test**2, 1)), np.inf)
 
         return err_l2, err_linf
 

@@ -40,7 +40,7 @@ DATA = np.array(
             [
                 np.ravel(
                     np.reshape(DATA[k, :], [8] * 2)[
-                        PS[0] * i: PS[0] * i + PS[0], PS[1] * j: PS[1] * j + PS[1]
+                        PS[0] * i:PS[0] * i + PS[0], PS[1] * j:PS[1] * j + PS[1]
                     ]
                 )
                 for i in range(int(8 / PS[0]))

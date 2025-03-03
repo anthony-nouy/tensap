@@ -19,9 +19,8 @@
 Module interpolation_points_feature_map.
 
 """
+import tensap
 
-import numpy as np
-import tensap 
 
 def interpolation_points_feature_map(F, x):
     """
@@ -40,14 +39,15 @@ def interpolation_points_feature_map(F, x):
     xI : numpy.ndarray
         A m-by-d array containing the selected interpolation points.
     """
-    
+
     # Evaluate the functional basis F at points x
     F_eval = F.eval(x)
-    
+
     # Apply the greedy algorithm to select points (assuming greedyAlgorithml2 is defined)
-    I = tensap.greedy_algorithml2(F_eval.T, [])  # Transpose to match the MATLAB behavior
-    
+    # Transpose to match the MATLAB behavior
+    L = tensap.greedy_algorithml2(F_eval.T, [])
+
     # Select the corresponding rows from x
-    xI = x[I, :]
-    
+    xI = x[L, :]
+
     return xI

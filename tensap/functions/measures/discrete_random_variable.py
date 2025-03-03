@@ -249,7 +249,7 @@ class DiscreteRandomVariable(tensap.RandomVariable):
 
         """
         return (
-            np.matmul(np.transpose(self.probabilities), self.values ** 2)
+            np.matmul(np.transpose(self.probabilities), self.values**2)
             - self.mean() ** 2
         )
 

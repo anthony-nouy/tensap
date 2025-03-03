@@ -248,7 +248,7 @@ class FunctionalBasisArray(tensap.Function):
 
         """
         m = self.expectation(measure)
-        return self.dot_product_expectation(self, None, measure) - m ** 2
+        return self.dot_product_expectation(self, None, measure) - m**2
 
     def std(self, *args):
         """
@@ -393,7 +393,7 @@ class FunctionalBasisArray(tensap.Function):
                 v[i, :] = 0
             else:
                 mi = self.conditional_expectation(u)
-                vi = mi.dot_product_expectation(mi) - m ** 2
+                vi = mi.dot_product_expectation(mi) - m**2
                 v[i, :] = np.ravel(vi)
 
         return np.reshape(

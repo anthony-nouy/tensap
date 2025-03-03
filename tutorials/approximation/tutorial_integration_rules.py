@@ -12,7 +12,7 @@ Iex = np.exp(2) - 1
 print("Error = %2.5e" % (np.abs(Iapp - Iex) / np.abs(Iex)))
 
 # %% Piecewise Gauss-Legendre Integration Rule
-g = tensap.IntegrationRule.gauss_legendre_composite([0, .5, 1], 6)
+g = tensap.IntegrationRule.gauss_legendre_composite([0, 0.5, 1], 6)
 f = tensap.UserDefinedFunction("np.exp(x0)", 1)
 Iapp = g.integrate(f)
 Iex = np.exp(1) - 1

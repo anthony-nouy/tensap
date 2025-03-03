@@ -78,11 +78,11 @@ ERR = np.linalg.norm(F(X_TEST) - Y_TEST) / np.linalg.norm(Y_TEST)
 print("Least-squares with l1 regularization")
 print("Test error = %2.5e" % ERR)
 
-#  Least-squares with l1 regularization and selection of optimal pattern from 
+#  Least-squares with l1 regularization and selection of optimal pattern from
 # l1 solution path
 SOLVER.regularization = True
 SOLVER.regularization_type = "l1"
-SOLVER.regularization_options = {"alpha": 0.}
+SOLVER.regularization_options = {"alpha": 0.0}
 SOLVER.model_selection = True
 SOLVER.basis_adaptation = False
 
@@ -91,9 +91,9 @@ ERR = np.linalg.norm(F(X_TEST) - Y_TEST) / np.linalg.norm(Y_TEST)
 print("Least-squares with l1 regularization and selection of optimal pattern")
 print("Test error = %2.5e" % ERR)
 
-# Standard least-squares with basis adaptation : 
-# Computes least-squares approximations for a 
-# sequence of subspaces (by default, use hierarchical subspaces 
+# Standard least-squares with basis adaptation :
+# Computes least-squares approximations for a
+# sequence of subspaces (by default, use hierarchical subspaces
 # determined by the natural ordering of basis functions
 SOLVER.regularization = False
 SOLVER.model_selection = True
@@ -105,14 +105,14 @@ ERR = np.linalg.norm(F(X_TEST) - Y_TEST) / np.linalg.norm(Y_TEST)
 print("Standard least-squares with basis adaptation")
 print("Test error = %2.5e" % ERR)
 
-# The sequences of subspaces can be specified by providing the property 
-# SOLVER.basis_adaptation_path (a boolean matrix whose columns specify 
+# The sequences of subspaces can be specified by providing the property
+# SOLVER.basis_adaptation_path (a boolean matrix whose columns specify
 # the different subspaces)
 # Here polynomial spaces V_i with total degre <=i, for i=0...P
 B = np.zeros((H.cardinal(), P + 1), dtype=bool)
 for i in range(P + 1):
-    B[:,i]= np.sum(IND.array, axis = 1) <= i
- 
+    B[:, i] = np.sum(IND.array, axis=1) <= i
+
 SOLVER.basis_adaptation_path = B
 F, OUTPUT = SOLVER.solve()
 ERR = np.linalg.norm(F(X_TEST) - Y_TEST) / np.linalg.norm(Y_TEST)

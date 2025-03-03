@@ -31,7 +31,8 @@ def check_orthonormality(phi, g):
 
 X = tp.UniformRandomVariable(-1, 1)
 p = X.orthonormal_polynomials()
-# evaluate the polynomials of degree 1 and 2 and their derivatives at points 0 and 1
+# evaluate the polynomials of degree 1 and 2 and their derivatives at
+# points 0 and 1
 print(p.polyval([1, 2], [0, 1]))
 print(p.d_polyval([1, 2], [0, 1]))
 print(p.dn_polyval(2, [1, 2], [0, 1]))

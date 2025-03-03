@@ -170,7 +170,7 @@ class TreeBasedTensorLearning(tensap.TensorLearning):
         rep = 0
         for level in range(np.max(tree.level) + 1):
             nodes = np.intersect1d(tree.nodes_with_level(level), active_nodes)
-            exploration_strategy[rep: rep + len(nodes)] = nodes
+            exploration_strategy[rep:rep + len(nodes)] = nodes
             rep += len(nodes)
         self._exploration_strategy = exploration_strategy
         return self, f
@@ -213,10 +213,8 @@ class TreeBasedTensorLearning(tensap.TensorLearning):
             f.tensor = f.tensor.orth_at_node(mu)
             self.tree = tree
             self.is_active_node = f.tensor.is_active_node
-            self.linear_model_learning[
-                mu - 1
-            ].basis_adaptation_path = self.create_basis_adaptation_path(
-                f.tensor.ranks, mu
+            self.linear_model_learning[mu - 1].basis_adaptation_path = (
+                self.create_basis_adaptation_path(f.tensor.ranks, mu)
             )
         else:
             f.tensor = f.tensor.orth_at_node(mu)
@@ -512,9 +510,11 @@ class TreeBasedTensorLearning(tensap.TensorLearning):
         sin_val_min = np.array([np.min(x) for x in sin_val])
         sin_val_min[
             [
-                x / tensor_for_selection.norm() < np.finfo(float).eps
-                if not np.isnan(x)
-                else False
+                (
+                    x / tensor_for_selection.norm() < np.finfo(float).eps
+                    if not np.isnan(x)
+                    else False
+                )
                 for x in sin_val_min
             ]
         ] = np.nan
@@ -677,7 +677,7 @@ class TreeBasedTensorLearning(tensap.TensorLearning):
         rep = 0
         for level in np.arange(np.max(tree.level), -1, -1):
             nodes = np.intersect1d(tree.nodes_with_level(level), active_nodes)
-            exploration_strategy[rep: rep + len(nodes)] = nodes
+            exploration_strategy[rep:rep + len(nodes)] = nodes
             rep += len(nodes)
         self._exploration_strategy = np.setdiff1d(
             exploration_strategy, tree.root, assume_unique=True
@@ -745,24 +745,24 @@ class TreeBasedTensorLearning(tensap.TensorLearning):
                             )
                             f.tensor = tr.hsvd(f.tensor)
                         elif np.all(f.tensor.is_active_node[tree.children(alpha) - 1]):
-                            self.linear_model_learning[
-                                alpha - 1
-                            ].basis_adaptation = False
+                            self.linear_model_learning[alpha - 1].basis_adaptation = (
+                                False
+                            )
                     f.tensor = f.tensor.orth_at_node(tree.parent(alpha))
                     self.tree = tree
                     self.is_active_node = f.tensor.is_active_node
 
                     if self.rank_adaptation_options["type"] == "dmrg":
-                        self.linear_model_learning[
-                            alpha - 1
-                        ].basis_adaptation_path = self.create_basis_adaptation_path_dmrg(
-                            f.tensor.ranks, alpha
+                        self.linear_model_learning[alpha - 1].basis_adaptation_path = (
+                            self.create_basis_adaptation_path_dmrg(
+                                f.tensor.ranks, alpha
+                            )
                         )
                     elif self.rank_adaptation_options["type"] == "dmrg_low_rank":
-                        self.linear_model_learning[
-                            alpha - 1
-                        ].basis_adaptation_path = self.create_basis_adaptation_path_dmrg_low_rank(
-                            f.tensor.ranks, alpha
+                        self.linear_model_learning[alpha - 1].basis_adaptation_path = (
+                            self.create_basis_adaptation_path_dmrg_low_rank(
+                                f.tensor.ranks, alpha
+                            )
                         )
                     else:
                         raise ValueError("Wrong rank adaptation type.")
@@ -882,9 +882,9 @@ class TreeBasedTensorLearning(tensap.TensorLearning):
                         "on_error"
                     ] / np.sqrt(np.count_nonzero(f.tensor.is_active_node) - 1)
                     s_local.tolerance["on_stagnation"] = self.tolerance["on_stagnation"]
-                    s_local.rank_adaptation_options[
-                        "max_iterations"
-                    ] = self.rank_adaptation_options["max_rank"]
+                    s_local.rank_adaptation_options["max_iterations"] = (
+                        self.rank_adaptation_options["max_rank"]
+                    )
                     s_local.alternating_minimization_parameters = deepcopy(
                         self.alternating_minimization_parameters
                     )
@@ -905,9 +905,9 @@ class TreeBasedTensorLearning(tensap.TensorLearning):
                     s_local.training_data = self.training_data
                     s_local.bases_eval = A
                     s_local.model_selection = True
-                    s_local.model_selection_options[
-                        "type"
-                    ] = self.rank_adaptation_options["model_selection_type"]
+                    s_local.model_selection_options["type"] = (
+                        self.rank_adaptation_options["model_selection_type"]
+                    )
                     C, output_tmp = s_local.solve()
 
                     rank = [C.tensor.ranks[1]]

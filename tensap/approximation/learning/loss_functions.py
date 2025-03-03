@@ -169,7 +169,7 @@ class SquareLossFunction(LossFunction):
 
         if nargout == 1:
             return loss
-        loss_ref = np.sum(y_true ** 2, 1)
+        loss_ref = np.sum(y_true**2, 1)
         return loss, loss_ref
 
     def relative_test_error(self, fun, sample, *args):

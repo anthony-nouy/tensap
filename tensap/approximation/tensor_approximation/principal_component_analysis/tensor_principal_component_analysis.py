@@ -22,6 +22,7 @@ Module tensor_principal_component_analysis.
 from copy import deepcopy
 import numpy as np
 import tensap
+
 # from maxvolpy.maxvol import maxvol
 
 
@@ -71,7 +72,7 @@ class TensorPrincipalComponentAnalysis:
         self.pca_adaptive_sampling = False
         self.tol = 1e-8
         self.max_rank = np.inf
-        self.subsampling = 'eim'
+        self.subsampling = "eim"
         self.subsampling_tol = 1.05
 
     def alpha_principal_components(self, fun, shape, alpha, tol, B_alpha, I_alpha):
@@ -440,14 +441,14 @@ class TensorPrincipalComponentAnalysis:
 
                 if self.subsampling == "eim":
                     I_alpha = tensap.magic_indices(B_alpha)[0]
-#                elif self.subsampling == "maxvol":
-#                    I_alpha = maxvol(B_alpha, tol=self.subsampling_tol)[0]
+                #                elif self.subsampling == "maxvol":
+                #                    I_alpha = maxvol(B_alpha, tol=self.subsampling_tol)[0]
                 elif self.subsampling == "random":
-                    I_alpha = np.random.choice(range(B_alpha.shape[0]),
-                                               size=B_alpha.shape[1],
-                                               replace=False)
+                    I_alpha = np.random.choice(
+                        range(B_alpha.shape[0]), size=B_alpha.shape[1], replace=False
+                    )
                 else:
-                    raise ValueError('Wrong subsampling type')
+                    raise ValueError("Wrong subsampling type")
 
                 alpha_grids[alpha - 1] = grids[nu][I_alpha, :]
                 alpha_basis[alpha - 1] = B_alpha[I_alpha, :]

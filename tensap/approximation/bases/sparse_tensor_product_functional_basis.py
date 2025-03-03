@@ -261,7 +261,8 @@ class SparseTensorProductFunctionalBasis(tensap.FunctionalBasis):
         for ind in range(self.length()):
             n = self.length() * [0]
             n[ind] = 1
-            dnHx_i = self.eval_derivative(n, x)[:, :, None]  # add an axis to concatenate
+            # add an axis to concatenate
+            dnHx_i = self.eval_derivative(n, x)[:, :, None]
             dnHx_lst.append(dnHx_i)
         out = np.concatenate(dnHx_lst, axis=2)
         return out

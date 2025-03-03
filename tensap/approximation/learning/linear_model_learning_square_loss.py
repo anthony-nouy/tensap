@@ -194,7 +194,7 @@ class LinearModelLearningSquareLoss(tensap.LinearModelLearning):
             second_moment = np.var(y, 0) + np.mean(y, 0) ** 2
             if self.error_estimation_type == "residuals":
                 delta = y - np.matmul(A, sol)
-                error = np.mean(delta ** 2, 0) / second_moment
+                error = np.mean(delta**2, 0) / second_moment
             else:
                 if self.linear_solver == "solve":
                     try:
@@ -280,7 +280,7 @@ class LinearModelLearningSquareLoss(tensap.LinearModelLearning):
             second_moment = np.var(y, 0) + np.mean(y, 0) ** 2
             if self.error_estimation_type == "residuals":
                 delta = y - np.matmul(A, sol)
-                error = np.mean(delta ** 2, 0) / second_moment
+                error = np.mean(delta**2, 0) / second_moment
             else:
                 ind = np.nonzero(sol)[0]
                 A_red = A[:, ind]
@@ -559,13 +559,13 @@ class LinearModelLearningSquareLoss(tensap.LinearModelLearning):
             if linear_solver == "solve":
                 T = np.sum(np.transpose(A) * np.matmul(C, np.transpose(A)), 0)
             elif linear_solver == "qr":
-                T = np.sum(q_A ** 2, 1)
+                T = np.sum(q_A**2, 1)
 
             with np.errstate(divide="ignore", invalid="ignore"):
                 delta = (y - np.matmul(A, sol)) / (1 - np.reshape(T, y.shape))
             delta = np.squeeze(delta)
             # Compute the absolute cross-validation error
-            err = np.mean(delta ** 2, 0)
+            err = np.mean(delta**2, 0)
         elif self.error_estimation_type == "k_fold":
             from sklearn.model_selection import KFold
 
@@ -603,7 +603,7 @@ class LinearModelLearningSquareLoss(tensap.LinearModelLearning):
                 )
                 # Compute the absolute cross-validation error for the current
                 # fold
-                errors.append(np.mean(delta_loc ** 2))
+                errors.append(np.mean(delta_loc**2))
                 if n == 1:
                     delta[test] = delta_loc
                 else:

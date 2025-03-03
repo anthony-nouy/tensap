@@ -399,7 +399,7 @@ class Truncator:
                     # of Frobenius norm of the tensor
                     if gram[nod] is not None:
                         self.max_rank = max_rank[nod]
-                        tmp = self.trunc_svd(gram[nod], tolerance=local_tol ** 2, power=1)
+                        tmp = self.trunc_svd(gram[nod], tolerance=local_tol**2, power=1)
                         shape[nod] = tmp.core.shape[0]
                         mat[nod] = np.transpose(tmp.space[0])
 
@@ -445,7 +445,7 @@ class Truncator:
                         # Truncation of the Gramian in trace norm for a control
                         # of Frobenius norm of the tensor
                         self.max_rank = max_rank[nod - 1]
-                        tmp = self.trunc_svd(gram[nod - 1], local_tol ** 2, power=1)
+                        tmp = self.trunc_svd(gram[nod - 1], local_tol**2, power=1)
                         tmp = np.transpose(tmp.space[0])
                         order = out.tensors[nod - 1].order
                         out.tensors[nod - 1] = out.tensors[

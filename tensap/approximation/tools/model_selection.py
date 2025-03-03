@@ -281,7 +281,7 @@ class ModelSelection:
         if c_type == "standard":
             comp = eval("x." + fun + "()")
         elif c_type == "grassman":
-            comp = eval("x." + fun + "()") - np.sum(x.ranks ** 2)
+            comp = eval("x." + fun + "()") - np.sum(x.ranks**2)
         elif c_type == "stiefel":
             comp = eval("x." + fun + "()") - np.sum(x.ranks * (x.ranks + 1) / 2)
         else:

@@ -47,11 +47,7 @@ setuptools.setup(
         "License :: OSI Approved :: GNU Lesser General Public License v3 or later (LGPLv3+)",
         "Operating System :: OS Independent",
     ],
-    install_requires=[
-        "numpy",
-        "scipy",
-        "networkx"
-    ],
+    install_requires=["numpy", "scipy", "networkx"],
     python_requires=">=3.6",
     include_package_data=True,
 )

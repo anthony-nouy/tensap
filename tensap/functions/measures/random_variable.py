@@ -282,7 +282,7 @@ class RandomVariable(tensap.ProbabilityMeasure):
         ind = np.argsort(eig_values)
         eig_vectors = eig_vectors[:, ind]
 
-        weights = eig_vectors[0, :] ** 2 / np.sqrt(np.sum(eig_vectors ** 2, 0))
+        weights = eig_vectors[0, :] ** 2 / np.sqrt(np.sum(eig_vectors**2, 0))
 
         if flag:
             points = shift + scaling * points
@@ -391,7 +391,7 @@ class RandomVariable(tensap.ProbabilityMeasure):
             nb_pts = int(np.ceil((np.max(ind) + 1) / 2))
             G = self.gauss_integration_rule(nb_pts)
             for nb, ind_loc in enumerate(ind):
-                out[nb] = G.integrate(lambda x: x ** ind_loc)
+                out[nb] = G.integrate(lambda x: x**ind_loc)
 
         if nargout == 1:
             return out

@@ -174,13 +174,13 @@ class FunctionalTensor(tensap.Function):
         """
         mean = self.expectation(*measure)
         if np.isscalar(mean):
-            var = self.dot_product_expectation(self, None, *measure) - mean ** 2
+            var = self.dot_product_expectation(self, None, *measure) - mean**2
         else:
             raise NotImplementedError("Method not implemented.")
         return var
 
     def std(self, *measure):
-        """ '
+        """'
         Compute the standard deviation of the random variable self(measure) if
         measure is provided, and of self(self.bases.measure) otherwise.
 
@@ -364,7 +364,7 @@ class FunctionalTensor(tensap.Function):
                 v[i] = 0
             else:
                 mu = self.conditional_expectation(u)
-                v[i] = mu.dot_product_expectation(mu) - m ** 2
+                v[i] = mu.dot_product_expectation(mu) - m**2
         return v
 
     def eval(self, x, *dims):
@@ -415,7 +415,7 @@ class FunctionalTensor(tensap.Function):
                     c = out.tensor.tensors[root - 1]
                     n = self.tensor.ranks[root - 1]
                     s = [":"] * c.order
-                    s[-1] = np.arange(n ** 2, step=n)
+                    s[-1] = np.arange(n**2, step=n)
                     c = c.sub_tensor(*s)
                     out.tensor.tensors[root - 1] = c
                     out.tensor.ranks[root - 1] = n

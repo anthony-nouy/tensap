@@ -288,9 +288,9 @@ class Tensorizer:
 
         """
         u = np.ravel(u)
-        su = u * (b ** d)
+        su = u * (b**d)
         i = np.floor(su)
-        i = np.minimum(i, b ** d - 1).astype(int)
+        i = np.minimum(i, b**d - 1).astype(int)
         y = su - i
         i = tensap.integer2baseb(i, b, d)
         if nargout == 2:
