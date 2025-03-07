@@ -51,7 +51,7 @@ class PolynomialFeatureEstimator(BaseEstimator):
         self.fit_parameters = fit_parameters
 
         self.__build_basis()
-        self.optim_logs = None
+        self.optim_history = {}
 
 
     def __build_basis(self):
@@ -107,7 +107,10 @@ class PolynomialFeatureEstimator(BaseEstimator):
                 ind = losses.argmin()
                 G = G[ind]
                 optim_results = optim_results[ind]
-            self.optim_logs = optim_results.logs
+            optim_log = optim_results.log.get('iterations')
+            self.optim_history['iteration'] = np.array(optim_log.get('iteration'))
+            self.optim_history['cost'] = np.array(optim_log.get('cost'))
+            self.optim_history['gradient_norm'] = np.array(optim_log.get('gradient_norm'))
 
         elif self.fit_method == 'surrogate':
             G, losses = ploss.minimize_surrogate(**self.fit_parameters)[:2]
