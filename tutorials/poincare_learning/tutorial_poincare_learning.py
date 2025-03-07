@@ -61,17 +61,18 @@ u, jac_u, X = build_benchmark_torch("borehole")
 max_deg = 2
 basis = _build_ortho_poly_basis(X, p=1, m=max_deg)
 K = basis.cardinal()
+R = basis.gram_matrix_h1_0()
 
 # %% Sampling
 
 N_train = 300
 x_train, u_train, jac_u_train, basis_train, jac_basis_train, loss_train = generate_samples(
-    N_train, X, u, jac_u, basis)
+    N_train, X, u, jac_u, basis, R)
 
 
 N_test = 500
 x_test, u_test, jac_u_test, basis_test, jac_basis_test, loss_test = generate_samples(
-    N_test, X, u, jac_u, basis)
+    N_test, X, u, jac_u, basis, R)
 
 
 # %% Initialize minimization algorithm
@@ -87,9 +88,9 @@ optimizer_kwargs = {
 
 m = 2   # number of features to learn
 n_try = 2   # number of random initializations
-G0_lst = np.random.normal(size=(n_try, K, m)) # random initializations
+init_method = "random_linear"
 
-G_lst, loss_lst = loss_train.minimize_pymanopt(G0_lst, m, n_try, use_precond=True, optimizer_kwargs=optimizer_kwargs)
+G_lst, loss_lst = loss_train.minimize_pymanopt(G0=None, m=m, init_method=init_method, n_try=n_try, use_precond=True, optimizer_kwargs=optimizer_kwargs)
 
 if n_try > 1:
     G = G_lst[loss_lst.argmin()]
