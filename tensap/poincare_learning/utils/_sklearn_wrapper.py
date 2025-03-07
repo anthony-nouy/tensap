@@ -51,6 +51,7 @@ class PolynomialFeatureEstimator(BaseEstimator):
         self.fit_parameters = fit_parameters
 
         self.__build_basis()
+        self.optim_logs = None
 
 
     def __build_basis(self):
@@ -99,21 +100,23 @@ class PolynomialFeatureEstimator(BaseEstimator):
             jac_u, self.basis.eval_jacobian(X), self.basis, self.R)
         
         if self.fit_method == 'pymanopt':
-            minimizer = ploss.minimize_pymanopt
-        elif self.fit_method == 'qn':
-            minimizer = ploss.minimize_qn
+            G, losses, optim_results = ploss.minimize_pymanopt(**self.fit_parameters)
+
+            # if several initial points
+            if G.ndim == 3:
+                ind = losses.argmin()
+                G = G[ind]
+                optim_results = optim_results[ind]
+            self.optim_logs = optim_results.logs
+
         elif self.fit_method == 'surrogate':
-            minimizer = ploss.minimize_surrogate
+            G, losses = ploss.minimize_surrogate(**self.fit_parameters)[:2]
+
         elif self.fit_method == 'surrogate_greedy':
-            minimizer = ploss.minimize_surrogate_greedy
+            G, losses = ploss.minimize_surrogate_greedy(**self.fit_parameters)[:2]
+
         else:
             raise NotImplementedError('Method not implemented')
-            
-        G, losses = minimizer(**self.fit_parameters)[:2]
-
-        # if several initial points
-        if G.ndim == 3:
-            G = G[losses.argmin()]
 
         # Re-orthonormalize G wrt euclidean inner product
         G = np.linalg.svd(G, full_matrices=False)[0]
