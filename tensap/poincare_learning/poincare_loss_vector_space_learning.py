@@ -489,11 +489,11 @@ def _minimize_surrogate_greedy(jac_u, jac_basis, m_max, R=None, optimize_poincar
         logging.info(f"Greedy iteration {j+1}")
 
         # Learn the j-th feature from surrogate and previous features
-        G, losses[j], surrogates[j], _ = _minimize_surrogate(jac_u, jac_basis, G, R)
+        G, losses[j], surrogates[j] = _minimize_surrogate(jac_u, jac_basis, G, R)
 
         # Run minimization of Poincare loss on all features if necessary
         if optimize_poincare:
-            G, losses_optimized[j] = _minimize_pymanopt(jac_u, jac_basis, G, **pmo_kwargs)
+            G, losses_optimized[j], _ = _minimize_pymanopt(jac_u, jac_basis, G, **pmo_kwargs)
             if not(R is None):
                 G = G @ np.linalg.inv(np.linalg.cholesky(G.T @ R @ G).T)
         else:
