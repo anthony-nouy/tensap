@@ -84,8 +84,8 @@ class PoincareLossVectorSpace:
     def minimize_qn(self, G0=None, m=None, n_try=None, maxiter_qn=100, tol_qn=1e-5, cg_kwargs={}):
         return _minimize_qn(self.jac_u, self.jac_basis, G0, m, n_try, self.R, maxiter_qn, tol_qn, cg_kwargs)
     
-    def minimize_pymanopt(self, G0=None, m=None, n_try=None, use_precond=True, precond_kwargs={}, optimizer_kwargs={}, ls_kwargs={}):
-        return _minimize_pymanopt(self.jac_u, self.jac_basis, G0, m, n_try, use_precond, precond_kwargs, optimizer_kwargs, ls_kwargs)
+    def minimize_pymanopt(self, G0=None, m=None, init_method='random_linear', n_try=None, use_precond=True, precond_kwargs={}, optimizer_kwargs={}, ls_kwargs={}):
+        return _minimize_pymanopt(self.jac_u, self.jac_basis, G0, m, init_method, n_try, self.R, use_precond, precond_kwargs, optimizer_kwargs, ls_kwargs)
 
     def minimize_surrogate(self, G0=None, m=1):
         return _minimize_surrogate(self.jac_u, self.jac_basis, G0, self.R, m)

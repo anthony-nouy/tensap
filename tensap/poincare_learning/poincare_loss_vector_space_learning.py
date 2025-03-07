@@ -177,7 +177,7 @@ def _minimize_qn(jac_u, jac_basis, G0=None, m=None, n_try=None, R=None, maxiter_
     return G, loss
 
 
-def _minimize_pymanopt(jac_u, jac_basis, G0=None, m=None, n_try=None, use_precond=True, precond_kwargs={}, optimizer_kwargs={}, ls_kwargs={}):
+def _minimize_pymanopt(jac_u, jac_basis, G0=None, m=None, init_method='random_linear', n_try=1, R=None, use_precond=True, precond_kwargs={}, optimizer_kwargs={}, ls_kwargs={}):
     """
     Minimize the Poincare loss using a conjugate gradient algorithm on 
     the Grassmann manifold Grass(K, m).
@@ -192,15 +192,23 @@ def _minimize_pymanopt(jac_u, jac_basis, G0=None, m=None, n_try=None, use_precon
         Has shape (N, K, d).
     G0 : numpy.ndarray, optional
         Initialization point of the algorithm.
-        If None, the algorithm takes n_try random initial points.
+        If not None, ignores init_method, m, n_try and R.
         Has shape (n_try, K, m) or (K, m).
         The default is None.
     m : int, optional
         Only used if G0 is None.
         The default is None.
-    n_try : in, optional
-        Only used if G0 is None
-        The default is None.
+    init_method : string, optional
+        Only used if G0 is None.
+        Initialization method, must be one of 'random', 'random_linear', 'surrogate', 'surrogate_greedy'.
+        The default is 'random_linear'.
+    n_try : int, optional
+        Only used if G0 is None and init_method is 'random' or 'random_linear'.
+        The default is 1.
+    R : numpy.ndarray, optional
+        Matrix wrt which G should be orthonormal.
+        Only used if init_method is one of 'surrogate' or 'surrogate_greedy'.
+        The default is None, corresponding to identity matrix.
     use_precond : bool, optional
         If True, use the precond from the quasi Newton algorithm escribed in 
         Bigoni et al. 2022, meaning taking S(G) as approximate Hessian.
@@ -229,11 +237,28 @@ def _minimize_pymanopt(jac_u, jac_basis, G0=None, m=None, n_try=None, use_precon
         Minimal costs for initial point.
 
     """
-    K = jac_basis.shape[1]
+    _, K, d = jac_basis.shape
 
     if G0 is None:
         assert not(m is None)
-        G0 = np.random.normal(size=(n_try, K, m))
+        if init_method == 'surrogate':
+            G0 = _minimize_surrogate(jac_u, jac_basis, R=R, m=m)[0]
+    
+        elif init_method == 'surrogate_greedy':
+            G0 = _minimize_surrogate_greedy(jac_u, jac_basis, m, R=R, optimize_poincare=False)[0]
+
+        elif init_method == 'random':
+            G0 = np.random.normal(size=(n_try, K, m))
+
+        elif init_method == 'random_linear':
+            G0 = np.zeros((n_try, K, m))
+            G0[:,:d,:] = np.random.normal(size=(n_try, d, m))
+
+        else:
+            raise ValueError('Initialization method not valid')
+
+    if G0.ndim == 1:
+        G0 = G0[None, :, None]
 
     elif G0.ndim == 2:
         G0 = G0[None, :, :]
@@ -379,7 +404,7 @@ def _minimize_surrogate(jac_u, jac_basis, G0=None, R=None, m=1):
     return G, loss, surrogate
 
 
-def _minimize_surrogate_greedy(jac_u, jac_basis, m_max, R=None, optimize_poincare=True, tol=1e-7, pmo_kwargs={}):
+def _minimize_surrogate_greedy(jac_u, jac_basis, m_max, R=None, optimize_poincare=False, tol=1e-7, pmo_kwargs={}):
     """
     Greedy algorithm to learn multiple features, as proposed in 
     Nouy et al. 2025.
