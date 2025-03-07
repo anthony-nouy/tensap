@@ -148,7 +148,7 @@ optimizer_kwargs = {
     'verbosity':2
     }
 
-G_opt, _ = loss_train.minimize_pymanopt(G_surr, use_precond=True, optimizer_kwargs=optimizer_kwargs)
+G_opt, _, _ = loss_train.minimize_pymanopt(G_surr, use_precond=True, optimizer_kwargs=optimizer_kwargs)
 
 # %% Plot for eyeball regression
 

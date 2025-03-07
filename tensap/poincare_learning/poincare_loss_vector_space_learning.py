@@ -235,7 +235,8 @@ def _minimize_pymanopt(jac_u, jac_basis, G0=None, m=None, init_method='random_li
         Has shape (n_try, K, m) of (K, m).
     loss : numpy.ndarray
         Minimal costs for initial point.
-
+    optim_results : OptimizerResult or list of OptimizerResult
+        The detailed optimization results
     """
     _, K, d = jac_basis.shape
 
@@ -268,17 +269,20 @@ def _minimize_pymanopt(jac_u, jac_basis, G0=None, m=None, init_method='random_li
     loss = np.inf * np.ones(l)
     G = 0 * G0
 
+    optim_results = []
     for i in range(l):
         logging.info(f"Minimizing Poincare loss with pymanopt")
-        optim_result = optimizer.run(problem, initial_point=G0[i])
-        loss[i] = optim_result.cost
-        G[i] = optim_result.point
+        res = optimizer.run(problem, initial_point=G0[i])
+        optim_results.append(res)
+        loss[i] = res.cost
+        G[i] = res.point
 
     if l == 1:
+        optim_results = optim_results[0]
         loss = loss[0]
         G = G[0]
         
-    return G, loss
+    return G, loss, optim_results
 
 
 def _build_pymanopt_problem(jac_u, jac_basis, m, use_precond=True, optimizer_kwargs={}, precond_kwargs={}, ls_kwargs={}):
@@ -468,7 +472,7 @@ def _minimize_surrogate_greedy(jac_u, jac_basis, m_max, R=None, optimize_poincar
     
     # Run minimization of Poincare loss if necessary
     if optimize_poincare:
-        G, losses_optimized[0] = _minimize_pymanopt(jac_u, jac_basis, G, **pmo_kwargs)
+        G, losses_optimized[0], _ = _minimize_pymanopt(jac_u, jac_basis, G, **pmo_kwargs)
         if not(R is None):
             G = G @ np.linalg.inv(np.linalg.cholesky(G.T @ R @ G).T)
     else:
@@ -485,7 +489,7 @@ def _minimize_surrogate_greedy(jac_u, jac_basis, m_max, R=None, optimize_poincar
         logging.info(f"Greedy iteration {j+1}")
 
         # Learn the j-th feature from surrogate and previous features
-        G, losses[j], surrogates[j] = _minimize_surrogate(jac_u, jac_basis, G, R)
+        G, losses[j], surrogates[j], _ = _minimize_surrogate(jac_u, jac_basis, G, R)
 
         # Run minimization of Poincare loss on all features if necessary
         if optimize_poincare:

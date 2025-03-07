@@ -83,14 +83,14 @@ optimizer_kwargs = {
     'beta_rule': 'PolakRibiere',
     'orth_value': 10,
     'max_iterations': 10, 
-    'verbosity':2
+    'verbosity':2,
     }
 
 m = 2   # number of features to learn
 n_try = 2   # number of random initializations
 init_method = "random_linear"
 
-G_lst, loss_lst = loss_train.minimize_pymanopt(G0=None, m=m, init_method=init_method, n_try=n_try, use_precond=True, optimizer_kwargs=optimizer_kwargs)
+G_lst, loss_lst, _ = loss_train.minimize_pymanopt(G0=None, m=m, init_method=init_method, n_try=n_try, use_precond=True, optimizer_kwargs=optimizer_kwargs)
 
 if n_try > 1:
     G = G_lst[loss_lst.argmin()]
