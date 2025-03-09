@@ -177,7 +177,7 @@ def _minimize_qn(jac_u, jac_basis, G0=None, m=None, n_try=None, R=None, maxiter_
     return G, loss
 
 
-def _minimize_pymanopt(jac_u, jac_basis, G0=None, m=None, init_method='random_linear', n_try=1, R=None, use_precond=True, precond_kwargs={}, optimizer_kwargs={}, ls_kwargs={}):
+def _minimize_pymanopt(jac_u, jac_basis, G0=None, m=None, init_method='random_linear', n_try=1, R=None, use_precond=False, precond_kwargs={}, optimizer_kwargs={}, ls_kwargs={}):
     """
     Minimize the Poincare loss using a conjugate gradient algorithm on 
     the Grassmann manifold Grass(K, m).
@@ -285,7 +285,7 @@ def _minimize_pymanopt(jac_u, jac_basis, G0=None, m=None, init_method='random_li
     return G, loss, optim_results
 
 
-def _build_pymanopt_problem(jac_u, jac_basis, m, use_precond=True, optimizer_kwargs={}, precond_kwargs={}, ls_kwargs={}):
+def _build_pymanopt_problem(jac_u, jac_basis, m, use_precond=False, optimizer_kwargs={}, precond_kwargs={}, ls_kwargs={}):
     """
     Build instances of pymanopt classes Problem and ConjugateGradient
     which can be used to minimize the Poincare loss using a conjugate 
