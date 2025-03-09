@@ -100,17 +100,26 @@ class PolynomialFeatureEstimator(BaseEstimator):
             jac_u, self.basis.eval_jacobian(X), self.basis, self.R)
         
         if self.fit_method == 'pymanopt':
-            G, losses, optim_results = ploss.minimize_pymanopt(**self.fit_parameters)
+            
+            # Non preconditionned search on maybe multiple init
+            G, losses, optim_results = ploss.minimize_pymanopt(use_precond = False, **self.fit_parameters)
 
             # if several initial points
             if G.ndim == 3:
                 ind = losses.argmin()
                 G = G[ind]
                 optim_results = optim_results[ind]
+            
+            # Preconditionned search from the best point
+            fit_parameters_precond = self.fit_parameters.copy()
+            fit_parameters_precond['optimizer_kwargs']['max_iterations'] //= 20
+            G, losses, optim_results_precond = ploss.minimize_pymanopt(G0=G, use_precond = True, **fit_parameters_precond)
+
             optim_log = optim_results.log.get('iterations')
-            self.optim_history['iteration'] = np.array(optim_log.get('iteration'))
-            self.optim_history['cost'] = np.array(optim_log.get('cost'))
-            self.optim_history['gradient_norm'] = np.array(optim_log.get('gradient_norm'))
+            optim_log_precond = optim_results_precond.log.get('iterations')
+
+            for key in ['cost', 'gradient_norm']:
+                self.optim_history[key] = np.concatenate((optim_log[key], optim_log_precond[key]))
 
         elif self.fit_method == 'surrogate':
             G, losses = ploss.minimize_surrogate(**self.fit_parameters)[:2]
