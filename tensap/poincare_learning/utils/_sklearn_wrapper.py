@@ -115,10 +115,13 @@ class PolynomialFeatureEstimator(BaseEstimator):
             fit_parameters_precond['optimizer_kwargs']['max_iterations'] //= 20
             G, losses, optim_results_precond = ploss.minimize_pymanopt(G0=G, use_precond = True, **fit_parameters_precond)
 
-            optim_log = optim_results.log.get('iterations')
-            optim_log_precond = optim_results_precond.log.get('iterations')
+            optim_log = optim_results.log.get('iterations').copy()
+            optim_log_precond = optim_results_precond.log.get('iterations').copy()
+            
+            optim_log['method'] = ['CG' for i in range(len(optim_log['cost']))]
+            optim_log_precond['method'] = ['pCG' for i in range(len(optim_log_precond['cost']))]
 
-            for key in ['cost', 'gradient_norm']:
+            for key in ['method', 'cost', 'gradient_norm']:
                 self.optim_history[key] = np.concatenate((optim_log[key], optim_log_precond[key]))
 
         elif self.fit_method == 'surrogate':
