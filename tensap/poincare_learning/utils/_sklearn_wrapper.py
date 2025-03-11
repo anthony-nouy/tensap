@@ -112,7 +112,7 @@ class PolynomialFeatureEstimator(BaseEstimator):
             
             # Preconditionned search from the best point
             fit_parameters_precond = self.fit_parameters.copy()
-            fit_parameters_precond['optimizer_kwargs']['max_iterations'] //= 25
+            fit_parameters_precond['optimizer_kwargs']['max_iterations'] //= 20
             G, losses, optim_results_precond = ploss.minimize_pymanopt(G0=G, use_precond = True, **fit_parameters_precond)
 
             optim_log = optim_results.log.get('iterations').copy()
