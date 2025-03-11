@@ -322,6 +322,47 @@ def _eval_SGinv_X(G, X, jac_u, jac_basis, jac_g=None, cg_kwargs={}):
     return out
 
 
+def _eval_SG_full(G, jac_u, jac_basis, jac_g=None):
+    """
+    Build the full matrix Sigma(G) from Bigoni et al. 2022.
+
+    Parameters
+    ----------
+    G : numpy.ndarray
+        Has shape (K, m) or (K*m, ).
+    jac_u : numpy.ndarray
+        Has shape (N, n, d).
+    jac_basis : numpy.ndarray
+        Has shape (N, K, d).
+    jac_g : numpy.ndarray, optional
+        Samples of the jacobian of the feature map.
+        jac_g[k,i,j] is dg_i / dx_j evaluated at the k-th sample. 
+        If not provided, it is computed from G and jac_basis.
+        Has shape (N, m, d).
+
+    Returns
+    -------
+    S : numpy.ndarray
+        Has shape (K*m, K*m).
+
+    """
+    if jac_g is None:
+        jac_g = _eval_jac_g(G, jac_basis)
+    K = jac_basis.shape[1]
+    N, m, d = jac_g.shape
+    S = np.zeros((K*m, K*m))
+    for ju, jb, jg in zip(jac_u, jac_basis, jac_g):
+        jbju = jb @ ju.T
+        A = jbju @ jbju.T
+        B = jb @ jb.T
+        jgju = jg @ ju.T
+        GBG = jg @ jg.T
+        GAG = jgju @ jgju.T
+        GBG_inv = np.linalg.inv(GBG)
+        S += np.kron(GBG_inv @ GAG @ GBG_inv, B) / N
+    return S
+
+
 def _eval_SG_HG_full(G, jac_u, jac_basis, jac_g=None):
     """
     Build the full matrices Sigma(G) and H(G) from Bigoni et al. 2022.

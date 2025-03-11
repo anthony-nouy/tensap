@@ -1,6 +1,6 @@
 
 
-from tensap.poincare_learning.utils._loss_vector_space import poincare_loss_vector_space, poincare_loss_vector_space_gradient, _eval_SG_X, _eval_HG_X, _eval_SG_diag, _eval_SGinv_X, _eval_SG_HG_full, _eval_HessG_X, _eval_HessG_diag, _eval_HessG_full, poincare_loss_surrogate_vector_space, _eval_surrogate_matrices
+from tensap.poincare_learning.utils._loss_vector_space import poincare_loss_vector_space, poincare_loss_vector_space_gradient, _eval_SG_X, _eval_HG_X, _eval_SG_diag, _eval_SGinv_X, _eval_SG_full, _eval_SG_HG_full, _eval_HessG_X, _eval_HessG_diag, _eval_HessG_full, poincare_loss_surrogate_vector_space, _eval_surrogate_matrices
 from tensap.poincare_learning.poincare_loss_vector_space_learning import _minimize_qn, _minimize_pymanopt, _minimize_surrogate, _minimize_surrogate_greedy
 
 
@@ -59,7 +59,10 @@ class PoincareLossVectorSpace:
 
     def eval_SG_diag(self, G, jac_g=None):
         return _eval_SG_diag(G, self.jac_u, self.jac_basis, jac_g)
-
+    
+    def eval_SG_full(self, G, jac_g=None):
+        return _eval_SG_full(G, self.jac_u, self.jac_basis, jac_g=None)
+        
     def eval_SG_HG_full(self, G, jac_g=None):
         return _eval_SG_HG_full(G, self.jac_u, self.jac_basis, jac_g)
 
