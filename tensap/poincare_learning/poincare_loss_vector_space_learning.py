@@ -3,7 +3,7 @@
 import numpy as np
 import scipy
 import logging
-from tensap.poincare_learning.utils._loss_vector_space import _eval_HG_X, _eval_SGinv_X, _eval_jac_g, poincare_loss_vector_space, poincare_loss_vector_space_gradient, _eval_surrogate_matrices, poincare_loss_surrogate_vector_space
+from tensap.poincare_learning.utils._loss_vector_space import _eval_HG_X, _eval_SGinv_X, _eval_SG_full, _eval_jac_g, poincare_loss_vector_space, poincare_loss_vector_space_gradient, _eval_surrogate_matrices, poincare_loss_surrogate_vector_space
 
 
 def _iteration_qn(jac_u, jac_basis, G, R=None, cg_kwargs={}):
@@ -339,7 +339,13 @@ def _build_pymanopt_problem(jac_u, jac_basis, m, use_precond=False, optimizer_kw
 
     precond = None
     if use_precond:
-        def precond(G, x): return _eval_SGinv_X(G, x, jac_u, jac_basis, None, precond_kwargs)
+        if K * m <= 1000:
+            def precond(G, x): 
+                S = _eval_SG_full(G, jac_u, jac_basis)
+                out, _, _, _ = np.linalg.lstsq(S, x.reshape(-1, order='F'))
+                return out.reshape((K,m), order='F')
+        else:
+            def precond(G, x): return _eval_SGinv_X(G, x, jac_u, jac_basis, None, precond_kwargs)
 
     problem = pymanopt.Problem(manifold, cost, euclidean_gradient=euclidean_gradient, preconditioner=precond)
     line_search = pymanopt.optimizers.line_search.BackTrackingLineSearcher(**ls_kwargs)
