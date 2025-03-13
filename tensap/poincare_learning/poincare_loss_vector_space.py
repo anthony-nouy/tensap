@@ -61,7 +61,7 @@ class PoincareLossVectorSpace:
         return _eval_SG_diag(G, self.jac_u, self.jac_basis, jac_g)
     
     def eval_SG_full(self, G, jac_g=None):
-        return _eval_SG_full(G, self.jac_u, self.jac_basis, jac_g=None)
+        return _eval_SG_full(G, self.jac_u, self.jac_basis, jac_g)
         
     def eval_SG_HG_full(self, G, jac_g=None):
         return _eval_SG_HG_full(G, self.jac_u, self.jac_basis, jac_g)
