@@ -96,6 +96,6 @@ class PoincareLossVectorSpace:
     def minimize_surrogate(self, G0=None, m=1):
         return _minimize_surrogate(self.jac_u, self.jac_basis, G0, self.R, m)
     
-    def minimize_surrogate_greedy(self, m_max, optimize_poincare=True, tol=1e-7, pmo_kwargs={}):
+    def minimize_surrogate_greedy(self, m_max, optimize_poincare=False, tol=1e-7, pmo_kwargs={}):
         return _minimize_surrogate_greedy(self.jac_u, self.jac_basis, m_max, self.R, optimize_poincare, tol, pmo_kwargs)
 
