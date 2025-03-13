@@ -452,7 +452,7 @@ def _minimize_surrogate(jac_u, jac_basis, G0=None, R=None, m=1):
             G0 = G0 @ np.linalg.inv(np.linalg.cholesky(M).T)
     
     A, B, C = _eval_surrogate_matrices(jac_u, jac_basis, G0, R)
-    eigvals, eigvec = scipy.linalg.eigh(H, R)
+    eigvals, eigvec = scipy.linalg.eigh(B - A + C, R)
     G = eigvec[:,:m]
     surrogate = eigvals.min()
 
