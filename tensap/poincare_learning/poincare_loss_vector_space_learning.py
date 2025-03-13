@@ -487,7 +487,7 @@ def _minimize_surrogate_greedy(jac_u, jac_basis, m_max, R=None, optimize_poincar
         surrogate minimization. The surrogate minimizer then
         serves as an initializer to the minimization problem
         on the Poincare loss.
-        The default is True.
+        The default is False.
     tol : float, optional
         The greedy algorithm stops if the Poincare loss is smaller.
         The default is 1e-7
