@@ -6,6 +6,47 @@ import logging
 from tensap.poincare_learning.utils._loss_vector_space import _eval_HG_X, _eval_SGinv_X, _eval_SG_full, _eval_jac_g, poincare_loss_vector_space, poincare_loss_vector_space_gradient, _eval_surrogate_matrices, poincare_loss_surrogate_vector_space
 
 
+def _minimize_active_subspace(jac_u, jac_basis, m=1):
+    """
+    Compute the minimizer of the Poincare loss for linear features.
+    This corresponds to the active subspace method.
+
+    Parameters
+    ----------
+    jac_u : numpy.ndarray
+        Samples of the jacobian of the function to approximate.
+        jac_u[k,i,j] is du_i / dx_j evaluated at the k-th sample.
+        Has shape (N, n, d).
+    jac_basis : numpy.ndarray.
+        Has shape (N, d, d) or (d, d).
+    m : int, optional
+        Number of singular vectors to take as features. 
+        The default is 1.
+
+    Returns
+    -------
+    G : numpy.ndarray
+        Coefficients in the basis of feature maps.
+        Has shape (d, m).
+    """
+
+    # check that basis only contains linear functions
+    if jac_basis.ndim == 3:
+        jac_basis = jac_basis[0]
+
+    # create the matrix H 
+    jb_jac_u = np.einsum('ij,lkj->lki', jac_basis, jac_u)
+    H = np.einsum('lki,lkj->ij', jb_jac_u, jb_jac_u)
+
+    # compute eigen decomposition and keep largest eigen values
+    _, eigvec = scipy.linalg.eigh(H, jac_basis @ jac_basis.T)
+
+    # orthonormalize
+    G = np.linalg.svd(eigvec[:,-m:], full_matrices=False)[0]
+
+    return G
+
+
 def _iteration_qn(jac_u, jac_basis, G, R=None, cg_kwargs={}):
     """
     Perform one iteration of the quasi Newton algorithm described in 
@@ -177,7 +218,7 @@ def _minimize_qn(jac_u, jac_basis, G0=None, m=None, n_try=None, R=None, maxiter_
     return G, loss
 
 
-def _minimize_pymanopt(jac_u, jac_basis, G0=None, m=None, init_method='random_linear', n_try=1, R=None, use_precond=False, precond_kwargs={}, optimizer_kwargs={}, ls_kwargs={}):
+def _minimize_pymanopt(jac_u, jac_basis, G0=None, m=None, init_method='active_subspace', n_try=1, R=None, use_precond=False, precond_kwargs={}, optimizer_kwargs={}, ls_kwargs={}, seed=None):
     """
     Minimize the Poincare loss using a conjugate gradient algorithm on 
     the Grassmann manifold Grass(K, m).
@@ -200,8 +241,10 @@ def _minimize_pymanopt(jac_u, jac_basis, G0=None, m=None, init_method='random_li
         The default is None.
     init_method : string, optional
         Only used if G0 is None.
-        Initialization method, must be one of 'random', 'random_linear', 'surrogate', 'surrogate_greedy'.
-        The default is 'random_linear'.
+        Initialization method, must be one of 
+        'random', 'random_linear', 'surrogate', 'surrogate_greedy', 'active_subspace'.
+        Note that 'active_subspace' assumes that the first d basis functions are linear.
+        The default is 'active_subspace'.
     n_try : int, optional
         Only used if G0 is None and init_method is 'random' or 'random_linear'.
         The default is 1.
@@ -227,12 +270,15 @@ def _minimize_pymanopt(jac_u, jac_basis, G0=None, m=None, init_method='random_li
         BackTrackingLineSearcher
         See pymanopt documentation for more details.
         The default is {}.
-
+    seed : int, optional
+        The seed of the random number generator for random initialization.
+        Only used if init_method is random or random_linear.
+        The default is None.
     Returns
     -------
     G : numpy.ndarray
         Minimizers for each initial point.
-        Has shape (n_try, K, m) of (K, m).
+        Has shape (n_try, K, m) or (K, m).
     loss : numpy.ndarray
         Minimal costs for initial point.
     optim_results : OptimizerResult or list of OptimizerResult
@@ -249,11 +295,15 @@ def _minimize_pymanopt(jac_u, jac_basis, G0=None, m=None, init_method='random_li
             G0 = _minimize_surrogate_greedy(jac_u, jac_basis, m, R=R, optimize_poincare=False)[0]
 
         elif init_method == 'random':
-            G0 = np.random.normal(size=(n_try, K, m))
+            G0 = np.random.RandomState(seed).normal(size=(n_try, K, m))
 
         elif init_method == 'random_linear':
             G0 = np.zeros((n_try, K, m))
-            G0[:,:d,:] = np.random.normal(size=(n_try, d, m))
+            G0[:,:d,:] = np.random.RandomState(seed).normal(size=(n_try, d, m))
+
+        elif init_method == 'active_subspace':
+            G0 = np.zeros((K, m))
+            G0[:d,:] = _minimize_active_subspace(jac_u, jac_basis[0,:d,:], m=m)
 
         else:
             raise ValueError('Initialization method not valid')
@@ -402,7 +452,7 @@ def _minimize_surrogate(jac_u, jac_basis, G0=None, R=None, m=1):
             G0 = G0 @ np.linalg.inv(np.linalg.cholesky(M).T)
     
     A, B, C = _eval_surrogate_matrices(jac_u, jac_basis, G0, R)
-    eigvals, eigvec = scipy.linalg.eigh(B - A + C, R)
+    eigvals, eigvec = scipy.linalg.eigh(H, R)
     G = eigvec[:,:m]
     surrogate = eigvals.min()
 

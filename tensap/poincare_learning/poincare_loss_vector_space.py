@@ -1,7 +1,7 @@
 
 
 from tensap.poincare_learning.utils._loss_vector_space import poincare_loss_vector_space, poincare_loss_vector_space_gradient, _eval_SG_X, _eval_HG_X, _eval_SG_diag, _eval_SGinv_X, _eval_SG_full, _eval_SG_HG_full, _eval_HessG_X, _eval_HessG_diag, _eval_HessG_full, poincare_loss_surrogate_vector_space, _eval_surrogate_matrices
-from tensap.poincare_learning.poincare_loss_vector_space_learning import _minimize_qn, _minimize_pymanopt, _minimize_surrogate, _minimize_surrogate_greedy
+from tensap.poincare_learning.poincare_loss_vector_space_learning import _minimize_active_subspace, _minimize_qn, _minimize_pymanopt, _minimize_surrogate, _minimize_surrogate_greedy
 
 
 class PoincareLossVectorSpace:
@@ -84,11 +84,14 @@ class PoincareLossVectorSpace:
     def eval_surrogate_matrices(self, G0=None):
         return _eval_surrogate_matrices(self.jac_u, self.jac_basis, G0, self.R)
     
+    def minimize_active_subspace(self, m=1):
+        return _minimize_active_subspace(self.jac_u, self.jac_basis, m)
+
     def minimize_qn(self, G0=None, m=None, n_try=None, maxiter_qn=100, tol_qn=1e-5, cg_kwargs={}):
         return _minimize_qn(self.jac_u, self.jac_basis, G0, m, n_try, self.R, maxiter_qn, tol_qn, cg_kwargs)
     
-    def minimize_pymanopt(self, G0=None, m=None, init_method='random_linear', n_try=None, use_precond=True, precond_kwargs={}, optimizer_kwargs={}, ls_kwargs={}):
-        return _minimize_pymanopt(self.jac_u, self.jac_basis, G0, m, init_method, n_try, self.R, use_precond, precond_kwargs, optimizer_kwargs, ls_kwargs)
+    def minimize_pymanopt(self, G0=None, m=None, init_method='random_linear', n_try=None, use_precond=True, precond_kwargs={}, optimizer_kwargs={}, ls_kwargs={}, seed=None):
+        return _minimize_pymanopt(self.jac_u, self.jac_basis, G0, m, init_method, n_try, self.R, use_precond, precond_kwargs, optimizer_kwargs, ls_kwargs, seed)
 
     def minimize_surrogate(self, G0=None, m=1):
         return _minimize_surrogate(self.jac_u, self.jac_basis, G0, self.R, m)
