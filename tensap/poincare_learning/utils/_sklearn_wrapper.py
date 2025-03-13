@@ -102,27 +102,18 @@ class PolynomialFeatureEstimator(BaseEstimator):
         if self.fit_method == 'pymanopt':
             
             # Non preconditionned search on maybe multiple init
-            G, losses, optim_results = ploss.minimize_pymanopt(use_precond = False, **self.fit_parameters)
+            G, losses, optim_results = ploss.minimize_pymanopt(use_precond=True, **self.fit_parameters)
 
             # if several initial points
             if G.ndim == 3:
                 ind = losses.argmin()
                 G = G[ind]
                 optim_results = optim_results[ind]
-            
-            # Preconditionned search from the best point
-            fit_parameters_precond = self.fit_parameters.copy()
-            fit_parameters_precond['optimizer_kwargs']['max_iterations'] //= 5
-            G, losses, optim_results_precond = ploss.minimize_pymanopt(G0=G, use_precond = True, **fit_parameters_precond)
 
-            optim_log = optim_results.log.get('iterations').copy()
-            optim_log_precond = optim_results_precond.log.get('iterations').copy()
-            
-            optim_log['method'] = ['CG' for i in range(len(optim_log['cost']))]
-            optim_log_precond['method'] = ['pCG' for i in range(len(optim_log_precond['cost']))]
-
-            for key in ['method', 'cost', 'gradient_norm']:
-                self.optim_history[key] = np.concatenate((optim_log[key], optim_log_precond[key]))
+            optim_log = optim_results.log.get('iterations')
+            self.optim_history['method'] = ['pCG' for i in range(len(optim_log['cost']))]
+            self.optim_history['cost'] = optim_log['cost']
+            self.optim_history['gradient_norm'] = optim_log['gradient_norm']
 
         elif self.fit_method == 'surrogate':
             G, losses = ploss.minimize_surrogate(**self.fit_parameters)[:2]
