@@ -339,7 +339,7 @@ def _build_pymanopt_problem(jac_u, jac_basis, m, use_precond=False, optimizer_kw
 
     precond = None
     if use_precond:
-        if K * m <= 1000:
+        if K * m <= 2000: # TODO: parse as argument
             def precond(G, x): 
                 S = _eval_SG_full(G, jac_u, jac_basis)
                 out, _, _, _ = np.linalg.lstsq(S, x.reshape(-1, order='F'))
