@@ -123,7 +123,7 @@ print("\tRanks = %s" % UR_PERM.ranks)
 UR.tree.plot_dims(title="Dimensions before tree optimization")
 UR_PERM.tree.plot_dims(title="Dimensions before after optimization")
 
-#%% Global tree optimization 
+# %% Global tree optimization
 print("Tree optimization...")
 UR_PERM = UR.optimize_dimension_tree(1e-10, 100)
 print("\tInitial storage = %d" % UR.storage())
