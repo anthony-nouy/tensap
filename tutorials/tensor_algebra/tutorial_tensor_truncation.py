@@ -113,8 +113,19 @@ print("\tStorage = %d" % UR.storage())
 print("\tRanks = %s\n" % UR.ranks)
 
 # %% Tensor-train tree optimization
-print("Tree optimization...")
+print("Tree optimization (leaves permutation)...")
 UR_PERM = UR.optimize_leaves_permutations(1e-10, 10)
+print("\tInitial storage = %d" % UR.storage())
+print("\tError = %2.5e" % ((UR_PERM.full() - U_PERM).norm() / U.norm()))
+print("\tFinal storage = %d" % UR_PERM.storage())
+print("\tRanks = %s" % UR_PERM.ranks)
+
+UR.tree.plot_dims(title="Dimensions before tree optimization")
+UR_PERM.tree.plot_dims(title="Dimensions before after optimization")
+
+#%% Global tree optimization 
+print("Tree optimization...")
+UR_PERM = UR.optimize_dimension_tree(1e-10, 100)
 print("\tInitial storage = %d" % UR.storage())
 print("\tError = %2.5e" % ((UR_PERM.full() - U_PERM).norm() / U.norm()))
 print("\tFinal storage = %d" % UR_PERM.storage())
