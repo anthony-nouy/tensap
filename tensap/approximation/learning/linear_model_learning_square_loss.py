@@ -252,8 +252,7 @@ class LinearModelLearningSquareLoss(tensap.LinearModelLearning):
             solpath = np.atleast_2d(solpath)
             sol = np.matmul(diags(1 / D), solpath[:, -1])
         elif self.regularization_type == "l1":
-            reg = linear_model.LassoLars(copy_X=True, fit_intercept=False,
-                                         normalize=False, **options)
+            reg = linear_model.LassoLars(copy_X=True, fit_intercept=False, **options)
             reg.fit(A, y)
             sol = reg.coef_
             solpath = reg.coef_path_
