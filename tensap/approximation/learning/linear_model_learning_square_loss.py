@@ -20,6 +20,7 @@ Module linear_model_learning_square_loss.
 """
 
 import numpy as np
+from scipy.signal import normalize
 from scipy.sparse import diags
 import tensap
 
@@ -252,7 +253,7 @@ class LinearModelLearningSquareLoss(tensap.LinearModelLearning):
             solpath = np.atleast_2d(solpath)
             sol = np.matmul(diags(1 / D), solpath[:, -1])
         elif self.regularization_type == "l1":
-            reg = linear_model.LassoLars(copy_X=True, fit_intercept=False, **options)
+            reg = linear_model.LassoLars(copy_X=True, fit_intercept=False, normalize=False, **options)
             reg.fit(A, y)
             sol = reg.coef_
             solpath = reg.coef_path_
@@ -263,7 +264,7 @@ class LinearModelLearningSquareLoss(tensap.LinearModelLearning):
         else:
             raise ValueError("Regularization technique not implemented.")
 
-        if self.model_selection and np.linalg.norm(solpath) != 0:
+        if self.model_selection and solpath.shape[1] > 1 and np.linalg.norm(solpath) != 0: #solpath.shape[1] > 1
             if "non_zero_blocks" in self.options:
                 rep = np.true(solpath.shape[1])
                 rep = np.logical_and(rep, np.any(solpath, 0))
@@ -273,17 +274,24 @@ class LinearModelLearningSquareLoss(tensap.LinearModelLearning):
 
             sol, output = self._select_optimal_path(solpath)
         elif self.model_selection:
-            # print('solpath does not exist or is empty.')
+            # print('solpath does not exist or is zero or empty.')
             pass
 
         if self.error_estimation and "error" not in output:
             second_moment = np.var(y, 0) + np.mean(y, 0) ** 2
             if self.error_estimation_type == "residuals":
                 delta = y - np.matmul(A, sol)
-                error = np.mean(delta**2, 0) / second_moment
+                error = np.mean(delta ** 2, 0) / second_moment
             else:
-                ind = np.nonzero(sol)[0]
-                A_red = A[:, ind]
+                # if len(sol) > 1:
+                if np.all(sol != 0):
+                    ind = np.nonzero(sol)[0]
+                    A_red = A[:, ind]
+                    sol_ind = sol[ind]
+                else:
+                    # ind = 0
+                    A_red = A
+                    sol_ind = sol
                 if self.linear_solver == "solve":
                     B = np.matmul(np.transpose(A_red), A_red)
                     try:
@@ -291,12 +299,12 @@ class LinearModelLearningSquareLoss(tensap.LinearModelLearning):
                     except Exception:
                         B_inv = np.linalg.pinv(B)
                     error, delta = self._compute_cv_error(
-                        y, second_moment, A_red, sol[ind], self.linear_solver, B_inv
+                        y, second_moment, A_red, sol_ind, self.linear_solver, B_inv
                     )
                 elif self.linear_solver == "qr":
                     q_A, r_A = np.linalg.qr(A_red)
                     error, delta = self._compute_cv_error(
-                        y, second_moment, A_red, sol[ind], self.linear_solver, q_A, r_A
+                        y, second_moment, A_red, sol_ind, self.linear_solver, q_A, r_A
                     )
             output["error"] = error
             output["delta"] = delta
