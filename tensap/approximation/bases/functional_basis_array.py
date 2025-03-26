@@ -503,15 +503,14 @@ class FunctionalBasisArray(tensap.Function):
 
         """
         dnHx = self.basis.eval_jacobian(x)
-        data = np.reshape(
-                self.data, [self.basis.cardinal(), np.prod(self.shape)], order="F"
-            )
+        data = np.reshape(self.data, [self.basis.cardinal(), np.prod(self.shape)], order="F")
         y = np.einsum('kij,il->kjl', dnHx, data)
 
         if np.prod(self.shape) == 1:
             return np.reshape(y, np.concatenate(([dnHx.shape[0]], [dnHx.shape[2]])), order="F")
         else:
-            return np.reshape(y, np.concatenate(([dnHx.shape[0]], [dnHx.shape[2]], self.shape)), order="F")
+            return np.reshape(y, np.concatenate(([dnHx.shape[0]], [dnHx.shape[2]],
+                                                 self.shape)), order="F")
 
     def random(self, n=1, measure=None):
         """

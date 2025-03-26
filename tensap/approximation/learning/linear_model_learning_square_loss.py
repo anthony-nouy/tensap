@@ -264,7 +264,8 @@ class LinearModelLearningSquareLoss(tensap.LinearModelLearning):
         else:
             raise ValueError("Regularization technique not implemented.")
 
-        if self.model_selection and solpath.shape[1] > 1 and np.linalg.norm(solpath) != 0: #solpath.shape[1] > 1
+        if (self.model_selection and solpath.shape[1] > 1 and
+                np.linalg.norm(solpath) != 0):
             if "non_zero_blocks" in self.options:
                 rep = np.true(solpath.shape[1])
                 rep = np.logical_and(rep, np.any(solpath, 0))
