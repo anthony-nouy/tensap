@@ -20,7 +20,6 @@ Module linear_model_learning_square_loss.
 """
 
 import numpy as np
-from scipy.signal import normalize
 from scipy.sparse import diags
 import tensap
 
@@ -253,7 +252,8 @@ class LinearModelLearningSquareLoss(tensap.LinearModelLearning):
             solpath = np.atleast_2d(solpath)
             sol = np.matmul(diags(1 / D), solpath[:, -1])
         elif self.regularization_type == "l1":
-            reg = linear_model.LassoLars(copy_X=True, fit_intercept=False, normalize=False, **options)
+            reg = linear_model.LassoLars(copy_X=True, fit_intercept=False,
+                                         normalize=False, **options)
             reg.fit(A, y)
             sol = reg.coef_
             solpath = reg.coef_path_
@@ -264,8 +264,8 @@ class LinearModelLearningSquareLoss(tensap.LinearModelLearning):
         else:
             raise ValueError("Regularization technique not implemented.")
 
-        if (self.model_selection and solpath.shape[1] > 1 and
-                np.linalg.norm(solpath) != 0):
+        if (self.model_selection and solpath.shape[1] > 1 and np.linalg.norm(
+                solpath) != 0):
             if "non_zero_blocks" in self.options:
                 rep = np.true(solpath.shape[1])
                 rep = np.logical_and(rep, np.any(solpath, 0))
