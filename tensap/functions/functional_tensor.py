@@ -727,6 +727,37 @@ class FunctionalTensor(tensap.Function):
         bases_eval = self.bases.eval_derivative(n, x, *dims)
         return self.eval_with_bases_evals(bases_eval, *dims)
 
+    def eval_gradient(self, x):
+        """
+        Compute evaluations of the gradient of self at points x.
+
+        Parameters
+        ----------
+        x : numpy.ndarray
+            The input points.
+
+        Returns
+        -------
+        out : numpy.ndarray
+            Evaluations of the gradient of self.
+            For scalar-valued function f,
+            out[k,i] is the evaluation of df/dx_i at the k-th sample.
+            For vector-valued function f,
+            out[k,i,j] is the evaluation of df_j/dx_i at the k-th sample.
+            For tensor-valued function f,
+            out[k,i,j1,j2...] is the evaluation of df_{j1,j2...}/dx_i at the k-th sample.
+
+        """
+        g = []
+        for ind in range(self.bases.length()):
+            n = self.length() * [0]
+            n[ind] = 1
+            dHx = self.bases.eval_derivative(n, x)
+            y = self.eval_with_bases_evals(dHx)
+            g.append(y)
+        out = np.concatenate(g, axis=1)
+        return out
+
     def derivative(self, n):
         """
         Compute the n-th order derivative of self.
