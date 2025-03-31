@@ -185,6 +185,27 @@ def _build_cos_squared_norm(d=8, c=1., R=None):
     return fun_torch, X
 
 
+def _build_sum_cos_sin_squared_norm(d=8, c=1., R1=None, R2=None):
+
+    if R1 is None:
+        R1 = np.eye(d)
+    if R2 is None:
+        R2 = np.eye(d)
+
+    R1_torch = torch.asarray(R1)
+    R2_torch = torch.asarray(R2)
+
+    X = tensap.RandomVector(tensap.UniformRandomVariable(-1, 1), d)
+
+    def fun_torch(x):
+        u1 = torch.cos( c * (x.T @ R1_torch @ x ))
+        u2 = torch.sin( c * (x.T @ R2_torch @ x ))
+        return  u1 + u2
+    
+    return fun_torch, X
+
+
+
 def _build_exp_mean_sin_exp_cos(d=8):
 
     X = tensap.RandomVector(tensap.UniformRandomVariable(-np.pi/2, np.pi/2), d)
@@ -270,6 +291,9 @@ def build_benchmark_torch(case, **kwargs):
 
     elif case == "cos_squared_norm":
         fun_torch, X = _build_cos_squared_norm(**kwargs)
+
+    elif case == "sum_cos_sin_squared_norm":
+        fun_torch, X = _build_sum_cos_sin_squared_norm(**kwargs)
 
     elif case == "exp_mean_sin_exp_cos":
         fun_torch, X = _build_exp_mean_sin_exp_cos(**kwargs)
