@@ -165,7 +165,7 @@ def _build_sin_of_squared_norm(d=8, c=1., R=None):
     X = tensap.RandomVector(tensap.UniformRandomVariable(-1, 1), d)
 
     def fun_torch(x):
-        return torch.sin( c * x.T @ R_torch @ x )
+        return torch.sin( c**2 * x.T @ R_torch @ x )
     
     return fun_torch, X
 
@@ -180,7 +180,7 @@ def _build_cos_squared_norm(d=8, c=1., R=None):
     X = tensap.RandomVector(tensap.UniformRandomVariable(-1, 1), d)
 
     def fun_torch(x):
-        return torch.cos( c * (x.T @ R_torch @ x ))
+        return torch.cos( c**2 * (x.T @ R_torch @ x ))
     
     return fun_torch, X
 
@@ -198,37 +198,22 @@ def _build_sum_cos_sin_squared_norm(d=8, c=1., R1=None, R2=None):
     X = tensap.RandomVector(tensap.UniformRandomVariable(-1, 1), d)
 
     def fun_torch(x):
-        u1 = torch.cos( c * (x.T @ R1_torch @ x ))
-        u2 = torch.sin( c * (x.T @ R2_torch @ x ))
+        u1 = torch.cos( c**2 * (x.T @ R1_torch @ x ))
+        u2 = torch.sin( c**2 * (x.T @ R2_torch @ x ))
         return  u1 + u2
     
     return fun_torch, X
 
 
 
-def _build_exp_mean_sin_exp_cos(d=8):
+def _build_exp_mean_sin_exp_cos(d=8, c=1.):
 
-    X = tensap.RandomVector(tensap.UniformRandomVariable(-np.pi/2, np.pi/2), d)
-
-    def fun_torch(x):
-        return torch.exp(torch.mean(torch.sin(x) * torch.exp(torch.cos(x))))
-    
-    return fun_torch, X
-
-
-def _build_exp_mean_squared_sin_cubic(d=8, m_features=1, G=None):
-
-    X = tensap.RandomVector(tensap.UniformRandomVariable(0,1), d)
-    if G is None:
-        G = np.random.RandomState(0).normal(
-            scale=d**(-3/2), size=(d,d,d, m_features)
-            )
-    G_torch = torch.asarray(G)
+    X = tensap.RandomVector(tensap.UniformRandomVariable(-1, 1), d)
 
     def fun_torch(x):
-        z = torch.einsum('ijkl,i,j,k->l', G_torch, x, x, x)
-        out = torch.exp((torch.sin(2*torch.pi * z)**2).mean())
-        return out
+        y = torch.cos(c * x)
+        z = torch.sin(c * x) * torch.exp(y)
+        return torch.exp(torch.mean(z))
     
     return fun_torch, X
 
