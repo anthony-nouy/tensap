@@ -282,10 +282,7 @@ def build_benchmark_torch(case, **kwargs):
 
     elif case == "exp_mean_sin_exp_cos":
         fun_torch, X = _build_exp_mean_sin_exp_cos(**kwargs)
-
-    elif case == "exp_mean_squared_sin_cubic":
-        fun_torch, X = _build_exp_mean_squared_sin_cubic(**kwargs)
-
+        
     else:
         raise NotImplementedError("Function not implemented.")
 
