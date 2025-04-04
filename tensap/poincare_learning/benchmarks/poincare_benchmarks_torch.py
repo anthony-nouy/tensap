@@ -155,7 +155,7 @@ def _build_henon_heiles(d=3):
     return fun_torch, X
 
 
-def _build_sin_of_squared_norm(d=8, c=1., R=None):
+def _build_sin_squared_norm(d=8, c=1., R=None):
 
     if R is None:
         R = np.eye(d)
@@ -226,7 +226,7 @@ def build_benchmark_torch(case, **kwargs):
     ----------
     case : str
         The name of the function. Can be 'borehole', 'ishigami, 
-        'sin_of_asum', 'sin_of_squared_norm', 'canonical_rank_2', 'mixture', 'field', 
+        'sin_of_asum', 'sin_squared_norm', 'canonical_rank_2', 'mixture', 'field', 
         'henon_heiles'.
     **kwargs
         Parameters of the function.
@@ -271,8 +271,8 @@ def build_benchmark_torch(case, **kwargs):
     elif case == "henon_heiles":
         fun_torch, X = _build_henon_heiles(**kwargs)
 
-    elif case == "sin_of_squared_norm":
-        fun_torch, X = _build_sin_of_squared_norm(**kwargs)
+    elif case == "sin_squared_norm":
+        fun_torch, X = _build_sin_squared_norm(**kwargs)
 
     elif case == "cos_squared_norm":
         fun_torch, X = _build_cos_squared_norm(**kwargs)
