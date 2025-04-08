@@ -7,11 +7,14 @@ from tensap.poincare_learning.benchmarks.poincare_benchmarks_torch import build_
 from tensap.poincare_learning.utils._loss_vector_space import _build_ortho_poly_basis
 from tensap.poincare_learning.poincare_loss_vector_space import PoincareLossVectorSpace
 from sklearn.kernel_ridge import KernelRidge
+from sklearn.linear_model import LinearRegression
+from sklearn.preprocessing import PolynomialFeatures
 from sklearn.model_selection import GridSearchCV
+from sklearn.pipeline import Pipeline
 import logging
 logging.basicConfig(level=logging.INFO)
 
-# %% Build samples
+# %% Function to generate samples
 
 def generate_samples(N, X, fun, jac_fun, basis, R=None):
     x_set = X.lhs_random(N)
@@ -31,15 +34,15 @@ def generate_samples(N, X, fun, jac_fun, basis, R=None):
     return x_set, fun_set, jac_fun_set, basis_set, jac_basis_set, loss_set
 
 
-# %% Fit kernel ridge regressor
+# %% Functions to fit regressors
 
 def fit_krr_regressor(z_set, u_set):
 
     kr = GridSearchCV(
         KernelRidge(kernel="rbf", gamma=0.1),
         param_grid={
-            "alpha": np.logspace(-7, -3, 10),
-            "gamma": np.logspace(-5, 1, 10)},
+            "alpha": np.logspace(-11, -5, 10),
+            "gamma": np.logspace(-6, 2, 10)},
         scoring="neg_mean_squared_error"
     )
 
@@ -49,17 +52,39 @@ def fit_krr_regressor(z_set, u_set):
     return kr
 
 
+def fit_poly_regressor(z_set, u_set):
+    model = Pipeline([('poly', PolynomialFeatures()),
+                    ('linear', LinearRegression(fit_intercept=False))])
+
+    param_grid = {
+        'poly__degree': [1,2,3,4,5,6]
+    }
+
+    cv = GridSearchCV(
+        model,
+        param_grid=param_grid,
+        scoring="neg_mean_squared_error",
+        cv=10
+    )
+
+    cv.fit(z_set, u_set)
+    print(f"Best Poly with params: {cv.best_params_} and MSE score: {-cv.best_score_:.3f}")
+
+    return cv
+
+
 # %% Definition of the benchmark
 
 u, jac_u, X = build_benchmark_torch("borehole")
-#u, jac_u, X = build_benchmark_torch("sin_of_squared_norm", d=8)
+#u, jac_u, X = build_benchmark_torch("sin_squared_norm", d=8)
 #u, jac_u, X = build_benchmark_torch("exp_mean_sin_exp_cos", d=8)
 
 
 # %% build a polynomial basis
 
-max_deg = 2
-basis = _build_ortho_poly_basis(X, p=1, m=max_deg)
+p_norm = 1 # p-norm of the multi-indices
+max_deg = 3 # bound on the p_norm
+basis = _build_ortho_poly_basis(X, p=p_norm, m=max_deg)
 K = basis.cardinal()
 R = basis.gram_matrix_h1_0()
 
@@ -75,20 +100,17 @@ x_test, u_test, jac_u_test, basis_test, jac_basis_test, loss_test = generate_sam
     N_test, X, u, jac_u, basis, R)
 
 
-# %% Initialize minimization algorithm
-
-
-# %% Minimize the Poicare loss using CG on Grassmann Manifold
+# %% Minimize the Poicare loss using preconditioned CG on Grassmann Manifold
 optimizer_kwargs = {
     'beta_rule': 'PolakRibiere',
     'orth_value': 10,
-    'max_iterations': 10, 
+    'max_iterations': 50, 
     'verbosity':2,
     }
 
 m = 2   # number of features to learn
-n_try = 2   # number of random initializations
-init_method = "random_linear"
+n_try = 1   # number of random initializations, only used for random init method
+init_method = "active_subspace"
 
 G_lst, loss_lst, _ = loss_train.minimize_pymanopt(G0=None, m=m, init_method=init_method, n_try=n_try, use_precond=True, optimizer_kwargs=optimizer_kwargs)
 
@@ -96,6 +118,12 @@ if n_try > 1:
     G = G_lst[loss_lst.argmin()]
 else:
     G = G_lst
+
+# %% Evaluate performances
+
+print(f"\nPoincare loss on {G.shape[1]} features")
+print(f"PLOSS on train set    : {loss_train.eval(G):.3e}")
+print(f"PLOSS on test set     : {loss_test.eval(G):.3e}")
 
 # %% Plot for eyeball regression
 
@@ -111,14 +139,15 @@ for i in range(z_train.shape[1]):
     ax[i].scatter(z_test[:,i], u_test, label='test')
     ax[i].set_xlabel(f'g_{i}(X)')
 
-fig.suptitle(f"Degree {max_deg} poly features on {x_train.shape[0]} train samples", y=0.)
+fig.suptitle(f"Poly features m={z_train.shape[1]} | Multi-indices with {p_norm}-norm bounded by {max_deg} | {x_train.shape[0]} train samples", y=0.)
 plt.show()
 
 
-# %% Fit Kernel Ridge regression with sklearn
+# %% Fit regressor with sklearn
 
-kr_regressor = fit_krr_regressor(z_train, u_train)
-def f(z) : return kr_regressor.predict(z)
+#regressor = fit_krr_regressor(z_train, u_train)
+regressor = fit_poly_regressor(z_train, u_train)
+def f(z) : return regressor.predict(z)
 
 
 # %% Evaluate performances
@@ -131,7 +160,7 @@ y_test = f(z_test)
 err_test = np.mean((y_test - u_test)**2)
 rel_err_test = err_test / (u_test**2).mean()
 
-print(f"\nKernel regression based on {G.shape[1]} features")
+print(f"\nRegression based on {G.shape[1]} features")
 print(f"MSE on train set    : {err_train:.3e}")
 print(f"MSE on test set     : {err_test:.3e}")
 print(f"RMSE on train set   : {rel_err_train:.3e}")
@@ -145,6 +174,8 @@ plt.scatter(y_test, u_test, label='test')
 plt.ylabel("u(X)")
 plt.xlabel("f(g(X))")
 plt.legend()
-plt.title(f"Degree {max_deg} poly features and kernel ridge regression on {x_train.shape[0]} train samples")
+plt.title(f"Poly features m={z_train.shape[1]} | Multi-indices with {p_norm}-norm bounded by {max_deg} | {x_train.shape[0]} train samples")
 plt.show()
 
+
+# %%
