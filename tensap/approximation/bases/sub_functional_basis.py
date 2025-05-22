@@ -180,7 +180,7 @@ class SubFunctionalBasis(tensap.FunctionalBasis):
 
         """
         jac = self.underlying_basis.eval_jacobian(x)
-        out = np.einsum('ij,ajk', self.basis, jac)
+        out = np.einsum('ij,aik', self.basis, jac)
         return out
 
     def mean(self):
