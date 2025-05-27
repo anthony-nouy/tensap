@@ -72,7 +72,7 @@ def poincare_loss_surrogate(jac_u, jac_g, jac_g0=None):
     """
     Evaluate the covex surrogate to the Poincare based loss for 
     a general feature map from samples. 
-    For more details see Nouy et al. 2025.
+    For more details see Nouy and Pasco 2025.
 
     Parameters
     ----------

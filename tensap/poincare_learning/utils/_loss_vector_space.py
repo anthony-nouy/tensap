@@ -545,7 +545,7 @@ def poincare_loss_surrogate_vector_space(G, jac_u, jac_basis, G0=None, jac_g=Non
 
     Evaluate the covex surrogate to the Poincare based loss for a feature map from a vector space of nonlinear feature maps, 
     from samples. The feature map writes G.T @ basis. 
-    For more details see Nouy et al. 2025.
+    For more details see Nouy and Pasco 2025.
 
     Parameters
     ----------
@@ -593,7 +593,7 @@ def _eval_surrogate_matrices(jac_u, jac_basis, G0=None, R=None):
     Handles both the one feature and the multiple features cases where
     G0 is the coefficients matrix of the fixed features.
     Three matrices computed A, B and C are such that H = B-A with H 
-    from Nouy et al. 2025, and such that the largest generalized eigen value of B-A+C with respect to R has G0 as eigen vectors, while its smallest eigen value is the same as H with same eigen vector.
+    from Nouy and Pasco 2025, and such that the largest generalized eigen value of B-A+C with respect to R has G0 as eigen vectors, while its smallest eigen value is the same as H with same eigen vector.
 
     Parameters
     ----------

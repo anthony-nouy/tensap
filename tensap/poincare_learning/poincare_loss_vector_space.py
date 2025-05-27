@@ -11,7 +11,7 @@ class PoincareLossVectorSpace:
     for the specific case of nonlinear features from a finite dimensional
     vector space of nonlinear functions spanned by some basis.
     In other words g = G.T @ basis.
-    The class also implement the surrogates from Nouy et al. 2025 for
+    The class also implement the surrogates from Nouy and Pasco 2025 for
     one or multiple features.
 
     Attributes

@@ -406,7 +406,7 @@ def _build_pymanopt_problem(jac_u, jac_basis, m, use_precond=False, optimizer_kw
 
 def _minimize_surrogate(jac_u, jac_basis, G0=None, R=None, m=1):
     """
-    Compute the minimizer of the surrogate proposed in Nouy et al. 2025.
+    Compute the minimizer of the surrogate proposed in Nouy and Pasco 2025.
 
     Parameters
     ----------
@@ -467,7 +467,7 @@ def _minimize_surrogate(jac_u, jac_basis, G0=None, R=None, m=1):
 def _minimize_surrogate_greedy(jac_u, jac_basis, m_max, R=None, optimize_poincare=False, tol=1e-7, pmo_kwargs={}):
     """
     Greedy algorithm to learn multiple features, as proposed in 
-    Nouy et al. 2025.
+    Nouy and Pasco 2025.
 
     Parameters
     ----------
