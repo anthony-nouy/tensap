@@ -107,10 +107,10 @@ G_surr = np.linalg.svd(G_surr, full_matrices=False)[0]
 # %% Evaluate performances
 
 print(f"\nPoincare loss and Surrogate on {G_surr.shape[1]} features")
-print("Surrogate on train set:      ", loss_train.eval_surrogate(G_surr))
-print("Poincare loss on train set:  ", loss_train.eval(G_surr))
-print("Surrogate on test set:       ", loss_test.eval_surrogate(G_surr))
-print("Poincare loss on test set:   ", loss_test.eval(G_surr))
+print(f"Surrogate on train set:      {loss_train.eval_surrogate(G_surr):.3e}")
+print(f"Poincare loss on train set:  {loss_train.eval(G_surr):.3e}")
+print(f"Surrogate on test set:       {loss_test.eval_surrogate(G_surr):.3e}")
+print(f"Poincare loss on test set:   {loss_test.eval(G_surr):.3e}")
 
 # %% Plot for eyeball regression
 
@@ -140,18 +140,18 @@ def f_surr(z) : return regressor_surr.predict(z)
 # %% Evaluate performances
 
 y_train = f_surr(z_surr_train)
-err_train = np.mean((y_train - u_train)**2)
-rel_err_train = err_train / (u_train**2).mean()
+err_train = np.sqrt(np.mean((y_train - u_train)**2))
+rel_err_train = err_train / np.sqrt((u_train**2).mean())
 
 y_test = f_surr(z_surr_test)
-err_test = np.mean((y_test - u_test)**2)
-rel_err_test = err_test / (u_test**2).mean()
+err_test = np.sqrt(np.mean((y_test - u_test)**2))
+rel_err_test = err_test / np.sqrt((u_test**2).mean())
 
 print(f"\nSurrogate only | Regression based on {G_surr.shape[1]} features")
-print(f"MSE on train set    : {err_train:.3e}")
-print(f"MSE on test set     : {err_test:.3e}")
-print(f"RMSE on train set   : {rel_err_train:.3e}")
-print(f"RMSE on test set    : {rel_err_test:.3e}")
+print(f"L2 on train set    : {err_train:.3e}")
+print(f"L2 on test set     : {err_test:.3e}")
+print(f"RL2 on train set   : {rel_err_train:.3e}")
+print(f"RL2 on test set    : {rel_err_test:.3e}")
 
 
 # %% Plot final regression
@@ -204,18 +204,18 @@ def f_opt(z) : return regressor_opt.predict(z)
 # %% Evaluate performances
 
 y_train = f_opt(z_opt_train)
-err_train = np.mean((y_train - u_train)**2)
-rel_err_train = err_train / (u_train**2).mean()
+err_train = np.sqrt(np.mean((y_train - u_train)**2))
+rel_err_train = err_train / np.sqrt((u_train**2).mean())
 
 y_test = f_opt(z_opt_test)
-err_test = np.mean((y_test - u_test)**2)
-rel_err_test = err_test / (u_test**2).mean()
+err_test = np.sqrt(np.mean((y_test - u_test)**2))
+rel_err_test = err_test / np.sqrt((u_test**2).mean())
 
 print(f"\nSurrogate as init | Regression based on {G_opt.shape[1]} features")
-print(f"MSE on train set    : {err_train:.3e}")
-print(f"MSE on test set     : {err_test:.3e}")
-print(f"RMSE on train set   : {rel_err_train:.3e}")
-print(f"RMSE on test set    : {rel_err_test:.3e}")
+print(f"L2 on train set    : {err_train:.3e}")
+print(f"L2 on test set     : {err_test:.3e}")
+print(f"RL2 on train set   : {rel_err_train:.3e}")
+print(f"RL2 on test set    : {rel_err_test:.3e}")
 
 
 # %% Plot final regression
