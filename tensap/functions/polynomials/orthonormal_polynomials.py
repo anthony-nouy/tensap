@@ -371,7 +371,7 @@ class ShiftedOrthonormalPolynomials(tensap.UnivariatePolynomials):
 
     def dn_polyval(self, n, ind, x):
         x = (x - self.shift) / self.scaling
-        return self.polynomials.dn_polyval(n, ind, x) / (self.scaling ** n)
+        return self.polynomials.dn_polyval(n, ind, x) / (self.scaling**n)
 
     def random(self, ind, n=1, measure=None):
         """
@@ -430,7 +430,6 @@ class ShiftedOrthonormalPolynomials(tensap.UnivariatePolynomials):
 
 
 class HermitePolynomials(OrthonormalPolynomials):
-
     """
     Class HermitePolynomials.
 
@@ -531,7 +530,7 @@ class LegendrePolynomials(OrthonormalPolynomials):
         norms = np.array(
             [
                 np.sqrt(1 / (2 * x + 1))
-                * 2 ** x
+                * 2**x
                 * math.factorial(x) ** 2
                 / math.factorial(2 * x)
                 for x in range(n + 1)
@@ -591,7 +590,7 @@ class LegendrePolynomialsLebesgue(OrthonormalPolynomials):
         norms = np.array(
             [
                 np.sqrt(1 / (2 * x + 1))
-                * 2 ** x
+                * 2**x
                 * math.factorial(x) ** 2
                 / math.factorial(2 * x)
                 * np.sqrt(2)
@@ -773,7 +772,7 @@ class EmpiricalPolynomials(OrthonormalPolynomials):
             p_n_m1 = np.reshape(peval(i - 1, a, b, x_ij), x_ij.shape)
             p_n = np.reshape(peval(i, a, b, x_ij), x_ij.shape)
 
-            norms[i] = np.sum(np.matmul(p_n ** 2, weights))
+            norms[i] = np.sum(np.matmul(p_n**2, weights))
             a[i] = np.sum(np.matmul(p_n * x_ij * p_n, weights)) / norms[i]
             b[i] = norms[i] / norms[i - 1]
 
@@ -913,8 +912,8 @@ class DiscretePolynomials(OrthonormalPolynomials):
 
         i = 0
         cond = True
-        norms[0] = dot_product(lambda x: x ** 0, lambda x: x ** 0, measure)
-        a[0] = dot_product(lambda x: x ** 0, lambda x: x, measure) / norms[0]
+        norms[0] = dot_product(lambda x: x**0, lambda x: x**0, measure)
+        a[0] = dot_product(lambda x: x**0, lambda x: x, measure) / norms[0]
         b[0] = 0
         pnm1 = []
         pn = [lambda x: 1]

@@ -117,12 +117,12 @@ class LinearModelLearningDensityL2(tensap.LinearModelLearning):
         if self.error_estimation and self.error_estimation_type == "leave_out":
             N = A.shape[0]
             if np.size(b) == 0:
-                output["error"] = (-(N ** 2)) / (1 - N) ** 2 * np.linalg.norm(
+                output["error"] = (-(N**2)) / (1 - N) ** 2 * np.linalg.norm(
                     sol
                 ) ** 2 + (2 * N - 1) / (N * (N - 1) ** 2) * np.sum(np.ravel(A) ** 2)
             else:
                 output["error"] = (
-                    (N ** 2 - 2 * N) / (N - 1) ** 2 * np.linalg.norm(sol) ** 2
+                    (N**2 - 2 * N) / (N - 1) ** 2 * np.linalg.norm(sol) ** 2
                     + 1 / (N - 1) ** 2 * np.linalg.norm(b) ** 2
                     - 2 / (N - 1) ** 2 * np.sum(np.matmul(A, b))
                     + (2 * N - 1) / (N * (N - 1) ** 2) * np.sum(np.ravel(A) ** 2)
@@ -161,7 +161,7 @@ class LinearModelLearningDensityL2(tensap.LinearModelLearning):
         else:
             b = []
 
-        A_square_sum = np.sum(A ** 2, 0)
+        A_square_sum = np.sum(A**2, 0)
 
         list_sort = np.argsort(-np.abs(sol_standard))
 
@@ -173,7 +173,7 @@ class LinearModelLearningDensityL2(tensap.LinearModelLearning):
             sol_incl_coef[np.setdiff1d(range(len(sol_incl_coef)), incl_coef)] = 0
 
             if np.size(b) == 0:
-                err_incl_coef = (-(N ** 2)) / (1 - N) ** 2 * np.linalg.norm(
+                err_incl_coef = (-(N**2)) / (1 - N) ** 2 * np.linalg.norm(
                     sol_incl_coef
                 ) ** 2 + (2 * N - 1) / (N * (N - 1) ** 2) * np.sum(
                     np.ravel(A_square_sum)[incl_coef]
@@ -181,7 +181,7 @@ class LinearModelLearningDensityL2(tensap.LinearModelLearning):
             else:
                 b_incl_coef = b[incl_coef]
                 err_incl_coef = (
-                    (N ** 2 - 2 * N) / (N - 1) ** 2 * np.linalg.norm(sol_incl_coef) ** 2
+                    (N**2 - 2 * N) / (N - 1) ** 2 * np.linalg.norm(sol_incl_coef) ** 2
                     + 1 / (N - 1) ** 2 * np.linalg.norm(b_incl_coef) ** 2
                     - 2 / (N - 1) ** 2 * np.sum(np.matmul(A[:, incl_coef], b_incl_coef))
                     + (2 * N - 1)
@@ -205,12 +205,12 @@ class LinearModelLearningDensityL2(tensap.LinearModelLearning):
             sol_red = sol_standard[ind]
 
             if np.size(b) == 0:
-                err[i] = (-(N ** 2)) / (1 - N) ** 2 * np.linalg.norm(sol_red) ** 2 + (
+                err[i] = (-(N**2)) / (1 - N) ** 2 * np.linalg.norm(sol_red) ** 2 + (
                     2 * N - 1
                 ) / (N * (N - 1) ** 2) * np.sum(np.ravel(A_square_sum)[ind])
             else:
                 err[i] = (
-                    (N ** 2 - 2 * N) / (N - 1) ** 2 * np.linalg.norm(sol_red) ** 2
+                    (N**2 - 2 * N) / (N - 1) ** 2 * np.linalg.norm(sol_red) ** 2
                     + 1 / (N - 1) ** 2 * np.linalg.norm(b[ind]) ** 2
                     - 2 / (N - 1) ** 2 * np.sum(np.matmul(A[:, ind], b[ind]))
                     + (2 * N - 1)
@@ -305,7 +305,7 @@ class LinearModelLearningDensityL2(tensap.LinearModelLearning):
         else:
             b = []
 
-        A_square_sum = np.sum(A ** 2, 0)
+        A_square_sum = np.sum(A**2, 0)
         if np.size(b) != 0:
             A_sum = np.sum(A, 0)
 
@@ -333,13 +333,13 @@ class LinearModelLearningDensityL2(tensap.LinearModelLearning):
             sol_red = sol_standard[ind]
 
             if np.size(b) == 0:
-                err[i] = (-(N ** 2)) / (1 - N) ** 2 * np.linalg.norm(sol_red) ** 2 + (
+                err[i] = (-(N**2)) / (1 - N) ** 2 * np.linalg.norm(sol_red) ** 2 + (
                     2 * N - 1
                 ) / (N * (N - 1) ** 2) * np.sum(np.ravel(A_square_sum)[ind])
             else:
                 b_red = b[ind]
                 err[i] = (
-                    (N ** 2 - 2 * N) / (N - 1) ** 2 * np.linalg.norm(sol_red) ** 2
+                    (N**2 - 2 * N) / (N - 1) ** 2 * np.linalg.norm(sol_red) ** 2
                     + 1 / (N - 1) ** 2 * np.linalg.norm(b_red) ** 2
                     - 2 / (N - 1) ** 2 * np.sum(A_sum[ind] * b_red)
                     + (2 * N - 1)

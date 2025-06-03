@@ -22,6 +22,9 @@ Module multi_indices.
 import numpy as np
 
 
+# import tensap
+
+
 class MultiIndices:
     """
     Class MultiIndices.
@@ -118,7 +121,10 @@ class MultiIndices:
         tensap.MultiIndices
 
         """
-        return MultiIndices.product_set([self.array, J.array])
+        if J is None:
+            return MultiIndices(self.array)
+        else:
+            return MultiIndices.product_set([self.array, J.array])
 
     def to_list(self):
         """
@@ -668,6 +674,7 @@ class MultiIndices:
             The set of multi-indices in N^d with weighted p-norm bounded by m.
 
         """
+        assert d == len(w), "Length of w must be equal to the dimension d"
         ind = [np.arange(int(np.floor(m / x)) + 1) for x in w]
         ind = MultiIndices.product_set(ind)
         n = ind.weighted_norm(p, w)
@@ -732,10 +739,8 @@ class MultiIndices:
 
         if d is None:
             d = len(L)
-        elif np.ndim(L) == 1:
-            L = [L] * d
-        else:
-            raise ValueError("Wrong arguments.")
+        if len(L) == 1 and d > 1:
+            L = list(L) * d
 
         for i in range(len(L)):
             if isinstance(L[i], MultiIndices):
@@ -779,5 +784,112 @@ class MultiIndices:
             The MultiIndices created using the flat indices ind and shape.
 
         """
+
         ind = np.unravel_index(np.ravel(ind), shape, order="F")
         return MultiIndices(np.transpose(ind))
+
+    @staticmethod
+    def hyperbolic_cross_set(d, p):
+        """
+        Create the hyperbolic cross set.
+
+        Parameters
+        ----------
+        d : int
+            The dimension, a positive integer.
+        p : int
+            The degree, a positive integer.
+
+        Returns
+        -------
+        ind : tensap.MultiIndices
+            The hyperbolic cross set.
+
+        """
+
+        ind = MultiIndices(np.zeros((1, d), dtype=int))
+        add = True
+        while add:
+            M = ind.get_margin()
+            n = np.prod((M.array + 1), axis=-1)
+            k = np.nonzero(n <= p + 1)[0]
+            if len(k) == 0:
+                add = False
+            else:
+                j = np.argsort(n[k])
+                M = M.keep_indices(k[j])
+                ind = ind.add_indices(M)
+        return ind
+
+    @staticmethod
+    def low_order_interactions(d, p, m):
+        """
+        Create the set of multi-indices with low-order interactions.
+
+        Parameters
+        ----------
+        d : int
+            The dimension, a positive integer.
+        p : int
+            The degree, a positive integer.
+
+        m : Maximum number of interactions.
+
+        Returns
+        -------
+        ind : tensap.MultiIndices
+            The set of multi-indices with low-order interactions.
+
+        """
+
+        ind = MultiIndices(np.zeros(d, dtype=int))
+        add = True
+        while add:
+            M = ind.get_margin()
+            n = np.count_nonzero(M.array, axis=-1)
+            rem = np.where(~(M <= MultiIndices(p)))[0]
+            M = M.remove_indices(rem)
+            n = np.delete(n, rem)
+            k = np.nonzero(n <= m)[0]
+            if np.all(np.logical_not(k)):
+                add = False
+            else:
+                j = np.argsort(n[k])
+                M = M.keep_indices(k[j])
+                ind = ind.add_indices(M)
+        return ind
+
+    @staticmethod
+    def weighted_hyperbolic_cross_set(d, p, w_k):
+        """
+        Create the set of weighted (anisotropic) hyperbolic cross.
+
+        Parameters
+        ----------
+        d : int
+            The dimension, a positive integer.
+        p : int
+            The degree, a positive integer.
+
+        w_k : list of length d containing the weights.
+
+        Returns
+        -------
+        ind : tensap.MultiIndices
+            The set of multi-indices with weighted hyperbolic cross.
+
+        """
+
+        ind = MultiIndices(np.zeros(d, dtype=int))
+        add = True
+        while add:
+            M = ind.get_margin()
+            n = np.prod((M.array + 1) ** w_k, axis=-1)
+            k = np.nonzero(n <= p + 1)[0]
+            if np.all(np.logical_not(k)):
+                add = False
+            else:
+                j = np.argsort(n[k])
+                M = M.keep_indices(k[j])
+                ind = ind.add_indices(M)
+        return ind

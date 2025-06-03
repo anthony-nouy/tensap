@@ -48,12 +48,16 @@ class FunctionalBasisArray(tensap.Function):
         Parameters
         ----------
         data : numpy.ndarray, optional
-            The coefficents of the function on the basis. The default is None.
+            The coefficients of the function on the basis. The default is None.
         basis : tensap.FunctionalBasis, optional
             The basis. The default is None.
         shape : list or numpy.ndarray, optional
             Array such that the function is with values in
-            R^(shape[0] x shape[1] x ...). The default is 1.
+            R^(shape[0] x shape[1] x ...). The default is [1].
+            For shape = [1], scalar-valued function, data is of shape = (basis.cardinal())
+            For shape = [k], vector-valued function, data is of shape = (basis.cardinal(),k)
+            For shape = [k,l], matrix-valued function, data is of shape = (basis.cardinal(),k,l)
+            ...
 
         Returns
         -------
@@ -65,7 +69,7 @@ class FunctionalBasisArray(tensap.Function):
         if shape is None and (data is not None or basis is not None):
             shape = 1
 
-        self.data = np.ravel(data)
+        self.data = np.ravel(data, order="F")
         self.basis = deepcopy(basis)
         self.shape = np.atleast_1d(shape)
         self.output_shape = self.shape
@@ -248,7 +252,7 @@ class FunctionalBasisArray(tensap.Function):
 
         """
         m = self.expectation(measure)
-        return self.dot_product_expectation(self, None, measure) - m ** 2
+        return self.dot_product_expectation(self, None, measure) - m**2
 
     def std(self, *args):
         """
@@ -393,7 +397,7 @@ class FunctionalBasisArray(tensap.Function):
                 v[i, :] = 0
             else:
                 mi = self.conditional_expectation(u)
-                vi = mi.dot_product_expectation(mi) - m ** 2
+                vi = mi.dot_product_expectation(mi) - m**2
                 v[i, :] = np.ravel(vi)
 
         return np.reshape(
@@ -437,9 +441,8 @@ class FunctionalBasisArray(tensap.Function):
 
         Parameters
         ----------
-        n : int or list or numpy.ndarray
-            The derivation order in all the dimensions, or the derivation
-            orders for each dimension.
+        n : list or numpy.ndarray
+            The derivation order in each dimension.
         x : numpy.ndarray
             The points used for the evaluation of the derivative.
 
@@ -454,11 +457,8 @@ class FunctionalBasisArray(tensap.Function):
             The evaluation of the n-derivative of the function at the points x.
 
         """
-        try:
-            H = self.basis.eval_derivative(n, x)
-            return self.eval_with_bases_evals(H)
-        except Exception:
-            raise NotImplementedError("Method not implemented for the basis.")
+        H = self.basis.eval_derivative(n, x)
+        return self.eval_with_bases_evals(H)
 
     def derivative(self, n):
         """
@@ -477,7 +477,40 @@ class FunctionalBasisArray(tensap.Function):
         """
         df = deepcopy(self)
         df.basis = self.basis.derivative(n)
+        np.reshape(self.data, [self.basis.cardinal(), np.prod(self.shape)], order="F")
+
         return df
+
+    def eval_gradient(self, x):
+        """
+        Compute evaluations of the gradient of self at points x.
+
+        Parameters
+        ----------
+        x : numpy.ndarray
+            The input points.
+
+        Returns
+        -------
+        out : numpy.ndarray
+            Evaluations of the gradient of self.
+            For scalar-valued function f,
+            out[k,i] is the evaluation of df/dx_i at the k-th sample.
+            For vector-valued function f,
+            out[k,i,j] is the evaluation of df_j/dx_i at the k-th sample.
+            For tensor-valued function f,
+            out[k,i,j1,j2...] is the evaluation of df_{j1,j2...}/dx_i at the k-th sample.
+
+        """
+        dnHx = self.basis.eval_jacobian(x)
+        data = np.reshape(self.data, [self.basis.cardinal(), np.prod(self.shape)], order="F")
+        y = np.einsum('kij,il->kjl', dnHx, data)
+
+        if np.prod(self.shape) == 1:
+            return np.reshape(y, np.concatenate(([dnHx.shape[0]], [dnHx.shape[2]])), order="F")
+        else:
+            return np.reshape(y, np.concatenate(([dnHx.shape[0]], [dnHx.shape[2]],
+                                                 self.shape)), order="F")
 
     def random(self, n=1, measure=None):
         """

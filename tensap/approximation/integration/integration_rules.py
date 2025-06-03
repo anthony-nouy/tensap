@@ -106,15 +106,14 @@ class IntegrationRule:
         return tensap.FullTensorProductIntegrationRule(points, weights)
 
     @staticmethod
-    def gauss(random_variable, *args):
+    def gauss(measure, *args):
         """
-        Call the method gauss_integration_rule of tensap.RandomVariable or
-        tensap.RandomVector.
+        Call the method gauss_integration_rule of a measure.
 
         Parameters
         ----------
-        random_variable : tensap.RandomVariable or tensap.RandomVector
-            The random variable or vector associated to which the integration
+        measure : tensap.Measure
+            The measure associated to which the integration
             rule is to be computed.
         *args : misc
             Additional arguments.
@@ -122,10 +121,10 @@ class IntegrationRule:
         Returns
         -------
         tensap.IntegrationRule
-            The integration rule associated with the random variable or vector.
+            The integration rule associated with the measure.
 
         """
-        return random_variable.gauss_integration_rule(*args)
+        return measure.gauss_integration_rule(*args)
 
     def gauss_legendre_composite(knots, n):
         """
@@ -159,7 +158,7 @@ class IntegrationRule:
         n = np.ravel(n)  # Ensure p is 1D
 
         for k in range(knots.size - 1):
-            supp = knots[k:k + 2]
+            supp = knots[k: k + 2]
             g = tensap.LebesgueMeasure(supp[0], supp[1]).gauss_integration_rule(n[k])
             x = np.append(x, g.points)
             w = np.append(w, g.weights)
@@ -213,7 +212,7 @@ class FullTensorProductIntegrationRule(IntegrationRule):
         weights = tensap.CanonicalTensor(
             [np.reshape(x, [-1, 1]) for x in self.weights], [1]
         )
-        return np.ravel(weights.full().numpy(), 'F')
+        return np.ravel(weights.full().numpy(), "F")
 
     def gauss_legendre_composite(knots, n):
         """
@@ -243,8 +242,7 @@ class FullTensorProductIntegrationRule(IntegrationRule):
         if not isinstance(knots, tuple):
             raise ValueError("must provide a tuple of length d.")
 
-        g = [tensap.IntegrationRule.gauss_legendre_composite(x, n)
-             for x in knots]
+        g = [tensap.IntegrationRule.gauss_legendre_composite(x, n) for x in knots]
         points = [x.points for x in g]
         weights = [x.weights for x in g]
 

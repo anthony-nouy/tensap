@@ -72,7 +72,7 @@ elif CHOICE == 4:
     TREE = tensap.DimensionTree.balanced(D)
 
     def FUN(x1, x2):
-        return 1 / (1 + x1 ** 2 + x2 ** 2)
+        return 1 / (1 + x1**2 + x2**2)
 
     FUN = tensap.CompositionalModelFunction(TREE, FUN, X)
 

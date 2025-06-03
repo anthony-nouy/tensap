@@ -174,13 +174,13 @@ class FunctionalTensor(tensap.Function):
         """
         mean = self.expectation(*measure)
         if np.isscalar(mean):
-            var = self.dot_product_expectation(self, None, *measure) - mean ** 2
+            var = self.dot_product_expectation(self, None, *measure) - mean**2
         else:
             raise NotImplementedError("Method not implemented.")
         return var
 
     def std(self, *measure):
-        """ '
+        """'
         Compute the standard deviation of the random variable self(measure) if
         measure is provided, and of self(self.bases.measure) otherwise.
 
@@ -364,7 +364,7 @@ class FunctionalTensor(tensap.Function):
                 v[i] = 0
             else:
                 mu = self.conditional_expectation(u)
-                v[i] = mu.dot_product_expectation(mu) - m ** 2
+                v[i] = mu.dot_product_expectation(mu) - m**2
         return v
 
     def eval(self, x, *dims):
@@ -415,7 +415,7 @@ class FunctionalTensor(tensap.Function):
                     c = out.tensor.tensors[root - 1]
                     n = self.tensor.ranks[root - 1]
                     s = [":"] * c.order
-                    s[-1] = np.arange(n ** 2, step=n)
+                    s[-1] = np.arange(n**2, step=n)
                     c = c.sub_tensor(*s)
                     out.tensor.tensors[root - 1] = c
                     out.tensor.ranks[root - 1] = n
@@ -726,6 +726,37 @@ class FunctionalTensor(tensap.Function):
         """
         bases_eval = self.bases.eval_derivative(n, x, *dims)
         return self.eval_with_bases_evals(bases_eval, *dims)
+
+    def eval_gradient(self, x):
+        """
+        Compute evaluations of the gradient of self at points x.
+
+        Parameters
+        ----------
+        x : numpy.ndarray
+            The input points.
+
+        Returns
+        -------
+        out : numpy.ndarray
+            Evaluations of the gradient of self.
+            For scalar-valued function f,
+            out[k,i] is the evaluation of df/dx_i at the k-th sample.
+            For vector-valued function f,
+            out[k,i,j] is the evaluation of df_j/dx_i at the k-th sample.
+            For tensor-valued function f,
+            out[k,i,j1,j2...] is the evaluation of df_{j1,j2...}/dx_i at the k-th sample.
+
+        """
+        g = []
+        for ind in range(self.bases.length()):
+            n = self.length() * [0]
+            n[ind] = 1
+            dHx = self.bases.eval_derivative(n, x)
+            y = self.eval_with_bases_evals(dHx)
+            g.append(y)
+        out = np.concatenate(g, axis=1)
+        return out
 
     def derivative(self, n):
         """
