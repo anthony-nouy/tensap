@@ -205,7 +205,6 @@ def _build_sum_cos_sin_squared_norm(d=8, c=1., R1=None, R2=None):
     return fun_torch, X
 
 
-
 def _build_exp_mean_sin_exp_cos(d=8, c=1.):
 
     X = tensap.RandomVector(tensap.UniformRandomVariable(-1, 1), d)
@@ -215,6 +214,19 @@ def _build_exp_mean_sin_exp_cos(d=8, c=1.):
         z = torch.sin(c * x) * torch.exp(y)
         return torch.exp(torch.mean(z))
     
+    return fun_torch, X
+
+
+def _build_cos_low_rank(d=8):
+    
+    X = tensap.RandomVector(tensap.UniformRandomVariable(-1, 1), d)
+
+    def fun_torch(x):
+        z1 = torch.flatten(torch.outer(x[:d//2], x[:d//4]))
+        z2 = torch.flatten(torch.outer(x[-d//2:], x[-d//4:]))
+        z = z1.T @ z2
+        return torch.cos(z)
+
     return fun_torch, X
 
 
@@ -283,6 +295,9 @@ def build_benchmark_torch(case, **kwargs):
     elif case == "exp_mean_sin_exp_cos":
         fun_torch, X = _build_exp_mean_sin_exp_cos(**kwargs)
         
+    elif case == "cos_low_rank":
+        fun_torch, X = _build_cos_low_rank(**kwargs)
+
     else:
         raise NotImplementedError("Function not implemented.")
 
