@@ -87,8 +87,8 @@ class PoincareLossVectorSpace:
     def minimize_active_subspace(self, m=1):
         return _minimize_active_subspace(self.jac_u, self.jac_basis, m)
 
-    def minimize_qn(self, G0=None, m=None, n_try=None, maxiter_qn=100, tol_qn=1e-5, cg_kwargs={}):
-        return _minimize_qn(self.jac_u, self.jac_basis, G0, m, n_try, self.R, maxiter_qn, tol_qn, cg_kwargs)
+    def minimize_qn(self, G0=None, m=None, n_try=None, init_method="active_subspace", maxiter=100, tol=1e-5, precond_method='sigma', precond_kwargs={}, seed=None):
+        return _minimize_qn(self.jac_u, self.jac_basis, G0, m, n_try, init_method, self.R, maxiter, tol, precond_method, precond_kwargs, seed)
     
     def minimize_pymanopt(self, G0=None, m=None, init_method='random_linear', n_try=1, use_precond=True, precond_kwargs={}, optimizer_kwargs={}, ls_kwargs={}, seed=None):
         return _minimize_pymanopt(self.jac_u, self.jac_basis, G0, m, init_method, n_try, self.R, use_precond, precond_kwargs, optimizer_kwargs, ls_kwargs, seed)

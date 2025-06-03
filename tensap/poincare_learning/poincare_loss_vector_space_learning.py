@@ -3,7 +3,7 @@
 import numpy as np
 import scipy
 import logging
-from tensap.poincare_learning.utils._loss_vector_space import _eval_HG_X, _eval_SGinv_X, _eval_SG_full, _eval_jac_g, poincare_loss_vector_space, poincare_loss_vector_space_gradient, _eval_surrogate_matrices, poincare_loss_surrogate_vector_space
+from tensap.poincare_learning.utils._loss_vector_space import _eval_HG_X, _eval_SGinv_X, _eval_SG_full, _eval_HessG_full,_eval_jac_g, poincare_loss_vector_space, poincare_loss_vector_space_gradient, _eval_surrogate_matrices, poincare_loss_surrogate_vector_space
 
 
 def _minimize_active_subspace(jac_u, jac_basis=None, m=1):
@@ -52,7 +52,66 @@ def _minimize_active_subspace(jac_u, jac_basis=None, m=1):
     return G
 
 
-def _iteration_qn(jac_u, jac_basis, G, R=None, cg_kwargs={}):
+def _initialization(jac_u, jac_basis, m, init_method='active_subspace', n_try=1, R=None, seed=None):
+    """
+    Compute coefficients of the initial feature map according to the choosen method.
+
+    Parameters
+    ----------
+    jac_u : numpy.ndarray
+        Samples of the jacobian of the function to approximate.
+        jac_u[k,i,j] is du_i / dx_j evaluated at the k-th sample.
+        Has shape (N, n, d).
+    jac_basis : numpy.ndarray, optional
+        Has shape (N, d, d) or (d, d).
+        The defatul is None
+    m : int, optional
+        Number of singular vectors to take as features. 
+        The default is 1.
+    init_method : string, optional
+        Only used if G0 is None.
+        Initialization method, must be one of 
+        'random', 'random_linear', 'surrogate', 'surrogate_greedy', 'active_subspace'.
+        Note that 'active_subspace' assumes that the first d basis functions are linear.
+        The default is 'active_subspace'.
+    n_try : int, optional
+        Number of initial points to compute
+        Only used if G0 is None and init_method is 'random' or 'random_linear'.
+        The default is 1.
+
+    Returns
+    -------
+    G0 : numpy.ndarray
+        Initial coefficients.
+        Has shape (K, m) of (n_try, K, m).
+    
+    """
+    N, K, d = jac_basis.shape
+
+    if init_method == 'surrogate':
+        G0 = _minimize_surrogate(jac_u, jac_basis, R=R, m=m)[0]
+
+    elif init_method == 'surrogate_greedy':
+        G0 = _minimize_surrogate_greedy(jac_u, jac_basis, m, R=R, optimize_poincare=False)[0]
+
+    elif init_method == 'random':
+        G0 = np.random.RandomState(seed).normal(size=(n_try, K, m))
+
+    elif init_method == 'random_linear':
+        G0 = np.zeros((n_try, K, m))
+        G0[:,:d,:] = np.random.RandomState(seed).normal(size=(n_try, d, m))
+
+    elif init_method == 'active_subspace':
+        G0 = np.zeros((K, m))
+        G0[:d,:] = _minimize_active_subspace(jac_u, jac_basis[0,:d,:], m=m)
+
+    else:
+        raise ValueError('Initialization method not valid')
+    
+    return G0
+
+
+def _iteration_qn(jac_u, jac_basis, G, R=None, precond_method='sigma', precond_kwargs={}):
     """
     Perform one iteration of the quasi Newton algorithm described in 
     Bigoni et al. 2022.
@@ -71,8 +130,16 @@ def _iteration_qn(jac_u, jac_basis, G, R=None, cg_kwargs={}):
     R : numpy.ndarray, optional
         The inner product matrix with respect to which G is orthonormal.
         The default is None, corresponding to identity matrix.
-    cg_kwargs : dict
-        Key word arguments for scipy.sparse.linalg.cg to solve S(G)x=b
+    precond_method : str, optional
+        Method to use as approximation of the hessian.
+        Should be one of
+        - None : identity matrix
+        - "sigma" : sigma matrix from Bigoni et al. 2022 inverted by lstsq.
+        - "sigma_cg" : sigma matrix from Bigoni et al. 2022 inverted by CG .
+        - "hessian" : hessian matrix inverted by lstsq.
+    precond_kwargs : dict
+        Key word arguments the precond method.
+        The default is dict()
 
     Returns
     -------
@@ -87,13 +154,34 @@ def _iteration_qn(jac_u, jac_basis, G, R=None, cg_kwargs={}):
     Gmat = G.reshape(K, -1, order='F')
     jac_g = _eval_jac_g(Gmat, jac_basis)
     b = _eval_HG_X(Gmat, Gmat, jac_u, jac_basis, jac_g)
-    Gaux = _eval_SGinv_X(Gmat, b, jac_u, jac_basis, jac_g, cg_kwargs)
+    
+    if precond_method is None:
+        dG = b.reshape(G.shape, order='F')
+
+    if precond_method[:3] != "cg_":
+        if precond_method == "sigma":
+            P = _eval_SG_full(G, jac_u, jac_basis)
+
+        elif precond_method == "hessian":
+            P = _eval_HessG_full(G, jac_u, jac_basis)
+            (G, jac_u, jac_basis)
+
+        dG, _, _, _ = np.linalg.lstsq(P, G.reshape(-1, order='F'))
+
+    elif precond_method == "cg_sigma":
+        dG = _eval_SGinv_X(Gmat, b, jac_u, jac_basis, jac_g, cg_kwargs=precond_kwargs)
+
+    else:
+        Warning("Precond method not implemented", precond_method)
+
+    Gaux = Gmat - dG.reshape(K, -1, order='F')
     M = Gaux.T @ R @ Gaux
     Gnext = Gaux @ np.linalg.inv(np.linalg.cholesky(M).T)
+    Gnext = Gnext.reshape(G.shape)
     return Gnext
 
 
-def _minimize_qn_(jac_u, jac_basis, G0, R=None, maxiter_qn=100, tol_qn=1e-5, cg_kwargs={}):
+def _minimize_qn_(jac_u, jac_basis, G0, R=None, maxiter=100, tol=1e-5, precond_method='sigma', precond_kwargs={}):
     """
     Perform the quasi Newton algorithm described in Bigoni et al. 2022, 
     starting at a single initial point.
@@ -112,21 +200,27 @@ def _minimize_qn_(jac_u, jac_basis, G0, R=None, maxiter_qn=100, tol_qn=1e-5, cg_
     R : numpy.ndarray, optional
         The inner product matrix with respect to which G is orthonormal.
         The default is None, corresponding to identity matrix.
-    maxiter_qn : int, optional
+    maxiter : int, optional
         Maximal number of iteration of the QN algorithm.
         The default is 100.
-    tol_qn : float, optional
+    tol : float, optional
         Tolerance for QN algorithm.
         The default is 1e-5
-    cg_kwargs : dict
-        Key word arguments for scipy.sparse.linalg.cg to solve S(G)x=b
-        at each iteration.
-
+    precond_method : str, optional
+        Method to use as approximation of the hessian.
+        Should be one of
+        - None : identity matrix
+        - "sigma" : sigma matrix from Bigoni et al. 2022 inverted by lstsq.
+        - "sigma_cg" : sigma matrix from Bigoni et al. 2022 inverted by CG .
+        - "hessian" : hessian matrix inverted by lstsq.
+    precond_kwargs : dict
+        Key word arguments the precond method.
+        The default is dict()
     Returns
     -------
     out : numpy.ndarray
         Result of the QN algorithm.
-        Has shape .
+        Has shape (K, m) or (K*m, ).
 
     """
     N, K, d = jac_basis.shape
@@ -136,10 +230,10 @@ def _minimize_qn_(jac_u, jac_basis, G0, R=None, maxiter_qn=100, tol_qn=1e-5, cg_
     G_now = G0 @ np.linalg.inv(np.linalg.cholesky(M0).T)
     i = -1
     delta = np.inf
-    logging.info("Optimizing Poincare loss with QN from Bigoni et al.")
-    while i < maxiter_qn and delta >= tol_qn:
+    logging.info("Optimizing Poincare loss with QN and precond method " + str(precond_method))
+    while i < maxiter and delta >= tol:
         i = i+1
-        G_next = _iteration_qn(jac_u, jac_basis, G_now, R, cg_kwargs)
+        G_next = _iteration_qn(jac_u, jac_basis, G_now, R, precond_method, precond_kwargs)
         # delta = np.linalg.norm(Gnext - Gnow)
         delta = 1 - np.linalg.svd(G_next.T @ R @ G_now)[1].min()
         G_now[:] = G_next[:]
@@ -152,7 +246,7 @@ def _minimize_qn_(jac_u, jac_basis, G0, R=None, maxiter_qn=100, tol_qn=1e-5, cg_
     return G, loss
 
 
-def _minimize_qn(jac_u, jac_basis, G0=None, m=None, n_try=None, R=None, maxiter_qn=100, tol_qn=1e-5, cg_kwargs={}):
+def _minimize_qn(jac_u, jac_basis, G0=None, m=None, n_try=None, init_method="active_subspace", R=None, maxiter=100, tol=1e-5, precond_method='sigma', precond_kwargs={}, seed=None):
     """
     Perform the quasi Newton algorithm described in Bigoni et al. 2022, 
     starting at potentially multiple initial points.
@@ -173,28 +267,46 @@ def _minimize_qn(jac_u, jac_basis, G0=None, m=None, n_try=None, R=None, maxiter_
     m : int, optional
         Only used if G0 is None.
         The default is None.
-    n_try : in, optional
-        Only used if G0 is None
-        The default is None.
+    n_try : int, optional
+        Number of initial points to compute
+        Only used if G0 is None and init_method is 'random' or 'random_linear'.
+        The default is 1.
+    init_method : string, optional
+        Only used if G0 is None.
+        Initialization method, must be one of 
+        'random', 'random_linear', 'surrogate', 'surrogate_greedy', 'active_subspace'.
+        Note that 'active_subspace' assumes that the first d basis functions are linear.
+        The default is 'active_subspace'.
     R : numpy.ndarray, optional
         The inner product matrix with respect to which G is orthonormal.
         The default is None, corresponding to identity matrix.
-    maxiter_qn : int, optional
+    maxiter : int, optional
         Maximal number of iteration of the QN algorithm.
         The default is 100.
-    tol_qn : float, optional
+    tol : float, optional
         Tolerance for QN algorithm.
         The default is 1e-5
-    cg_kwargs : dict
-        Key word arguments for scipy.sparse.linalg.cg to solve S(G)x=b
-        at each iteration.
-
+    precond_method : str, optional
+        Method to use as approximation of the hessian.
+        Should be one of
+        - None : identity matrix
+        - "sigma" : sigma matrix from Bigoni et al. 2022 inverted by lstsq.
+        - "sigma_cg" : sigma matrix from Bigoni et al. 2022 inverted by CG .
+        - "hessian" : hessian matrix inverted by lstsq.
+    precond_kwargs : dict
+        Key word arguments the precond method.
+        The default is dict()
+    seed : int, optional
+        The seed of the random number generator for random initialization.
+        Only used if init_method is random or random_linear.
+        The default is None.
     Returns
     -------
     G : numpy.ndarray
         Result of the QN algorithm.
         Has shape (n_try, K, m) or (K, m).
-
+    loss : float
+        Loss associated to the result.
     """
     K = jac_basis.shape[1]
 
@@ -203,9 +315,9 @@ def _minimize_qn(jac_u, jac_basis, G0=None, m=None, n_try=None, R=None, maxiter_
 
     if G0 is None:
         assert not(m is None)
-        G0 = np.random.normal(size=(n_try, K, m))
+        G0 = _initialization(jac_u, jac_basis, m, init_method, n_try, R, seed)
 
-    elif G0.ndim == 2:
+    if G0.ndim == 2:
         G0 = G0[None, :, :]
         
     l, _, m = G0.shape
@@ -214,7 +326,7 @@ def _minimize_qn(jac_u, jac_basis, G0=None, m=None, n_try=None, R=None, maxiter_
 
     for i in range(l):
         logging.info(f"Minimizing Poincare loss with Quasi-Newton")
-        G[i], loss[i] = _minimize_qn_(jac_u, jac_basis, G0[i], R, maxiter_qn, tol_qn, cg_kwargs)
+        G[i], loss[i] = _minimize_qn_(jac_u, jac_basis, G0[i], R, maxiter, tol, precond_method, precond_kwargs)
         
     if l == 1:
         loss = loss[0]
@@ -251,6 +363,7 @@ def _minimize_pymanopt(jac_u, jac_basis, G0=None, m=None, init_method='active_su
         Note that 'active_subspace' assumes that the first d basis functions are linear.
         The default is 'active_subspace'.
     n_try : int, optional
+        Number of initial points to compute
         Only used if G0 is None and init_method is 'random' or 'random_linear'.
         The default is 1.
     R : numpy.ndarray, optional
@@ -292,26 +405,7 @@ def _minimize_pymanopt(jac_u, jac_basis, G0=None, m=None, init_method='active_su
     _, K, d = jac_basis.shape
 
     if G0 is None:
-        assert not(m is None)
-        if init_method == 'surrogate':
-            G0 = _minimize_surrogate(jac_u, jac_basis, R=R, m=m)[0]
-    
-        elif init_method == 'surrogate_greedy':
-            G0 = _minimize_surrogate_greedy(jac_u, jac_basis, m, R=R, optimize_poincare=False)[0]
-
-        elif init_method == 'random':
-            G0 = np.random.RandomState(seed).normal(size=(n_try, K, m))
-
-        elif init_method == 'random_linear':
-            G0 = np.zeros((n_try, K, m))
-            G0[:,:d,:] = np.random.RandomState(seed).normal(size=(n_try, d, m))
-
-        elif init_method == 'active_subspace':
-            G0 = np.zeros((K, m))
-            G0[:d,:] = _minimize_active_subspace(jac_u, jac_basis[0,:d,:], m=m)
-
-        else:
-            raise ValueError('Initialization method not valid')
+        G0 = _initialization(jac_u, jac_basis, m, init_method, n_try, R, seed)
 
     if G0.ndim == 1:
         G0 = G0[None, :, None]
