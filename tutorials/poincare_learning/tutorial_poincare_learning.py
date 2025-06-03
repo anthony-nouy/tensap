@@ -99,25 +99,28 @@ N_test = 500
 x_test, u_test, jac_u_test, basis_test, jac_basis_test, loss_test = generate_samples(
     N_test, X, u, jac_u, basis, R)
 
-
-# %% Minimize the Poicare loss using preconditioned CG on Grassmann Manifold
-optimizer_kwargs = {
-    'beta_rule': 'PolakRibiere',
-    'orth_value': 10,
-    'max_iterations': 50, 
-    'verbosity':2,
-    }
+# %% Choosing hyperparameters
 
 m = 2   # number of features to learn
-n_try = 1   # number of random initializations, only used for random init method
-init_method = "active_subspace"
+init_method = "active_subspace" # initialization method
+backend = "pymanopt" # choice of backend for minimization
 
-G_lst, loss_lst, _ = loss_train.minimize_pymanopt(G0=None, m=m, init_method=init_method, n_try=n_try, use_precond=True, optimizer_kwargs=optimizer_kwargs)
+# %% Minimize the Poincare loss
 
-if n_try > 1:
-    G = G_lst[loss_lst.argmin()]
+# use CG on grassmann manifold using pymanopt
+if backend == 'pymanopt':
+
+    optimizer_kwargs = { # params for pymanopt CG
+        'beta_rule': 'PolakRibiere',
+        'max_iterations': 50, 
+        'verbosity':2,
+        }
+
+    G, _, _ = loss_train.minimize_pymanopt(G0=None, m=m, init_method=init_method, optimizer_kwargs=optimizer_kwargs)
+
+# quasi newton
 else:
-    G = G_lst
+    G, _ = loss_train.minimize_qn(G0=None, m=m, init_method=init_method, precond_method='sigma')
 
 # %% Evaluate performances
 
@@ -153,18 +156,18 @@ def f(z) : return regressor.predict(z)
 # %% Evaluate performances
 
 y_train = f(z_train)
-err_train = np.mean((y_train - u_train)**2)
-rel_err_train = err_train / (u_train**2).mean()
+err_train = np.sqrt(np.mean((y_train - u_train)**2))
+rel_err_train = err_train / np.sqrt((u_train**2).mean())
 
 y_test = f(z_test)
-err_test = np.mean((y_test - u_test)**2)
-rel_err_test = err_test / (u_test**2).mean()
+err_test = np.sqrt(np.mean((y_test - u_test)**2))
+rel_err_test = err_test / np.sqrt((u_test**2).mean())
 
 print(f"\nRegression based on {G.shape[1]} features")
-print(f"MSE on train set    : {err_train:.3e}")
-print(f"MSE on test set     : {err_test:.3e}")
-print(f"RMSE on train set   : {rel_err_train:.3e}")
-print(f"RMSE on test set    : {rel_err_test:.3e}")
+print(f"L2 on train set    : {err_train:.3e}")
+print(f"L2 on test set     : {err_test:.3e}")
+print(f"RL2 on train set   : {rel_err_train:.3e}")
+print(f"RL2 on test set    : {rel_err_test:.3e}")
 
 
 # %% Plot final regression
