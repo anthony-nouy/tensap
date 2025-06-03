@@ -318,7 +318,7 @@ class TreeBasedTensor:
             tensor.tensors[tensor.tree.root - 1] *= arg
         elif isinstance(arg, tensap.TreeBasedTensor):
             tensor = self.kron(arg)
-            I0 = [np.arange(0, n ** 2, n + 1) for n in self.shape]
+            I0 = [np.arange(0, n**2, n + 1) for n in self.shape]
             tensor = tensor.sub_tensor(*I0)
             N = self.ranks[self.tree.root - 1]
             if N > 1:
@@ -326,7 +326,7 @@ class TreeBasedTensor:
                     raise ValueError("root ranks should be equal.")
                 a = tensor.tensors[tensor.tree.root - 1]
                 I0 = [":"] * a.order
-                I0[a.order - 1] = np.arange(0, N ** 2, N + 1)
+                I0[a.order - 1] = np.arange(0, N**2, N + 1)
                 tensor.tensors[tensor.tree.root - 1] = a.sub_tensor(*I0)
                 tensor = tensor.update_attributes()
         else:
@@ -447,9 +447,9 @@ class TreeBasedTensor:
             print("Inactive nodes must have an alpha-rank equal to 0.")
         else:
             is_admiss = True
-            ranks[
-                tensap.fast_intersect(tree.dim2ind, self.non_active_nodes) - 1
-            ] = self.shape[self.non_active_dims]
+            ranks[tensap.fast_intersect(tree.dim2ind, self.non_active_nodes) - 1] = (
+                self.shape[self.non_active_dims]
+            )
             for nod in tensap.fast_intersect(tree.internal_nodes, self.active_nodes):
                 children = tree.children(nod)
                 active_ch = tensap.fast_intersect(children, self.active_nodes)
@@ -931,7 +931,7 @@ class TreeBasedTensor:
                             [tensors[gamma - 1].order - 1],
                             perm[
                                 tree.child_number(nod)
-                                - 1: tensors[gamma - 1].order
+                                - 1:tensors[gamma - 1].order
                                 - 1
                             ],
                         )
@@ -1227,7 +1227,9 @@ class TreeBasedTensor:
                     ind_active = np.nonzero(are_ch_active)[0]
 
                     if np.all(np.logical_not(are_ch_active)):
-                        tensors[nod - 1] = tensors[nod - 1].eval_diag(range(len(children)))
+                        tensors[nod - 1] = tensors[nod - 1].eval_diag(
+                            range(len(children))
+                        )
                     else:
                         tmp = tensors[children[ind_active[0]] - 1]
                         for ind in np.arange(1, ind_active.size):
@@ -1268,7 +1270,8 @@ class TreeBasedTensor:
             self.tensors[alpha - 1] = xs
             # indices of the nodes that are kept
             keep_ind = tensap.fast_setdiff(
-                np.arange(tree.nb_nodes), tree.descendants(alpha) - 1)
+                np.arange(tree.nb_nodes), tree.descendants(alpha) - 1
+            )
             # extract submatrix of the adjacency matrix
             adj = tree.adjacency_matrix[np.ix_(keep_ind, keep_ind)]
             remaining_dims = tensap.fast_setdiff(
@@ -2005,9 +2008,11 @@ class TreeBasedTensor:
         gramians, _ = tensor.gramians()
         return np.array(
             [
-                np.sqrt(np.linalg.svd(gram, compute_uv=False))
-                if gram is not None
-                else None
+                (
+                    np.sqrt(np.linalg.svd(gram, compute_uv=False))
+                    if gram is not None
+                    else None
+                )
                 for gram in gramians
             ],
             dtype=object,

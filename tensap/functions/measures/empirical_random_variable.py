@@ -197,7 +197,7 @@ class EmpiricalRandomVariable(tensap.RandomVariable):
         return np.ravel(
             1
             / (n * h * np.sqrt(2 * np.pi))
-            * np.sum(np.exp(-0.5 * (X - XI) ** 2 / h ** 2), axis=0)
+            * np.sum(np.exp(-0.5 * (X - XI) ** 2 / h**2), axis=0)
         )
 
     def random_variable_statistics(self):

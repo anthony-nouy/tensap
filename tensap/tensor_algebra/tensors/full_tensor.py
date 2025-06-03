@@ -223,7 +223,7 @@ class FullTensor:
 
     def __pow__(self, arg):
         assert np.isscalar(arg), "The power must be a scalar."
-        return FullTensor(self.data ** arg)
+        return FullTensor(self.data**arg)
 
     def hadamard_product(self, arg):
         """

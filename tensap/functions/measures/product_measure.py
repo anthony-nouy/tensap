@@ -115,7 +115,9 @@ class ProductMeasure(tensap.Measure):
         if n.size == 1:
             n = np.tile(n, len(self.measures))
         elif n.size != len(self.measures):
-            raise ValueError("number of points should be equal to the number of measures.")
+            raise ValueError(
+                "number of points should be equal to the number of measures."
+            )
         points = []
         weights = []
         for i in range(n.size):

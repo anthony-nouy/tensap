@@ -201,7 +201,7 @@ class NormalRandomVariable(tensap.RandomVariable):
         return self.mu, self.sigma
 
     def random_variable_statistics(self):
-        return self.mu, self.sigma ** 2
+        return self.mu, self.sigma**2
 
     def random(self, n):
         return randn(int(n)) * self.sigma + self.mu

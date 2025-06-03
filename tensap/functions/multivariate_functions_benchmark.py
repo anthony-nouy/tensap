@@ -169,7 +169,7 @@ def multivariate_functions_benchmark(case, *args):
             return np.prod(
                 np.tile(c[0, :], (np.shape(x)[0], 1))
                 + np.tile(c[1, :], (np.shape(x)[0], 1)) * x
-                + np.tile(c[2, :], (np.shape(x)[0], 1)) * x ** 2,
+                + np.tile(c[2, :], (np.shape(x)[0], 1)) * x**2,
                 1,
             )
 
@@ -251,7 +251,7 @@ def multivariate_functions_benchmark(case, *args):
         elif case == "corner_peak":
             b = 185
             e = 2
-            c = c * b / d ** e / np.sum(c)
+            c = c * b / d**e / np.sum(c)
 
             def fun(x):
                 return (1 + np.matmul(x, np.transpose(c))) ** (-d - 1)
@@ -289,9 +289,9 @@ def multivariate_functions_benchmark(case, *args):
 
         def fun(x):
             return (
-                0.5 * np.sum(x ** 2, 1)
+                0.5 * np.sum(x**2, 1)
                 + 0.2 * np.sum(x[:, :-1] * x[:, 1:] ** 2 - x[:, :-1] ** 3, 1)
-                + 0.2 ** 2 / 16 * np.sum((x[:, :-1] ** 2 + x[:, 1:] ** 2) ** 2, 1)
+                + 0.2**2 / 16 * np.sum((x[:, :-1] ** 2 + x[:, 1:] ** 2) ** 2, 1)
             )
 
     elif case == "sobol":
@@ -338,7 +338,7 @@ def multivariate_functions_benchmark(case, *args):
         X = tensap.RandomVector(tensap.UniformRandomVariable(0, 1), d)
 
         def fun(x):
-            return 1 / (2 ** np.shape(x)[1]) * np.prod(3 * x ** q + 1, 1)
+            return 1 / (2 ** np.shape(x)[1]) * np.prod(3 * x**q + 1, 1)
 
     else:
         raise NotImplementedError("Bad function name.")

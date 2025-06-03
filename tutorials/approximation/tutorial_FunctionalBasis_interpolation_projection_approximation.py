@@ -90,7 +90,7 @@ print("Mean squared error = %2.5e" % ERR_L2)
 # %% Projection on polynomial space through quadrature
 def FUN(x):
     # Function to approximate
-    return x ** 2 / 2
+    return x**2 / 2
 
 
 FUN = tensap.UserDefinedFunction(FUN, 1)
@@ -160,7 +160,7 @@ print("Mean squared error = %2.5e" % ERR_L2)
 # %% Interpolation with a radial basis
 def FUN(x):
     # Function to approximate
-    return np.exp(-(x ** 2))
+    return np.exp(-(x**2))
 
 
 FUN = tensap.UserDefinedFunction(FUN, 1)
@@ -174,7 +174,7 @@ S = 10 / N
 
 
 def k(x, y, s=S):
-    return np.exp(-((x - y) ** 2) / s ** 2)
+    return np.exp(-((x - y) ** 2) / s**2)
 
 
 H = np.empty(N, dtype=object)
@@ -202,7 +202,7 @@ print("Mean squared error = %2.5e" % ERR_L2)
 # %% Projection on polynomial space through quadrature
 def FUN(x):
     # Function to approximate
-    return x ** 2 / 2
+    return x**2 / 2
 
 
 FUN = tensap.UserDefinedFunction(FUN, 1)

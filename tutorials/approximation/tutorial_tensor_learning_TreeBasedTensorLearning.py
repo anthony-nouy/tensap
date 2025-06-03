@@ -124,7 +124,7 @@ SOLVER.test_data = [X_TEST, Y_TEST]
 # SOLVER.bases_eval_test = BASES.eval(X_TEST)
 
 SOLVER.rank_adaptation = True
-SOLVER.rank_adaptation_options["max_iterations"] = 20
+SOLVER.rank_adaptation_options["max_iterations"] = 10
 SOLVER.rank_adaptation_options["theta"] = 0.8
 SOLVER.rank_adaptation_options["early_stopping"] = True
 SOLVER.rank_adaptation_options["early_stopping_factor"] = 10
@@ -134,7 +134,7 @@ SOLVER.tree_adaptation_options["max_iterations"] = 1e2
 # SOLVER.tree_adaptation_options['force_rank_adaptation'] = True
 
 SOLVER.alternating_minimization_parameters["stagnation"] = 1e-10
-SOLVER.alternating_minimization_parameters["max_iterations"] = 50
+SOLVER.alternating_minimization_parameters["max_iterations"] = 5
 
 SOLVER.display = True
 SOLVER.alternating_minimization_parameters["display"] = False

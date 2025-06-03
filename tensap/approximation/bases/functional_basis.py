@@ -451,6 +451,32 @@ class FunctionalBasis:
         out.is_orthonormal = True
         return out
 
+    def eval_jacobian(self, x):
+        """
+        Compute evaluations of the Jacobian matrix of self at points x.
+
+        Parameters
+        ----------
+        x : numpy.ndarray
+            The input points.
+
+        Returns
+        -------
+        out : numpy.ndarray
+            Evaluations of the Jacobian matrix of self.
+            out[k,i,j] is the evaluation of df_i/dx_j at the k-th sample.
+
+        """
+        dnHx_lst = []
+        for ind in range(self.ndim()):
+            n = self.ndim() * [0]
+            n[ind] = 1
+            # add an axis to concatenate
+            dnHx_i = self.eval_derivative(n, x)[:, :, None]
+            dnHx_lst.append(dnHx_i)
+        out = np.concatenate(dnHx_lst, axis=2)
+        return out
+
     def optimal_sampling_measure(self):
         # TODO optimal_sampling_measure
         raise NotImplementedError("Method not implemented.")
@@ -487,7 +513,8 @@ class FunctionalBasis:
         if indices is None:
             hx = self.eval(x)
         else:
-            hx = self.eval(x, indices)
+            hx = self.eval(x)
+            hx = hx[:, indices]
 
         plt.plot(x, hx, *args)
         plt.show()

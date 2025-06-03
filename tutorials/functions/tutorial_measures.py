@@ -68,7 +68,7 @@ G = X.gauss_integration_rule(6)
 
 
 def fun(x):
-    return x ** 2
+    return x**2
 
 
 v = np.sum(fun(G.points) * G.weights)
@@ -87,7 +87,7 @@ Xd.pdf_plot()
 
 
 def fun(x):
-    return x ** 2
+    return x**2
 
 
 G = Xd.integration_rule()

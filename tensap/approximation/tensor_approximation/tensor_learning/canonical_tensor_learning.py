@@ -231,9 +231,9 @@ class CanonicalTensorLearning(tensap.TensorLearning):
                     np.tile(fH_mu[:, ind - 1], (f.tensor.shape[mu - 1], 1))
                 )
                 if self.linear_model_learning[mu - 1].basis_adaptation:
-                    self.linear_model_learning[
-                        mu - 1
-                    ].basis_adaptation_path = self.bases_adaptation_path[mu - 1]
+                    self.linear_model_learning[mu - 1].basis_adaptation_path = (
+                        self.bases_adaptation_path[mu - 1]
+                    )
             else:
                 coef = f.tensor.space[mu - 1]
                 grad = f.parameter_gradient_eval(mu).transpose([0, 2, 1])
@@ -244,9 +244,9 @@ class CanonicalTensorLearning(tensap.TensorLearning):
                         self.bases_adaptation_path[mu - 1], (self.rank, 1)
                     )
                 elif self.rank > 1:
-                    self.linear_model_learning[mu - 1].options[
-                        "non_zero_blocks"
-                    ] = np.empty(self.rank, dtype=object)
+                    self.linear_model_learning[mu - 1].options["non_zero_blocks"] = (
+                        np.empty(self.rank, dtype=object)
+                    )
                     for kk in range(self.rank):
                         shape_mu = f.tensor.shape[mu - 1]
                         self.linear_model_learning[mu - 1].options["non_zero_blocks"][
@@ -270,7 +270,7 @@ class CanonicalTensorLearning(tensap.TensorLearning):
         if mu != self._number_of_parameters:
             if not self.alternating_minimization_parameters["one_by_one_factor"]:
                 coef = np.reshape(coef, [f.tensor.shape[mu - 1], self.rank], order="F")
-                norm_coef = np.sqrt(np.sum(coef ** 2, 0))
+                norm_coef = np.sqrt(np.sum(coef**2, 0))
                 ind = norm_coef != 0
                 if not np.all(ind):
                     print("Degenerate case: one factor is zero.")
