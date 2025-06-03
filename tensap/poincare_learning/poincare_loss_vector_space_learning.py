@@ -6,7 +6,7 @@ import logging
 from tensap.poincare_learning.utils._loss_vector_space import _eval_HG_X, _eval_SGinv_X, _eval_SG_full, _eval_jac_g, poincare_loss_vector_space, poincare_loss_vector_space_gradient, _eval_surrogate_matrices, poincare_loss_surrogate_vector_space
 
 
-def _minimize_active_subspace(jac_u, jac_basis, m=1):
+def _minimize_active_subspace(jac_u, jac_basis=None, m=1):
     """
     Compute the minimizer of the Poincare loss for linear features.
     This corresponds to the active subspace method.
@@ -17,8 +17,9 @@ def _minimize_active_subspace(jac_u, jac_basis, m=1):
         Samples of the jacobian of the function to approximate.
         jac_u[k,i,j] is du_i / dx_j evaluated at the k-th sample.
         Has shape (N, n, d).
-    jac_basis : numpy.ndarray.
+    jac_basis : numpy.ndarray, optional
         Has shape (N, d, d) or (d, d).
+        The defatul is None
     m : int, optional
         Number of singular vectors to take as features. 
         The default is 1.
@@ -29,6 +30,10 @@ def _minimize_active_subspace(jac_u, jac_basis, m=1):
         Coefficients in the basis of feature maps.
         Has shape (d, m).
     """
+
+    # if no basis provided, take identity
+    if jac_basis is None:
+        jac_basis == np.eye(jac_u.shape[-1])
 
     # check that basis only contains linear functions
     if jac_basis.ndim == 3:
