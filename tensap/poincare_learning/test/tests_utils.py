@@ -101,7 +101,7 @@ def test_eval_gradient():
 def test_eval_SGinv():
     _, G1, G2, loss, _, _, resolution = _build_test_case()
     SG1_G2 = loss.eval_SG_X(G1, G2)
-    err = np.linalg.norm(G2 - loss.eval_SGinv_X(G1, SG1_G2, rtol=1e-10))
+    err = np.linalg.norm(G2 - loss.eval_SGinv_X(G1, SG1_G2, None, {'rtol':1e-10}))
     np.testing.assert_allclose(err, 0, atol=resolution)
 
 
