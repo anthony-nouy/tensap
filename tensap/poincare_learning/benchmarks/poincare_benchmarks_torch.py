@@ -21,7 +21,7 @@ def _get_shift_scaling(multivariate_random_variable):
 def _fun_torch_wrapper(fun_torch):
     vfun_torch = torch.vmap(fun_torch)
     vfun_jac_torch = torch.vmap(torch.func.jacrev(fun_torch))
-    
+
     def fun(x):
         return np.array(vfun_torch(torch.asarray(x)))
 
@@ -50,7 +50,7 @@ def _build_borehole():
 
     def fun_torch(x):
         x = x * scaling + shift
-        out =  (
+        out = (
             2
             * torch.pi
             * x[2]
@@ -70,7 +70,7 @@ def _build_borehole():
             )
         )
         return out
-    
+
     return fun_torch, X
 
 
@@ -84,7 +84,7 @@ def _build_ishigami(d=3, a=7, b=0.1):
             + a * torch.sin(x[1]) ** 2
             + b * x[2] ** 4 * torch.sin(x[0])
         )
-    
+
     return fun_torch, X
 
 
@@ -93,7 +93,7 @@ def _build_sin_of_a_sum(d=3, c=None):
     X = tensap.RandomVector(tensap.UniformRandomVariable(), d)
 
     if c is None:
-        c = torch.asarray(np.ones(1,d))
+        c = torch.asarray(np.ones(1, d))
 
     def fun_torch(x):
         return torch.sin(torch.matmul(c, x))
@@ -102,17 +102,17 @@ def _build_sin_of_a_sum(d=3, c=None):
 
 
 def _build_canonical_rank_2(d=3):
-        
-        X = tensap.RandomVector(tensap.UniformRandomVariable(), d)
 
-        def fun_torch(x):
-            return x[0] * x[1] * x[2] + x[0] ** 2 + x[1]
-        
-        return fun_torch, X
+    X = tensap.RandomVector(tensap.UniformRandomVariable(), d)
+
+    def fun_torch(x):
+        return x[0] * x[1] * x[2] + x[0] ** 2 + x[1]
+
+    return fun_torch, X
 
 
 def _build_mixture(d=6):
-    
+
     X = tensap.RandomVector(tensap.UniformRandomVariable(), d)
 
     def fun_torch(x):
@@ -120,7 +120,7 @@ def _build_mixture(d=6):
             torch.sin(x[0] + x[3]) * torch.exp(x[4]) * x[5]
             + torch.sin(x[2] * x[3]) * x[5]
         )
-    
+
     return fun_torch, X
 
 
@@ -137,7 +137,7 @@ def _build_field(d=6):
             + 1 / (x[0] + 1) * x[4]
             + 1 / (2 * x[0] + 3) * x[5]
         )
-    
+
     return fun_torch, X
 
 
@@ -151,7 +151,7 @@ def _build_henon_heiles(d=3):
             + 0.2 * torch.sum(x[:-1] * x[1:] ** 2 - x[:-1] ** 3)
             + 0.2 ** 2 / 16 * torch.sum((x[:-1] ** 2 + x[1:] ** 2) ** 2)
         )
-    
+
     return fun_torch, X
 
 
@@ -165,8 +165,8 @@ def _build_sin_squared_norm(d=8, c=1., R=None):
     X = tensap.RandomVector(tensap.UniformRandomVariable(-1, 1), d)
 
     def fun_torch(x):
-        return torch.sin( c**2 * x.T @ R_torch @ x )
-    
+        return torch.sin(c**2 * x.T @ R_torch @ x)
+
     return fun_torch, X
 
 
@@ -180,8 +180,8 @@ def _build_cos_squared_norm(d=8, c=1., R=None):
     X = tensap.RandomVector(tensap.UniformRandomVariable(-1, 1), d)
 
     def fun_torch(x):
-        return torch.cos( c**2 * (x.T @ R_torch @ x ))
-    
+        return torch.cos(c**2 * (x.T @ R_torch @ x))
+
     return fun_torch, X
 
 
@@ -198,10 +198,10 @@ def _build_sum_cos_sin_squared_norm(d=8, c=1., R1=None, R2=None):
     X = tensap.RandomVector(tensap.UniformRandomVariable(-1, 1), d)
 
     def fun_torch(x):
-        u1 = torch.cos( c**2 * (x.T @ R1_torch @ x ))
-        u2 = torch.sin( c**2 * (x.T @ R2_torch @ x ))
-        return  u1 + u2
-    
+        u1 = torch.cos(c**2 * (x.T @ R1_torch @ x))
+        u2 = torch.sin(c**2 * (x.T @ R2_torch @ x))
+        return u1 + u2
+
     return fun_torch, X
 
 
@@ -213,12 +213,12 @@ def _build_exp_mean_sin_exp_cos(d=8, c=1.):
         y = torch.cos(c * x)
         z = torch.sin(c * x) * torch.exp(y)
         return torch.exp(torch.mean(z))
-    
+
     return fun_torch, X
 
 
 def _build_cos_low_rank(d=8):
-    
+
     X = tensap.RandomVector(tensap.UniformRandomVariable(-1, 1), d)
 
     def fun_torch(x):
@@ -237,8 +237,8 @@ def build_benchmark_torch(case, **kwargs):
     Parameters
     ----------
     case : str
-        The name of the function. Can be 'borehole', 'ishigami, 
-        'sin_of_asum', 'sin_squared_norm', 'canonical_rank_2', 'mixture', 'field', 
+        The name of the function. Can be 'borehole', 'ishigami,
+        'sin_of_asum', 'sin_squared_norm', 'canonical_rank_2', 'mixture', 'field'
         'henon_heiles'.
     **kwargs
         Parameters of the function.
@@ -260,7 +260,6 @@ def build_benchmark_torch(case, **kwargs):
     """
 
     torch.set_default_device('cpu')
-
 
     if case == "borehole":
         fun_torch, X = _build_borehole(**kwargs)
@@ -294,7 +293,7 @@ def build_benchmark_torch(case, **kwargs):
 
     elif case == "exp_mean_sin_exp_cos":
         fun_torch, X = _build_exp_mean_sin_exp_cos(**kwargs)
-        
+
     elif case == "cos_low_rank":
         fun_torch, X = _build_cos_low_rank(**kwargs)
 
