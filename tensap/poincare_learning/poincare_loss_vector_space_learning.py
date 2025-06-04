@@ -158,7 +158,7 @@ def _iteration_qn(jac_u, jac_basis, G, R=None, precond_method='sigma', precond_k
     if precond_method is None:
         dG = b.reshape(G.shape, order='F')
 
-    if precond_method[:3] != "cg_":
+    elif precond_method[:3] != "cg_":
         if precond_method == "sigma":
             P = _eval_SG_full(G, jac_u, jac_basis)
 
@@ -166,7 +166,7 @@ def _iteration_qn(jac_u, jac_basis, G, R=None, precond_method='sigma', precond_k
             P = _eval_HessG_full(G, jac_u, jac_basis)
             (G, jac_u, jac_basis)
 
-        dG, _, _, _ = np.linalg.lstsq(P, G.reshape(-1, order='F'))
+        dG, _, _, _ = np.linalg.lstsq(P, b.reshape(-1, order='F'))
 
     elif precond_method == "cg_sigma":
         dG = _eval_SGinv_X(Gmat, b, jac_u, jac_basis, jac_g, cg_kwargs=precond_kwargs)
@@ -174,7 +174,7 @@ def _iteration_qn(jac_u, jac_basis, G, R=None, precond_method='sigma', precond_k
     else:
         Warning("Precond method not implemented", precond_method)
 
-    Gaux = Gmat - dG.reshape(K, -1, order='F')
+    Gaux = Gmat + dG.reshape(K, -1, order='F')
     M = Gaux.T @ R @ Gaux
     Gnext = Gaux @ np.linalg.inv(np.linalg.cholesky(M).T)
     Gnext = Gnext.reshape(G.shape)
