@@ -57,7 +57,7 @@ def fit_poly_regressor(z_set, u_set):
     model = Pipeline([
         ('poly', PolynomialFeatures()),
         ('linear', LinearRegression(fit_intercept=False))
-        ])
+    ])
 
     param_grid = {
         'poly__degree': [1, 2, 3, 4, 5, 6]
@@ -196,10 +196,10 @@ try:
         'beta_rule': 'PolakRibiere',
         'max_iterations': 50,
         'verbosity': 2,
-        }
+    }
     G_opt, _, _ = loss_train.minimize_pymanopt(
         G_surr, use_precond=True, optimizer_kwargs=optimizer_kwargs
-        )
+    )
 
 # quasi newton
 except ImportError:

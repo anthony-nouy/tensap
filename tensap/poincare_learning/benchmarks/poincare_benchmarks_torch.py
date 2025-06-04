@@ -222,8 +222,8 @@ def _build_cos_low_rank(d=8):
     X = tensap.RandomVector(tensap.UniformRandomVariable(-1, 1), d)
 
     def fun_torch(x):
-        z1 = torch.flatten(torch.outer(x[:d//2], x[:d//4]))
-        z2 = torch.flatten(torch.outer(x[-d//2:], x[-d//4:]))
+        z1 = torch.flatten(torch.outer(x[:d // 2], x[:d // 4]))
+        z2 = torch.flatten(torch.outer(x[-d // 2:], x[-d // 4:]))
         z = z1.T @ z2
         return torch.cos(z)
 

@@ -235,7 +235,7 @@ def _minimize_qn_(jac_u, jac_basis, G0, R=None, maxiter=100, tol=1e-5, precond_m
     delta = np.inf
     logging.info("Optimizing Poincare loss with QN and precond method " + str(precond_method))
     while i < maxiter and delta >= tol:
-        i = i+1
+        i = i + 1
         G_next = _iteration_qn(jac_u, jac_basis, G_now, R, precond_method, precond_kwargs)
         # delta = np.linalg.norm(Gnext - Gnow)
         delta = 1 - np.linalg.svd(G_next.T @ R @ G_now)[1].min()
@@ -492,10 +492,12 @@ def _build_pymanopt_problem(jac_u, jac_basis, m, use_precond=False, optimizer_kw
     manifold = pymanopt.manifolds.grassmann.Grassmann(K, m)
 
     @pymanopt.function.numpy(manifold)
-    def cost(G): return poincare_loss_vector_space(G, jac_u, jac_basis)
+    def cost(G): 
+        return poincare_loss_vector_space(G, jac_u, jac_basis)
 
     @pymanopt.function.numpy(manifold)
-    def euclidean_gradient(G): return poincare_loss_vector_space_gradient(G, jac_u, jac_basis)
+    def euclidean_gradient(G): 
+        return poincare_loss_vector_space_gradient(G, jac_u, jac_basis)
 
     if use_precond:
         if K * m <= 2000:  # TODO: parse as argument
@@ -504,7 +506,8 @@ def _build_pymanopt_problem(jac_u, jac_basis, m, use_precond=False, optimizer_kw
                 out, _, _, _ = np.linalg.lstsq(S, x.reshape(-1, order='F'))
                 return out.reshape((K, m), order='F')
         else:
-            def precond(G, x): return _eval_SGinv_X(G, x, jac_u, jac_basis, None, precond_kwargs)
+            def precond(G, x): 
+                return _eval_SGinv_X(G, x, jac_u, jac_basis, None, precond_kwargs)
 
     else:
         precond = None
@@ -655,9 +658,9 @@ def _minimize_surrogate_greedy(jac_u, jac_basis, m_max, R=None, optimize_poincar
 
     j = 1
 
-    while j < m_max and losses_optimized[j-1] > tol:
+    while j < m_max and losses_optimized[j - 1] > tol:
 
-        logging.info(f"Greedy iteration {j+1}")
+        logging.info(f"Greedy iteration {j + 1}")
 
         # Learn the j-th feature from surrogate and previous features
         G, losses[j], surrogates[j] = _minimize_surrogate(jac_u, jac_basis, G, R)

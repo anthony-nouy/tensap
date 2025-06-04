@@ -269,7 +269,7 @@ def _eval_SG_diag(G, jac_u, jac_basis, jac_g=None):
         jac_g = _eval_jac_g(G, jac_basis)
     K = jac_basis.shape[1]
     N, m, d = jac_g.shape
-    diag = np.zeros(K*m)
+    diag = np.zeros(K * m)
     for jb, ju, jg in zip(jac_basis, jac_u, jac_g):
         jgju = jg @ ju.T
         GBG = jg @ jg.T
@@ -355,7 +355,7 @@ def _eval_SG_full(G, jac_u, jac_basis, jac_g=None):
         jac_g = _eval_jac_g(G, jac_basis)
     K = jac_basis.shape[1]
     N, m, d = jac_g.shape
-    S = np.zeros((K*m, K*m))
+    S = np.zeros((K * m, K * m))
     for ju, jb, jg in zip(jac_u, jac_basis, jac_g):
         B = jb @ jb.T
         jgju = jg @ ju.T
@@ -397,8 +397,8 @@ def _eval_SG_HG_full(G, jac_u, jac_basis, jac_g=None):
         jac_g = _eval_jac_g(G, jac_basis)
     K = jac_basis.shape[1]
     N, m, d = jac_g.shape
-    S = np.zeros((K*m, K*m))
-    H = np.zeros((K*m, K*m))
+    S = np.zeros((K * m, K * m))
+    H = np.zeros((K * m, K * m))
     for ju, jb, jg in zip(jac_u, jac_basis, jac_g):
         jbju = jb @ ju.T
         A = jbju @ jbju.T
@@ -536,9 +536,9 @@ def _eval_HessG_full(G, jac_u, jac_basis, jac_g=None):
         jac_g = _eval_jac_g(G, jac_basis)
     K = jac_basis.shape[1]
     N, m, d = jac_g.shape
-    hess = np.zeros((K*m, K*m))
-    for i in range(K*m):
-        X = np.zeros(K*m)
+    hess = np.zeros((K * m, K * m))
+    for i in range(K * m):
+        X = np.zeros(K * m)
         X[i] = 1
         hess[i, :] = _eval_HessG_X(G, X, jac_u, jac_basis, jac_g)
     return hess

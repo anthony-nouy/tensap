@@ -122,8 +122,8 @@ def test_hessian():
     H0 = loss.eval_HessG_full(G0)
     w0 = np.linalg.eigvals(H0)
 
-    err_sym = np.linalg.norm(H0-H0.T) / np.linalg.norm(H0)
-    err_sym += np.linalg.norm(H1-H1.T) / np.linalg.norm(H1)
+    err_sym = np.linalg.norm(H0 - H0.T) / np.linalg.norm(H0)
+    err_sym += np.linalg.norm(H1 - H1.T) / np.linalg.norm(H1)
     err_spd = w0 / np.linalg.norm(H0)
 
     np.testing.assert_allclose(hl11_2 + hl12_2, hl1_2)
