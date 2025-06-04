@@ -1,7 +1,12 @@
 
 
-from tensap.poincare_learning.utils._loss_vector_space import poincare_loss_vector_space, poincare_loss_vector_space_gradient, _eval_SG_X, _eval_HG_X, _eval_SG_diag, _eval_SGinv_X, _eval_SG_full, _eval_SG_HG_full, _eval_HessG_X, _eval_HessG_diag, _eval_HessG_full, poincare_loss_surrogate_vector_space, _eval_surrogate_matrices
-from tensap.poincare_learning.poincare_loss_vector_space_learning import _minimize_active_subspace, _minimize_qn, _minimize_pymanopt, _minimize_surrogate, _minimize_surrogate_greedy
+from tensap.poincare_learning.utils._loss_vector_space import poincare_loss_vector_space, \
+    poincare_loss_vector_space_gradient, _eval_SG_X, _eval_HG_X, _eval_SG_diag, _eval_SGinv_X, \
+    _eval_SG_full, _eval_SG_HG_full, _eval_HessG_X, _eval_HessG_diag, _eval_HessG_full, \
+    poincare_loss_surrogate_vector_space, _eval_surrogate_matrices
+from tensap.poincare_learning.poincare_loss_vector_space_learning import \
+    _minimize_active_subspace, _minimize_qn, _minimize_pymanopt, _minimize_surrogate, \
+    _minimize_surrogate_greedy
 
 
 class PoincareLossVectorSpace:
@@ -33,7 +38,7 @@ class PoincareLossVectorSpace:
     """
 
     def __init__(self, jac_u, jac_basis, basis=None, R=None):
-        assert jac_u.ndim >1
+        assert jac_u.ndim > 1
         assert jac_u.shape[0] == jac_basis.shape[0]
         assert jac_u.shape[-1] == jac_basis.shape[-1]
 
@@ -59,10 +64,10 @@ class PoincareLossVectorSpace:
 
     def eval_SG_diag(self, G, jac_g=None):
         return _eval_SG_diag(G, self.jac_u, self.jac_basis, jac_g)
-    
+
     def eval_SG_full(self, G, jac_g=None):
         return _eval_SG_full(G, self.jac_u, self.jac_basis, jac_g)
-        
+
     def eval_SG_HG_full(self, G, jac_g=None):
         return _eval_SG_HG_full(G, self.jac_u, self.jac_basis, jac_g)
 
@@ -79,23 +84,29 @@ class PoincareLossVectorSpace:
         return _eval_SGinv_X(G, X, self.jac_u, self.jac_basis, jac_g, cg_kwargs)
 
     def eval_surrogate(self, G, jac_g=None, G0=None, jac_g0=None):
-        return poincare_loss_surrogate_vector_space(G, self.jac_u, self.jac_basis, G0, jac_g, jac_g0)
-    
+        return poincare_loss_surrogate_vector_space(
+            G, self.jac_u, self.jac_basis, G0, jac_g, jac_g0)
+
     def eval_surrogate_matrices(self, G0=None):
         return _eval_surrogate_matrices(self.jac_u, self.jac_basis, G0, self.R)
-    
+
     def minimize_active_subspace(self, m=1):
         return _minimize_active_subspace(self.jac_u, self.jac_basis, m)
 
-    def minimize_qn(self, G0=None, m=None, n_try=1, init_method="active_subspace", maxiter=100, tol=1e-5, precond_method='sigma', precond_kwargs={}, seed=None):
-        return _minimize_qn(self.jac_u, self.jac_basis, G0, m, n_try, init_method, self.R, maxiter, tol, precond_method, precond_kwargs, seed)
-    
-    def minimize_pymanopt(self, G0=None, m=None, init_method='random_linear', n_try=1, use_precond=True, precond_kwargs={}, optimizer_kwargs={}, ls_kwargs={}, seed=None):
-        return _minimize_pymanopt(self.jac_u, self.jac_basis, G0, m, init_method, n_try, self.R, use_precond, precond_kwargs, optimizer_kwargs, ls_kwargs, seed)
+    def minimize_qn(self, G0=None, m=None, n_try=1, init_method="active_subspace", maxiter=100,
+                    tol=1e-5, precond_method='sigma', precond_kwargs={}, seed=None):
+        return _minimize_qn(self.jac_u, self.jac_basis, G0, m, n_try, init_method, self.R, maxiter,
+                            tol, precond_method, precond_kwargs, seed)
+
+    def minimize_pymanopt(self, G0=None, m=None, init_method='random_linear', n_try=1,
+                          use_precond=True, precond_kwargs={}, optimizer_kwargs={},
+                          ls_kwargs={}, seed=None):
+        return _minimize_pymanopt(self.jac_u, self.jac_basis, G0, m, init_method, n_try, self.R,
+                                  use_precond, precond_kwargs, optimizer_kwargs, ls_kwargs, seed)
 
     def minimize_surrogate(self, G0=None, m=1):
         return _minimize_surrogate(self.jac_u, self.jac_basis, G0, self.R, m)
-    
-    def minimize_surrogate_greedy(self, m_max, optimize_poincare=False, tol=1e-7, pmo_kwargs={}):
-        return _minimize_surrogate_greedy(self.jac_u, self.jac_basis, m_max, self.R, optimize_poincare, tol, pmo_kwargs)
 
+    def minimize_surrogate_greedy(self, m_max, optimize_poincare=False, tol=1e-7, pmo_kwargs={}):
+        return _minimize_surrogate_greedy(
+            self.jac_u, self.jac_basis, m_max, self.R, optimize_poincare, tol, pmo_kwargs)

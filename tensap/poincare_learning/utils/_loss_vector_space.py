@@ -5,7 +5,8 @@ import scipy
 from tensap.poincare_learning.utils._loss import poincare_loss, poincare_loss_surrogate
 from tensap.approximation.bases.functional_bases import FunctionalBases
 from tensap.approximation.bases.polynomial_functional_basis import PolynomialFunctionalBasis
-from tensap.approximation.bases.sparse_tensor_product_functional_basis import SparseTensorProductFunctionalBasis
+from tensap.approximation.bases.sparse_tensor_product_functional_basis import \
+    SparseTensorProductFunctionalBasis
 from tensap.tools.multi_indices import MultiIndices
 
 
@@ -90,8 +91,10 @@ def poincare_loss_vector_space(G, jac_u, jac_basis, jac_g=None):
         jac_basis[k,i,j] is dbasis_i / dx_j evaluated at the k-th sample.
         Has shape (N, K, d).
     jac_g : numpy.ndarray, optional
-        Samples of the jacobian of the feature map, whose quality is assessed by the Poincare based loss.
-        jac_g[k,i,j] is dg_i / dx_j evaluated at the k-th sample. If not provided, it is computed from G and jac_basis.
+        Samples of the jacobian of the feature map,
+        whose quality is assessed by the Poincare based loss.
+        jac_g[k,i,j] is dg_i / dx_j evaluated at the k-th sample. If not provided,
+        it is computed from G and jac_basis.
         Has shape (N, m, d).
 
     Returns
@@ -107,7 +110,7 @@ def poincare_loss_vector_space(G, jac_u, jac_basis, jac_g=None):
 
 def poincare_loss_vector_space_gradient(G, jac_u, jac_basis, jac_g=None):
     """
-    Compute the gradient of the Poincare-based loss at the feature map 
+    Compute the gradient of the Poincare-based loss at the feature map
     of G.T @ basis with respect to G.
     The formula used is a bit different from Bigoni et al. 2022
 
@@ -121,7 +124,7 @@ def poincare_loss_vector_space_gradient(G, jac_u, jac_basis, jac_g=None):
         Has shape (N, K, d)
     jac_g : numpy.ndarray, optional
         Samples of the jacobian of the feature map.
-        jac_g[k,i,j] is dg_i / dx_j evaluated at the k-th sample. 
+        jac_g[k,i,j] is dg_i / dx_j evaluated at the k-th sample.
         If not provided, it is computed from G and jac_basis.
         Has shape (N, m, d).
 
@@ -150,8 +153,8 @@ def poincare_loss_vector_space_gradient(G, jac_u, jac_basis, jac_g=None):
 
 def _eval_SG_X(G, X, jac_u, jac_basis, jac_g=None):
     """
-    Compute the matrix-vector multiplication Sigma(G)X as described in 
-    Bigoni et al. 2022, where X is a column-major vectorized matrix of 
+    Compute the matrix-vector multiplication Sigma(G)X as described in
+    Bigoni et al. 2022, where X is a column-major vectorized matrix of
     same size as G. In other words, it computes Sigma(G) @ X.flatten('F').
 
     Parameters
@@ -166,7 +169,7 @@ def _eval_SG_X(G, X, jac_u, jac_basis, jac_g=None):
         Has shape (N, K, d)
     jac_g : numpy.ndarray, optional
         Samples of the jacobian of the feature map.
-        jac_g[k,i,j] is dg_i / dx_j evaluated at the k-th sample. 
+        jac_g[k,i,j] is dg_i / dx_j evaluated at the k-th sample.
         If not provided, it is computed from G and jac_basis.
         Has shape (N, m, d).
 
@@ -194,7 +197,7 @@ def _eval_SG_X(G, X, jac_u, jac_basis, jac_g=None):
 
 def _eval_HG_X(G, X, jac_u, jac_basis, jac_g=None):
     """
-    Compute the matrix-vector multiplication H(G)X as described in 
+    Compute the matrix-vector multiplication H(G)X as described in
     Bigoni et al. 2022, where
     X is a column-major vectorized matrix of same size as G.
     In other words, it computes H(G) @ X.flatten('F').
@@ -211,7 +214,7 @@ def _eval_HG_X(G, X, jac_u, jac_basis, jac_g=None):
         Has shape (N, K, d).
     jac_g : numpy.ndarray, optional
         Samples of the jacobian of the feature map.
-        jac_g[k,i,j] is dg_i / dx_j evaluated at the k-th sample. 
+        jac_g[k,i,j] is dg_i / dx_j evaluated at the k-th sample.
         If not provided, it is computed from G and jac_basis.
         Has shape (N, m, d).
 
@@ -239,7 +242,7 @@ def _eval_HG_X(G, X, jac_u, jac_basis, jac_g=None):
 def _eval_SG_diag(G, jac_u, jac_basis, jac_g=None):
     """
     Compute the diagnoal of the matrix Sigma(G) from Bigoni et al. 2022.
-    It is used for preconditioning the conjugate gradient used to apply 
+    It is used for preconditioning the conjugate gradient used to apply
     the inverse of Sigma(G).
 
     Parameters
@@ -252,7 +255,7 @@ def _eval_SG_diag(G, jac_u, jac_basis, jac_g=None):
         Has shape (N, K, d).
     jac_g : numpy.ndarray, optional
         Samples of the jacobian of the feature map.
-        jac_g[k,i,j] is dg_i / dx_j evaluated at the k-th sample. 
+        jac_g[k,i,j] is dg_i / dx_j evaluated at the k-th sample.
         If not provided, it is computed from G and jac_basis.
         Has shape (N, m, d).
 
@@ -281,7 +284,7 @@ def _eval_SG_diag(G, jac_u, jac_basis, jac_g=None):
 
 def _eval_SGinv_X(G, X, jac_u, jac_basis, jac_g=None, cg_kwargs={}):
     """
-    Apply the inverse of the matrix Sigma(G) from Bigoni et al. 2022 
+    Apply the inverse of the matrix Sigma(G) from Bigoni et al. 2022
     to a vector X.
     The conjugate gradient method is used with Jacobi preconditioning.
 
@@ -297,7 +300,7 @@ def _eval_SGinv_X(G, X, jac_u, jac_basis, jac_g=None, cg_kwargs={}):
         Has shape (N, K, d).
     jac_g : numpy.ndarray, optional
         Samples of the jacobian of the feature map.
-        jac_g[k,i,j] is dg_i / dx_j evaluated at the k-th sample. 
+        jac_g[k,i,j] is dg_i / dx_j evaluated at the k-th sample.
         If not provided, it is computed from G and jac_basis.
         Has shape (N, m, d).
     cg_kwargs : dict
@@ -311,9 +314,11 @@ def _eval_SGinv_X(G, X, jac_u, jac_basis, jac_g=None, cg_kwargs={}):
     """
     N, K, d = jac_basis.shape
     Km = np.prod(G.shape)
-    m = Km // K
     Xvec = X.reshape(Km, order='F')
-    matvec = lambda Y: _eval_SG_X(G, Y, jac_u, jac_basis, jac_g)
+
+    def matvec(Y):
+        return _eval_SG_X(G, Y, jac_u, jac_basis, jac_g)
+
     sigma = scipy.sparse.linalg.LinearOperator((Km, Km), matvec=matvec)
     diag = _eval_SG_diag(G, jac_u, jac_basis)
     M = scipy.sparse.diags(1 / diag)
@@ -336,7 +341,7 @@ def _eval_SG_full(G, jac_u, jac_basis, jac_g=None):
         Has shape (N, K, d).
     jac_g : numpy.ndarray, optional
         Samples of the jacobian of the feature map.
-        jac_g[k,i,j] is dg_i / dx_j evaluated at the k-th sample. 
+        jac_g[k,i,j] is dg_i / dx_j evaluated at the k-th sample.
         If not provided, it is computed from G and jac_basis.
         Has shape (N, m, d).
 
@@ -352,8 +357,6 @@ def _eval_SG_full(G, jac_u, jac_basis, jac_g=None):
     N, m, d = jac_g.shape
     S = np.zeros((K*m, K*m))
     for ju, jb, jg in zip(jac_u, jac_basis, jac_g):
-        jbju = jb @ ju.T
-        A = jbju @ jbju.T
         B = jb @ jb.T
         jgju = jg @ ju.T
         GBG = jg @ jg.T
@@ -378,7 +381,7 @@ def _eval_SG_HG_full(G, jac_u, jac_basis, jac_g=None):
         Has shape (N, K, d).
     jac_g : numpy.ndarray, optional
         Samples of the jacobian of the feature map.
-        jac_g[k,i,j] is dg_i / dx_j evaluated at the k-th sample. 
+        jac_g[k,i,j] is dg_i / dx_j evaluated at the k-th sample.
         If not provided, it is computed from G and jac_basis.
         Has shape (N, m, d).
 
@@ -427,7 +430,7 @@ def _eval_HessG_X(G, X, jac_u, jac_basis, jac_g=None):
         Has shape (N, K, d).
     jac_g : numpy.ndarray, optional
         Samples of the jacobian of the feature map.
-        jac_g[k,i,j] is dg_i / dx_j evaluated at the k-th sample. 
+        jac_g[k,i,j] is dg_i / dx_j evaluated at the k-th sample.
         If not provided, it is computed from G and jac_basis.
         Has shape (N, m, d).
 
@@ -462,7 +465,7 @@ def _eval_HessG_X(G, X, jac_u, jac_basis, jac_g=None):
 def _eval_HessG_diag(G, jac_u, jac_basis, jac_g=None):
     """
     Compute the diagonal of the matrix Hess(G).
-    It is used for preconditioning the conjugate gradient used to 
+    It is used for preconditioning the conjugate gradient used to
     apply the inverse of Hess(G).
 
     Parameters
@@ -475,7 +478,7 @@ def _eval_HessG_diag(G, jac_u, jac_basis, jac_g=None):
         Has shape (N, K, d).
     jac_g : numpy.ndarray, optional
         Samples of the jacobian of the feature map.
-        jac_g[k,i,j] is dg_i / dx_j evaluated at the k-th sample. 
+        jac_g[k,i,j] is dg_i / dx_j evaluated at the k-th sample.
         If not provided, it is computed from G and jac_basis.
         Has shape (N, m, d).
 
@@ -494,10 +497,11 @@ def _eval_HessG_diag(G, jac_u, jac_basis, jac_g=None):
         grad_u = ju.T
         jg_inv = scipy.linalg.pinv(jg)
         p = np.eye(jb.shape[1]) - jg_inv @ jg
-        diag_mat += (jb @ p @ grad_u @ grad_u.T @ jg_inv) * (jb @ jg_inv)
-        diag_mat -= (jb @ p @ grad_u) ** 2 @ np.ones((ju.shape[0], 1)) @ np.diag(jg_inv.T @ jg_inv).reshape(1, -1)
-        diag_mat += (jb @ jg_inv) * (jb @ p @ grad_u @ grad_u.T @ jg_inv)
-        diag_mat += (jb @ p) ** 2 @ np.ones((d, 1)) @ np.diag(jg_inv.T @ grad_u @ grad_u.T @ jg_inv).reshape(1, -1)
+        d1 = (jb @ p @ grad_u @ grad_u.T @ jg_inv) * (jb @ jg_inv)
+        d2 = (jb @ p @ grad_u)**2 @ np.ones((ju.shape[0], 1)) @ np.diag(jg_inv.T @ jg_inv)
+        d3 = (jb @ jg_inv) * (jb @ p @ grad_u @ grad_u.T @ jg_inv)
+        d4 = (jb @ p)**2 @ np.ones((d, 1)) @ np.diag(jg_inv.T @ grad_u @ grad_u.T @ jg_inv)
+        diag_mat += d1 - d2.reshape(1, -1) + d3 + d4.reshape(1, -1)
     diag_mat = 2 * diag_mat / N
     diag = diag_mat.flatten(order="F")
     return diag
@@ -518,7 +522,7 @@ def _eval_HessG_full(G, jac_u, jac_basis, jac_g=None):
         Has shape (N, K, d).
     jac_g : numpy.ndarray, optional
         Samples of the jacobian of the feature map.
-        jac_g[k,i,j] is dg_i / dx_j evaluated at the k-th sample. 
+        jac_g[k,i,j] is dg_i / dx_j evaluated at the k-th sample.
         If not provided, it is computed from G and jac_basis.
         Has shape (N, m, d).
 
@@ -536,15 +540,15 @@ def _eval_HessG_full(G, jac_u, jac_basis, jac_g=None):
     for i in range(K*m):
         X = np.zeros(K*m)
         X[i] = 1
-        hess[i,:] = _eval_HessG_X(G, X, jac_u, jac_basis, jac_g)
+        hess[i, :] = _eval_HessG_X(G, X, jac_u, jac_basis, jac_g)
     return hess
 
 
 def poincare_loss_surrogate_vector_space(G, jac_u, jac_basis, G0=None, jac_g=None, jac_g0=None):
     """
 
-    Evaluate the covex surrogate to the Poincare based loss for a feature map from a vector space of nonlinear feature maps, 
-    from samples. The feature map writes G.T @ basis. 
+    Evaluate the covex surrogate to the Poincare based loss for a feature map from a vector space
+    of nonlinear feature maps, from samples. The feature map writes G.T @ basis.
     For more details see Nouy and Pasco 2025.
 
     Parameters
@@ -565,11 +569,12 @@ def poincare_loss_surrogate_vector_space(G, jac_u, jac_basis, G0=None, jac_g=Non
         Has shape (K, m) or (K*m, ).
     jac_g0 : numpy.ndarray, optional
         Samples of the jacobian of the fixed feature maps.
-        jac_g[k,i,j] is dg_i / dx_j evaluated at the k-th sample. If not provided, it is computed from G0 and jac_basis.
+        jac_g[k,i,j] is dg_i / dx_j evaluated at the k-th sample. If not provided, it is computed
+        from G0 and jac_basis.
         Has shape (N, m, d).
     jac_g : numpy.ndarray, optional
         Samples of the jacobian of the feature map.
-        jac_g[k,i,j] is dg_i / dx_j evaluated at the k-th sample. 
+        jac_g[k,i,j] is dg_i / dx_j evaluated at the k-th sample.
         If not provided, it is computed from G and jac_basis.
         Has shape (N, m, d).
 
@@ -581,7 +586,7 @@ def poincare_loss_surrogate_vector_space(G, jac_u, jac_basis, G0=None, jac_g=Non
     """
     if jac_g is None:
         jac_g = _eval_jac_g(G, jac_basis)
-    if jac_g0 is None and not(G0 is None):
+    if jac_g0 is None and not (G0 is None):
         jac_g0 = _eval_jac_g(G0, jac_basis)
     out = poincare_loss_surrogate(jac_u, jac_g, jac_g0)
     return out
@@ -592,8 +597,10 @@ def _eval_surrogate_matrices(jac_u, jac_basis, G0=None, R=None):
     Build the matrices for to the convex surrogate to Poincare loss.
     Handles both the one feature and the multiple features cases where
     G0 is the coefficients matrix of the fixed features.
-    Three matrices computed A, B and C are such that H = B-A with H 
-    from Nouy and Pasco 2025, and such that the largest generalized eigen value of B-A+C with respect to R has G0 as eigen vectors, while its smallest eigen value is the same as H with same eigen vector.
+    Three matrices computed A, B and C are such that H = B-A with H
+    from Nouy and Pasco 2025, and such that the largest generalized eigen value of B-A+C
+    with respect to R has G0 as eigen vectors, while its smallest eigen value is the same
+    as H with same eigen vector.
 
     Parameters
     ----------
@@ -604,7 +611,7 @@ def _eval_surrogate_matrices(jac_u, jac_basis, G0=None, R=None):
     G0 : numpy.ndarray, optional
         The coefficients of the fixed j features maps.
         If None, it corresponds to the one feature setting.
-        Has shap (K, j). 
+        Has shap (K, j).
         The default is None.
     R : numpy.ndarray, optional
         The inner product matrix with respect to which G0 is orthonormal.
@@ -612,7 +619,7 @@ def _eval_surrogate_matrices(jac_u, jac_basis, G0=None, R=None):
 
     Returns
     -------
-    A : numpy.ndarray 
+    A : numpy.ndarray
         Has shape (K, K).
 
     B : numpy.ndarray
@@ -633,15 +640,14 @@ def _eval_surrogate_matrices(jac_u, jac_basis, G0=None, R=None):
 
     for jb, ju in zip(jac_basis, jac_u):
 
-        if not(G0 is None):
+        if not (G0 is None):
             jg0 = G0.T @ jb
             P_g0 = jg0.T @ scipy.linalg.pinv(jg0.T)
 
         P_g0_perp = np.eye(d) - P_g0
         v0, s0, _ = np.linalg.svd(P_g0_perp @ ju.T, full_matrices=False)
-        v0 = v0[:,s0>1e-12]
+        v0 = v0[:, s0 > 1e-12]
         v1 = jb @ v0
-        v2 = jb @ P_g0
         Ax = v1 @ v1.T
         Bx = jb @ P_g0_perp @ jb.T
 
@@ -649,7 +655,7 @@ def _eval_surrogate_matrices(jac_u, jac_basis, G0=None, R=None):
         A += w * Ax / jac_u.shape[0]
         B += w * Bx / jac_u.shape[0]
 
-    if not(G0 is None):
+    if not (G0 is None):
         R12inv = np.linalg.inv(np.linalg.cholesky(R))
         Minv = np.linalg.inv(G0.T @ R @ G0)
         C = R @ G0 @ Minv @ G0.T @ R

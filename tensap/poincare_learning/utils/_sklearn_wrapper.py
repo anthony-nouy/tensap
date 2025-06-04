@@ -1,7 +1,7 @@
 
 
 import numpy as np
-from sklearn.base import RegressorMixin, BaseEstimator
+from sklearn.base import BaseEstimator
 from tensap.poincare_learning.utils._loss_vector_space import _build_ortho_poly_basis
 from tensap.poincare_learning.poincare_loss_vector_space import PoincareLossVectorSpace
 from tensap.approximation.bases.sub_functional_basis import SubFunctionalBasis
@@ -20,7 +20,7 @@ class PolynomialFeatureEstimator(BaseEstimator):
     Attributes
     ----------
     random_vector : RandomVector
-        Instance of RandomVector with respect to which the polynomial basis 
+        Instance of RandomVector with respect to which the polynomial basis
     p_norm : float
         The p-norm used for the degrees, either a positive real scalar or numpy.inf.
     max_p_norm : float
@@ -35,16 +35,17 @@ class PolynomialFeatureEstimator(BaseEstimator):
         Can be one of 'pymanopt', 'qn', 'surrogate' or 'surrogate_greedy'.
         The default is 'pymanopt'.
     fit_parameters : dict, optional
-        Parameters fot the learning of the feature map, parsed into the learning method 
+        Parameters fot the learning of the feature map, parsed into the learning method
         determined by fit_method.
         The default is {}.
 
     """
 
-    def __init__(self, random_vector, p_norm, max_p_norm, innerp, fit_method='pymanopt', fit_parameters={}):
-        
+    def __init__(self, random_vector, p_norm, max_p_norm, innerp, fit_method='pymanopt',
+                 fit_parameters={}):
+
         self.random_vector = random_vector
-        self.p_norm = p_norm  
+        self.p_norm = p_norm
         self.max_p_norm = max_p_norm
         self.innerp = innerp
         self.fit_method = fit_method
@@ -52,7 +53,6 @@ class PolynomialFeatureEstimator(BaseEstimator):
 
         self.__build_basis()
         self.optim_history = {}
-
 
     def __build_basis(self):
 
@@ -67,11 +67,10 @@ class PolynomialFeatureEstimator(BaseEstimator):
         elif self.innerp == "h1_0":
             R = self.basis.gram_matrix_h1_0()
         else:
-            logging.warning("Warning : orthogonality condition for G not valid, identity matrix is taken by default.")
+            logging.warning("Orthogonality condition for G not valid, using identity.")
             R = None
-        
-        self.R = R
 
+        self.R = R
 
     def fit(self, X, jac_u):
         """
@@ -86,7 +85,6 @@ class PolynomialFeatureEstimator(BaseEstimator):
             Evaluations of jac_u at sample points.
             jac_u[k,i,j] is du_i / dx_j evaluated at the k-th sample.
             Has shape (N, n, d).
-    
         Returns
         -------
         self : PoincareEstimator
@@ -98,11 +96,12 @@ class PolynomialFeatureEstimator(BaseEstimator):
         # Learning the feature map by minizming Poincare loss with pymanopt
         ploss = PoincareLossVectorSpace(
             jac_u, self.basis.eval_jacobian(X), self.basis, self.R)
-        
+
         if self.fit_method == 'pymanopt':
-            
+
             # Non preconditionned search on maybe multiple init
-            G, losses, optim_results = ploss.minimize_pymanopt(use_precond=True, **self.fit_parameters)
+            G, losses, optim_results = ploss.minimize_pymanopt(
+                use_precond=True, **self.fit_parameters)
 
             # if several initial points
             if G.ndim == 3:
@@ -130,8 +129,7 @@ class PolynomialFeatureEstimator(BaseEstimator):
         self.g = SubFunctionalBasis(self.basis, G)
 
         return self
-    
-    
+
     def score(self, X, jac_u):
         """
         Compute the negative Poincare loss from samples.
@@ -145,7 +143,7 @@ class PolynomialFeatureEstimator(BaseEstimator):
             Evaluations of jac_u at sample points.
             jac_u[k,i,j] is du_i / dx_j evaluated at the k-th sample.
             Has shape (N, n, d).
-    
+
         Returns
         -------
         out : float
@@ -159,4 +157,3 @@ class PolynomialFeatureEstimator(BaseEstimator):
         out = - ploss.eval(self.G)
 
         return out
-

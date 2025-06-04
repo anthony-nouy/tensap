@@ -6,7 +6,7 @@ import scipy
 
 def poincare_loss(jac_u, jac_g):
     """
-    Evaluate the Poincare based loss for a general feature map 
+    Evaluate the Poincare based loss for a general feature map
     from samples. For more details see Bigoni et al. 2022.
 
     Parameters
@@ -36,8 +36,8 @@ def poincare_loss(jac_u, jac_g):
 
 def poincare_loss_augmented(jac_u, jac_g, alpha=1):
     """
-    Evaluate the Poincare based loss with dimension augmentation, for a 
-    general feature map using only samples. 
+    Evaluate the Poincare based loss with dimension augmentation, for a
+    general feature map using only samples.
     For more details see Verdiere et al. 2023.
 
     Parameters
@@ -70,8 +70,8 @@ def poincare_loss_augmented(jac_u, jac_g, alpha=1):
 
 def poincare_loss_surrogate(jac_u, jac_g, jac_g0=None):
     """
-    Evaluate the covex surrogate to the Poincare based loss for 
-    a general feature map from samples. 
+    Evaluate the covex surrogate to the Poincare based loss for
+    a general feature map from samples.
     For more details see Nouy and Pasco 2025.
 
     Parameters
@@ -110,4 +110,3 @@ def poincare_loss_surrogate(jac_u, jac_g, jac_g0=None):
         c = np.linalg.norm(v0)**2
         out += c * res
     return out
-

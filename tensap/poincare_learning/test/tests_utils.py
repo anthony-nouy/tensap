@@ -37,8 +37,12 @@ def _build_test_case():
 
     def jac_f(z):
         out = np.zeros((z.shape[0], n, z.shape[1]))
-        out[:,0, :] = np.array([np.cos(zi.prod()) * zi.prod() * np.ones(zi.shape[0]) / zi for zi in z])
-        out[:,1, :] = np.array([- np.cos(zi).prod() * np.ones(zi.shape[0]) * np.sin(zi) / np.cos(zi) for zi in z])
+        out[:, 0, :] = np.array([
+            np.cos(zi.prod()) * zi.prod() * np.ones(zi.shape[0]) / zi
+            for zi in z])
+        out[:, 1, :] = np.array([
+            - np.cos(zi).prod() * np.ones(zi.shape[0]) * np.sin(zi) / np.cos(zi)
+            for zi in z])
         return out
 
     def u(x):
@@ -92,23 +96,24 @@ def test_eval_gradient():
     l11 = loss1.eval_gradient(G1)
     l12 = loss2.eval_gradient(G1)
 
-    np.testing.assert_allclose([l0, l01, l02], 0, atol=resolution, err_msg="Gradient should be zero at min")
+    np.testing.assert_allclose(
+        [l0, l01, l02], 0, atol=resolution, err_msg="Gradient should be zero at min")
     np.testing.assert_allclose(l11 + l12, l1)
     np.testing.assert_allclose(l1, l1_bis)
-    np.testing.assert_array_less(-np.linalg.norm(l1), -resolution, err_msg="Gradient should be non zero for G1")
+    np.testing.assert_array_less(
+        -np.linalg.norm(l1), -resolution, err_msg="Gradient should be non zero for G1")
 
 
 def test_eval_SGinv():
     _, G1, G2, loss, _, _, resolution = _build_test_case()
     SG1_G2 = loss.eval_SG_X(G1, G2)
-    err = np.linalg.norm(G2 - loss.eval_SGinv_X(G1, SG1_G2, None, {'rtol':1e-10}))
+    err = np.linalg.norm(G2 - loss.eval_SGinv_X(G1, SG1_G2, None, {'rtol': 1e-10}))
     np.testing.assert_allclose(err, 0, atol=resolution)
 
 
 def test_hessian():
     G0, G1, G2, loss, loss1, loss2, resolution = _build_test_case()
 
-    hl2_1 = loss.eval_HessG_X(G2, G1)
     hl1_2 = loss.eval_HessG_X(G1, G2)  # Hess(G1) @ G2
     hl11_2 = loss1.eval_HessG_X(G1, G2)
     hl12_2 = loss2.eval_HessG_X(G1, G2)
@@ -117,7 +122,8 @@ def test_hessian():
     H0 = loss.eval_HessG_full(G0)
     w0 = np.linalg.eigvals(H0)
 
-    err_sym = np.linalg.norm(H0-H0.T) / np.linalg.norm(H0) + np.linalg.norm(H1-H1.T) / np.linalg.norm(H1)
+    err_sym = np.linalg.norm(H0-H0.T) / np.linalg.norm(H0)
+    err_sym += np.linalg.norm(H1-H1.T) / np.linalg.norm(H1)
     err_spd = w0 / np.linalg.norm(H0)
 
     np.testing.assert_allclose(hl11_2 + hl12_2, hl1_2)
@@ -132,17 +138,16 @@ def test_eval_surrogate_matrices():
 
     A, B, C = loss.eval_surrogate_matrices(None)
     w, v = scipy.linalg.eigh(B - A, R)
-    G_fit = v[:,:G0.shape[1]]
+    G_fit = v[:, :G0.shape[1]]
     sigma = np.linalg.svd(G_fit.T @ R @ G0_orth)[1].min()
 
-    A, B, C = loss1.eval_surrogate_matrices(G0[:,[0]])
+    A, B, C = loss1.eval_surrogate_matrices(G0[:, [0]])
     w, v = scipy.linalg.eigh(B - A + C, R)
-    G_fit = v[:,:G0.shape[1]]
-    sigma1 = np.linalg.svd(G_fit.T @ R @ G0_orth[:,[1]])[1].min()
+    G_fit = v[:, :G0.shape[1]]
+    sigma1 = np.linalg.svd(G_fit.T @ R @ G0_orth[:, [1]])[1].min()
 
     np.testing.assert_allclose(sigma, 1, err_msg="Expected exact recovery of all features")
     np.testing.assert_allclose(sigma1, 1, err_msg="Expected exact recovery of second feature")
-
 
 
 if __name__ == "__main__":
