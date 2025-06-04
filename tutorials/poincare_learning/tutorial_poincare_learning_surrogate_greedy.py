@@ -16,7 +16,9 @@ logging.basicConfig(level=logging.INFO)
 
 # %% Function to generate samples
 
+
 def generate_samples(N, X, fun, jac_fun, basis, R=None):
+
     x_set = X.lhs_random(N)
     fun_set = fun(x_set)
     jac_fun_set = jac_fun(x_set)
@@ -24,10 +26,10 @@ def generate_samples(N, X, fun, jac_fun, basis, R=None):
     jac_basis_set = basis.eval_jacobian(x_set)
 
     if fun_set.ndim == 1:
-        fun_set = fun_set[:,None]
+        fun_set = fun_set[:, None]
 
     if jac_fun_set.ndim == 2:
-        jac_fun_set = jac_fun_set[:,None,:]
+        jac_fun_set = jac_fun_set[:, None, :]
 
     loss_set = PoincareLossVectorSpace(jac_fun_set, jac_basis_set, basis, R)
 
@@ -53,11 +55,13 @@ def fit_krr_regressor(z_set, u_set):
 
 
 def fit_poly_regressor(z_set, u_set):
-    model = Pipeline([('poly', PolynomialFeatures()),
-                    ('linear', LinearRegression(fit_intercept=False))])
+    model = Pipeline([
+        ('poly', PolynomialFeatures()),
+        ('linear', LinearRegression(fit_intercept=False))
+        ])
 
     param_grid = {
-        'poly__degree': [1,2,3,4,5,6]
+        'poly__degree': [1, 2, 3, 4, 5, 6]
     }
 
     cv = GridSearchCV(
@@ -80,15 +84,15 @@ try:
     from tensap.poincare_learning.benchmarks.poincare_benchmarks_torch import build_benchmark_torch
     u, jac_u, X = build_benchmark_torch("borehole")
 
-except:
+except ImportError("torch not found"):
     u, jac_u, X = build_benchmark("exp_mean_sin_exp_cos", d=8)
-    #u, jac_u, X = build_benchmark("sin_squared_norm", d=8)
+    # u, jac_u, X = build_benchmark("sin_squared_norm", d=8)
 
 
 # %% build a polynomial basis
 
-p_norm = 1 # p-norm of the multi-indices
-max_deg = 3 # bound on the p_norm
+p_norm = 1  # p-norm of the multi-indices
+max_deg = 3  # bound on the p_norm
 basis = _build_ortho_poly_basis(X, p=p_norm, m=max_deg)
 K = basis.cardinal()
 R = basis.gram_matrix_h1_0()
@@ -125,23 +129,32 @@ z_surr_train = basis.eval(x_train) @ G_surr
 z_surr_test = basis.eval(x_test) @ G_surr
 
 fig, ax = plt.subplots(1, z_surr_train.shape[1])
-if z_surr_train.shape[1] == 1: ax = [ax]
+if z_surr_train.shape[1] == 1:
+    ax = [ax]
 ax[0].set_ylabel('u(X)')
 
 for i in range(z_surr_train.shape[1]):
-    ax[i].scatter(z_surr_train[:,i], u_train, label='train')
-    ax[i].scatter(z_surr_test[:,i], u_test, label='test')
+    ax[i].scatter(z_surr_train[:, i], u_train, label='train')
+    ax[i].scatter(z_surr_test[:, i], u_test, label='test')
     ax[i].set_xlabel(f'g_{i}(X)')
 
-fig.suptitle(f"Surrogate only | Poly features m={z_surr_train.shape[1]} | Multi-indices with {p_norm}-norm bounded by {max_deg} | {x_train.shape[0]} train samples", y=0.)
+fig.suptitle(f"""
+    Surrogate only | Poly features m={z_surr_train.shape[1]}
+    Multi-indices with {p_norm}-norm bounded by {max_deg}
+    {x_train.shape[0]} train samples
+    """,
+    y=0.)
 plt.show()
 
 
 # %% Fit regressor with sklearn
 
-#regressor_surr = fit_krr_regressor(z_surr_train, u_train)
+#  regressor_surr = fit_krr_regressor(z_surr_train, u_train)
 regressor_surr = fit_poly_regressor(z_surr_train, u_train)
-def f_surr(z) : return regressor_surr.predict(z)
+
+
+def f_surr(z):
+    return regressor_surr.predict(z)
 
 
 # %% Evaluate performances
@@ -168,7 +181,12 @@ plt.scatter(y_test, u_test, label='test')
 plt.ylabel("u(X)")
 plt.xlabel("f(g(X))")
 plt.legend()
-plt.title(f"Surrogate only | Poly features m={z_surr_train.shape[1]} | Multi-indices with {p_norm}-norm bounded by {max_deg} | {x_train.shape[0]} train samples")
+plt.title(f"""
+    Surrogate only
+    Poly features m={z_surr_train.shape[1]}
+    Multi-indices with {p_norm}-norm bounded by {max_deg}
+    {x_train.shape[0]} train samples"""
+    )
 plt.show()
 
 
@@ -176,15 +194,17 @@ plt.show()
 
 # CG on grassmann manifold using pymanopt, when installed
 try:
-    optimizer_kwargs = { # params for pymanopt CG
+    optimizer_kwargs = {  # params for pymanopt CG
         'beta_rule': 'PolakRibiere',
-        'max_iterations': 50, 
-        'verbosity':2,
+        'max_iterations': 50,
+        'verbosity': 2,
         }
-    G_opt, _, _ = loss_train.minimize_pymanopt(G_surr, use_precond=True, optimizer_kwargs=optimizer_kwargs)
+    G_opt, _, _ = loss_train.minimize_pymanopt(
+        G_surr, use_precond=True, optimizer_kwargs=optimizer_kwargs
+        )
 
 # quasi newton
-except:
+except ImportError("pymanopt not found"):
     G_opt, _ = loss_train.minimize_qn(G0=G_surr, m=m, maxiter=50, tol=1e-10)
 
 
@@ -194,15 +214,22 @@ z_opt_train = basis.eval(x_train) @ G_opt
 z_opt_test = basis.eval(x_test) @ G_opt
 
 fig, ax = plt.subplots(1, z_opt_train.shape[1])
-if z_surr_train.shape[1] == 1: ax = [ax]
+if z_surr_train.shape[1] == 1:
+    ax = [ax]
 ax[0].set_ylabel('u(X)')
 
 for i in range(z_opt_train.shape[1]):
-    ax[i].scatter(z_opt_train[:,i], u_train, label='train')
-    ax[i].scatter(z_opt_test[:,i], u_test, label='test')
+    ax[i].scatter(z_opt_train[:, i], u_train, label='train')
+    ax[i].scatter(z_opt_test[:, i], u_test, label='test')
     ax[i].set_xlabel(f'g_{i}(X)')
 
-fig.suptitle(f"Surrogate as init | Poly features m={z_opt_train.shape[1]} | Multi-indices with {p_norm}-norm bounded by {max_deg} | {x_train.shape[0]} train samples", y=0.)
+fig.suptitle(f"""
+    Surrogate as init
+    Poly features m={z_opt_train.shape[1]}
+    Multi-indices with {p_norm}-norm bounded by {max_deg}
+    {x_train.shape[0]} train samples
+    """,
+    y=0.)
 plt.show()
 
 
@@ -210,7 +237,10 @@ plt.show()
 
 # regressor_opt = fit_krr_regressor(z_opt_train, u_train)
 regressor_opt = fit_poly_regressor(z_opt_train, u_train)
-def f_opt(z) : return regressor_opt.predict(z)
+
+
+def f_opt(z):
+    return regressor_opt.predict(z)
 
 
 # %% Evaluate performances
@@ -237,5 +267,9 @@ plt.scatter(y_test, u_test, label='test')
 plt.ylabel("u(X)")
 plt.xlabel("f(g(X))")
 plt.legend()
-plt.title(f"Surrogate as init | Poly features m={z_opt_train.shape[1]} | Multi-indices with {p_norm}-norm bounded by {max_deg} | {x_train.shape[0]} train samples")
+plt.title(f"""
+    Surrogate as init
+    Poly features m={z_opt_train.shape[1]}
+    Multi-indices with {p_norm}-norm bounded by {max_deg}
+    {x_train.shape[0]} train samples""")
 plt.show()

@@ -25,14 +25,14 @@ def _build_sin_squared_norm(d=8, c=1., R=None):
     X = tensap.RandomVector(tensap.UniformRandomVariable(-1, 1), d)
 
     def fun(x):
-        z = c**2 * np.einsum('ki,ki->k', x, x @ R).reshape(-1,1)
+        z = c**2 * np.einsum('ki,ki->k', x, x @ R).reshape(-1, 1)
         return np.sin(z)
-        
+
     def fun_jac(x):
-        z = c**2 * np.einsum('ki,ki->k', x, x @ R).reshape(-1,1)
+        z = c**2 * np.einsum('ki,ki->k', x, x @ R).reshape(-1, 1)
         out = 2 * c**2 * np.cos(z) * (x @ R)
         return out[:, None, :]
-    
+
     return fun, fun_jac, X
 
 
@@ -44,14 +44,14 @@ def _build_cos_squared_norm(d=8, c=1., R=None):
     X = tensap.RandomVector(tensap.UniformRandomVariable(-1, 1), d)
 
     def fun(x):
-        z = c**2 * np.einsum('ki,ki->k', x, x @ R).reshape(-1,1)
+        z = c**2 * np.einsum('ki,ki->k', x, x @ R).reshape(-1, 1)
         return np.cos(z)
-        
+
     def fun_jac(x):
-        z = c**2 * np.einsum('ki,ki->k', x, x @ R).reshape(-1,1)
+        z = c**2 * np.einsum('ki,ki->k', x, x @ R).reshape(-1, 1)
         out = -2 * c**2 * np.sin(z) * (x @ R)
         return out[:, None, :]
-    
+
     return fun, fun_jac, X
 
 
@@ -65,18 +65,18 @@ def _build_sum_cos_sin_squared_norm(d=8, c=1., R1=None, R2=None):
     X = tensap.RandomVector(tensap.UniformRandomVariable(-1, 1), d)
 
     def fun(x):
-        z1 = c**2 * np.einsum('ki,ki->k', x, x @ R1).reshape(-1,1)
-        z2 = c**2 * np.einsum('ki,ki->k', x, x @ R2).reshape(-1,1)
-        return  np.cos(z1) + np.sin(z2)
-    
+        z1 = c**2 * np.einsum('ki,ki->k', x, x @ R1).reshape(-1, 1)
+        z2 = c**2 * np.einsum('ki,ki->k', x, x @ R2).reshape(-1, 1)
+        return np.cos(z1) + np.sin(z2)
+
     def fun_jac(x):
-        z1 = c**2 * np.einsum('ki,ki->k', x, x @ R1).reshape(-1,1)
-        z2 = c**2 * np.einsum('ki,ki->k', x, x @ R2).reshape(-1,1)
+        z1 = c**2 * np.einsum('ki,ki->k', x, x @ R1).reshape(-1, 1)
+        z2 = c**2 * np.einsum('ki,ki->k', x, x @ R2).reshape(-1, 1)
         du1 = - 2 * c**2 * np.sin(z1) * (x @ R1)
         du2 = 2 * c**2 * np.cos(z2) * (x @ R2)
         out = du1 + du2
         return out[:, None, :]
-    
+
     return fun, fun_jac, X
 
 
@@ -87,7 +87,7 @@ def _build_exp_mean_sin_exp_cos(d=8, c=1.):
     def g(x):
         y = np.cos(c * x)
         z = np.sin(c * x) * np.exp(y)
-        return np.mean(z, axis=1).reshape(-1,1)
+        return np.mean(z, axis=1).reshape(-1, 1)
 
     def jac_g(x):
         out = (np.cos(c * x) - np.sin(c * x)**2) * np.exp(np.cos(c * x)) * c / d
@@ -95,7 +95,7 @@ def _build_exp_mean_sin_exp_cos(d=8, c=1.):
 
     def fun(x):
         return np.exp(g(x))
-    
+
     def fun_jac(x):
         return fun(x)[:, None, :] * jac_g(x)
 
