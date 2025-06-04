@@ -83,7 +83,7 @@ try:
     from tensap.poincare_learning.benchmarks.poincare_benchmarks_torch import build_benchmark_torch
     u, jac_u, X = build_benchmark_torch("borehole")
 
-except ImportError("torch not found"):
+except ImportError:
     u, jac_u, X = build_benchmark("exp_mean_sin_exp_cos", d=8)
     # u, jac_u, X = build_benchmark("sin_squared_norm", d=8)
 
@@ -125,7 +125,7 @@ try:
         )
 
 # quasi newton
-except ImportError("pymanopt not found"):
+except ImportError:
     G, _ = loss_train.minimize_qn(G0=None, m=m, init_method=init_method, maxiter=50, tol=1e-10)
 
 
@@ -192,7 +192,10 @@ plt.scatter(y_test, u_test, label='test')
 plt.ylabel("u(X)")
 plt.xlabel("f(g(X))")
 plt.legend()
-plt.title(f"Poly features m={z_train.shape[1]} | Multi-indices with {p_norm}-norm bounded by {max_deg} | {x_train.shape[0]} train samples")
+plt.title(f"""
+    Poly features m={z_train.shape[1]}
+    Multi-indices with {p_norm}-norm bounded by {max_deg}
+    {x_train.shape[0]} train samples""")
 plt.show()
 
 

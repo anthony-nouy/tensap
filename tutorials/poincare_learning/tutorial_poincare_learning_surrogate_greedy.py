@@ -84,7 +84,7 @@ try:
     from tensap.poincare_learning.benchmarks.poincare_benchmarks_torch import build_benchmark_torch
     u, jac_u, X = build_benchmark_torch("borehole")
 
-except ImportError("torch not found"):
+except ImportError:
     u, jac_u, X = build_benchmark("exp_mean_sin_exp_cos", d=8)
     # u, jac_u, X = build_benchmark("sin_squared_norm", d=8)
 
@@ -204,7 +204,7 @@ try:
         )
 
 # quasi newton
-except ImportError("pymanopt not found"):
+except ImportError:
     G_opt, _ = loss_train.minimize_qn(G0=G_surr, m=m, maxiter=50, tol=1e-10)
 
 
