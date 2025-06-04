@@ -492,11 +492,11 @@ def _build_pymanopt_problem(jac_u, jac_basis, m, use_precond=False, optimizer_kw
     manifold = pymanopt.manifolds.grassmann.Grassmann(K, m)
 
     @pymanopt.function.numpy(manifold)
-    def cost(G): 
+    def cost(G):
         return poincare_loss_vector_space(G, jac_u, jac_basis)
 
     @pymanopt.function.numpy(manifold)
-    def euclidean_gradient(G): 
+    def euclidean_gradient(G):
         return poincare_loss_vector_space_gradient(G, jac_u, jac_basis)
 
     if use_precond:
@@ -506,7 +506,7 @@ def _build_pymanopt_problem(jac_u, jac_basis, m, use_precond=False, optimizer_kw
                 out, _, _, _ = np.linalg.lstsq(S, x.reshape(-1, order='F'))
                 return out.reshape((K, m), order='F')
         else:
-            def precond(G, x): 
+            def precond(G, x):
                 return _eval_SGinv_X(G, x, jac_u, jac_basis, None, precond_kwargs)
 
     else:
