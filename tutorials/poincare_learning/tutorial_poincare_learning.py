@@ -3,7 +3,7 @@
 # %% Imports
 import numpy as np
 import matplotlib.pyplot as plt
-from tensap.poincare_learning.benchmarks.poincare_benchmarks_torch import build_benchmark_torch
+from tensap.poincare_learning.benchmarks.poincare_benchmarks import build_benchmark
 from tensap.poincare_learning.utils._loss_vector_space import _build_ortho_poly_basis
 from tensap.poincare_learning.poincare_loss_vector_space import PoincareLossVectorSpace
 from sklearn.kernel_ridge import KernelRidge
@@ -75,10 +75,14 @@ def fit_poly_regressor(z_set, u_set):
 
 # %% Definition of the benchmark
 
-u, jac_u, X = build_benchmark_torch("borehole")
-#u, jac_u, X = build_benchmark_torch("sin_squared_norm", d=8)
-#u, jac_u, X = build_benchmark_torch("exp_mean_sin_exp_cos", d=8)
+# if pytorch is installed
+try:
+    from tensap.poincare_learning.benchmarks.poincare_benchmarks_torch import build_benchmark_torch
+    u, jac_u, X = build_benchmark_torch("borehole")
 
+except:
+    u, jac_u, X = build_benchmark("exp_mean_sin_exp_cos", d=8)
+    #u, jac_u, X = build_benchmark("sin_squared_norm", d=8)
 
 # %% build a polynomial basis
 
@@ -101,26 +105,24 @@ x_test, u_test, jac_u_test, basis_test, jac_basis_test, loss_test = generate_sam
 
 # %% Choosing hyperparameters
 
-m = 2   # number of features to learn
+m = 3   # number of features to learn
 init_method = "active_subspace" # initialization method
-backend = "pymanopt" # choice of backend for minimization
 
 # %% Minimize the Poincare loss
 
-# use CG on grassmann manifold using pymanopt
-if backend == 'pymanopt':
-
+# CG on grassmann manifold using pymanopt, when installed
+try:
     optimizer_kwargs = { # params for pymanopt CG
         'beta_rule': 'PolakRibiere',
         'max_iterations': 50, 
         'verbosity':2,
         }
-
     G, _, _ = loss_train.minimize_pymanopt(G0=None, m=m, init_method=init_method, optimizer_kwargs=optimizer_kwargs)
 
 # quasi newton
-else:
-    G, _ = loss_train.minimize_qn(G0=None, m=m, init_method=init_method, precond_method='sigma')
+except:
+    G, _ = loss_train.minimize_qn(G0=None, m=m, init_method=init_method, maxiter=50, tol=1e-10)
+
 
 # %% Evaluate performances
 

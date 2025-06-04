@@ -3,7 +3,7 @@
 # %% Imports
 import numpy as np
 import matplotlib.pyplot as plt
-from tensap.poincare_learning.benchmarks.poincare_benchmarks_torch import build_benchmark_torch
+from tensap.poincare_learning.benchmarks.poincare_benchmarks import build_benchmark
 from tensap.poincare_learning.utils._loss_vector_space import _build_ortho_poly_basis
 from tensap.poincare_learning.poincare_loss_vector_space import PoincareLossVectorSpace
 from sklearn.kernel_ridge import KernelRidge
@@ -75,9 +75,14 @@ def fit_poly_regressor(z_set, u_set):
 
 # %% Definition of the benchmark
 
-u, jac_u, X = build_benchmark_torch("borehole")
-#u, jac_u, X = build_benchmark_torch("sin_squared_norm", d=8)
-#u, jac_u, X = build_benchmark_torch("exp_mean_sin_exp_cos", d=8)
+# if pytorch is installed
+try:
+    from tensap.poincare_learning.benchmarks.poincare_benchmarks_torch import build_benchmark_torch
+    u, jac_u, X = build_benchmark_torch("borehole")
+
+except:
+    u, jac_u, X = build_benchmark("exp_mean_sin_exp_cos", d=8)
+    #u, jac_u, X = build_benchmark("sin_squared_norm", d=8)
 
 
 # %% build a polynomial basis
@@ -169,14 +174,19 @@ plt.show()
 
 # %% (Optional) Run Minimization of the Poincare loss on the grassmann manifold
 
-optimizer_kwargs = {
-    'beta_rule': 'PolakRibiere',
-    'orth_value': 10,
-    'max_iterations': 50, 
-    'verbosity':2
-    }
+# CG on grassmann manifold using pymanopt, when installed
+try:
+    optimizer_kwargs = { # params for pymanopt CG
+        'beta_rule': 'PolakRibiere',
+        'max_iterations': 50, 
+        'verbosity':2,
+        }
+    G_opt, _, _ = loss_train.minimize_pymanopt(G_surr, use_precond=True, optimizer_kwargs=optimizer_kwargs)
 
-G_opt, _, _ = loss_train.minimize_pymanopt(G_surr, use_precond=True, optimizer_kwargs=optimizer_kwargs)
+# quasi newton
+except:
+    G_opt, _ = loss_train.minimize_qn(G0=G_surr, m=m, maxiter=50, tol=1e-10)
+
 
 # %% Plot for eyeball regression
 
