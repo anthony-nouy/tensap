@@ -140,7 +140,7 @@ class SubFunctionalBasis(tensap.FunctionalBasis):
             self.basis of degrees in self.indices at points x.
 
         """
-        return np.matmul(self.underlying_basis.eval_derivative(x, n), self.basis)
+        return np.matmul(self.underlying_basis.eval_derivative(n, x), self.basis)
 
     def derivative(self, n):
         """
@@ -162,26 +162,6 @@ class SubFunctionalBasis(tensap.FunctionalBasis):
         d_f = deepcopy(self)
         d_f.underlying_basis = self.underlying_basis.derivative(n)
         return d_f
-
-    def eval_jacobian(self, x):
-        """
-        Compute evaluations of the Jacobian matrix of self at points x.
-
-        Parameters
-        ----------
-        x : numpy.ndarray
-            The input points.
-
-        Returns
-        -------
-        out : numpy.ndarray
-            Evaluations of the Jacobian matrix of self.
-            out[k,i,j] is the evaluation of df_i/dx_j at the k-th sample.
-
-        """
-        jac = self.underlying_basis.eval_jacobian(x)
-        out = np.einsum("ij,ajk", self.basis, jac)
-        return out
 
     def mean(self):
         return np.matmul(self.underlying_basis.mean(), self.basis)
