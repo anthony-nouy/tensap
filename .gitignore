@@ -9,3 +9,6 @@ coverage.xml
 .DS_store
 .ipynb_checkpoints
 _build
+numerics/*
+prototype/*
+.vscode

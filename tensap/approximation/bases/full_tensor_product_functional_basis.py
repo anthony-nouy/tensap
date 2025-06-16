@@ -182,6 +182,14 @@ class FullTensorProductFunctionalBasis(tensap.FunctionalBasis):
             y *= Hx[i][:, ind.array[:, i]]
         return y
 
+    def eval_derivative(self, n, x):
+        dnHx = self.bases.eval_derivative(n, x)
+        ind = tensap.MultiIndices.bounded_by(self.bases.cardinals() - 1)
+        y = dnHx[0][:, ind.array[:, 0]]
+        for i in np.arange(1, len(dnHx)):
+            y *= dnHx[i][:, ind.array[:, i]]
+        return y
+
     def gram_matrices(self, dims=None):
         """
         Return the gram matrices of each basis of self, or of a selection of

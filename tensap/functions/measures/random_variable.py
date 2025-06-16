@@ -288,7 +288,7 @@ class RandomVariable(tensap.ProbabilityMeasure):
             points = shift + scaling * points
         return tensap.IntegrationRule(points, weights)
 
-    def lhs_random(self, n):
+    def lhs_random(self, n, seed=None):
         """
         Latin Hypercube Sampling of the random variable self of n points in
         dimension p.
@@ -299,7 +299,10 @@ class RandomVariable(tensap.ProbabilityMeasure):
         ----------
         n : int
             Number of points.
-
+        seed : int, optional
+            seed for the random number generator.
+            See scipy documentation of LatinHypercube for more details.
+            Default is None.
         Returns
         -------
         numpy.ndarray
@@ -308,7 +311,7 @@ class RandomVariable(tensap.ProbabilityMeasure):
         """
         from scipy.stats import qmc
 
-        sampler = qmc.LatinHypercube(d=1)
+        sampler = qmc.LatinHypercube(d=1, seed=seed)
         A = sampler.random(n=n)
         U = tensap.UniformRandomVariable(0, 1)
         return U.transfer(self, A[:, 0])

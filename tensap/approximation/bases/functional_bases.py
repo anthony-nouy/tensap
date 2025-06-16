@@ -326,7 +326,8 @@ class FunctionalBases:
         if not isinstance(x, list):
             ind = np.atleast_1d(self.ndim())
             x = np.hsplit(x, np.cumsum(ind[dims])[:-1])
-
+        if not hasattr(n, "__len__"):
+            n = [n]
         assert len(n) == len(dims), "n and dims should have the same length"
         out = [y.eval_derivative(m, z) for y, m, z in zip(self.bases[dims], n, x)]
         if nargout == 1:

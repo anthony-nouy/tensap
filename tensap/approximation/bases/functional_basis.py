@@ -467,14 +467,17 @@ class FunctionalBasis:
             out[k,i,j] is the evaluation of df_i/dx_j at the k-th sample.
 
         """
-        dnHx_lst = []
-        for ind in range(self.ndim()):
-            n = self.ndim() * [0]
-            n[ind] = 1
-            # add an axis to concatenate
-            dnHx_i = self.eval_derivative(n, x)[:, :, None]
-            dnHx_lst.append(dnHx_i)
-        out = np.concatenate(dnHx_lst, axis=2)
+        if self.ndim() == 1:
+            out = self.eval_derivative(1, x)[:, :, None]
+        else:
+            dnHx_lst = []
+            for ind in range(self.ndim()):
+                n = self.ndim() * [0]
+                n[ind] = 1
+                # add an axis to concatenate
+                dnHx_i = self.eval_derivative(n, x)[:, :, None]
+                dnHx_lst.append(dnHx_i)
+            out = np.concatenate(dnHx_lst, axis=2)
         return out
 
     def optimal_sampling_measure(self):

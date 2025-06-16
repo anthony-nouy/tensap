@@ -118,6 +118,7 @@ from .approximation.tensor_approximation.principal_component_analysis.tensor_pri
 from .approximation.tensor_approximation.principal_component_analysis.functional_tensor_principal_component_analysis import (
     FunctionalTensorPrincipalComponentAnalysis,
 )
+from .poincare_learning.poincare_loss_vector_space import PoincareLossVectorSpace
 
 # Disable tensorflow's warning messages
 import os
