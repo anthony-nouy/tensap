@@ -85,7 +85,7 @@ class DeltaFunctionalBasis(tensap.FunctionalBasis):
 
     def eval(self, x):
         x = np.atleast_1d(x)
-        
+
         dim = self.values.shape[0]
         out = np.zeros((np.shape(x)[0], dim))
         for mu in range(dim):
