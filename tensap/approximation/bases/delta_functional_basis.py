@@ -76,6 +76,7 @@ class DeltaFunctionalBasis(tensap.FunctionalBasis):
             self.measure = deepcopy(measure)
         elif values is not None:
             self.measure = tensap.DiscreteMeasure(values)
+            self.is_orthonormal = True
 
         if measure is not None:
             self.input_dimension = measure.ndim()
@@ -84,7 +85,7 @@ class DeltaFunctionalBasis(tensap.FunctionalBasis):
 
     def eval(self, x):
         x = np.atleast_1d(x)
-        print(x)
+        
         dim = self.values.shape[0]
         out = np.zeros((np.shape(x)[0], dim))
         for mu in range(dim):
@@ -94,6 +95,9 @@ class DeltaFunctionalBasis(tensap.FunctionalBasis):
 
     def domain(self):
         return self.measure.support()
+
+    def mean(self):
+        return self.measure.values.ravel()
 
     def ndim(self):
         return self.input_dimension
