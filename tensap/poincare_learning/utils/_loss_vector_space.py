@@ -651,7 +651,7 @@ def _eval_surrogate_matrices(jac_u, jac_basis, G0=None, R=None):
         Ax = v1 @ v1.T
         Bx = jb @ P_g0_perp @ jb.T
 
-        w = np.linalg.norm(P_g0_perp @ ju.T)**2
+        w = s0.max()**2
         A += w * Ax / jac_u.shape[0]
         B += w * Bx / jac_u.shape[0]
 
