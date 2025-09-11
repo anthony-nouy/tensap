@@ -1,5 +1,5 @@
 
-
+import numpy as np
 from tensap.poincare_learning.utils._loss_vector_space import poincare_loss_vector_space, \
     poincare_loss_vector_space_gradient, _eval_SG_X, _eval_HG_X, _eval_SG_diag, _eval_SGinv_X, \
     _eval_SG_full, _eval_SG_HG_full, _eval_HessG_X, _eval_HessG_diag, _eval_HessG_full, \
@@ -110,3 +110,69 @@ class PoincareLossVectorSpace:
     def minimize_surrogate_greedy(self, m_max, optimize_poincare=False, tol=1e-7, pmo_kwargs={}):
         return _minimize_surrogate_greedy(
             self.jac_u, self.jac_basis, m_max, self.R, optimize_poincare, tol, pmo_kwargs)
+
+
+class PoincareLossVectorSpaceTruncated(PoincareLossVectorSpace):
+    """
+    Class PoincareLossVectorSpaceTruncated.
+    This subclass of PoincareLossVectorSpace, which just includes
+    an additional projection step of jac_u[k,:,:] onto its dominant 
+    singular modes.
+    The existing methods of PoincareLossVectorSpace are then applied
+    on these projected jacobians.
+
+    Attributes
+    ----------
+    jac_u : numpy.ndarray
+        Samples of the jacobian of the function to approximate.
+        jac_u[k,i,j] is du_i / dx_j evaluated at the k-th sample.
+        Has shape (N, n, d) or (N, d).
+    jac_basis : numpy.ndarray
+        Samples of the jacobian of the basis spanning the space of feature maps.
+        jac_basis[k,i,j] is dbasis_i / dx_j evaluated at the k-th sample.
+        Has shape (N, K, d).
+    basis : instance of class with eval method
+        Object such that g(x) = G.T @ basis.eval(x)
+    R : numpy.ndarray, optional
+        The inner product matrix wrt which the coefficient matrix G
+        should be orthonormal, i.e G.T @ R @ G = Im
+        The default is None, corresponding to identity matrix.
+    m : int, optional
+        The number of dominant modes to keep.
+        If m = d, then there is no difference with the 
+        PoincareLossVectorSpace class.
+        The default is None, corresponding to m = d.
+    """
+
+    def __init__(self, jac_u, jac_basis, basis=None, R=None, m=None):
+
+        assert jac_u.ndim > 1
+        assert jac_u.shape[0] == jac_basis.shape[0]
+        assert jac_u.shape[-1] == jac_basis.shape[-1]
+        
+        self.jac_u_full = jac_u
+        
+        if jac_u.ndim == 2:
+            jac_u = jac_u[:, None, :]
+
+        if m is None:
+            m = jac_u.shape[2]
+        
+        self.m = m
+
+        if m < jac_u.shape[1]:
+            jac_u_truncated = self.truncate(m)
+        
+        super().__init__(jac_u_truncated, jac_basis, basis, R)
+
+    def truncate(self, m):
+
+        jac_u = self.jac_u_full
+        jac_u_truncated = 0 * jac_u
+
+        for i, ju in enumerate(jac_u):
+            V = np.linalg.svd(ju.T)[0][:, :m]
+            jac_u_truncated[i] = ju @ V @ V.T
+        
+        return jac_u_truncated
+    
