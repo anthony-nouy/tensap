@@ -120,7 +120,7 @@ def _build_gaussian_affine_covariance(d=8, affine_cov=[]):
         return out
 
     def fun(x):
-        powers = 2 * np.arange(len(affine_cov))
+        powers = np.arange(len(affine_cov))
         coefs = 1/ (1 + np.arange(len(affine_cov)))
         theta = (x[:,[-1]] ** powers) * coefs
         z = g(x[:,:-1])
@@ -128,7 +128,7 @@ def _build_gaussian_affine_covariance(d=8, affine_cov=[]):
         return out
 
     def fun_jac_1(x):
-        powers = 2 * np.arange(len(affine_cov))
+        powers = np.arange(len(affine_cov))
         coefs = 1/ (1 + np.arange(len(affine_cov)))
         theta = (x[:,[-1]] ** powers) * coefs
         out = np.einsum('ki,kij,k->kj', theta, jac_g(x[:,:-1]), fun(x))
@@ -136,9 +136,9 @@ def _build_gaussian_affine_covariance(d=8, affine_cov=[]):
     
     def fun_jac_2(x):
         z = - np.einsum('lij,ki,kj->kl', affine_cov, x[:,:-1], x[:,:-1])
-        powers = 2 * np.arange(len(affine_cov)) - 1
+        powers = np.arange(len(affine_cov)) - 1
         powers[0] = 1
-        coefs = (2 * np.arange(len(affine_cov))) / (1 + np.arange(len(affine_cov)))
+        coefs = np.arange(len(affine_cov)) / (1 + np.arange(len(affine_cov)))
         theta = (x[:,[-1]] ** powers) * coefs
         out = np.einsum('ki,ki->k', z, theta) * fun(x)
         return out[:, None]

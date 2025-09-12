@@ -326,7 +326,7 @@ def _build_gaussian_affine_covariance(d=8, affine_cov=[]):
     def fun_torch(x):
         z = 0.
         for i, M in enumerate(affine_cov_torch):
-            zi = x[-1]**(2*i) / (1+i)
+            zi = x[-1]**i / (1+i)
             zi = zi * x[:-1].T @ M @ x[:-1]
             z += zi
         out = torch.exp(-z/2)
