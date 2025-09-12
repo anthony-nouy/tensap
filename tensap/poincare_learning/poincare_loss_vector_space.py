@@ -161,11 +161,20 @@ class PoincareLossVectorSpaceTruncated(PoincareLossVectorSpace):
         self.m = m
 
         if m < jac_u.shape[1]:
-            jac_u_truncated = self.truncate(m)
+            jac_u_truncated = self._truncate(m)
+
+        else:
+            jac_u_truncated = jac_u.copy()
         
         super().__init__(jac_u_truncated, jac_basis, basis, R)
 
     def truncate(self, m):
+
+        if m != self.m:
+            self.jac_u = self._truncate(m)
+            self.m = m
+
+    def _truncate(self, m):
 
         jac_u = self.jac_u_full
         jac_u_truncated = 0 * jac_u
