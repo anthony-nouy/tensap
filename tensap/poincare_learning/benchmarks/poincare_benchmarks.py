@@ -102,6 +102,55 @@ def _build_exp_mean_sin_exp_cos(d=8, c=1.):
     return fun, fun_jac, X
 
 
+def _build_gaussian_affine_covariance(d=8, affine_cov=[]):
+
+    X = tensap.RandomVector(tensap.UniformRandomVariable(-1, 1), d)
+
+    if len(affine_cov) == 0:
+        affine_cov = [np.eye(d-1)]
+
+    def g(x):
+        z = - np.einsum('lij,ki,kj->kl', affine_cov, x, x)
+        return z
+
+    def jac_g(x):
+        out = np.einsum('lij,kj->kli', affine_cov, x)
+        out += np.einsum('lji,kj->kli', affine_cov, x)
+        out = -out
+        return out
+
+    def fun(x):
+        powers = 2 * np.arange(len(affine_cov))
+        coefs = 1/ (1 + np.arange(len(affine_cov)))
+        theta = (x[:,[-1]] ** powers) * coefs
+        z = g(x[:,:-1])
+        out = np.exp(np.einsum('ki,ki->k', z, theta)).reshape(-1)
+        return out
+
+    def fun_jac_1(x):
+        powers = 2 * np.arange(len(affine_cov))
+        coefs = 1/ (1 + np.arange(len(affine_cov)))
+        theta = (x[:,[-1]] ** powers) * coefs
+        out = np.einsum('ki,kij,k->kj', theta, jac_g(x[:,:-1]), fun(x))
+        return out
+    
+    def fun_jac_2(x):
+        z = - np.einsum('lij,ki,kj->kl', affine_cov, x[:,:-1], x[:,:-1])
+        powers = 2 * np.arange(len(affine_cov)) - 1
+        powers[0] = 1
+        coefs = (2 * np.arange(len(affine_cov))) / (1 + np.arange(len(affine_cov)))
+        theta = (x[:,[-1]] ** powers) * coefs
+        out = np.einsum('ki,ki->k', z, theta) * fun(x)
+        return out[:, None]
+
+    def fun_jac(x):
+        out = np.zeros((x.shape[0], x.shape[-1]))
+        out[:,:-1] = fun_jac_1(x)
+        out[:,[-1]] = fun_jac_2(x)
+        return out
+
+    return fun, fun_jac, X
+
 def build_benchmark(case, **kwargs):
     """
     Generate different functions used to benchmark the package.
@@ -137,6 +186,8 @@ def build_benchmark(case, **kwargs):
         fun, fun_jac, X = _build_sum_cos_sin_squared_norm(**kwargs)
     elif case == "exp_mean_sin_exp_cos":
         fun, fun_jac, X = _build_exp_mean_sin_exp_cos(**kwargs)
+    elif case == "gaussian_affine_covariance":
+        fun, fun_jac, X = _build_gaussian_affine_covariance(**kwargs)
     else:
         raise NotImplementedError("Function not implemented.")
 
