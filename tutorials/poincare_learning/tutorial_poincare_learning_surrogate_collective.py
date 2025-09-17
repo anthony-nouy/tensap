@@ -53,7 +53,7 @@ def generate_samples_tensorized(N1, N2, ind1, X, fun, jac_fun, basis, R=None):
         x_set_i[:, ind1] = x1_set[i]
         x_set_i[:, ind2] = x2_set
         x_set[i*N2:(i+1)*N2] = x_set_i
-        jac_fun_set_tensorized[i,:,:] = jac_fun(x_set_i)[:,:-1] / N2
+        jac_fun_set_tensorized[i,:,:] = jac_fun(x_set_i)[:,:-1]
 
     fun_set = fun(x_set)
     jac_fun_set = jac_fun(x_set)
@@ -96,7 +96,7 @@ def fit_poly_regressor(z_set, u_set):
     ])
 
     param_grid = {
-        'poly__degree': [1, 2, 3, 4, 5, 6]
+        'poly__degree': np.arange(10)
     }
 
     cv = GridSearchCV(
@@ -112,66 +112,65 @@ def fit_poly_regressor(z_set, u_set):
     return cv
 
 
-# %% Definition of the benchmark
+# %% functions to build matrice list
 
-# functions to build inner covariance matrix
-def build_affine_cov_1(dim, n_affine):
-    affine_cov = []
-    for i in range(n_affine):
-        affine_cov_i = np.eye(dim)
+def build_mat_lst_1(dim, n_mat):
+    mat_lst = [np.eye(dim)]
+    for i in range(1, n_mat):
+        mat = np.eye(dim)
         for j in range(1, i+1):
-            affine_cov_i += np.diag(np.ones(dim-j), k=j)
-            affine_cov_i += np.diag(np.ones(dim-j), k=-j)
-        affine_cov.append(affine_cov_i)
-    return affine_cov
+            mat += np.diag(np.ones(dim-j), k=j)
+            mat += np.diag(np.ones(dim-j), k=-j)
+        mat = mat / i
+        mat_lst.append(mat)
+    return mat_lst
 
-def build_affine_cov_2(dim, n_affine):
-    affine_cov = []
-    for i in range(n_affine):
-        affine_cov_i = np.random.RandomState(i).normal(size=(dim, dim))
-        affine_cov_i = affine_cov_i.T @ affine_cov_i
-        affine_cov_i = affine_cov_i / np.linalg.norm(affine_cov_i, ord=2)
-        affine_cov.append(affine_cov_i)
-    return affine_cov
+def build_mat_lst_2(dim, n_mat):
+    mat_lst = [np.eye(dim)]
+    for i in range(1, n_mat):
+        mat = np.diag(np.ones(dim-i), k=i)
+        mat = mat + mat.T
+        mat = mat / 2
+        mat_lst.append(mat)
+    return mat_lst
 
-def build_affine_cov_3(dim, n_affine):
-    assert n_affine <= 3
-    affine_cov = []
-    affine_cov.append(np.eye(dim))
-    affine_cov.append(np.eye(dim) + np.eye(dim)[np.arange(dim)[::-1]])
-    affine_cov.append(
-        np.eye(dim) + (np.diag(np.ones(dim//2), k=dim//2) + np.diag(np.ones((dim+1)//2), k=-((dim+1)//2)))[np.arange(dim)[::-1]]
-    )
-    for i in range(n_affine):
-        affine_cov[i] = affine_cov[i] / np.linalg.norm(affine_cov[i], ord=2)
-    affine_cov = affine_cov[:n_affine]
-    return affine_cov
+def build_mat_lst_3(dim, n_mat):
+    mat_lst = []
+    for i in range(n_mat):
+        mat = np.random.RandomState(i).normal(size=(dim, dim))
+        mat = mat.T @ mat
+        mat = mat / np.linalg.norm(mat, ord=2)
+        mat_lst.append(mat)
+    return mat_lst
 
-
-def build_affine_cov(dim, n_affine, which=1):
+def build_mat_lst(dim, n_mat, which=1):
     if which == 1:
-        out = build_affine_cov_1(dim, n_affine)
+        out = build_mat_lst_1(dim, n_mat)
     elif which == 2:
-        out = build_affine_cov_2(dim, n_affine)
+        out = build_mat_lst_2(dim, n_mat)
     elif which == 3:
-        out = build_affine_cov_3(dim, n_affine)
+        out = build_mat_lst_3(dim, n_mat)
+    else:
+        raise NotImplementedError
     return out
 
-# affine covariance matrices 
-d = 21
-n_affine = 2
+# %% Definition of the benchmark
+
+# build list of matrices 
+d = 8 + 1
+n_mat = 3
 ind1 = np.arange(d-1)
 ind2 = np.delete(np.arange(d), ind1)
-affine_cov = build_affine_cov(d-1, n_affine, which=1)
+mat_lst = build_mat_lst(d-1, n_mat, which=2)
 
 # if pytorch is installed
 try:
     from tensap.poincare_learning.benchmarks.poincare_benchmarks_torch import build_benchmark_torch
-    u, jac_u, X = build_benchmark_torch("gaussian_affine_covariance", d=d, affine_cov=affine_cov)
+    u, jac_u, X = build_benchmark_torch("quartic_sin_collective", d=d, mat_lst=mat_lst)
+    
 
 except ImportError:
-    u, jac_u, X = build_benchmark("gaussian_affine_covariance", d=d, affine_cov=affine_cov)
-
+    u, jac_u, X = build_benchmark("quartic_sin_collective", d=d, mat_lst=mat_lst)
 
 # %% build a polynomial basis
 
@@ -181,10 +180,14 @@ basis = _build_ortho_poly_basis(X.marginal(ind1), p=p_norm, m=max_deg)
 K = basis.cardinal()
 R = basis.gram_matrix_h1_0()
 
+#####################################
+# %% Tensorized sample with surrogate
+#####################################
+
 # %% Sampling
 
-N1_train = 50
-N2_train = 3
+N1_train = 25
+N2_train = 4
 x_train, u_train, _, _, _, loss_train_tensorized = generate_samples_tensorized(
     N1_train, N2_train, ind1, X, u, jac_u, basis, R)
 
@@ -194,18 +197,18 @@ x_test, u_test, _, _, _, loss_test = generate_samples(
 
 # %% Minimize the surrogate
 
-m = len(affine_cov) - 0
+m = len(mat_lst) - 0
 loss_train_tensorized.truncate(m)
 G_surr, _, _ = loss_train_tensorized.minimize_surrogate(m=m)
-# G_surr, _, _ = loss_train_tensorized.minimize_pymanopt(m=m, init_method='active_subspace', optimizer_kwargs={'max_iterations':100})
+# G_surr, _, _ = loss_train_tensorized.minimize_pymanopt(G0=G_surr, optimizer_kwargs={'max_iterations':100})
 G_surr = np.linalg.svd(G_surr, full_matrices=False)[0]
 
 # %% Evaluate performances
 
 print(f"\nPoincare loss and Surrogate on {G_surr.shape[1]} features")
-print(f"Surrogate on train set:      {loss_train_tensorized.eval_surrogate(G_surr):.3e}")
-print(f"Poincare loss on train set:  {loss_train_tensorized.eval(G_surr):.3e}")
-print(f"Poincare loss on test set:   {loss_test.eval(G_surr):.3e}")
+print(f"Surrogate on tensorized train set:      {loss_train_tensorized.eval_surrogate(G_surr):.3e}")
+print(f"Poincare loss on tensorized train set : {loss_train_tensorized.eval(G_surr):.3e}")
+print(f"Poincare loss on test set:              {loss_test.eval(G_surr):.3e}")
 
 # %% Plot for eyeball regression
 
@@ -223,7 +226,7 @@ for i in range(z_surr_train.shape[1]):
     ax[i].set_xlabel(f'g_{i}(X)')
 
 fig.suptitle(f"""
-    Surrogate only
+    Surrogate only tensorized sample
     Poly features m={z_surr_train.shape[1]}
     Multi-indices with {p_norm}-norm bounded by {max_deg}
     {N1_train}x{N2_train}={N1_train*N2_train} train samples
@@ -259,7 +262,7 @@ y_test = f_surr(zy_surr_test).reshape(u_test.shape)
 err_test = np.sqrt(np.mean((y_test - u_test)**2))
 rel_err_test = err_test / np.sqrt((u_test**2).mean())
 
-print(f"\nSurrogate only | Regression based on {G_surr.shape[1]} features")
+print(f"\nSurrogate only tensorized sample | Regression based on {G_surr.shape[1]} features")
 print(f"L2 on train set    : {err_train:.3e}")
 print(f"L2 on test set     : {err_test:.3e}")
 print(f"RL2 on train set   : {rel_err_train:.3e}")
