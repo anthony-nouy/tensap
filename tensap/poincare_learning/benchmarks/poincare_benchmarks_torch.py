@@ -312,24 +312,26 @@ def _build_cos_tree(d=8):
 
     return fun_torch, X
 
-def _build_gaussian_affine_covariance(d=8, affine_cov=[]):
+def _build_quartic_sin_collective(d=9, mat_lst=[]):
 
     X = tensap.RandomVector(tensap.UniformRandomVariable(-1, 1), d)
     
-    if len(affine_cov) == 0:
-        affine_cov = [np.eye(d-1)]
+    if len(mat_lst) == 0:
+        mat_lst = [np.eye(d-1)]
 
-    affine_cov_torch = []
-    for M in affine_cov:
-        affine_cov_torch.append(torch.asarray(M))
+    mat_lst_torch = []
+    for M in mat_lst:
+        mat_lst_torch.append(torch.asarray(M))
 
     def fun_torch(x):
         z = 0.
-        for i, M in enumerate(affine_cov_torch):
-            zi = x[-1]**i / (1+i)
-            zi = zi * x[:-1].T @ M @ x[:-1]
+        for i, M in enumerate(mat_lst_torch):
+            zi = (x[:-1].T @ M @ x[:-1])
+            zi = zi**2
+            c = (torch.pi * (i+1)) / (2 * len(mat_lst))
+            zi *= torch.sin( c * x[-1])
             z += zi
-        out = torch.exp(-z/2)
+        out = z
         return out
 
     return fun_torch, X
@@ -416,8 +418,8 @@ def build_benchmark_torch(case, **kwargs):
     elif case == "cos_tree":
         fun_torch, X = _build_cos_tree(**kwargs)
     
-    elif case == "gaussian_affine_covariance":
-        fun_torch, X = _build_gaussian_affine_covariance(**kwargs)
+    elif case == 'quartic_sin_collective':
+        fun_torch , X = _build_quartic_sin_collective(**kwargs)
 
     else:
         raise NotImplementedError("Function not implemented.")
