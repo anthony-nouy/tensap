@@ -53,7 +53,7 @@ def generate_samples_tensorized(N1, N2, ind1, X, fun, jac_fun, basis, R=None):
         x_set_i[:, ind1] = x1_set[i]
         x_set_i[:, ind2] = x2_set
         x_set[i*N2:(i+1)*N2] = x_set_i
-        jac_fun_set_tensorized[i,:,:] = jac_fun(x_set_i)[:,:-1]
+        jac_fun_set_tensorized[i,:,:] = jac_fun(x_set_i)[:,ind1]
 
     fun_set = fun(x_set)
     jac_fun_set = jac_fun(x_set)
