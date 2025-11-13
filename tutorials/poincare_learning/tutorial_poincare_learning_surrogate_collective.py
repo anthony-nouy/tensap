@@ -46,16 +46,16 @@ def generate_samples_tensorized(N1, N2, ind1, X, fun, jac_fun, basis, R=None):
     x1_set = X1.lhs_random(N1)
     x2_set = X2.lhs_random(N2)
     
-    x_set = np.zeros((N1*N2, X.ndim()))
+    x_set = np.zeros((N1 * N2, X.ndim()))
     jac_basis_set = basis.eval_jacobian(x1_set)
-    jac_fun_set_tensorized = np.zeros((N1, N2, X.ndim()-1))
+    jac_fun_set_tensorized = np.zeros((N1, N2, X.ndim() - 1))
 
     for i in range(N1):
         # x2_set = X2.lhs_random(N2)
         x_set_i = np.zeros((N2, X.ndim()))
         x_set_i[:, ind1] = x1_set[i]
         x_set_i[:, ind2] = x2_set
-        x_set[i*N2:(i+1)*N2] = x_set_i
+        x_set[i * N2:(i + 1) * N2] = x_set_i
         jac_fun_set_tensorized[i, :, :] = jac_fun(x_set_i)[:, ind1]
 
     fun_set = fun(x_set)
@@ -122,9 +122,9 @@ def build_mat_lst_1(dim, n_mat):
     mat_lst = [np.eye(dim)]
     for i in range(1, n_mat):
         mat = np.eye(dim)
-        for j in range(1, i+1):
-            mat += np.diag(np.ones(dim-j), k=j)
-            mat += np.diag(np.ones(dim-j), k=-j)
+        for j in range(1, i + 1):
+            mat += np.diag(np.ones(dim - j), k=j)
+            mat += np.diag(np.ones(dim - j), k=-j)
         mat = mat / i
         mat_lst.append(mat)
     return mat_lst
@@ -133,7 +133,7 @@ def build_mat_lst_1(dim, n_mat):
 def build_mat_lst_2(dim, n_mat):
     mat_lst = [np.eye(dim)]
     for i in range(1, n_mat):
-        mat = np.diag(np.ones(dim-i), k=i)
+        mat = np.diag(np.ones(dim - i), k=i)
         mat = mat + mat.T
         mat = mat / 2
         mat_lst.append(mat)
@@ -166,9 +166,9 @@ def build_mat_lst(dim, n_mat, which=1):
 
 d = 8 + 1
 n_mat = 3
-ind1 = np.arange(d-1)
+ind1 = np.arange(d - 1)
 ind2 = np.delete(np.arange(d), ind1)
-mat_lst = build_mat_lst(d-1, n_mat, which=2)
+mat_lst = build_mat_lst(d - 1, n_mat, which=2)
 
 # if pytorch is installed
 try:
@@ -237,7 +237,7 @@ fig.suptitle(f"""
     Surrogate only tensorized sample
     Poly features m={z_surr_train.shape[1]}
     Multi-indices with {p_norm}-norm bounded by {max_deg}
-    {N1_train}x{N2_train}={N1_train*N2_train} train samples
+    {N1_train}x{N2_train}={N1_train * N2_train} train samples
     """,
     y=0.)
 plt.show()
@@ -288,7 +288,7 @@ plt.title(f"""
     Surrogate only tensorized sample
     Poly features m={zy_surr_train.shape[1]}
     Multi-indices with {p_norm}-norm bounded by {max_deg}
-    {N1_train}x{N2_train}={N1_train*N2_train} train samples""")
+    {N1_train}x{N2_train}={N1_train * N2_train} train samples""")
 plt.show()
 
 ##############################################################
@@ -297,7 +297,7 @@ plt.show()
 
 # %% resample
 x_train, u_train, _, _, _, loss_train = generate_samples(
-    N1_train*N2_train, ind1, X, u, jac_u, basis, R)
+    N1_train * N2_train, ind1, X, u, jac_u, basis, R)
 
 # %% minimize the poincare based loss function
 G_pmo, _, _ = loss_train.minimize_pymanopt(
@@ -351,6 +351,6 @@ plt.title(f"""
     pymanopt optim
     Poly features m={zy_pmo_train.shape[1]}
     Multi-indices with {p_norm}-norm bounded by {max_deg}
-    {N1_train}x{N2_train}={N1_train*N2_train} train samples""")
+    {N1_train}x{N2_train}={N1_train * N2_train} train samples""")
 plt.show()
 # %%

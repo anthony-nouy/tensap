@@ -107,7 +107,7 @@ def _build_quartic_sin_collective(d=9, mat_lst=[]):
     X = tensap.RandomVector(tensap.UniformRandomVariable(-1, 1), d)
 
     if len(mat_lst) == 0:
-        mat_lst = [np.eye(d-1)]
+        mat_lst = [np.eye(d - 1)]
 
     n = len(mat_lst)
 
@@ -122,7 +122,7 @@ def _build_quartic_sin_collective(d=9, mat_lst=[]):
 
     def fun(x):
         z1 = g(x[:, :-1])
-        c = (np.pi / 2) * np.arange(1, n+1) / n
+        c = (np.pi / 2) * np.arange(1, n + 1) / n
         z2 = np.sin(c * x[:, [-1]])
         out = np.einsum('ki,ki->k', z1 ** 2, z2)
         return out
@@ -130,14 +130,14 @@ def _build_quartic_sin_collective(d=9, mat_lst=[]):
     def fun_jac_1(x):
         z1 = g(x[:, :-1])
         dz1 = jac_g(x[:, :-1])
-        c = (np.pi / 2) * np.arange(1, n+1) / n
+        c = (np.pi / 2) * np.arange(1, n + 1) / n
         z2 = np.sin(c * x[:, [-1]])
-        out = np.einsum('kij,ki,ki->kj', dz1, 2*z1, z2)
+        out = np.einsum('kij,ki,ki->kj', dz1, 2 * z1, z2)
         return out
     
     def fun_jac_2(x):
         z1 = g(x[:, :-1])
-        c = (np.pi / 2) * np.arange(1, n+1) / n
+        c = (np.pi / 2) * np.arange(1, n + 1) / n
         dz2 = c * np.cos(c * x[:, [-1]])
         out = np.einsum('ki,ki->k', z1 ** 2, dz2)
         return out[:, None]

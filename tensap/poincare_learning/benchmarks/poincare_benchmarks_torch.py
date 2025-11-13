@@ -250,8 +250,8 @@ def _build_ackley(d=7):
         y = x * 32.768
         z0 = 20 + torch.exp(torch.ones(1))
         z1 = torch.mean(torch.sum(y**2))
-        z2 = torch.mean(torch.sum(torch.cos(2*torch.pi*y)))
-        return z0 - 20*torch.exp(-0.2*torch.sqrt(z1)) - torch.exp(z2)
+        z2 = torch.mean(torch.sum(torch.cos(2 * torch.pi * y)))
+        return z0 - 20 * torch.exp(- 0.2 * torch.sqrt(z1)) - torch.exp(z2)
 
     return fun_torch, X
 
@@ -261,8 +261,8 @@ def _build_robot_arm(d=8):
     X = tensap.RandomVector(tensap.UniformRandomVariable(-1, 1), d)
 
     def fun_torch(x):
-        y1 = (x[:d//2] + 1) / 2
-        y2 = torch.cumsum(torch.pi * x[d//2:], 0)
+        y1 = (x[:d // 2] + 1) / 2
+        y2 = torch.cumsum(torch.pi * x[d // 2:], 0)
         u = torch.sum(y1 * torch.cos(y2))
         v = torch.sum(y1 * torch.sin(y2))
         return torch.sqrt(u**2 + v**2)
@@ -290,10 +290,10 @@ def _build_piston(d=6):
 
     def fun_torch(x):
         x = x * scaling + shift
-        aux = x[4]*x[2]/x[6]
-        A = x[1] * x[4] + 19.62*x[0] - x[2] * x[3] / x[1]
-        V = x[1] / (2*x[3]) * (A**2 + 4*x[3] * aux * x[5] - A)**0.5
-        out = 2*torch.pi * (x[0] / (x[3] + x[1] * aux * x[5] / V**2))**0.5
+        aux = x[4] * x[2] / x[6]
+        A = x[1] * x[4] + 19.62 * x[0] - x[2] * x[3] / x[1]
+        V = x[1] / (2 * x[3]) * (A**2 + 4 * x[3] * aux * x[5] - A)**0.5
+        out = 2 * torch.pi * (x[0] / (x[3] + x[1] * aux * x[5] / V**2))**0.5
         return out
 
     return fun_torch, X
@@ -302,15 +302,15 @@ def _build_piston(d=6):
 def _build_cos_tree(d=8):
 
     X = tensap.RandomVector(tensap.UniformRandomVariable(-1, 1), d)
-    ind_lst = [np.arange(i*d//4, (i+1)*d//4) for i in range(4)]
+    ind_lst = [np.arange(i * d // 4, (i + 1) * d // 4) for i in range(4)]
 
     def fun_torch(x):
         z0 = torch.cos(torch.sum(x[ind_lst[0]]**2))
         z1 = torch.cos(torch.sum(x[ind_lst[1]]**2))
         z2 = torch.cos(torch.sum(x[ind_lst[2]]**2))
         z3 = torch.cos(torch.sum(x[ind_lst[3]]**2))
-        y1 = torch.cos(2*np.pi * (z0 + z1))
-        y2 = torch.cos(2*np.pi * (z2 * z3))
+        y1 = torch.cos(2 * np.pi * (z0 + z1))
+        y2 = torch.cos(2 * np.pi * (z2 * z3))
         out = y1 + y2
         return out
 
@@ -322,7 +322,7 @@ def _build_quartic_sin_collective(d=9, mat_lst=[]):
     X = tensap.RandomVector(tensap.UniformRandomVariable(-1, 1), d)
 
     if len(mat_lst) == 0:
-        mat_lst = [np.eye(d-1)]
+        mat_lst = [np.eye(d - 1)]
 
     mat_lst_torch = []
     for M in mat_lst:
@@ -333,7 +333,7 @@ def _build_quartic_sin_collective(d=9, mat_lst=[]):
         for i, M in enumerate(mat_lst_torch):
             zi = (x[:-1].T @ M @ x[:-1])
             zi = zi**2
-            c = (torch.pi * (i+1)) / (2 * len(mat_lst))
+            c = (torch.pi * (i + 1)) / (2 * len(mat_lst))
             zi *= torch.sin(c * x[-1])
             z += zi
         out = z
