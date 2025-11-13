@@ -646,7 +646,7 @@ def _eval_surrogate_matrices(jac_u, jac_basis, G0=None, R=None):
 
         P_g0_perp = np.eye(d) - P_g0
         v0, s0, _ = np.linalg.svd(P_g0_perp @ ju.T, full_matrices=False)
-        v0 = v0[:, s0 > 1e-12]
+        v0 = v0[:, s0 > 1e-12 * np.linalg.norm(s0)]  # truncate near zero singular values
         v1 = jb @ v0
         Ax = v1 @ v1.T
         Bx = jb @ P_g0_perp @ jb.T
