@@ -102,6 +102,55 @@ def _build_exp_mean_sin_exp_cos(d=8, c=1.):
     return fun, fun_jac, X
 
 
+def _build_quartic_sin_collective(d=9, mat_lst=[]):
+
+    X = tensap.RandomVector(tensap.UniformRandomVariable(-1, 1), d)
+
+    if len(mat_lst) == 0:
+        mat_lst = [np.eye(d - 1)]
+
+    n = len(mat_lst)
+
+    def g(x):
+        z = np.einsum('lij,ki,kj->kl', mat_lst, x, x)
+        return z
+
+    def jac_g(x):
+        out = np.einsum('lij,kj->kli', mat_lst, x)
+        out += np.einsum('lji,kj->kli', mat_lst, x)
+        return out
+
+    def fun(x):
+        z1 = g(x[:, :-1])
+        c = (np.pi / 2) * np.arange(1, n + 1) / n
+        z2 = np.sin(c * x[:, [-1]])
+        out = np.einsum('ki,ki->k', z1 ** 2, z2)
+        return out
+
+    def fun_jac_1(x):
+        z1 = g(x[:, :-1])
+        dz1 = jac_g(x[:, :-1])
+        c = (np.pi / 2) * np.arange(1, n + 1) / n
+        z2 = np.sin(c * x[:, [-1]])
+        out = np.einsum('kij,ki,ki->kj', dz1, 2 * z1, z2)
+        return out
+
+    def fun_jac_2(x):
+        z1 = g(x[:, :-1])
+        c = (np.pi / 2) * np.arange(1, n + 1) / n
+        dz2 = c * np.cos(c * x[:, [-1]])
+        out = np.einsum('ki,ki->k', z1 ** 2, dz2)
+        return out[:, None]
+
+    def fun_jac(x):
+        out = np.zeros((x.shape[0], x.shape[-1]))
+        out[:, :-1] = fun_jac_1(x)
+        out[:, [-1]] = fun_jac_2(x)
+        return out
+
+    return fun, fun_jac, X
+
+
 def build_benchmark(case, **kwargs):
     """
     Generate different functions used to benchmark the package.
@@ -137,6 +186,8 @@ def build_benchmark(case, **kwargs):
         fun, fun_jac, X = _build_sum_cos_sin_squared_norm(**kwargs)
     elif case == "exp_mean_sin_exp_cos":
         fun, fun_jac, X = _build_exp_mean_sin_exp_cos(**kwargs)
+    elif case == "quartic_sin_collective":
+        fun, fun_jac, X = _build_quartic_sin_collective(**kwargs)
     else:
         raise NotImplementedError("Function not implemented.")
 

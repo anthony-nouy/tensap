@@ -107,6 +107,6 @@ def poincare_loss_surrogate(jac_u, jac_g, jac_g0=None):
         w0 = jg.T - proj_g0 @ jg.T
         proj_v0 = v0 @ scipy.linalg.pinv(v0)
         res = np.linalg.norm(w0 - proj_v0 @ w0) ** 2 / N
-        c = np.linalg.norm(v0)**2
+        c = np.linalg.svd(v0)[1].max()**2
         out += c * res
     return out

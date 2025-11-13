@@ -230,6 +230,118 @@ def _build_cos_low_rank(d=8):
     return fun_torch, X
 
 
+def _build_schaffer(d=7):
+
+    X = tensap.RandomVector(tensap.UniformRandomVariable(-1, 1), d)
+
+    def fun_torch(x):
+        y = x[:-1]**2 + x[1:]**2
+        z = (torch.sin(100 * y**0.5)**2 - 0.5) / (1 + 10 * y)**2
+        return 3 + torch.sum(z)
+
+    return fun_torch, X
+
+
+def _build_ackley(d=7):
+
+    X = tensap.RandomVector(tensap.UniformRandomVariable(-1, 1), d)
+
+    def fun_torch(x):
+        y = x * 32.768
+        z0 = 20 + torch.exp(torch.ones(1))
+        z1 = torch.mean(torch.sum(y**2))
+        z2 = torch.mean(torch.sum(torch.cos(2 * torch.pi * y)))
+        return z0 - 20 * torch.exp(- 0.2 * torch.sqrt(z1)) - torch.exp(z2)
+
+    return fun_torch, X
+
+
+def _build_robot_arm(d=8):
+
+    X = tensap.RandomVector(tensap.UniformRandomVariable(-1, 1), d)
+
+    def fun_torch(x):
+        y1 = (x[:d // 2] + 1) / 2
+        y2 = torch.cumsum(torch.pi * x[d // 2:], 0)
+        u = torch.sum(y1 * torch.cos(y2))
+        v = torch.sum(y1 * torch.sin(y2))
+        return torch.sqrt(u**2 + v**2)
+
+    return fun_torch, X
+
+
+def _build_piston(d=6):
+
+    X = tensap.RandomVector(tensap.UniformRandomVariable(-1, 1), d)
+
+    X = np.empty(7, dtype=object)
+    X[0] = tensap.UniformRandomVariable(30, 60)
+    X[1] = tensap.UniformRandomVariable(0.005, 0.002)
+    X[2] = tensap.UniformRandomVariable(0.002, 0.01)
+    X[3] = tensap.UniformRandomVariable(1000, 5000)
+    X[4] = tensap.UniformRandomVariable(90000, 110000)
+    X[5] = tensap.UniformRandomVariable(290, 296)
+    X[6] = tensap.UniformRandomVariable(340, 360)
+    X = tensap.RandomVector(X)
+
+    shift, scaling = _get_shift_scaling(X)
+    X = X.get_standard_random_vector()
+    shift, scaling = torch.asarray(shift), torch.asarray(scaling)
+
+    def fun_torch(x):
+        x = x * scaling + shift
+        aux = x[4] * x[2] / x[6]
+        A = x[1] * x[4] + 19.62 * x[0] - x[2] * x[3] / x[1]
+        V = x[1] / (2 * x[3]) * (A**2 + 4 * x[3] * aux * x[5] - A)**0.5
+        out = 2 * torch.pi * (x[0] / (x[3] + x[1] * aux * x[5] / V**2))**0.5
+        return out
+
+    return fun_torch, X
+
+
+def _build_cos_tree(d=8):
+
+    X = tensap.RandomVector(tensap.UniformRandomVariable(-1, 1), d)
+    ind_lst = [np.arange(i * d // 4, (i + 1) * d // 4) for i in range(4)]
+
+    def fun_torch(x):
+        z0 = torch.cos(torch.sum(x[ind_lst[0]]**2))
+        z1 = torch.cos(torch.sum(x[ind_lst[1]]**2))
+        z2 = torch.cos(torch.sum(x[ind_lst[2]]**2))
+        z3 = torch.cos(torch.sum(x[ind_lst[3]]**2))
+        y1 = torch.cos(2 * np.pi * (z0 + z1))
+        y2 = torch.cos(2 * np.pi * (z2 * z3))
+        out = y1 + y2
+        return out
+
+    return fun_torch, X
+
+
+def _build_quartic_sin_collective(d=9, mat_lst=[]):
+
+    X = tensap.RandomVector(tensap.UniformRandomVariable(-1, 1), d)
+
+    if len(mat_lst) == 0:
+        mat_lst = [np.eye(d - 1)]
+
+    mat_lst_torch = []
+    for M in mat_lst:
+        mat_lst_torch.append(torch.asarray(M))
+
+    def fun_torch(x):
+        z = 0.
+        for i, M in enumerate(mat_lst_torch):
+            zi = (x[:-1].T @ M @ x[:-1])
+            zi = zi**2
+            c = (torch.pi * (i + 1)) / (2 * len(mat_lst))
+            zi *= torch.sin(c * x[-1])
+            z += zi
+        out = z
+        return out
+
+    return fun_torch, X
+
+
 def build_benchmark_torch(case, **kwargs):
     """
     Generate different functions used to benchmark the package.
@@ -238,8 +350,8 @@ def build_benchmark_torch(case, **kwargs):
     ----------
     case : str
         The name of the function. Can be 'borehole', 'ishigami,
-        'sin_of_asum', 'sin_squared_norm', 'canonical_rank_2', 'mixture', 'field'
-        'henon_heiles'.
+        'sin_of_asum', 'sin_squared_norm', 'canonical_rank_2', 'mixture',
+        'field', 'henon_heiles'.
     **kwargs
         Parameters of the function.
 
@@ -296,6 +408,24 @@ def build_benchmark_torch(case, **kwargs):
 
     elif case == "cos_low_rank":
         fun_torch, X = _build_cos_low_rank(**kwargs)
+
+    elif case == "schaffer":
+        fun_torch, X = _build_schaffer(**kwargs)
+
+    elif case == "ackley":
+        fun_torch, X = _build_ackley(**kwargs)
+
+    elif case == "robot_arm":
+        fun_torch, X = _build_robot_arm(**kwargs)
+
+    elif case == "piston":
+        fun_torch, X = _build_piston(**kwargs)
+
+    elif case == "cos_tree":
+        fun_torch, X = _build_cos_tree(**kwargs)
+
+    elif case == "quartic_sin_collective":
+        fun_torch, X = _build_quartic_sin_collective(**kwargs)
 
     else:
         raise NotImplementedError("Function not implemented.")
