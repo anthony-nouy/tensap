@@ -135,10 +135,10 @@ class PoincareLossVectorSpace:
         """
         projected_loss = deepcopy(self)
         
-        if not(self.basis is None):
+        if not (self.basis is None):
             projected_loss.basis = SubFunctionalBasis(self.basis, sub_basis)
 
-        if not(self.R is None):
+        if not (self.R is None):
             projected_loss.R = sub_basis.T @ self.R @ sub_basis
 
         projected_loss.jac_basis = np.einsum('kil,ij->kjl', self.jac_basis, sub_basis)

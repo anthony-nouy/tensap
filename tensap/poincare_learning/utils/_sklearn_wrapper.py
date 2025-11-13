@@ -3,7 +3,8 @@
 import numpy as np
 from sklearn.base import BaseEstimator
 from tensap.poincare_learning.utils._loss_vector_space import _build_ortho_poly_basis
-from tensap.poincare_learning.poincare_loss_vector_space import PoincareLossVectorSpace, PoincareLossVectorSpaceTruncated
+from tensap.poincare_learning.poincare_loss_vector_space import PoincareLossVectorSpace, \
+    PoincareLossVectorSpaceTruncated
 from tensap.approximation.bases.sub_functional_basis import SubFunctionalBasis
 import logging
 
@@ -96,7 +97,8 @@ class PolynomialFeatureEstimator(BaseEstimator):
         # assume that vector valued always means collective setting
         if jac_u.ndim == 3 and jac_u.shape[1] > 1:
             ploss = PoincareLossVectorSpaceTruncated(
-                jac_u, self.basis.eval_jacobian(X), self.basis, self.R,  self.fit_parameters.get('m'))
+                jac_u, self.basis.eval_jacobian(X), self.basis, self.R, self.fit_parameters.get('m')
+                )
             
         else:
             ploss = PoincareLossVectorSpace(

@@ -121,34 +121,35 @@ def _build_quartic_sin_collective(d=9, mat_lst=[]):
         return out
 
     def fun(x):
-        z1 = g(x[:,:-1])
+        z1 = g(x[:, :-1])
         c = (np.pi / 2) * np.arange(1, n+1) / n
-        z2 = np.sin(c * x[:,[-1]])
+        z2 = np.sin(c * x[:, [-1]])
         out = np.einsum('ki,ki->k', z1 ** 2, z2)
         return out
 
     def fun_jac_1(x):
-        z1 = g(x[:,:-1])
-        dz1 = jac_g(x[:,:-1])
+        z1 = g(x[:, :-1])
+        dz1 = jac_g(x[:, :-1])
         c = (np.pi / 2) * np.arange(1, n+1) / n
-        z2 = np.sin(c * x[:,[-1]])
+        z2 = np.sin(c * x[:, [-1]])
         out = np.einsum('kij,ki,ki->kj', dz1, 2*z1, z2)
         return out
     
     def fun_jac_2(x):
-        z1 = g(x[:,:-1])
+        z1 = g(x[:, :-1])
         c = (np.pi / 2) * np.arange(1, n+1) / n
-        dz2 = c * np.cos(c * x[:,[-1]])
+        dz2 = c * np.cos(c * x[:, [-1]])
         out = np.einsum('ki,ki->k', z1 ** 2, dz2)
         return out[:, None]
 
     def fun_jac(x):
         out = np.zeros((x.shape[0], x.shape[-1]))
-        out[:,:-1] = fun_jac_1(x)
-        out[:,[-1]] = fun_jac_2(x)
+        out[:, :-1] = fun_jac_1(x)
+        out[:, [-1]] = fun_jac_2(x)
         return out
 
     return fun, fun_jac, X
+
 
 def build_benchmark(case, **kwargs):
     """

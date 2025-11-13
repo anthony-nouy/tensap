@@ -229,6 +229,7 @@ def _build_cos_low_rank(d=8):
 
     return fun_torch, X
 
+
 def _build_schaffer(d=7):
 
     X = tensap.RandomVector(tensap.UniformRandomVariable(-1, 1), d)
@@ -239,6 +240,7 @@ def _build_schaffer(d=7):
         return 3 + torch.sum(z)
 
     return fun_torch, X
+
 
 def _build_ackley(d=7):
 
@@ -253,6 +255,7 @@ def _build_ackley(d=7):
 
     return fun_torch, X
 
+
 def _build_robot_arm(d=8):
 
     X = tensap.RandomVector(tensap.UniformRandomVariable(-1, 1), d)
@@ -265,6 +268,7 @@ def _build_robot_arm(d=8):
         return torch.sqrt(u**2 + v**2)
 
     return fun_torch, X
+
 
 def _build_piston(d=6):
 
@@ -288,12 +292,12 @@ def _build_piston(d=6):
         x = x * scaling + shift
         aux = x[4]*x[2]/x[6]
         A = x[1] * x[4] + 19.62*x[0] - x[2] * x[3] / x[1]
-        V = x[1] / (2*x[3]) * (A**2 + 4*x[3] * aux *  x[5] - A)**0.5
+        V = x[1] / (2*x[3]) * (A**2 + 4*x[3] * aux * x[5] - A)**0.5
         out = 2*torch.pi * (x[0] / (x[3] + x[1] * aux * x[5] / V**2))**0.5
         return out
 
-
     return fun_torch, X
+
 
 def _build_cos_tree(d=8):
 
@@ -312,10 +316,11 @@ def _build_cos_tree(d=8):
 
     return fun_torch, X
 
+
 def _build_quartic_sin_collective(d=9, mat_lst=[]):
 
     X = tensap.RandomVector(tensap.UniformRandomVariable(-1, 1), d)
-    
+
     if len(mat_lst) == 0:
         mat_lst = [np.eye(d-1)]
 
@@ -329,12 +334,13 @@ def _build_quartic_sin_collective(d=9, mat_lst=[]):
             zi = (x[:-1].T @ M @ x[:-1])
             zi = zi**2
             c = (torch.pi * (i+1)) / (2 * len(mat_lst))
-            zi *= torch.sin( c * x[-1])
+            zi *= torch.sin(c * x[-1])
             z += zi
         out = z
         return out
 
     return fun_torch, X
+
 
 def build_benchmark_torch(case, **kwargs):
     """
@@ -344,8 +350,8 @@ def build_benchmark_torch(case, **kwargs):
     ----------
     case : str
         The name of the function. Can be 'borehole', 'ishigami,
-        'sin_of_asum', 'sin_squared_norm', 'canonical_rank_2', 'mixture', 'field'
-        'henon_heiles'.
+        'sin_of_asum', 'sin_squared_norm', 'canonical_rank_2', 'mixture',
+        'field', 'henon_heiles'.
     **kwargs
         Parameters of the function.
 
@@ -408,18 +414,18 @@ def build_benchmark_torch(case, **kwargs):
 
     elif case == "ackley":
         fun_torch, X = _build_ackley(**kwargs)
-    
+
     elif case == "robot_arm":
         fun_torch, X = _build_robot_arm(**kwargs)
-    
+
     elif case == "piston":
         fun_torch, X = _build_piston(**kwargs)
 
     elif case == "cos_tree":
         fun_torch, X = _build_cos_tree(**kwargs)
-    
-    elif case == 'quartic_sin_collective':
-        fun_torch , X = _build_quartic_sin_collective(**kwargs)
+
+    elif case == "quartic_sin_collective":
+        fun_torch, X = _build_quartic_sin_collective(**kwargs)
 
     else:
         raise NotImplementedError("Function not implemented.")

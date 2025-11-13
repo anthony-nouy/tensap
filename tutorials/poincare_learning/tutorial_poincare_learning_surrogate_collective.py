@@ -5,7 +5,8 @@ import numpy as np
 import matplotlib.pyplot as plt
 from tensap.poincare_learning.benchmarks.poincare_benchmarks import build_benchmark
 from tensap.poincare_learning.utils._loss_vector_space import _build_ortho_poly_basis
-from tensap.poincare_learning.poincare_loss_vector_space import PoincareLossVectorSpace, PoincareLossVectorSpaceTruncated
+from tensap.poincare_learning.poincare_loss_vector_space import PoincareLossVectorSpace, \
+    PoincareLossVectorSpaceTruncated
 from sklearn.kernel_ridge import KernelRidge
 from sklearn.linear_model import LinearRegression
 from sklearn.preprocessing import PolynomialFeatures
@@ -15,6 +16,7 @@ import logging
 logging.basicConfig(level=logging.INFO)
 
 # %% Function to generate samples
+
 
 def generate_samples(N, ind1, X, fun, jac_fun, basis, R=None):
     x_set = X.lhs_random(N)
@@ -33,6 +35,7 @@ def generate_samples(N, ind1, X, fun, jac_fun, basis, R=None):
 
     return x_set, fun_set, jac_fun_set, basis_set, jac_basis_set, loss_set
 
+
 def generate_samples_tensorized(N1, N2, ind1, X, fun, jac_fun, basis, R=None):
 
     ind2 = np.delete(np.arange(X.ndim()), ind1)
@@ -49,11 +52,11 @@ def generate_samples_tensorized(N1, N2, ind1, X, fun, jac_fun, basis, R=None):
 
     for i in range(N1):
         # x2_set = X2.lhs_random(N2)
-        x_set_i = np.zeros((N2 ,X.ndim()))
+        x_set_i = np.zeros((N2, X.ndim()))
         x_set_i[:, ind1] = x1_set[i]
         x_set_i[:, ind2] = x2_set
         x_set[i*N2:(i+1)*N2] = x_set_i
-        jac_fun_set_tensorized[i,:,:] = jac_fun(x_set_i)[:,ind1]
+        jac_fun_set_tensorized[i, :, :] = jac_fun(x_set_i)[:, ind1]
 
     fun_set = fun(x_set)
     jac_fun_set = jac_fun(x_set)
@@ -66,7 +69,8 @@ def generate_samples_tensorized(N1, N2, ind1, X, fun, jac_fun, basis, R=None):
     if jac_fun_set.ndim == 2:
         jac_fun_set = jac_fun_set[:, None, :]
 
-    loss_set_tensorized = PoincareLossVectorSpaceTruncated(jac_fun_set_tensorized, jac_basis_set, basis, R)
+    loss_set_tensorized = PoincareLossVectorSpaceTruncated(
+        jac_fun_set_tensorized, jac_basis_set, basis, R)
 
     return x_set, fun_set, jac_fun_set_tensorized, basis_set, jac_basis_set, loss_set_tensorized
 
@@ -125,6 +129,7 @@ def build_mat_lst_1(dim, n_mat):
         mat_lst.append(mat)
     return mat_lst
 
+
 def build_mat_lst_2(dim, n_mat):
     mat_lst = [np.eye(dim)]
     for i in range(1, n_mat):
@@ -134,6 +139,7 @@ def build_mat_lst_2(dim, n_mat):
         mat_lst.append(mat)
     return mat_lst
 
+
 def build_mat_lst_3(dim, n_mat):
     mat_lst = []
     for i in range(n_mat):
@@ -142,6 +148,7 @@ def build_mat_lst_3(dim, n_mat):
         mat = mat / np.linalg.norm(mat, ord=2)
         mat_lst.append(mat)
     return mat_lst
+
 
 def build_mat_lst(dim, n_mat, which=1):
     if which == 1:
@@ -156,7 +163,7 @@ def build_mat_lst(dim, n_mat, which=1):
 
 # %% Definition of the benchmark
 
-# build list of matrices 
+
 d = 8 + 1
 n_mat = 3
 ind1 = np.arange(d-1)
@@ -200,7 +207,8 @@ x_test, u_test, _, _, _, loss_test = generate_samples(
 m = len(mat_lst) - 0
 loss_train_tensorized.truncate(m)
 G_surr, _, _ = loss_train_tensorized.minimize_surrogate(m=m)
-# G_surr, _, _ = loss_train_tensorized.minimize_pymanopt(G0=G_surr, optimizer_kwargs={'max_iterations':100})
+# G_surr, _, _ = loss_train_tensorized.minimize_pymanopt(G0=G_surr, 
+#   optimizer_kwargs={'max_iterations':100})
 G_surr = np.linalg.svd(G_surr, full_matrices=False)[0]
 
 # %% Evaluate performances
@@ -238,8 +246,8 @@ plt.show()
 # %% Fit regressor with sklearn
 
 # add the last parameter as a feature
-zy_surr_train = np.hstack([z_surr_train, x_train[:,ind2]])
-zy_surr_test = np.hstack([z_surr_test, x_test[:,ind2]])
+zy_surr_train = np.hstack([z_surr_train, x_train[:, ind2]])
+zy_surr_test = np.hstack([z_surr_test, x_test[:, ind2]])
 
 # shuffle = np.random.permutation(len(zy_surr_train))
 shuffle = np.arange(len(zy_surr_train))
@@ -292,7 +300,8 @@ x_train, u_train, _, _, _, loss_train = generate_samples(
     N1_train*N2_train, ind1, X, u, jac_u, basis, R)
 
 # %% minimize the poincare based loss function
-G_pmo, _, _ = loss_train.minimize_pymanopt(m=m, init_method='active_subspace', optimizer_kwargs={'max_iterations':100})
+G_pmo, _, _ = loss_train.minimize_pymanopt(
+    m=m, init_method='active_subspace', optimizer_kwargs={'max_iterations': 100})
 
 # %% Evaluate performances
 
@@ -304,15 +313,17 @@ print(f"Poincare loss on test set:   {loss_test.eval(G_pmo):.3e}")
 # %% Fit regressor with sklearn
 
 # add the last parameter as a feature
-zy_pmo_train = np.hstack([basis.eval(x_train[:, ind1]) @ G_pmo, x_train[:,ind2]])
-zy_pmo_test = np.hstack([basis.eval(x_test[:, ind1]) @ G_pmo, x_test[:,ind2]])
+zy_pmo_train = np.hstack([basis.eval(x_train[:, ind1]) @ G_pmo, x_train[:, ind2]])
+zy_pmo_test = np.hstack([basis.eval(x_test[:, ind1]) @ G_pmo, x_test[:, ind2]])
 
 regressor_pmo = fit_poly_regressor(zy_pmo_train, u_train)
+
 
 def f_pmo(z):
     return regressor_pmo.predict(z)
 
 # %% Evaluate performances
+
 
 y_train = f_pmo(zy_pmo_train).reshape(u_train.shape)
 err_train = np.sqrt(np.mean((y_train - u_train)**2))
