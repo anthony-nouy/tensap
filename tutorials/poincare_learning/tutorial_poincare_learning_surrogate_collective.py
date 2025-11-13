@@ -45,7 +45,7 @@ def generate_samples_tensorized(N1, N2, ind1, X, fun, jac_fun, basis, R=None):
 
     x1_set = X1.lhs_random(N1)
     x2_set = X2.lhs_random(N2)
-    
+
     x_set = np.zeros((N1 * N2, X.ndim()))
     jac_basis_set = basis.eval_jacobian(x1_set)
     jac_fun_set_tensorized = np.zeros((N1, N2, X.ndim() - 1))
@@ -174,7 +174,7 @@ mat_lst = build_mat_lst(d - 1, n_mat, which=2)
 try:
     from tensap.poincare_learning.benchmarks.poincare_benchmarks_torch import build_benchmark_torch
     u, jac_u, X = build_benchmark_torch("quartic_sin_collective", d=d, mat_lst=mat_lst)
-    
+
 
 except ImportError:
     u, jac_u, X = build_benchmark("quartic_sin_collective", d=d, mat_lst=mat_lst)
@@ -207,7 +207,7 @@ x_test, u_test, _, _, _, loss_test = generate_samples(
 m = len(mat_lst) - 0
 loss_train_tensorized.truncate(m)
 G_surr, _, _ = loss_train_tensorized.minimize_surrogate(m=m)
-# G_surr, _, _ = loss_train_tensorized.minimize_pymanopt(G0=G_surr, 
+# G_surr, _, _ = loss_train_tensorized.minimize_pymanopt(G0=G_surr,
 #   optimizer_kwargs={'max_iterations':100})
 G_surr = np.linalg.svd(G_surr, full_matrices=False)[0]
 
