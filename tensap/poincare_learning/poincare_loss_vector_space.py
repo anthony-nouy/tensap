@@ -112,11 +112,11 @@ class PoincareLossVectorSpace:
     def minimize_surrogate_greedy(self, m_max, optimize_poincare=False, tol=1e-7, pmo_kwargs={}):
         return _minimize_surrogate_greedy(
             self.jac_u, self.jac_basis, m_max, self.R, optimize_poincare, tol, pmo_kwargs)
-    
+
     def project_basis(self, sub_basis):
         """
-        Create a new instance of same type, but where the sub basis of 
-        the original basis. This has impact on the attributes `basis`, 
+        Create a new instance of same type, but where the sub basis of
+        the original basis. This has impact on the attributes `basis`,
         `jac_basis` and `R`.
 
         Parameters
@@ -134,7 +134,7 @@ class PoincareLossVectorSpace:
 
         """
         projected_loss = deepcopy(self)
-        
+
         if not (self.basis is None):
             projected_loss.basis = SubFunctionalBasis(self.basis, sub_basis)
 
@@ -150,10 +150,8 @@ class PoincareLossVectorSpaceTruncated(PoincareLossVectorSpace):
     """
     Class PoincareLossVectorSpaceTruncated.
     This subclass of PoincareLossVectorSpace, which just includes
-    an additional projection step of jac_u[k,:,:] onto its dominant 
-    singular modes.
-    The existing methods of PoincareLossVectorSpace are then applied
-    on these projected jacobians.
+    an additional projection step of jac_u[k,:,:] onto its dominant singular modes.
+    The existing methods of PoincareLossVectorSpace are then applied on these projected jacobians.
 
     Attributes
     ----------
@@ -173,8 +171,7 @@ class PoincareLossVectorSpaceTruncated(PoincareLossVectorSpace):
         The default is None, corresponding to identity matrix.
     m : int, optional
         The number of dominant modes to keep.
-        If m = d, then there is no difference with the 
-        PoincareLossVectorSpace class.
+        If m = d, then there is no difference with the PoincareLossVectorSpace class.
         The default is None, corresponding to m = d.
     """
 
@@ -183,15 +180,15 @@ class PoincareLossVectorSpaceTruncated(PoincareLossVectorSpace):
         assert jac_u.ndim > 1
         assert jac_u.shape[0] == jac_basis.shape[0]
         assert jac_u.shape[-1] == jac_basis.shape[-1]
-        
+
         self.jac_u_full = jac_u
-        
+
         if jac_u.ndim == 2:
             jac_u = jac_u[:, None, :]
 
         if m is None:
             m = jac_u.shape[2]
-        
+
         self.m = m
 
         if m < jac_u.shape[1]:
@@ -199,7 +196,7 @@ class PoincareLossVectorSpaceTruncated(PoincareLossVectorSpace):
 
         else:
             jac_u_truncated = jac_u.copy()
-        
+
         super().__init__(jac_u_truncated, jac_basis, basis, R)
 
     def truncate(self, m):
@@ -216,6 +213,5 @@ class PoincareLossVectorSpaceTruncated(PoincareLossVectorSpace):
         for i, ju in enumerate(jac_u):
             V = np.linalg.svd(ju.T)[0][:, :m]
             jac_u_truncated[i] = ju @ V @ V.T
-        
+
         return jac_u_truncated
-    

@@ -134,7 +134,7 @@ def _build_quartic_sin_collective(d=9, mat_lst=[]):
         z2 = np.sin(c * x[:, [-1]])
         out = np.einsum('kij,ki,ki->kj', dz1, 2 * z1, z2)
         return out
-    
+
     def fun_jac_2(x):
         z1 = g(x[:, :-1])
         c = (np.pi / 2) * np.arange(1, n + 1) / n

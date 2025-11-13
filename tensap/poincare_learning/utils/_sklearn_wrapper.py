@@ -93,13 +93,13 @@ class PolynomialFeatureEstimator(BaseEstimator):
 
         """
         self.__build_basis()
-        
+
         # assume that vector valued always means collective setting
         if jac_u.ndim == 3 and jac_u.shape[1] > 1:
             ploss = PoincareLossVectorSpaceTruncated(
-                jac_u, self.basis.eval_jacobian(X), self.basis, self.R, self.fit_parameters.get('m')
-                )
-            
+                jac_u, self.basis.eval_jacobian(X), self.basis, self.R,
+                self.fit_parameters.get('m'))
+
         else:
             ploss = PoincareLossVectorSpace(
                 jac_u, self.basis.eval_jacobian(X), self.basis, self.R)
