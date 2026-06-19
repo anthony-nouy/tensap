@@ -13,9 +13,10 @@ class TSpaceOperators(TSpace):
 
     def __init__(self, spaces, is_orth=False):
         super().__init__(spaces, is_orth)
-        if not np.all(self.dims_in > 1):
+        if np.any(self.dims_in == 0):
             raise ValueError(
-                "TSpaceOperators requires dims_in > 1 for all dimensions."
+                "TSpaceOperators requires dims_in >= 1 "
+                "for all dimensions."
             )
 
     # ---- Operator-specific methods ----
@@ -89,8 +90,27 @@ class TSpaceOperators(TSpace):
         """Convert a TSpaceOperators into a TSpaceVectors.
 
         Each basis operator is flattened into a column vector.
+        The result has ``dims_out = N_out * N_in`` per dimension.
+
+        Parameters
+        ----------
+        dims : list of int, optional
+            Dimensions to vectorize. Defaults to all.
+
+        Returns
+        -------
+        TSpaceVectors
         """
-        raise NotImplementedError("TSpaceOperators.vectorize")
+        if dims is None:
+            dims = range(self.order)
+
+        new_spaces = list(self.spaces)
+        for mu in dims:
+            n_out, n_in, r = self.spaces[mu].shape
+            vecs = self.spaces[mu].reshape(n_out * n_in, r)
+            new_spaces[mu] = vecs[:, None, :]
+
+        return TSpaceVectors(new_spaces, is_orth=self.is_orth)
 
     # ---- Static constructors ----
 

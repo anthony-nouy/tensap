@@ -63,9 +63,8 @@ class TSpace:
         return sum(space.size for space in self.spaces)
 
     def sparse_storage(self):
-        raise NotImplementedError(
-            "TSpace.sparse_storage is not implemented"
-        )
+        """Return the number of non-zero entries."""
+        return sum(np.count_nonzero(s) for s in self.spaces)
 
     def representation_rank(self):
         """Return the representation rank (dimensions of subspaces)."""
