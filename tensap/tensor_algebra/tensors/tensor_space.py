@@ -15,7 +15,8 @@ class TSpace:
     """
 
     def __init__(self, spaces, is_orth=False):
-        assert isinstance(spaces, (list, tuple)), "spaces must be a list"
+        if not isinstance(spaces, (list, tuple)):
+            raise TypeError("spaces must be a list or tuple")
 
         processed_spaces = []
         for x in spaces:
@@ -31,10 +32,11 @@ class TSpace:
         self.is_orth = is_orth
         self._update_properties()
 
-        self._is_ts_vector = np.all(self.dims_in == 1)
-        self._is_ts_operator = np.all(self.dims_in > 1)
-        assert self._is_ts_vector or self._is_ts_operator, \
-            "All input dimension must be 1 (vectors) or all be > 1 (operator)"
+        is_vector = np.all(self.dims_in == 1)
+        is_operator = np.all(self.dims_in > 1)
+        if not (is_vector or is_operator):
+            raise ValueError("All input dimension must be 1 (vectors)"
+                             " or all be > 1 (operator)")
 
     def _update_properties(self):
         self.order = len(self.spaces)
@@ -65,13 +67,13 @@ class TSpace:
         TSpace
             A new TSpaceOperator with concatenated spaces.
         """
-        assert self.order == other_tspace.order, "The spaces must have the same order"
+        if self.order != other_tspace.order:
+            raise ValueError("The spaces must have the same order")
 
-        # check of physical dimension compatibility
-        assert (np.array_equal(self.dims_out, other_tspace.dims_out),
-                "The input dims must coincide.")
-        assert (np.array_equal(self.dims_in,other_tspace.dims_in),
-                "The output dims must coincide.")
+        if not np.array_equal(self.dims_out, other_tspace.dims_out):
+            raise ValueError("The output dimensions must coincide.")
+        if not np.array_equal(self.dims_in, other_tspace.dims_in):
+            raise ValueError("The input dimensions must coincide.")
 
         new_spaces = []
         for mu in range(self.order):
@@ -109,8 +111,16 @@ class TSpace:
         else:
             dims = np.atleast_1d(dims)
 
-        new_spaces = list(self.spaces)
+        for mu in dims:
+            if self.dims_in[mu] != other_space.dims_out[mu]:
+                raise ValueError(
+                    f"Dimension mismatch at dim {mu}: "
+                    f"self.dims_in[{mu}]={self.dims_in[mu]} != "
+                    f"other.dims_out[{mu}]={other_space.dims_out[mu]}. "
+                    "For mtimes, self must be an operator space and "
+                    "dims_in(self) must equal dims_out(other).")
 
+        new_spaces = []
         for mu in dims:
             # self.spaces[mu]        : (N1_out, N1_in, R1)
             # other_space.spaces[mu] : (N2_out, N2_in, R2)
@@ -123,7 +133,7 @@ class TSpace:
                             self.spaces[mu],
                             other_space.spaces[mu])
             # 2. lexicographic order: flatten the rank grid
-            new_spaces[mu] = res.reshape(res.shape[0], res.shape[1], -1)
+            new_spaces.append(res.reshape(res.shape[0], res.shape[1], -1))
 
         return TSpace(new_spaces, is_orth=False)
 
@@ -152,10 +162,12 @@ class TSpace:
 
         M = []
         for mu in dims:
-            assert self.dims_out[mu] == other_space.dims_out[mu], \
-                f"Output dimensions mismatch at dim {mu}."
-            assert self.dims_in[mu] == other_space.dims_in[mu], \
-                f"Input dimensions mismatch at dim {mu}."
+            if self.dims_out[mu] != other_space.dims_out[mu]:
+                raise ValueError(
+                    f"Output dimensions mismatch at dim {mu}.")
+            if self.dims_in[mu] != other_space.dims_in[mu]:
+                raise ValueError(
+                    f"Input dimensions mismatch at dim {mu}.")
 
             # self.spaces[mu]        : (N_out, N_in, R1)
             # other_space.spaces[mu] : (N_out, N_in, R2)
@@ -196,19 +208,23 @@ class TSpace:
         else:
             dims = np.atleast_1d(dims)
 
-        if isinstance(matrices, np.ndarray): matrices = [matrices]
+        if isinstance(matrices, np.ndarray):
+            matrices = [matrices]
 
-        assert len(matrices) == len(dims), \
-            "The number of matrices must match the number of dimensions to transform."
+        if len(matrices) != len(dims):
+            raise ValueError(
+                "The number of matrices must match the number of "
+                "dimensions to transform.")
 
         new_spaces = list(self.spaces)
 
         for idx, mu in enumerate(dims):
             M = matrices[idx]
 
-            # ranks compatibility
-            assert M.shape[1] == self.ranks[mu], \
-                f"Matrix shape {M.shape} incompatible with rank {self.ranks[mu]} at dim {mu}."
+            if M.shape[1] != self.ranks[mu]:
+                raise ValueError(
+                    f"Matrix shape {M.shape} incompatible with "
+                    f"rank {self.ranks[mu]} at dim {mu}.")
 
             # self.spaces[mu] : (N_out, N_in, R_old)
             # M               : (R_new, R_old)
@@ -228,14 +244,41 @@ class TSpace:
         Given a matrix M of shape (R_old, R_new), computes the new space
         components C such that: C_{k'} = sum_k A_{k} M_{k, k'}
 
-        This is mathematically equivalent to matrix_times_space with the transposed matrix.
+        This is mathematically equivalent to matrix_times_space with the
+        transposed matrix.
         """
+        if dims is None:
+            dims = range(self.order)
+        else:
+            dims = np.atleast_1d(dims)
+
         if isinstance(matrices, np.ndarray):
             matrices = [matrices]
 
-        transposed_matrices = [M.T for M in matrices]
+        if len(matrices) != len(dims):
+            raise ValueError(
+                "The number of matrices must match the number of "
+                "dimensions to transform.")
 
-        return self.matrix_times_space(transposed_matrices, dims=dims)
+        new_spaces = list(self.spaces)
+
+        for idx, mu in enumerate(dims):
+            M = matrices[idx]
+
+            if M.shape[0] != self.ranks[mu]:
+                raise ValueError(
+                    f"Matrix shape {M.shape} incompatible with "
+                    f"rank {self.ranks[mu]} at dim {mu}.")
+
+            # self.spaces[mu] : (N_out, N_in, R_old)
+            # M               : (R_old, R_new)
+            # Result          : (N_out, N_in, R_new)
+
+            # o = out, i = in, k = R_old, p = R_new
+            new_spaces[mu] = np.einsum('oik, kp -> oip',
+                                       self.spaces[mu], M)
+
+        return TSpace(new_spaces, is_orth=False)
 
     def eval_in_space(self, dim, coefs):
         """
@@ -258,10 +301,12 @@ class TSpace:
         """
         coefs = np.asarray(coefs)
 
-        assert coefs.ndim == 1, "The coefficients 'c' must be a 1D array."
-        assert len(coefs) == self.ranks[dim], \
-            (f"Expected {self.ranks[dim]} coefficients,"
-             f" got {len(coefs)} for dimension {dim}.")
+        if coefs.ndim != 1:
+            raise ValueError("The coefficients 'c' must be a 1D array.")
+        if len(coefs) != self.ranks[dim]:
+            raise ValueError(
+                f"Expected {self.ranks[dim]} coefficients, "
+                f"got {len(coefs)} for dimension {dim}.")
 
         # self.spaces[dim]: (N_out, N_in, Rank)
         # c               : (Rank,)
