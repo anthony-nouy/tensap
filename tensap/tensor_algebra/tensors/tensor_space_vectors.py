@@ -154,20 +154,6 @@ class TSpaceVectors(TSpace):
 
         return TSpaceOperators(new_spaces, is_orth=False)
 
-    def to_operators(self):
-        """Convert a TSpaceVectors into a TSpaceOperators.
-
-        Each basis vector becomes a column operator of shape ``(N, 1)``.
-        The data is identical; the type changes.
-
-        Returns
-        -------
-        TSpaceOperators
-        """
-        from .tensor_space_operators import TSpaceOperators
-
-        return TSpaceOperators(self.spaces, is_orth=self.is_orth)
-
     # ---- Static constructors ----
 
     @staticmethod
