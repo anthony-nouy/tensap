@@ -253,32 +253,51 @@ class TSpace:
             )
         return np.einsum("oik, k -> oi", self.spaces[dim], coefs)
 
-    def orth(self, dims=None):
-        """Orthonormalize bases via QR decomposition.
+    def orth(self, dims=None, tol=1e-16):
+        """Orthonormalize bases via SVD of Gram matrices
+
+        Parameters
+        ----------
+        dims : list of int, optional
+            Dimensions to orthogonalize. Defaults to all.
+        tol : float, optional
+            Tolerance for rank truncation. Defaults to 1e-16.
 
         Returns
         -------
         TSpace
             Space with orthonormalized bases.
         list of numpy.ndarray
-            Upper triangular matrices R from QR for each dimension.
+            Transformation matrices M such that ``new = old @ M`` for each
+            dimension.
         """
         if dims is None:
             dims = range(self.order)
         else:
             dims = np.atleast_1d(dims)
 
+        N = self.dot(self, dims)
         new_spaces = list(self.spaces)
-        R_matrices = []
-        for mu in dims:
-            n_out, n_in, rank = self.spaces[mu].shape
-            mat_2d = self.spaces[mu].reshape(n_out * n_in, rank)
-            Q, R = np.linalg.qr(mat_2d)
-            new_spaces[mu] = Q.reshape(n_out, n_in, rank)
-            R_matrices.append(R)
+        M_matrices = []
+        for i, mu in enumerate(dims):
+            L, d, _ = np.linalg.svd(N[i], full_matrices=False)
+            err = np.sqrt(1 - np.cumsum(d ** 2) / np.sum(d ** 2))
+            m = np.where(err < tol)[0]
+            if len(m) == 0:
+                m = self.ranks[mu]
+            else:
+                m = m[0] + 1
+            L = L[:, :m]
+            d = d[:m]
+            xu = L @ np.diag(1.0 / np.sqrt(d))
+            M_matrices.append(np.diag(np.sqrt(d)) @ L.T)
+            new_spaces[mu] = np.einsum("oik, kp -> oip",
+                                       self.spaces[mu], xu)
 
-        is_fully_orth = len(dims) == self.order
-        return self.__class__(new_spaces, is_orth=is_fully_orth), R_matrices
+        result = self.__class__(new_spaces, is_orth=False)
+        if len(dims) == self.order:
+            result.is_orth = True
+        return result, M_matrices
 
     # ---- Dimension manipulation ----
 
