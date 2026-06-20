@@ -80,13 +80,14 @@ class TSpace:
             raise ValueError("The input dimensions must coincide.")
 
         new_spaces = [
-            np.concatenate((s, o), axis=2)
-            for s, o in zip(self.spaces, other.spaces)
+            np.concatenate((s1, s2), axis=2)
+            for s1, s2 in zip(self.spaces, other.spaces)
         ]
         return self.__class__(new_spaces, is_orth=False)
 
     def dot(self, other, dims=None):
-        """Compute Gram matrices via Frobenius inner product.
+        """For each dimension in dims, compute Gram matrices via Frobenius
+        inner product.
 
         Parameters
         ----------
@@ -115,7 +116,7 @@ class TSpace:
                 )
             M.append(
                 np.einsum(
-                    "oix, oiy -> xy",
+                    "ijk, ijl -> kl",
                     self.spaces[mu],
                     other.spaces[mu],
                 )
@@ -123,7 +124,40 @@ class TSpace:
         return M
 
     def matrix_times_space(self, matrices, dims=None):
-        """Left-multiply bases by matrices: C_{k'} = sum_k M_{k',k} A_k."""
+        """Left-multiply bases along the **physical** dimension.
+
+        For each dimension ``mu``, contracts the output axis (axis 0) of
+        ``space[mu]`` with the *second* axis of ``M``::
+
+            new_space[p, i, k] = sum_o M[p, o] * space[o, i, k]
+
+        ── Shape semantics ──────────────────────────────────
+        space[mu] shape :  (N_out, N_in, R)
+        M          shape :  (K, N_out)
+        result     shape :  (K, N_in, R)
+
+        ⇒ **Physical** dim changes (N_out → K), **rank** unchanged (R).
+
+        ── Analogy ─────────────────────────────────────────
+        If space[mu] were 2D ``(N_out, R)``, this would be ``M @ space``.
+        Typically used to evaluate the tensor against matrices
+        (e.g. tensor_matrix_product).
+
+        See also
+        --------
+        space_times_matrix : right-multiply the *rank* dimension instead.
+
+        Parameters
+        ----------
+        matrices : list of numpy.ndarray
+            Each matrix ``M`` has shape ``(new_phys_dim, old_phys_dim)``.
+        dims : list of int, optional
+            Dimensions to transform. Defaults to all.
+
+        Returns
+        -------
+        TSpace
+        """
         if dims is None:
             dims = range(self.order)
         else:
@@ -141,18 +175,40 @@ class TSpace:
         new_spaces = list(self.spaces)
         for idx, mu in enumerate(dims):
             M = matrices[idx]
-            if M.shape[1] != self.ranks[mu]:
+            if M.shape[1] != self.dims_out[mu]:
                 raise ValueError(
                     f"Matrix shape {M.shape} incompatible with "
-                    f"rank {self.ranks[mu]} at dim {mu}."
+                    f"output dimension {self.dims_out[mu]} at dim {mu}."
                 )
-            new_spaces[mu] = np.einsum("oik, pk -> oip",
-                                       self.spaces[mu], M)
+            new_spaces[mu] = np.einsum("po, oik -> pik",
+                                       M, self.spaces[mu])
 
         return self.__class__(new_spaces, is_orth=False)
 
     def space_times_matrix(self, matrices, dims=None):
-        """Right-multiply bases by matrices: C_{k'} = sum_k A_k M_{k,k'}."""
+        """Right-multiply bases along the **rank** dimension.
+
+        For each dimension ``mu``, contracts the rank axis (axis 2) of
+        ``space[mu]`` with the *first* axis of ``M``::
+
+            new_space[o, i, p] = sum_k space[o, i, k] * M[k, p]
+
+        ── Shape semantics ──────────────────────────────────
+        space[mu] shape :  (N_out, N_in, R)
+        M          shape :  (R, R')
+        result     shape :  (N_out, N_in, R')
+
+        ⇒ **Physical** dim unchanged (N_out), **rank** changes (R → R').
+
+        ── Analogy ─────────────────────────────────────────
+        If space[mu] were 2D ``(N_out, R)``, this would be ``space @ M``.
+        Typically used to change the basis / orthogonalise subspaces
+        (e.g. orth, normalize_basis).
+
+        See also
+        --------
+        matrix_times_space : left-multiply the *physical* dimension instead.
+        """
         if dims is None:
             dims = range(self.order)
         else:
