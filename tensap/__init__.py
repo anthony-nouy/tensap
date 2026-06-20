@@ -26,11 +26,15 @@ __version__ = "1.8"
 from .linear_algebra.magic_indices import magic_indices
 
 from .tensor_algebra.tensors.dimension_tree import DimensionTree
+from .tensor_algebra.tensors.tensor_space import TSpace
+from .tensor_algebra.tensors.tensor_space_vectors import TSpaceVectors
+from .tensor_algebra.tensors.tensor_space_operators import TSpaceOperators
 from .tensor_algebra.tensors.full_tensor import FullTensor
 from .tensor_algebra.tensors.tree_based_tensor import TreeBasedTensor
 from .tensor_algebra.tensors.canonical_tensor import CanonicalTensor
 from .tensor_algebra.tensors.diagonal_tensor import DiagonalTensor
 from .tensor_algebra.tensors.sparse_tensor import SparseTensor
+from .tensor_algebra.tensors.tucker_like_operator import TuckerLikeTensor
 from .tensor_algebra.tools.truncator import Truncator
 
 from .tools.utils import *

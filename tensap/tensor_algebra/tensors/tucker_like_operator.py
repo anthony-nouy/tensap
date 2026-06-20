@@ -16,69 +16,59 @@ class TuckerLikeTensor:
 
     Attributes
     ----------
-    core : tensap.FullTensor, tensap.TreeBasedTensor, or tensap.SparseTensor
+    core : tensap.FullTensor, tensap.TreeBasedTensor, tensap.DiagonalTensor,
+           or tensap.SparseTensor
         The core of the Tucker tensor.
-    space : list of numpy.ndarray
-        The bases of the subspaces (factor matrices) for each dimension.
+    space : tensap.TSpaceVectors or tensap.TSpaceOperators
+        The tensor product space (factor matrices).
     order : int
         The order of the tensor.
     shape : numpy.ndarray
         The shape of the tensor in the full physical space.
     ranks : numpy.ndarray
-        The Tucker ranks (the shape of the core tensor).
+        The Tucker ranks (subspace dimensions).
     is_orth : bool
-        Boolean indicating if the representation of the tensor is orthogonal
-        (i.e., if the factor matrices in `space` are orthogonal).
+        Boolean indicating if the representation of the tensor is orthogonal.
     """
 
-    def __init__(self, space, core):
+    def __init__(self, core, space=None):
         """
         Constructor for the class TuckerLikeTensor.
 
         Parameters
         ----------
-        space : list of numpy.ndarray
-            The tensor space (factor matrices).
-        core : tensap.FullTensor, tensap.TreeBasedTensor, etc.
-            The core tensor.
+        core : tensap.FullTensor, tensap.TreeBasedTensor, tensap.DiagonalTensor,
+               or numpy.ndarray
+            The core tensor. If a numpy.ndarray, cast to FullTensor.
+        space : tensap.TSpaceVectors, tensap.TSpaceOperators, or list
+            The tensor product space. If a list of arrays, cast to
+            TSpaceVectors.
         """
-        assert isinstance(space, (list, tuple)), "The input space must be a list of arrays."
-
-        # In tensap, if core is given as a numpy array, we cast it to FullTensor
         if isinstance(core, np.ndarray):
             core = tensap.FullTensor(core)
-
-        self.space = list(space)
         self.core = core
+
+        if isinstance(space, (list, tuple)):
+            space = tensap.TSpaceVectors(space)
+        self.space = space
+
         self._update_properties()
 
     def _update_properties(self):
-        """Updates shape, order, and orthogonality flags."""
-        self.order = len(self.space)
-        self.shape = np.array([x.shape[0] for x in self.space])
-        self.ranks = np.array([x.shape[1] for x in self.space])
-
-        # A Tucker tensor is orthogonal if its core is orthogonal and its space is orthonormal
+        """Update order, shape, ranks, and orthogonality flags."""
+        self.order = self.space.order
+        self.shape = self.space.dims_out.copy()
+        self.ranks = self.space.ranks.copy()
         self.is_orth = self.core.is_orth and self.space.is_orth
 
-    def __repr__(self):
-        return (
-                "<{} TuckerLikeTensor:\n"
-                + "\torder = {},\n"
-                + "\tshape = {},\n"
-                + "\tranks = {},\n"
-                + "\tis_orth = {}>"
-        ).format(
-            "x".join(map(str, self.shape)),
-            self.order,
-            self.shape,
-            self.ranks,
-            self.is_orth,
-        )
+    # ---- Convenience properties ----
 
-    def __neg__(self):
-        """Return the negative of the tensor."""
-        return TuckerLikeTensor(list(self.space), -self.core)
+    @property
+    def sz(self):
+        """Alias for shape (MATLAB compatibility)."""
+        return self.shape
+
+    # ---- Conversion ----
 
     def full(self):
         """
@@ -89,8 +79,8 @@ class TuckerLikeTensor:
         tensap.FullTensor
             The Tucker tensor reconstructed as a dense tensor.
         """
-        # We rely on the core's ability to contract with matrices (FullTensor does this)
-        return self.core.tensor_matrix_product(self.space)
+        mats = [s.reshape(-1, s.shape[2]) for s in self.space.spaces]
+        return self.core.tensor_matrix_product(mats).full()
 
     def numpy(self):
         """
@@ -98,32 +88,84 @@ class TuckerLikeTensor:
         """
         return self.full().numpy()
 
-    def orth(self):
-        """
-        Orthogonalize the TuckerLikeTensor.
-
-        Performs a QR decomposition on each factor matrix. The R matrices
-        are absorbed into the core tensor.
+    def tree_based_tensor(self):
+        """Convert into a TreeBasedTensor.
 
         Returns
         -------
-        TuckerLikeTensor
-            The orthogonalized tensor.
+        tensap.TreeBasedTensor
         """
-        qr_decomps = [np.linalg.qr(x) for x in self.space]
-        self.space = [q for q, r in qr_decomps]
-        M = [r for q, r in qr_decomps]
+        if isinstance(self.space, tensap.TSpaceOperators):
+            raise NotImplementedError(
+                "Method not implemented for TSpaceOperators."
+            )
+        if isinstance(self.core, tensap.TreeBasedTensor):
+            x = self.core
+            x.tensors[x.tree.dim2ind] = self.space.spaces
+            return x
+        elif isinstance(self.core, tensap.FullTensor):
+            tree = tensap.DimensionTree.trivial(self.order)
+            tensors = [tensap.FullTensor(self)]
+            for dim in range(self.order):
+                mat = self.space.spaces[dim].reshape(
+                    self.shape[dim], self.ranks[dim]
+                )
+                tensors.append(tensap.FullTensor(mat))
+            return tensap.TreeBasedTensor(tensors, tree)
+        elif isinstance(self.core, tensap.DiagonalTensor):
+            from functools import reduce
+            x = reduce(lambda a, b: a + b, self.space.spaces)
+            # TODO: proper DiagonalTensor case
+            raise NotImplementedError(
+                "DiagonalTensor core to TreeBasedTensor not yet implemented."
+            )
+        else:
+            raise TypeError(
+                f"Unsupported core type: {type(self.core)}"
+            )
 
-        # Absorb the R matrices into the core
-        self.core = self.core.tensor_matrix_product(M)
+    # ---- Unary operators ----
 
-        # Optionally orthogonalize the core itself (if the core format supports it)
-        if hasattr(self.core, 'orth'):
-            self.core = self.core.orth()[0]
+    def __neg__(self):
+        """Return the negative of the tensor."""
+        return TuckerLikeTensor(-self.core, self.space)
 
-        self.is_orth = True
-        self.update_properties()
-        return self
+    def __abs__(self):
+        return TuckerLikeTensor(abs(self.core), self.space)
+
+    # ---- Arithmetic operators ----
+
+    def __add__(self, other):
+        if isinstance(other, TuckerLikeTensor):
+            new_core = self.core.cat(other.core)
+            new_space = self.space.cat(other.space)
+            return TuckerLikeTensor(new_core, new_space)
+        return NotImplemented
+
+    def __radd__(self, other):
+        if other == 0:
+            return self
+        return NotImplemented
+
+    def __sub__(self, other):
+        if isinstance(other, TuckerLikeTensor):
+            return self + (-other)
+        return NotImplemented
+
+    def __mul__(self, other):
+        if np.isscalar(other):
+            return TuckerLikeTensor(self.core * other, self.space)
+        return NotImplemented
+
+    def __rmul__(self, other):
+        return self * other
+
+    def __truediv__(self, other):
+        if np.isscalar(other):
+            return TuckerLikeTensor(self.core / other, self.space)
+        return NotImplemented
+
+    # ---- Core operations ----
 
     def dot(self, tensor_2):
         """
@@ -136,65 +178,430 @@ class TuckerLikeTensor:
         Returns
         -------
         float
-            The inner product.
         """
-        assert isinstance(tensor_2, TuckerLikeTensor), "Argument must be a TuckerLikeTensor."
-        # M_k = (U_k)^T * V_k
-        matrices = [np.matmul(x.T, y) for x, y in zip(self.space, tensor_2.space)]
-
-        # <X, Y> = <Core_X, Core_Y x_1 M_1 ... x_d M_d>
-        core_2_projected = tensor_2.core.tensor_matrix_product(matrices)
+        assert isinstance(tensor_2, TuckerLikeTensor), \
+            "Argument must be a TuckerLikeTensor."
+        M = self.space.dot(tensor_2.space)
+        core_2_projected = tensor_2.core.tensor_matrix_product(M)
         return self.core.dot(core_2_projected)
 
+    def dot_with_rank_one_metric(self, tensor_2, matrices):
+        """
+        Weighted inner product: dot(self, times_matrix(tensor_2, matrices)).
+
+        Parameters
+        ----------
+        tensor_2 : TuckerLikeTensor
+        matrices : list of numpy.ndarray
+
+        Returns
+        -------
+        float
+        """
+        tmp = tensor_2.tensor_matrix_product(matrices)
+        return self.dot(tmp)
+
     def norm(self):
-        """
-        Compute the canonical norm of the TuckerLikeTensor.
-        """
+        """Compute the canonical Frobenius norm."""
         if self.is_orth:
             return self.core.norm()
         else:
             return np.sqrt(np.abs(self.dot(self)))
 
+    def orth(self):
+        """
+        Orthogonalize the TuckerLikeTensor.
+
+        Orthogonalizes the factor matrices (TSpace) via SVD of the Gram
+        matrix and absorbs the transformation into the core.
+        (Matches MATLAB behaviour: the core itself is not re-orthogonalized.)
+
+        Returns
+        -------
+        TuckerLikeTensor
+            The orthogonalized tensor (self, modified in-place).
+        """
+        self.space, M = self.space.orth()
+        self.core = self.core.tensor_matrix_product(M)
+        self._update_properties()
+        return self
+
+    # ---- Storage ----
+
     def storage(self):
-        """
-        Return the storage complexity.
-        """
-        space_storage = sum(x.size for x in self.space)
-        return space_storage + self.core.storage()
+        """Return the storage complexity."""
+        return self.space.storage() + self.core.storage()
 
     def sparse_storage(self):
-        """
-        Return the sparse storage complexity.
-        """
-        space_storage = sum(np.count_nonzero(x) for x in self.space)
-        return space_storage + self.core.sparse_storage()
+        """Return the number of non-zero entries."""
+        return self.space.sparse_storage() + self.core.sparse_storage()
 
     def representation_rank(self):
-        """
-        Return the representation rank of the tensor.
-        """
-        return np.prod(self.ranks)
+        """Return the representation rank (prod of subspace dims)."""
+        return int(np.prod(self.ranks))
+
+    # ---- Contractions ----
 
     def tensor_matrix_product(self, matrices, dims=None):
         """
-        Contract the Tucker tensor with matrices along the physical dimensions.
+        Contract the Tucker tensor with matrices along physical dimensions.
+
+        Left-multiplies the factor matrices by ``matrices[mu]`` along
+        dimensions ``dims``.
 
         Parameters
         ----------
         matrices : list of numpy.ndarray
         dims : list of int, optional
+
+        Returns
+        -------
+        TuckerLikeTensor
         """
+        new_space = self.space.matrix_times_space(matrices, dims)
+        return TuckerLikeTensor(self.core, new_space)
+
+    def tensor_vector_product(self, vectors, dims=None):
+        """
+        Contract the tensor with vectors along given dimensions.
+
+        Parameters
+        ----------
+        vectors : list of numpy.ndarray
+        dims : list of int, optional
+
+        Returns
+        -------
+        TuckerLikeTensor or numpy.ndarray (if all dims contracted)
+        """
+        assert isinstance(self.space, tensap.TSpaceVectors), \
+            "The TSpace must be of TSpaceVectors type."
+
         if dims is None:
             dims = range(self.order)
         else:
             dims = np.atleast_1d(dims)
-            matrices = [matrices] if not isinstance(matrices, list) else matrices
 
-        space = list(self.space)
-        for i, dim in enumerate(dims):
-            space[dim] = np.matmul(matrices[i], space[dim])
+        if isinstance(vectors, np.ndarray):
+            vectors = [vectors]
+        vectors = [np.atleast_2d(v.ravel()) for v in vectors]
 
-        return TuckerLikeTensor(space, self.core)
+        # Left-multiply space by row vectors: v(1,N) @ space(N,1,R) -> (1,1,R)
+        new_space = self.space.matrix_times_space(vectors, dims)
+        # Reshape contracted factor mats from (1,1,R) to (R,1,1) for core
+        new_spaces = list(new_space.spaces)
+        for i, d in enumerate(dims):
+            new_spaces[d] = new_spaces[d].transpose(2, 1, 0)
+        xs = tensap.TSpaceVectors(new_spaces, is_orth=False)
+
+        # Contract core with the transposed factor matrices
+        xc = self.core.tensor_vector_product(xs.spaces, dims)
+
+        if len(dims) != self.order:
+            xs = xs.remove_space(dims)
+            return TuckerLikeTensor(xc, xs)
+        else:
+            return xc
+
+    def tensor_diag_matrix_product(self, M, dims=None):
+        """
+        Contract the tensor with diagonal matrices.
+
+        Parameters
+        ----------
+        M : numpy.ndarray or list of numpy.ndarray
+        dims : list of int, optional
+
+        Returns
+        -------
+        TuckerLikeTensor
+        """
+        if isinstance(M, np.ndarray):
+            M = [M]
+        if dims is None:
+            dims = range(self.order)
+        diag_mats = [np.diag(m.ravel()) for m in M]
+        return self.tensor_matrix_product(diag_mats, dims)
+
+    # ---- Tensor algebra ----
+
+    def cat(self, other):
+        """
+        Concatenate two TuckerLikeTensors.
+
+        Uses block-diagonal concatenation for spaces and core concatenation
+        along all dimensions.
+
+        Parameters
+        ----------
+        other : TuckerLikeTensor
+
+        Returns
+        -------
+        TuckerLikeTensor
+        """
+        new_core = self.core.cat(other.core)
+        new_space = self.space.diag_cat(other.space)
+        return TuckerLikeTensor(new_core, new_space)
+
+    def kron(self, other):
+        """
+        Kronecker product of two TuckerLikeTensors.
+
+        Parameters
+        ----------
+        other : TuckerLikeTensor
+
+        Returns
+        -------
+        TuckerLikeTensor
+        """
+        new_core = self.core.kron(other.core)
+        new_spaces = [
+            np.kron(sx, sy)
+            for sx, sy in zip(self.space.spaces, other.space.spaces)
+        ]
+        new_space = self.space.__class__(new_spaces, is_orth=False)
+        return TuckerLikeTensor(new_core, new_space)
+
+    # ---- Dimension manipulation ----
+
+    def permute(self, dims):
+        """
+        Permute the dimensions of the tensor.
+
+        Parameters
+        ----------
+        dims : array_like
+            New ordering of dimensions.
+
+        Returns
+        -------
+        TuckerLikeTensor
+        """
+        new_core = self.core.transpose(dims)
+        new_space = self.space.permute(dims)
+        return TuckerLikeTensor(new_core, new_space)
+
+    def squeeze(self, dims=None):
+        """
+        Remove singleton dimensions.
+
+        Parameters
+        ----------
+        dims : list of int, optional
+            Dimensions to remove. Defaults to all singleton dims.
+
+        Returns
+        -------
+        TuckerLikeTensor or numpy scalar
+        """
+        if dims is None:
+            dims = np.where(self.shape == 1)[0]
+        dims = np.atleast_1d(dims)
+
+        if len(dims) == 0:
+            return self
+
+        # Contract singleton dimensions into the core
+        xsp = [self.space.spaces[d].transpose(2, 1, 0) for d in dims]
+        new_core = self.core.tensor_vector_product(xsp, dims)
+
+        # Remove those dimensions from space
+        keep_dims = [d for d in range(self.order) if d not in dims]
+        new_space = self.space.keep_space(keep_dims)
+        return TuckerLikeTensor(new_core, new_space)
+
+    # ---- Subspace extraction ----
+
+    def sub_tensor(self, *args):
+        """
+        Extract a subtensor.
+
+        Parameters
+        ----------
+        *args : indices for each dimension (arrays or ':')
+        """
+        if isinstance(self.space, tensap.TSpaceVectors):
+            for k in range(self.order):
+                if not isinstance(args[k], str) or args[k] != ':':
+                    idx = np.atleast_1d(args[k])
+                    self.space.spaces[k] = self.space.spaces[k][idx, :, :]
+        elif isinstance(self.space, tensap.TSpaceOperators):
+            for k in range(self.order):
+                I1 = args[2 * k]
+                I2 = args[2 * k + 1]
+                for n in range(self.space.ranks[k]):
+                    if not (isinstance(I1, str) and I1 == ':'):
+                        self.space.spaces[k][:, :, n] = \
+                            self.space.spaces[k][I1, :, n]
+                    if not (isinstance(I2, str) and I2 == ':'):
+                        self.space.spaces[k][:, :, n] = \
+                            self.space.spaces[k][:, I2, n]
+        self.space = self.space.__class__(
+            list(self.space.spaces), is_orth=False
+        )
+        self._update_properties()
+
+    # ---- Operators specific ----
+
+    def transpose(self):
+        """Transpose of a TuckerLikeTensor of type Operator."""
+        assert isinstance(self.space, tensap.TSpaceOperators), \
+            "The TSpace must be of TSpaceOperators type."
+        return TuckerLikeTensor(self.core, self.space.T)
+
+    @property
+    def T(self):
+        return self.transpose()
+
+    def ctranspose(self):
+        """Conjugate transpose of a TuckerLikeTensor of type Operator."""
+        assert isinstance(self.space, tensap.TSpaceOperators), \
+            "The TSpace must be of TSpaceOperators type."
+        return TuckerLikeTensor(self.core, self.space.H)
+
+    @property
+    def H(self):
+        return self.ctranspose()
+
+    def to_operator(self):
+        """Convert a vector TuckerLikeTensor to an operator TuckerLikeTensor.
+
+        Each basis vector v is replaced by the diagonal operator
+        diag(v).
+        """
+        assert isinstance(self.space, tensap.TSpaceVectors), \
+            "The TSpace must be of TSpaceVectors type."
+        new_space = self.space.to_operators()
+        new_spaces = list(new_space.spaces)
+        for mu in range(self.order):
+            n_out, n_in, r = new_spaces[mu].shape
+            ops = np.zeros((n_out, n_out, r))
+            for k in range(r):
+                ops[:, :, k] = np.diag(new_spaces[mu][:, 0, k])
+            new_spaces[mu] = ops
+        new_space = tensap.TSpaceOperators(new_spaces, is_orth=False)
+        return TuckerLikeTensor(self.core, new_space)
+
+    def vectorize(self, dims=None):
+        """
+        Vectorize an operator TuckerLikeTensor into a vector TuckerLikeTensor.
+
+        Parameters
+        ----------
+        dims : list of int, optional
+
+        Returns
+        -------
+        TuckerLikeTensor
+        """
+        if dims is None:
+            dims = range(self.order)
+        new_space = self.space.vectorize(dims)
+        return TuckerLikeTensor(self.core, new_space)
+
+    def unvectorize(self, sz, dims=None):
+        """
+        Unvectorize a vector TuckerLikeTensor into an operator one.
+
+        Parameters
+        ----------
+        sz : numpy.ndarray of shape (2, K)
+        dims : list of int, optional
+
+        Returns
+        -------
+        TuckerLikeTensor
+        """
+        if dims is None:
+            dims = range(self.order)
+        new_space = self.space.unvectorize(sz, dims)
+        return TuckerLikeTensor(self.core, new_space)
+
+    # ---- Evaluation ----
+
+    def eval_diag(self, dims=None):
+        """
+        Extract the diagonal of the tensor.
+
+        Parameters
+        ----------
+        dims : list of int, optional
+
+        Returns
+        -------
+        numpy.ndarray or TuckerLikeTensor
+        """
+        if dims is None:
+            dims = list(range(self.order))
+        else:
+            dims = np.atleast_1d(dims).tolist()
+
+        if len(dims) == 1:
+            return self
+
+        if isinstance(self.core, tensap.DiagonalTensor) and \
+                isinstance(self.space, tensap.TSpaceVectors):
+            s = self.space.spaces[dims[0]]
+            for k in dims[1:]:
+                s = s * self.space.spaces[k]
+            if len(dims) == self.order:
+                return s[:, 0, :] @ self.core.data
+            new_spaces = [s] + [self.space.spaces[k] for k in
+                                range(self.order) if k not in dims]
+            ns = self.space.__class__(new_spaces, is_orth=False)
+            n_order = 1 + (self.order - len(dims))
+            new_core = tensap.DiagonalTensor(
+                self.core.data, order=n_order
+            )
+            return TuckerLikeTensor(new_core, ns)
+
+        # For general case: contract core with all spaces to get full tensor,
+        # then extract diagonal.  For TSpaceOperators, this yields the
+        # diagonal of the vectorized (flattened) operator, consistent with
+        # MATLAB's generic else branch (line 651-653).
+        s = self.core.tensor_matrix_product(
+            [sp[:, 0, :] for sp in self.space.spaces]
+        )
+        return s.eval_diag(dims)
+
+    def singular_values(self):
+        """
+        Return the singular values of the tensor.
+
+        Returns
+        -------
+        numpy.ndarray or list
+        """
+        if self.order == 2:
+            self.orth()
+            return np.linalg.svd(self.core.data, compute_uv=False)
+        else:
+            if isinstance(self.core, tensap.FullTensor):
+                self.orth()
+                return self.core.singular_values()
+            else:
+                raise NotImplementedError(
+                    f"singular_values not implemented for "
+                    f"core type {type(self.core)}."
+                )
+
+    # ---- Normalization ----
+
+    def normalize_basis(self):
+        """
+        Normalize the elements of the bases of subspaces.
+        """
+        N = self.space.dot(self.space)
+        N = [np.sqrt(np.diag(n)) for n in N]
+        diag_mats = [np.diag(n) for n in N]
+        self.core = self.core.tensor_matrix_product(diag_mats)
+        inv_mats = [np.diag(1.0 / n) for n in N]
+        self.space = self.space.space_times_matrix(inv_mats)
+        return self
+
+    # ---- Static constructors ----
 
     @staticmethod
     def create(generator, ranks, shape):
@@ -203,13 +610,22 @@ class TuckerLikeTensor:
 
         Parameters
         ----------
-        generator : function
-        ranks : list or numpy.ndarray
-        shape : list or numpy.ndarray
+        generator : callable
+            Function generating a numpy array from a shape tuple.
+        ranks : array_like
+            Tucker ranks (ranks of the core for each dimension).
+        shape : array_like
+            Physical shape of the tensor.
+
+        Returns
+        -------
+        TuckerLikeTensor
         """
-        space = [generator((s, r)) for s, r in zip(shape, ranks)]
-        core = tensap.FullTensor(generator(ranks))
-        return TuckerLikeTensor(space, core)
+        ranks = np.atleast_1d(np.asarray(ranks, dtype=int))
+        shape = np.atleast_1d(np.asarray(shape, dtype=int))
+        space = tensap.TSpaceVectors.create(generator, shape, ranks)
+        core = tensap.FullTensor(generator(tuple(ranks)))
+        return TuckerLikeTensor(core, space)
 
     @staticmethod
     def zeros(ranks, shape):
@@ -221,16 +637,49 @@ class TuckerLikeTensor:
 
     @staticmethod
     def rand(ranks, shape):
-        return TuckerLikeTensor.create(lambda x: np.random.rand(*x), ranks, shape)
+        return TuckerLikeTensor.create(
+            lambda x: np.random.rand(*x), ranks, shape
+        )
 
     @staticmethod
     def randn(ranks, shape):
-        return TuckerLikeTensor.create(lambda x: np.random.randn(*x), ranks, shape)
+        return TuckerLikeTensor.create(
+            lambda x: np.random.randn(*x), ranks, shape
+        )
 
     @staticmethod
     def eye(shape):
-        """Constructs an identity operator conceptually adapted to Tucker format."""
-        ranks = np.ones(len(shape), dtype=int)
-        core = tensap.FullTensor(np.ones(ranks))
-        space = [np.eye(s) for s in shape]
-        return TuckerLikeTensor(space, core)
+        """
+        Construct the identity operator in TuckerLikeTensor format.
+
+        Parameters
+        ----------
+        shape : array_like
+            Size along each dimension.
+
+        Returns
+        -------
+        TuckerLikeTensor
+        """
+        shape = np.atleast_1d(np.asarray(shape, dtype=int))
+        d = len(shape)
+        core = tensap.DiagonalTensor(np.array([1.0]), order=d)
+        space = tensap.TSpaceOperators.eye(shape)
+        return TuckerLikeTensor(core, space)
+
+    # ---- Display ----
+
+    def __repr__(self):
+        return (
+            "<{} TuckerLikeTensor:\n"
+            + "\torder = {},\n"
+            + "\tshape = {},\n"
+            + "\tranks = {},\n"
+            + "\tis_orth = {}>"
+        ).format(
+            "x".join(map(str, self.shape)),
+            self.order,
+            self.shape,
+            self.ranks,
+            self.is_orth,
+        )
