@@ -322,6 +322,7 @@ class TSpace:
 
         Q_space, R_list = self.orth(dims)
 
+        tol_sq = tol ** 2
         new_spaces = list(self.spaces)
         M_matrices = []
         for i, mu in enumerate(dims):
@@ -331,8 +332,8 @@ class TSpace:
             if total == 0:
                 m = 1
             else:
-                err = np.sqrt(1 - np.cumsum(s_sq) / total)
-                m = np.where(err < tol)[0]
+                err_sq = 1 - np.cumsum(s_sq) / total
+                m = np.where(err_sq < tol_sq)[0]
                 if len(m) == 0:
                     m = len(s)
                 else:
