@@ -188,7 +188,7 @@ class TSpace:
     def space_times_matrix(self, matrices, dims=None):
         """Right-multiply bases along the **rank** dimension.
 
-        For each dimension ``mu``, contracts the rank axis (axis 2) of
+        For each dimension ``mu``, contracts the rank axis (axis2) of
         ``space[mu]`` with the *first* axis of ``M``::
 
             new_space[o, i, p] = sum_k space[o, i, k] * M[k, p]
