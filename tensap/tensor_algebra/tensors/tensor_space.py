@@ -253,46 +253,94 @@ class TSpace:
             )
         return np.einsum("oik, k -> oi", self.spaces[dim], coefs)
 
-    def orth(self, dims=None, tol=1e-16):
-        """Orthonormalize bases via SVD of Gram matrices
+    def orth(self, dims=None):
+        """Orthonormalize bases via QR factorisation.
+
+        For each specified dimension, computes ``X = Q @ R`` and returns
+        the space of Q factors together with the transformation
+        matrices ``M = R``. The caller should absorb ``M`` into the core::
+
+            new_core @ M  ×  Q  =  old_core × (Q @ R)  =  old_tensor
 
         Parameters
         ----------
         dims : list of int, optional
             Dimensions to orthogonalize. Defaults to all.
-        tol : float, optional
-            Tolerance for rank truncation. Defaults to 1e-16.
 
         Returns
         -------
         TSpace
             Space with orthonormalized bases.
         list of numpy.ndarray
-            Transformation matrices M such that ``new = old @ M`` for each
-            dimension.
+            Transformation matrices M (the R factors) for each dim.
         """
         if dims is None:
             dims = range(self.order)
-        else:
-            dims = np.atleast_1d(dims)
+        dims = np.atleast_1d(dims)
 
-        N = self.dot(self, dims)
+        new_spaces = list(self.spaces)
+        M_matrices = []
+        for mu in dims:
+            X = self.spaces[mu]
+            N_out, N_in, R = X.shape
+            Q, R_fact = np.linalg.qr(X.reshape(N_out * N_in, R), mode="reduced")
+            new_spaces[mu] = Q.reshape(N_out, N_in, R)
+            M_matrices.append(R_fact)
+
+        result = self.__class__(new_spaces, is_orth=False)
+        if len(dims) == self.order:
+            result.is_orth = True
+        return result, M_matrices
+
+    def truncate(self, dims=None, tol=1e-16):
+        """Truncate basis ranks via orth + SVD(R) with tolerance.
+
+        Calls :meth:`orth` to obtain ``(Q_space, R_list)``, then for
+        each dimension performs an SVD of ``R`` with energy-based
+        truncation to rank ``m``. Returns the truncated space
+        ``Q @ U[:, :m]`` and the composite transformation
+        ``M = diag(s[:m]) @ Vh[:m, :]`` (where ``R = U @ diag(s) @ Vh``).
+        The caller should absorb ``M`` into the core.
+
+        Parameters
+        ----------
+        dims : list of int, optional
+            Dimensions to truncate. Defaults to all.
+        tol : float, optional
+            Tolerance for rank truncation. Defaults to 1e-16.
+
+        Returns
+        -------
+        TSpace
+            Space with truncated ranks and orthonormalised bases.
+        list of numpy.ndarray
+            Transformation matrices M for each dimension.
+        """
+        if dims is None:
+            dims = range(self.order)
+        dims = np.atleast_1d(dims)
+
+        Q_space, R_list = self.orth(dims)
+
         new_spaces = list(self.spaces)
         M_matrices = []
         for i, mu in enumerate(dims):
-            L, d, _ = np.linalg.svd(N[i], full_matrices=False)
-            err = np.sqrt(1 - np.cumsum(d ** 2) / np.sum(d ** 2))
-            m = np.where(err < tol)[0]
-            if len(m) == 0:
-                m = self.ranks[mu]
+            U_r, s, Vh = np.linalg.svd(R_list[i], full_matrices=False)
+            s_sq = s ** 2
+            total = np.sum(s_sq)
+            if total == 0:
+                m = 1
             else:
-                m = m[0] + 1
-            L = L[:, :m]
-            d = d[:m]
-            xu = L @ np.diag(1.0 / np.sqrt(d))
-            M_matrices.append(np.diag(np.sqrt(d)) @ L.T)
-            new_spaces[mu] = np.einsum("oik, kp -> oip",
-                                       self.spaces[mu], xu)
+                err = np.sqrt(1 - np.cumsum(s_sq) / total)
+                m = np.where(err < tol)[0]
+                if len(m) == 0:
+                    m = len(s)
+                else:
+                    m = m[0] + 1
+            N_out, N_in, _ = self.spaces[mu].shape
+            new_Q = Q_space.spaces[mu].reshape(N_out * N_in, -1) @ U_r[:, :m]
+            new_spaces[mu] = new_Q.reshape(N_out, N_in, m)
+            M_matrices.append(np.diag(s[:m]) @ Vh[:m, :])
 
         result = self.__class__(new_spaces, is_orth=False)
         if len(dims) == self.order:
