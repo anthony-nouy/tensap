@@ -163,7 +163,7 @@ class TSpaceVectors(TSpace):
     # ---- Static constructors ----
 
     @staticmethod
-    def create(generator, sz, dim=None):
+    def create(generator, sz, nb_vectors=None):
         """Create a TSpaceVectors from a generator function.
 
         Parameters
@@ -172,42 +172,45 @@ class TSpaceVectors(TSpace):
             Function that generates an (n, m) matrix from a tuple (n, m).
         sz : array_like
             Output dimension of each subspace.
-        dim : array_like, optional
-            Rank (number of basis vectors) of each subspace.
-            Defaults to ones.
+        nb_vectors : array_like, optional
+            Number of basis vectors in each subspace. Defaults to ones.
+
+        Returns
+        -------
+        TSpaceVectors
         """
         sz = np.asarray(sz, dtype=int).ravel()
-        if dim is None:
-            dim = np.ones_like(sz)
-        dim = np.asarray(dim, dtype=int).ravel()
+        if nb_vectors is None:
+            nb_vectors = np.ones_like(sz)
+        nb_vectors = np.asarray(nb_vectors, dtype=int).ravel()
 
-        spaces = [generator((s, d)).reshape(s, 1, d)
-                  for s, d in zip(sz, dim)]
+        spaces = [generator((s, n)).reshape(s, 1, n)
+                  for s, n in zip(sz, nb_vectors)]
         return TSpaceVectors(spaces, is_orth=False)
 
     @staticmethod
-    def zeros(sz, dim=None):
-        return TSpaceVectors.create(np.zeros, sz, dim)
+    def zeros(sz, nb_vectors=None):
+        return TSpaceVectors.create(np.zeros, sz, nb_vectors)
 
     @staticmethod
-    def ones(sz, dim=None):
-        return TSpaceVectors.create(np.ones, sz, dim)
+    def ones(sz, nb_vectors=None):
+        return TSpaceVectors.create(np.ones, sz, nb_vectors)
 
     @staticmethod
-    def rand(sz, dim=None):
-        return TSpaceVectors.create(lambda x: np.random.rand(*x), sz, dim)
+    def rand(sz, nb_vectors=None):
+        return TSpaceVectors.create(lambda x: np.random.rand(*x), sz, nb_vectors)
 
     @staticmethod
-    def randn(sz, dim=None):
-        return TSpaceVectors.create(lambda x: np.random.randn(*x), sz, dim)
+    def randn(sz, nb_vectors=None):
+        return TSpaceVectors.create(lambda x: np.random.randn(*x), sz, nb_vectors)
 
     @staticmethod
-    def eye(sz, dim=None):
+    def eye(sz, nb_vectors=None):
         """Create canonical basis vectors (identity matrix columns).
 
-        If dim is None, dim = sz (full canonical basis).
+        If nb_vectors is None, nb_vectors = sz (full canonical basis).
         """
         sz = np.asarray(sz, dtype=int)
-        if dim is None:
-            dim = sz
-        return TSpaceVectors.create(lambda x: np.eye(*x), sz, dim)
+        if nb_vectors is None:
+            nb_vectors = sz
+        return TSpaceVectors.create(lambda x: np.eye(*x), sz, nb_vectors)

@@ -108,7 +108,7 @@ class TSpaceOperators(TSpace):
     # ---- Static constructors ----
 
     @staticmethod
-    def create(generator, sz1, sz2=None, dims=None):
+    def create(generator, sz1, sz2=None, nb_vectors=None):
         """Create a TSpaceOperators from a generator function.
 
         Parameters
@@ -119,59 +119,62 @@ class TSpaceOperators(TSpace):
             Output dimension of each subspace.
         sz2 : array_like, optional
             Input dimension of each subspace. Defaults to sz1.
-        dims : array_like, optional
-            Rank (number of basis operators) of each subspace.
-            Defaults to ones.
+        nb_vectors : array_like, optional
+            Number of basis operators in each subspace. Defaults to ones.
+
+        Returns
+        -------
+        TSpaceOperators
         """
         sz1 = np.asarray(sz1, dtype=int).ravel()
         d = len(sz1)
         if sz2 is None:
             sz2 = sz1.copy()
         sz2 = np.asarray(sz2, dtype=int).ravel()
-        if dims is None:
-            dims = np.ones(d, dtype=int)
-        dims = np.asarray(dims, dtype=int).ravel()
+        if nb_vectors is None:
+            nb_vectors = np.ones(d, dtype=int)
+        nb_vectors = np.asarray(nb_vectors, dtype=int).ravel()
 
         spaces = []
         for mu in range(d):
             ops = np.stack(
-                [generator((sz1[mu], sz2[mu])) for _ in range(dims[mu])],
+                [generator((sz1[mu], sz2[mu])) for _ in range(nb_vectors[mu])],
                 axis=2,
             )
             spaces.append(ops)
         return TSpaceOperators(spaces, is_orth=False)
 
     @staticmethod
-    def zeros(sz1, sz2=None, dims=None):
-        return TSpaceOperators.create(np.zeros, sz1, sz2, dims)
+    def zeros(sz1, sz2=None, nb_vectors=None):
+        return TSpaceOperators.create(np.zeros, sz1, sz2, nb_vectors)
 
     @staticmethod
-    def ones(sz1, sz2=None, dims=None):
-        return TSpaceOperators.create(np.ones, sz1, sz2, dims)
+    def ones(sz1, sz2=None, nb_vectors=None):
+        return TSpaceOperators.create(np.ones, sz1, sz2, nb_vectors)
 
     @staticmethod
-    def rand(sz1, sz2=None, dims=None):
+    def rand(sz1, sz2=None, nb_vectors=None):
         return TSpaceOperators.create(
-            lambda x: np.random.rand(*x), sz1, sz2, dims
+            lambda x: np.random.rand(*x), sz1, sz2, nb_vectors
         )
 
     @staticmethod
-    def randn(sz1, sz2=None, dims=None):
+    def randn(sz1, sz2=None, nb_vectors=None):
         return TSpaceOperators.create(
-            lambda x: np.random.randn(*x), sz1, sz2, dims
+            lambda x: np.random.randn(*x), sz1, sz2, nb_vectors
         )
 
     @staticmethod
-    def eye(sz1, sz2=None, dims=None):
+    def eye(sz1, sz2=None, nb_vectors=None):
         """Create identity operators.
 
-        If dims is None, dims = 1 (one identity per subspace).
+        If nb_vectors is None, nb_vectors = 1 (one identity per subspace).
         """
         sz1 = np.asarray(sz1, dtype=int)
         if sz2 is None:
             sz2 = sz1.copy()
-        if dims is None:
-            dims = np.ones(len(sz1), dtype=int)
+        if nb_vectors is None:
+            nb_vectors = np.ones(len(sz1), dtype=int)
         return TSpaceOperators.create(
-            lambda x: np.eye(*x), sz1, sz2, dims
+            lambda x: np.eye(*x), sz1, sz2, nb_vectors
         )
