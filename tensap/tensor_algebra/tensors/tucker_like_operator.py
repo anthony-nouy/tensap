@@ -160,6 +160,9 @@ class TuckerLikeTensor:
         return NotImplemented
 
     def __radd__(self, other):
+        """Only to allowed the Python sum function over TuckerLikeTensor
+        e.g.: sum([T1, T2, T3]) which initialize the sum with 0
+        """
         if other == 0:
             return self
         return NotImplemented
