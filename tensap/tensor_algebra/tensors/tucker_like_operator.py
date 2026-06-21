@@ -38,19 +38,41 @@ class TuckerLikeTensor:
         Parameters
         ----------
         core : tensap.FullTensor, tensap.TreeBasedTensor, tensap.DiagonalTensor,
-               or numpy.ndarray
+               tensap.SparseTensor, or numpy.ndarray
             The core tensor. If a numpy.ndarray, cast to FullTensor.
-        space : tensap.TSpaceVectors, tensap.TSpaceOperators, or list
+            If a TreeBasedTensor and space is None, converts the
+            TreeBasedTensor into Tucker-like format: for each dimension,
+            the factor matrix is extracted from the corresponding leaf
+            node (if active) or set to the identity (if inactive).
+        space : tensap.TSpaceVectors, tensap.TSpaceOperators, or list, optional
             The tensor product space. If a list of arrays, cast to
             TSpaceVectors.
         """
         if isinstance(core, np.ndarray):
             core = tensap.FullTensor(core)
-        self.core = core
 
-        if isinstance(space, (list, tuple)):
-            space = tensap.TSpaceVectors(space)
-        self.space = space
+        if space is not None:
+            if isinstance(space, (list, tuple)):
+                space = tensap.TSpaceVectors(space)
+            self.core = core
+            self.space = space
+        elif isinstance(core, tensap.TreeBasedTensor):
+            y = core
+            tree = y.tree
+            space_list = [None] * y.order
+            for mu in range(y.order):
+                nod = tree.dim2ind[mu]
+                idx = nod - 1
+                if y.is_active_node[idx]:
+                    space_list[mu] = y.tensors[idx].data
+                else:
+                    space_list[mu] = np.eye(y.shape[mu])
+            self.core = y.tensors[0]
+            self.space = tensap.TSpaceVectors(space_list)
+            self.is_orth = y.is_orth
+        else:
+            self.core = core
+            self.space = space
 
         self._update_properties()
 
@@ -105,7 +127,7 @@ class TuckerLikeTensor:
             return x
         elif isinstance(self.core, tensap.FullTensor):
             tree = tensap.DimensionTree.trivial(self.order)
-            tensors = [tensap.FullTensor(self)]
+            tensors = [self.core]
             for dim in range(self.order):
                 mat = self.space.spaces[dim].reshape(
                     self.shape[dim], self.ranks[dim]
@@ -212,17 +234,23 @@ class TuckerLikeTensor:
         """
         Orthogonalize the TuckerLikeTensor.
 
-        Orthogonalizes the factor matrices (TSpace) via SVD of the Gram
-        matrix and absorbs the transformation into the core.
-        (Matches MATLAB behaviour: the core itself is not re-orthogonalized.)
+        Orthogonalises the factor matrices (TSpace) via QR, absorbs
+        the transformation into the core, then orthogonalises the
+        core itself (matching MATLAB behaviour).
 
         Returns
         -------
         TuckerLikeTensor
             The orthogonalized tensor (self, modified in-place).
         """
+        dims = range(self.order)
         self.space, M = self.space.orth()
-        self.core = self.core.tensor_matrix_product(M)
+        self.core = self.core.tensor_matrix_product(M, dims)
+        core_orth = self.core.orth()
+        if isinstance(core_orth, tuple):
+            self.core = core_orth[0]
+        else:
+            self.core = core_orth
         self._update_properties()
         return self
 
@@ -473,8 +501,7 @@ class TuckerLikeTensor:
         """
         assert isinstance(self.space, tensap.TSpaceVectors), \
             "The TSpace must be of TSpaceVectors type."
-        new_space = self.space.to_operators()
-        new_spaces = list(new_space.spaces)
+        new_spaces = [s.copy() for s in self.space.spaces]
         for mu in range(self.order):
             n_out, n_in, r = new_spaces[mu].shape
             ops = np.zeros((n_out, n_out, r))
@@ -484,39 +511,30 @@ class TuckerLikeTensor:
         new_space = tensap.TSpaceOperators(new_spaces, is_orth=False)
         return TuckerLikeTensor(self.core, new_space)
 
-    def vectorize(self, dims=None):
+    def vectorize(self):
         """
         Vectorize an operator TuckerLikeTensor into a vector TuckerLikeTensor.
-
-        Parameters
-        ----------
-        dims : list of int, optional
 
         Returns
         -------
         TuckerLikeTensor
         """
-        if dims is None:
-            dims = range(self.order)
-        new_space = self.space.vectorize(dims)
+        new_space = self.space.vectorize()
         return TuckerLikeTensor(self.core, new_space)
 
-    def unvectorize(self, sz, dims=None):
+    def unvectorize(self, sz):
         """
         Unvectorize a vector TuckerLikeTensor into an operator one.
 
         Parameters
         ----------
         sz : numpy.ndarray of shape (2, K)
-        dims : list of int, optional
 
         Returns
         -------
         TuckerLikeTensor
         """
-        if dims is None:
-            dims = range(self.order)
-        new_space = self.space.unvectorize(sz, dims)
+        new_space = self.space.unvectorize(sz)
         return TuckerLikeTensor(self.core, new_space)
 
     # ---- Evaluation ----
