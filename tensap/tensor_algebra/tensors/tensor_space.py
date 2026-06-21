@@ -92,7 +92,8 @@ class TSpace:
         Parameters
         ----------
         other : TSpace
-        dims : list of int, optional
+        dims : int or list of int, optional
+            Dimensions to process. A single integer is also accepted.
 
         Returns
         -------
@@ -151,8 +152,9 @@ class TSpace:
         ----------
         matrices : list of numpy.ndarray
             Each matrix ``M`` has shape ``(new_phys_dim, old_phys_dim)``.
-        dims : list of int, optional
-            Dimensions to transform. Defaults to all.
+        dims : int or list of int, optional
+            Dimensions to transform. A single integer is also accepted.
+            Defaults to all.
 
         Returns
         -------
@@ -264,8 +266,9 @@ class TSpace:
 
         Parameters
         ----------
-        dims : list of int, optional
-            Dimensions to orthogonalize. Defaults to all.
+        dims : int or list of int, optional
+            Dimensions to orthogonalize. A single integer is also accepted.
+            Defaults to all.
 
         Returns
         -------
@@ -304,8 +307,9 @@ class TSpace:
 
         Parameters
         ----------
-        dims : list of int, optional
-            Dimensions to truncate. Defaults to all.
+        dims : int or list of int, optional
+            Dimensions to truncate. A single integer is also accepted.
+            Defaults to all.
         tol : float, optional
             Tolerance for rank truncation. Defaults to 1e-16.
 

@@ -30,8 +30,9 @@ class TSpaceOperators(TSpace):
         Parameters
         ----------
         other : TSpace
-        dims : list of int, optional
-            Dimensions to multiply. Defaults to all.
+        dims : int or list of int, optional
+            Dimensions to multiply. A single integer is also accepted.
+            Defaults to all.
         """
         if dims is None:
             dims = range(self.order)
@@ -94,8 +95,9 @@ class TSpaceOperators(TSpace):
 
         Parameters
         ----------
-        dims : list of int, optional
-            Dimensions to vectorize. Defaults to all.
+        dims : int or list of int, optional
+            Dimensions to vectorize. A single integer is also accepted.
+            Defaults to all.
 
         Returns
         -------

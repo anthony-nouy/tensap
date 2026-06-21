@@ -49,7 +49,7 @@ class TSpaceVectors(TSpace):
 
         return TSpaceVectors(new_spaces, is_orth=False)
 
-    def dot_with_metrics(self, y, A, order=None):
+    def dot_with_metrics(self, y, A, dims=None):
         """Inner products of basis vectors with a metric operator.
 
         Computes ``M[mu](i1, i2, i3) = x[:,i2]' * A[:,:,i1] * y[:,i3]``
@@ -60,19 +60,22 @@ class TSpaceVectors(TSpace):
         y : TSpaceVectors
         A : TSpaceOperators
             Metric operator (must be square: ``dims_out == dims_in``).
-        order : list of int, optional
-            Dimensions to process. Defaults to all.
+        dims : int or list of int, optional
+            Dimensions to process. A single integer is also accepted.
+            Defaults to all.
 
         Returns
         -------
         list of numpy.ndarray
             Each array has shape ``(A_rank, self_rank, y_rank)``.
         """
-        if order is None:
-            order = range(self.order)
+        if dims is None:
+            dims = range(self.order)
+        else:
+            dims = np.atleast_1d(dims)
 
         M = []
-        for mu in order:
+        for mu in dims:
             if self.dims_out[mu] != A.dims_out[mu]:
                 raise ValueError(
                     f"Output dim mismatch at dim {mu} "
@@ -89,8 +92,8 @@ class TSpaceVectors(TSpace):
                 )
 
             X = self.spaces[mu][:, 0, :]   # (N, Rx)
-            Op = A.spaces[mu]               # (N, N, Ra)
-            Y = y.spaces[mu][:, 0, :]       # (N, Ry)
+            Op = A.spaces[mu]              # (N, N, Ra)
+            Y = y.spaces[mu][:, 0, :]      # (N, Ry)
 
             Mmu = np.einsum("ix, ija, jz -> a x z", X, Op, Y)
             M.append(Mmu)
@@ -117,7 +120,7 @@ class TSpaceVectors(TSpace):
             new_spaces.append(self.spaces[mu][I[:, mu], :, :])
         return TSpaceVectors(new_spaces, is_orth=False)
 
-    def unvectorize(self, sz, dims=None, P=None):
+    def unvectorize(self, sz, dims=None):
         """Convert a TSpaceVectors into a TSpaceOperators.
 
         Each basis vector (column) is reshaped into an operator of
@@ -128,10 +131,9 @@ class TSpaceVectors(TSpace):
         sz : ndarray of shape (2, K)
             Target sizes for the operators. ``sz[0, mu]`` is the output
             dimension, ``sz[1, mu]`` is the input dimension.
-        dims : list of int, optional
-            Dimensions to convert. Defaults to all.
-        P : list, optional
-            Sparsity pattern (not yet implemented).
+        dims : int or list of int, optional
+            Dimensions to convert. A single integer is also accepted.
+            Defaults to all.
 
         Returns
         -------
@@ -175,10 +177,8 @@ class TSpaceVectors(TSpace):
             dim = np.ones_like(sz)
         dim = np.asarray(dim, dtype=int).ravel()
 
-        spaces = [
-            generator((s, d)).reshape(s, 1, d)
-            for s, d in zip(sz, dim)
-        ]
+        spaces = [generator((s, d)).reshape(s, 1, d)
+                  for s, d in zip(sz, dim)]
         return TSpaceVectors(spaces, is_orth=False)
 
     @staticmethod
@@ -191,15 +191,11 @@ class TSpaceVectors(TSpace):
 
     @staticmethod
     def rand(sz, dim=None):
-        return TSpaceVectors.create(
-            lambda x: np.random.rand(*x), sz, dim
-        )
+        return TSpaceVectors.create(lambda x: np.random.rand(*x), sz, dim)
 
     @staticmethod
     def randn(sz, dim=None):
-        return TSpaceVectors.create(
-            lambda x: np.random.randn(*x), sz, dim
-        )
+        return TSpaceVectors.create(lambda x: np.random.randn(*x), sz, dim)
 
     @staticmethod
     def eye(sz, dim=None):
