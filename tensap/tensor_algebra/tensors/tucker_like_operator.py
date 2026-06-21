@@ -153,7 +153,7 @@ class TuckerLikeTensor:
         return TuckerLikeTensor(-self.core, self.space)
 
     def __abs__(self):
-        return TuckerLikeTensor(abs(self.core), self.space)
+        return TuckerLikeTensor(tensap.FullTensor(abs(self.core.data)), self.space)
 
     # ---- Arithmetic operators ----
 
