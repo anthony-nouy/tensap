@@ -79,16 +79,14 @@ class TuckerLikeTensor:
     def _update_properties(self):
         """Update order, shape, ranks, and orthogonality flags."""
         self.order = self.space.order
-        self.shape = self.space.dims_out.copy()
+        if isinstance(self.space, tensap.TSpaceOperators):
+            self.shape = np.column_stack(
+                [self.space.dims_out, self.space.dims_in]
+            )
+        else:
+            self.shape = self.space.dims_out.copy()
         self.ranks = self.space.ranks.copy()
         self.is_orth = self.core.is_orth and self.space.is_orth
-
-    # ---- Convenience properties ----
-
-    @property
-    def sz(self):
-        """Alias for shape (MATLAB compatibility)."""
-        return self.shape
 
     # ---- Conversion ----
 
@@ -101,6 +99,11 @@ class TuckerLikeTensor:
         tensap.FullTensor
             The Tucker tensor reconstructed as a dense tensor.
         """
+        if isinstance(self.space, tensap.TSpaceOperators):
+            target = np.column_stack(
+                [self.space.dims_out, self.space.dims_in]
+            )
+            return self.vectorize().full().reshape(target.ravel('C'))
         mats = [s.reshape(-1, s.shape[2]) for s in self.space.spaces]
         return self.core.tensor_matrix_product(mats).full()
 
@@ -429,7 +432,10 @@ class TuckerLikeTensor:
         TuckerLikeTensor or numpy scalar
         """
         if dims is None:
-            dims = np.where(self.shape == 1)[0]
+            if self.shape.ndim == 2:
+                dims = np.where(np.all(self.shape == 1, axis=1))[0]
+            else:
+                dims = np.where(self.shape == 1)[0]
         dims = np.atleast_1d(dims)
 
         if len(dims) == 0:
@@ -692,6 +698,12 @@ class TuckerLikeTensor:
     # ---- Display ----
 
     def __repr__(self):
+        if self.shape.ndim == 2:
+            shape_str = "x".join(
+                f"{out}x{inn}" for out, inn in self.shape
+            )
+        else:
+            shape_str = "x".join(map(str, self.shape))
         return (
             "<{} TuckerLikeTensor:\n"
             + "\torder = {},\n"
@@ -699,7 +711,7 @@ class TuckerLikeTensor:
             + "\tranks = {},\n"
             + "\tis_orth = {}>"
         ).format(
-            "x".join(map(str, self.shape)),
+            shape_str,
             self.order,
             self.shape,
             self.ranks,

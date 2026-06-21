@@ -175,6 +175,42 @@ class TestTuckerLikeTensor:
     def test_eye(self):
         t = tensap.TuckerLikeTensor.eye([5, 6])
         assert isinstance(t.space, tensap.TSpaceOperators)
+        assert t.shape.ndim == 2
+        assert np.all(t.shape == [[5, 5], [6, 6]])
+
+    def test_operator_shape(self):
+        rng = np.random.RandomState(0)
+        core = tensap.FullTensor(rng.rand(2, 3))
+        sz1 = np.array([5, 7])
+        sz2 = np.array([3, 4])
+        spaces = [rng.rand(sz1[0], sz2[0], 2), rng.rand(sz1[1], sz2[1], 3)]
+        op_space = tensap.TSpaceOperators(spaces)
+        t = tensap.TuckerLikeTensor(core, op_space)
+        assert t.shape.ndim == 2
+        assert np.all(t.shape[:, 0] == sz1)
+        assert np.all(t.shape[:, 1] == sz2)
+
+    def test_operator_full_reshape(self):
+        rng = np.random.RandomState(0)
+        core = tensap.FullTensor(rng.rand(2, 3))
+        sz1 = np.array([5, 7])
+        sz2 = np.array([3, 4])
+        spaces = [rng.rand(sz1[0], sz2[0], 2), rng.rand(sz1[1], sz2[1], 3)]
+        op_space = tensap.TSpaceOperators(spaces)
+        t = tensap.TuckerLikeTensor(core, op_space)
+        tf = t.full()
+        expected_shape = np.array([sz1[0], sz2[0], sz1[1], sz2[1]])
+        assert np.all(tf.shape == expected_shape)
+
+    def test_vector_shape(self):
+        rng = np.random.RandomState(0)
+        core = tensap.FullTensor(rng.rand(2, 3))
+        shape = [5, 6]
+        space = tensap.TSpaceVectors([rng.rand(shape[0], 1, 2),
+                                       rng.rand(shape[1], 1, 3)])
+        t = tensap.TuckerLikeTensor(core, space)
+        assert t.shape.ndim == 1
+        assert np.all(t.shape == shape)
 
     def test_tree_based_tensor(self):
         t = self._make_tucker(2)
@@ -195,10 +231,6 @@ class TestTuckerLikeTensor:
         space, M = t.space.truncate(tol=0.9)
         assert np.all(space.ranks <= t.ranks)
         assert np.any(space.ranks < t.ranks)
-
-    def test_sz_property(self):
-        t = self._make_tucker(2)
-        assert np.all(t.sz == t.shape)
 
     def test_abs(self):
         t = self._make_tucker(2)
