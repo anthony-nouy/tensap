@@ -15,6 +15,7 @@ class TSpaceVectors(TSpace):
             raise ValueError(
                 "TSpaceVectors requires dims_in == 1 for all dimensions."
             )
+        self.unvectorized_shape = self.dims_out
 
     # ---- Vector-specific methods ----
 

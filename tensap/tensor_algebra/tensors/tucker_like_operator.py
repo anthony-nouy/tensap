@@ -99,13 +99,10 @@ class TuckerLikeTensor:
         tensap.FullTensor
             The Tucker tensor reconstructed as a dense tensor.
         """
-        if isinstance(self.space, tensap.TSpaceOperators):
-            target = np.column_stack(
-                [self.space.dims_out, self.space.dims_in]
-            )
-            return self.vectorize().full().reshape(target.ravel('C'))
-        mats = [s.reshape(-1, s.shape[2]) for s in self.space.spaces]
-        return self.core.tensor_matrix_product(mats).full()
+        result = self.core.tensor_matrix_product(
+            self.space.vectorize_factors()
+        ).full()
+        return result.reshape(self.space.unvectorized_shape)
 
     def numpy(self):
         """
@@ -130,12 +127,9 @@ class TuckerLikeTensor:
             return x
         elif isinstance(self.core, tensap.FullTensor):
             tree = tensap.DimensionTree.trivial(self.order)
-            tensors = [self.core]
-            for dim in range(self.order):
-                mat = self.space.spaces[dim].reshape(
-                    self.shape[dim], self.ranks[dim]
-                )
-                tensors.append(tensap.FullTensor(mat))
+            tensors = [self.core] + [
+                tensap.FullTensor(m) for m in self.space.vectorize_factors()
+            ]
             return tensap.TreeBasedTensor(tensors, tree)
         elif isinstance(self.core, tensap.DiagonalTensor):
             from functools import reduce
@@ -392,11 +386,7 @@ class TuckerLikeTensor:
         TuckerLikeTensor
         """
         new_core = self.core.kron(other.core)
-        new_spaces = [
-            np.kron(sx, sy)
-            for sx, sy in zip(self.space.spaces, other.space.spaces)
-        ]
-        new_space = self.space.__class__(new_spaces, is_orth=False)
+        new_space = self.space.kron(other.space)
         return TuckerLikeTensor(new_core, new_space)
 
     # ---- Dimension manipulation ----
@@ -442,8 +432,9 @@ class TuckerLikeTensor:
             return self
 
         # Contract singleton dimensions into the core
-        xsp = [self.space.spaces[d].transpose(2, 1, 0) for d in dims]
-        new_core = self.core.tensor_vector_product(xsp, dims)
+        new_core = self.core.tensor_vector_product(
+            self.space.transposed_factors(dims), dims
+        )
 
         # Remove those dimensions from space
         keep_dims = [d for d in range(self.order) if d not in dims]
@@ -460,25 +451,18 @@ class TuckerLikeTensor:
         ----------
         *args : indices for each dimension (arrays or ':')
         """
+        new_spaces = list(self.space.spaces)
         if isinstance(self.space, tensap.TSpaceVectors):
             for k in range(self.order):
                 if not isinstance(args[k], str) or args[k] != ':':
                     idx = np.atleast_1d(args[k])
-                    self.space.spaces[k] = self.space.spaces[k][idx, :, :]
+                    new_spaces[k] = self.space.subspace(k, idx)
         elif isinstance(self.space, tensap.TSpaceOperators):
             for k in range(self.order):
                 I1 = args[2 * k]
                 I2 = args[2 * k + 1]
-                for n in range(self.space.ranks[k]):
-                    if not (isinstance(I1, str) and I1 == ':'):
-                        self.space.spaces[k][:, :, n] = \
-                            self.space.spaces[k][I1, :, n]
-                    if not (isinstance(I2, str) and I2 == ':'):
-                        self.space.spaces[k][:, :, n] = \
-                            self.space.spaces[k][:, I2, n]
-        self.space = self.space.__class__(
-            list(self.space.spaces), is_orth=False
-        )
+                new_spaces[k] = self.space.subspace(k, I1, I2)
+        self.space = self.space.__class__(new_spaces, is_orth=False)
         self._update_properties()
 
     # ---- Operators specific ----
@@ -571,13 +555,11 @@ class TuckerLikeTensor:
 
         if isinstance(self.core, tensap.DiagonalTensor) and \
                 isinstance(self.space, tensap.TSpaceVectors):
-            s = self.space.spaces[dims[0]]
-            for k in dims[1:]:
-                s = s * self.space.spaces[k]
+            s = self.space.hadamard(dims)
             if len(dims) == self.order:
                 return s[:, 0, :] @ self.core.data
-            new_spaces = [s] + [self.space.spaces[k] for k in
-                                range(self.order) if k not in dims]
+            keep = [k for k in range(self.order) if k not in dims]
+            new_spaces = [s] + [self.space.spaces[k] for k in keep]
             ns = self.space.__class__(new_spaces, is_orth=False)
             n_order = 1 + (self.order - len(dims))
             new_core = tensap.DiagonalTensor(
@@ -585,12 +567,8 @@ class TuckerLikeTensor:
             )
             return TuckerLikeTensor(new_core, ns)
 
-        # For general case: contract core with all spaces to get full tensor,
-        # then extract diagonal.  For TSpaceOperators, this yields the
-        # diagonal of the vectorized (flattened) operator, consistent with
-        # MATLAB's generic else branch (line 651-653).
         s = self.core.tensor_matrix_product(
-            [sp[:, 0, :] for sp in self.space.spaces]
+            self.space.column_vectors()
         )
         return s.eval_diag(dims)
 

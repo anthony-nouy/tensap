@@ -55,6 +55,9 @@ class TSpace:
             self.dims_in,
             self.ranks,
         ) = _update_properties_from_spaces(self.spaces)
+        self.unvectorized_shape = np.column_stack(
+            [self.dims_out, self.dims_in]
+        ).ravel('C')
 
     # ---- Common operations ----
 
@@ -351,6 +354,110 @@ class TSpace:
         if len(dims) == self.order:
             result.is_orth = True
         return result, M_matrices
+
+    # ---- Factor operations ----
+
+    def vectorize_factors(self):
+        """Return the Tucker factors in vectorized (2D) format.
+
+        Each 3D array is flattened to 2D ``(-1, Rank)``:
+        ``(N, 1, Rank)`` for vectors becomes ``(N, Rank)``,
+        ``(N_out, N_in, Rank)`` for operators becomes ``(N_out * N_in, Rank)``.
+
+        Returns
+        -------
+        list of numpy.ndarray
+        """
+        return [s.reshape(-1, s.shape[2]) for s in self.spaces]
+
+    def kron(self, other):
+        """Kronecker product of two tensor product spaces.
+
+        Parameters
+        ----------
+        other : TSpace
+
+        Returns
+        -------
+        TSpace
+        """
+        new_spaces = [
+            np.kron(sx, sy)
+            for sx, sy in zip(self.spaces, other.spaces)
+        ]
+        return self.__class__(new_spaces, is_orth=False)
+
+    def column_vectors(self):
+        """Return the basis vectors (first column of each space).
+
+        For each dimension, extracts ``spaces[k][:, 0, :]``, which
+        corresponds to the vector-valued basis coefficients.
+
+        Returns
+        -------
+        list of numpy.ndarray
+            Each array has shape ``(N_out, Rank)``.
+        """
+        return [sp[:, 0, :] for sp in self.spaces]
+
+    def hadamard(self, dims):
+        """Element-wise (Hadamard) product of spaces along given dims.
+
+        Multiplies the spaces element-by-element for all dimensions
+        in ``dims``. Used for diagonal extraction when the core is
+        a diagonal tensor.
+
+        Parameters
+        ----------
+        dims : list of int
+
+        Returns
+        -------
+        numpy.ndarray
+        """
+        s = self.spaces[dims[0]]
+        for k in dims[1:]:
+            s = s * self.spaces[k]
+        return s
+
+    def transposed_factors(self, dims):
+        """Return factors transposed for core contraction (squeeze).
+
+        Transposes each space ``(N_out, N_in, Rank)`` to
+        ``(Rank, N_in, N_out)`` so that the rank dimension is
+        first, suitable for ``FullTensor.tensor_vector_product``.
+
+        Parameters
+        ----------
+        dims : list of int
+
+        Returns
+        -------
+        list of numpy.ndarray
+        """
+        return [self.spaces[d].transpose(2, 1, 0) for d in dims]
+
+    def subspace(self, dim, out_idx=slice(None), in_idx=slice(None)):
+        """Index the basis of a single dimension.
+
+        Selects rows (output axis) and columns (input axis) of
+        ``spaces[dim]``, returning a new 3D array with shape
+        ``(len(out_idx), len(in_idx), Rank)``.
+
+        Parameters
+        ----------
+        dim : int
+            The dimension to index.
+        out_idx : slice or array_like
+            Indices for the output axis. ``slice(None)`` keeps all.
+        in_idx : slice or array_like
+            Indices for the input axis. ``slice(None)`` keeps all.
+
+        Returns
+        -------
+        numpy.ndarray of shape (N_out', N_in', R)
+        """
+        return self.spaces[dim][out_idx, in_idx, :]
 
     # ---- Dimension manipulation ----
 
