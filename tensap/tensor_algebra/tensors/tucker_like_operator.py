@@ -159,7 +159,8 @@ class TuckerLikeTensor:
 
     def __add__(self, other):
         if isinstance(other, TuckerLikeTensor):
-            new_core = self.core.cat(other.core)
+            core_self, core_other = tensap.convert_tensors(self.core, other.core)
+            new_core = core_self.cat(core_other)
             new_space = self.space.cat(other.space)
             return TuckerLikeTensor(new_core, new_space)
         return NotImplemented
@@ -203,9 +204,12 @@ class TuckerLikeTensor:
         """
         assert isinstance(tensor_2, TuckerLikeTensor), \
             "Argument must be a TuckerLikeTensor."
+        core_self, core_other = tensap.convert_tensors(
+            self.core, tensor_2.core
+        )
         M = self.space.dot(tensor_2.space)
-        core_2_projected = tensor_2.core.tensor_matrix_product(M)
-        return self.core.dot(core_2_projected)
+        core_2_projected = core_other.tensor_matrix_product(M)
+        return core_self.dot(core_2_projected)
 
     def dot_with_rank_one_metric(self, tensor_2, matrices):
         """

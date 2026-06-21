@@ -36,6 +36,7 @@ from .tensor_algebra.tensors.diagonal_tensor import DiagonalTensor
 from .tensor_algebra.tensors.sparse_tensor import SparseTensor
 from .tensor_algebra.tensors.tucker_like_operator import TuckerLikeTensor
 from .tensor_algebra.tools.truncator import Truncator
+from .tensor_algebra.tools.convert_tensors import convert_tensors
 
 from .tools.utils import *
 from .tools.multi_indices import MultiIndices
