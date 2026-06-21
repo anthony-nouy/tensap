@@ -87,27 +87,18 @@ class TSpaceOperators(TSpace):
         """Hermitian (conjugate) transpose."""
         return self.transpose(conjugate=True)
 
-    def vectorize(self, dims=None):
+    def vectorize(self):
         """Convert a TSpaceOperators into a TSpaceVectors.
 
         Each basis operator is flattened into a column vector.
         The result has ``dims_out = N_out * N_in`` per dimension.
 
-        Parameters
-        ----------
-        dims : int or list of int, optional
-            Dimensions to vectorize. A single integer is also accepted.
-            Defaults to all.
-
         Returns
         -------
         TSpaceVectors
         """
-        if dims is None:
-            dims = range(self.order)
-
-        new_spaces = list(self.spaces)
-        for mu in dims:
+        new_spaces = [None] * self.order
+        for mu in range(self.order):
             n_out, n_in, r = self.spaces[mu].shape
             vecs = self.spaces[mu].reshape(n_out * n_in, r)
             new_spaces[mu] = vecs[:, None, :]

@@ -130,7 +130,7 @@ class TSpaceVectors(TSpace):
             new_spaces[mu] = self.spaces[mu][indices[:, mu], :, :]
         return TSpaceVectors(new_spaces, is_orth=False)
 
-    def unvectorize(self, sz, dims=None):
+    def unvectorize(self, sz):
         """Convert a TSpaceVectors into a TSpaceOperators.
 
         Each basis vector (column) is reshaped into an operator of
@@ -138,12 +138,9 @@ class TSpaceVectors(TSpace):
 
         Parameters
         ----------
-        sz : ndarray of shape (2, K)
+        sz : ndarray of shape (2, order)
             Target sizes for the operators. ``sz[0, mu]`` is the output
             dimension, ``sz[1, mu]`` is the input dimension.
-        dims : int or list of int, optional
-            Dimensions to convert. A single integer is also accepted.
-            Defaults to all.
 
         Returns
         -------
@@ -152,11 +149,8 @@ class TSpaceVectors(TSpace):
         from .tensor_space_operators import TSpaceOperators
 
         sz = np.asarray(sz)
-        if dims is None:
-            dims = range(self.order)
-
-        new_spaces = list(self.spaces)
-        for mu in dims:
+        new_spaces = [None] * self.order
+        for mu in range(self.order):
             vectors = self.spaces[mu][:, 0, :]  # (N, R)
             r = vectors.shape[1]
             ops = np.zeros((sz[0, mu], sz[1, mu], r))
