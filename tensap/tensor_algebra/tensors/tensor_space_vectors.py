@@ -100,24 +100,34 @@ class TSpaceVectors(TSpace):
 
         return M
 
-    def eval_at_indices(self, I):
+    def eval_at_indices(self, indices, dims=None):
         """Evaluate basis vectors at given indices.
 
-        Selects rows of each subspace basis according to ``I``.
+        For each dimension in ``dims``, selects the rows of the
+        subspace basis according to ``indices[:, mu]``.
+        Dimensions not listed in ``dims`` are left unchanged.
 
         Parameters
         ----------
-        I : ndarray of shape (N_points, order)
-            Indices for each dimension.
+        indices : ndarray of shape (N_points, K)
+            Indices for each selected dimension.
+        dims : int or list of int, optional
+            Dimensions to evaluate. A single integer is also accepted.
+            Defaults to all.
 
         Returns
         -------
         TSpaceVectors
         """
-        I = np.asarray(I)
-        new_spaces = []
-        for mu in range(self.order):
-            new_spaces.append(self.spaces[mu][I[:, mu], :, :])
+        indices = np.asarray(indices)
+        if dims is None:
+            dims = range(self.order)
+        else:
+            dims = np.atleast_1d(dims)
+
+        new_spaces = list(self.spaces)
+        for mu in dims:
+            new_spaces[mu] = self.spaces[mu][indices[:, mu], :, :]
         return TSpaceVectors(new_spaces, is_orth=False)
 
     def unvectorize(self, sz, dims=None):
