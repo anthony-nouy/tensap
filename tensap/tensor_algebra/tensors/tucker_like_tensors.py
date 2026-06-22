@@ -149,6 +149,9 @@ class TuckerLikeTensor:
         """Return the negative of the tensor."""
         return TuckerLikeTensor(-self.core, self.space)
 
+    def __abs__(self):
+        return TuckerLikeTensor(abs(self.core.data), self.space)
+
     # ---- Arithmetic operators ----
 
     def __add__(self, other):
