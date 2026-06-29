@@ -192,21 +192,37 @@ class TuckerLikeTensor:
 
     def dot(self, tensor_2):
         """
-        Return the inner product of two TuckerLikeTensors.
+                Compute the inner product of self (A) and tensor_2 (B): <A, B>.
 
-        Parameters
-        ----------
-        tensor_2 : TuckerLikeTensor
+                Denoting the two tensors in Tucker-like format:
+                A = sum_{k} A(k_1, ..., k_d) * A^(1)_{k_1} x ... x A^(d)_{k_d}
+                B = sum_{k'} B(k'_1, ..., k'_d) * B^(1)_{k'_1} x ... x B^(d)_{k'_d}
 
-        Returns
-        -------
-        float
-        """
+                The inner product is computed efficiently by pushing the
+                local space inner products into the core tensor of B, avoiding
+                any full tensor reconstruction or Kronecker products:
+
+                1. Compute the Gram matrices M^(v) for each dimension v:
+                   M^(v)_{k_v, k'_v} = < A^(v)_{k_v}, B^(v)_{k'_v} >
+                2. Contract the core of B with the Gram matrices along all
+                   dimensions to obtain the projected core B_tilde:
+                   B_tilde(k_1, ..., k_d) = sum_{k'} B(k'_1, ..., k'_d) * M^(1) ... M^(d)
+                3. Compute the standard dot product between the core A and B_tilde:
+                   <A, B> = sum_{k} A(k_1, ..., k_d) * B_tilde(k_1, ..., k_d)
+
+                Parameters
+                ----------
+                tensor_2 : TuckerLikeTensor
+                    The second tensor to compute the inner product with.
+
+                Returns
+                -------
+                float
+                    The inner product <A, B>.
+                """
         assert isinstance(tensor_2, TuckerLikeTensor), \
             "Argument must be a TuckerLikeTensor."
-        core_self, core_other = tensap.convert_tensors(
-            self.core, tensor_2.core
-        )
+        core_self, core_other = tensap.convert_tensors(self.core, tensor_2.core)
         M = self.space.dot(tensor_2.space)
         core_2_projected = core_other.tensor_matrix_product(M)
         return core_self.dot(core_2_projected)
@@ -238,18 +254,17 @@ class TuckerLikeTensor:
         """
         Orthogonalize the TuckerLikeTensor.
 
-        Orthogonalises the factor matrices (TSpace) via QR, absorbs
-        the transformation into the core, then orthogonalises the
+        Orthonormalize the factor matrices (TSpace), absorbs
+        the transformation into the core, then orthonormalize the
         core itself (matching MATLAB behaviour).
 
         Returns
         -------
         TuckerLikeTensor
-            The orthogonalized tensor (self, modified in-place).
+            The orthonormalized tensor (self, modified in-place).
         """
-        dims = range(self.order)
         self.space, M = self.space.orth()
-        self.core = self.core.tensor_matrix_product(M, dims)
+        self.core = self.core.tensor_matrix_product(M)
         core_orth = self.core.orth()
         if isinstance(core_orth, tuple):
             self.core = core_orth[0]
