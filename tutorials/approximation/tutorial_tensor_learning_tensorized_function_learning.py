@@ -193,9 +193,9 @@ LAMBDA_HAT, M_HAT, LAMBDA_PATH, M_PATH = SEL.slope_heuristic()
 
 print(
     "Model selected using a test sample:         %i, test error = %2.5e."
-    % (OUTPUT["selected_model_number"], OUTPUT["test_error"])
+    % (np.ravel(OUTPUT["selected_model_number"])[0], OUTPUT["test_error"])
 )
 print(
     "Model selected using the slope heuristic:   %i, test error = %2.5e."
-    % (M_HAT, OUTPUT["test_error_iterations"][M_HAT])
+    % (np.ravel(M_HAT)[0], OUTPUT["test_error_iterations"][np.ravel(M_HAT)[0]])
 )
