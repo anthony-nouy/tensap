@@ -1,0 +1,56 @@
+[build-system]
+requires = ["setuptools"]
+
+[project]
+name = "tensap"
+version = "1.8"
+description = "Tensor Approximation Package: a Python package for the approximation of functions and tensors."
+readme = "README.md"
+dependencies = [
+  "numpy",
+  "scipy",
+  "networkx",
+]
+authors = [
+  {name = "Anthony Nouy"},
+  {name = "Erwan Grelier"},
+]
+license = {text= "LGPL-3.0-or-later"}
+classifiers = [
+  "Intended Audience :: Science/Research",
+  "Natural Language :: English",
+  "Topic :: Scientific/Engineering",
+]
+
+[tool.setuptools]
+packages = ["tensap",
+            "tensap.tools",
+            "tensap.tensor_algebra",
+            "tensap.tensor_algebra.tools",
+            "tensap.tensor_algebra.tensors",
+            "tensap.approximation.tensor_approximation",
+            "tensap.approximation.tensor_approximation.tensor_learning",
+            "tensap.approximation.tensor_approximation.principal_component_analysis",
+            "tensap.approximation.learning",
+            "tensap.approximation",
+            "tensap.approximation.tools",
+            "tensap.approximation.bases",
+            "tensap.approximation.integration",
+            "tensap.poincare_learning",
+            "tensap.poincare_learning.benchmarks",
+            "tensap.poincare_learning.utils",
+            "tensap.poincare_learning.test",
+            "tensap.functions",
+            "tensap.functions.measures",
+            "tensap.functions.sets",
+            "tensap.functions.polynomials",
+            "tensap.linear_algebra",
+           ]
+
+[project.optional-dependencies]
+doc = ["numpydoc", "sphinx-gallery", "sphinx"]
+
+[project.urls]
+Homepage = "https://github.com/anthony-nouy/tensap"
+Documentation = "https://anthony-nouy.github.io/sphinx/tensap/master/"
+Repository = "https://github.com/anthony-nouy/tensap"
