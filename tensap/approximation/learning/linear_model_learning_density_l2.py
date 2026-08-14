@@ -167,7 +167,7 @@ class LinearModelLearningDensityL2(tensap.LinearModelLearning):
 
         if "included_coefficients" in self.regularization_options:
             incl_coef = self.regularization_options["included_coefficients"]
-            list_sort = list_sort[np.logical_not(np.in1d(list_sort, incl_coef))]
+            list_sort = list_sort[np.logical_not(np.isin(list_sort, incl_coef))]
 
             sol_incl_coef = np.array(sol_standard)
             sol_incl_coef[np.setdiff1d(range(len(sol_incl_coef)), incl_coef)] = 0

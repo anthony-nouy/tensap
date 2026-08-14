@@ -259,7 +259,7 @@ class OrthonormalPolynomials(tensap.UnivariatePolynomials):
             jacobi_matrix = (
                 np.diag(a) + np.diag(np.sqrt(b[1:]), -1) + np.diag(np.sqrt(b[1:]), 1)
             )
-        return np.sort(np.linalg.eig(jacobi_matrix)[0])
+        return np.sort(np.linalg.eigh(jacobi_matrix)[0])
 
 
 class ShiftedOrthonormalPolynomials(tensap.UnivariatePolynomials):

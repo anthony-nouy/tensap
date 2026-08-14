@@ -723,7 +723,7 @@ class TreeBasedTensor:
                 common_asc = tensap.fast_intersect(asc_alpha, asc_beta)
                 gamma = common_asc[
                     tree.level[common_asc - 1] == np.max(tree.level[common_asc - 1])
-                ]
+                ][0]
                 unique_asc = np.unique(np.concatenate((asc_alpha, asc_beta)))
                 children = tensap.fast_setdiff(
                     tree.children(
@@ -881,7 +881,7 @@ class TreeBasedTensor:
                     tensors[nod - 1] = []
                     children = tree.children(nod)
                     edges = np.concatenate(
-                        (np.atleast_1d(children), edges[~np.in1d(edges, nod)])
+                        (np.atleast_1d(children), edges[~np.isin(edges, nod)])
                     )
 
             perm = np.arange(edges.size)

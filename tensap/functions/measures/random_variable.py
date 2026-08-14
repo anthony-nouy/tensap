@@ -277,7 +277,7 @@ class RandomVariable(tensap.ProbabilityMeasure):
 
         # Quadrature points are the eigenvalues of the Jacobi matrix, weights
         # are deduced from the eigenvectors
-        eig_values, eig_vectors = np.linalg.eig(jacobi_matrix)
+        eig_values, eig_vectors = np.linalg.eigh(jacobi_matrix)
         points = np.sort(eig_values)
         ind = np.argsort(eig_values)
         eig_vectors = eig_vectors[:, ind]
