@@ -115,11 +115,6 @@ class LinearModelLearningCustomLoss(tensap.LinearModelLearning):
         basis_eval = self.basis_eval
         training_data = self.training_data
 
-        def risk():
-            fun_eval = tf.squeeze(tf.tensordot(basis_eval, self.var, [1, 0]))
-            out = self.loss_function.risk_estimation(fun_eval, training_data)
-            return out
-
         if self.var is None:
             self.var = tf.Variable(self.initial_guess, dtype=tf.float64)
             self.optimizer.build([self.var])
@@ -128,7 +123,11 @@ class LinearModelLearningCustomLoss(tensap.LinearModelLearning):
 
         for it in arange(self.options["max_iterations"]):
             var0 = self.var.numpy()
-            self.optimizer.minimize(risk, var_list=[self.var])
+            with tf.GradientTape() as tape:
+                fun_eval = tf.squeeze(tf.tensordot(basis_eval, self.var, [1, 0]))
+                out = self.loss_function.risk_estimation(fun_eval, training_data)
+            grads = tape.gradient(out, [self.var])
+            self.optimizer.apply_gradients(zip(grads, [self.var]))
 
             stagnation = (
                 tf.linalg.norm(var0 - self.var) / tf.linalg.norm(var0)
