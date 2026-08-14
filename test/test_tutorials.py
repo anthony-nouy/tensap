@@ -17,10 +17,6 @@ def execfile(filepath, globals=None, locals=None):
         }
     )
 
-    if "learning_digits_recognition" in filepath:
-        # skipping outdated tensorflow code path
-        return
-
     with open(filepath, "rb") as file:
         exec(compile(file.read(), filepath, "exec"), globals, locals)
 
