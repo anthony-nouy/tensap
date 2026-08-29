@@ -21,7 +21,7 @@ def _minimize_active_subspace(jac_u, jac_basis=None, m=1):
         Has shape (N, n, d).
     jac_basis : numpy.ndarray, optional
         Has shape (N, d, d) or (d, d).
-        The defatul is None
+        The default is None
     m : int, optional
         Number of singular vectors to take as features.
         The default is 1.
@@ -66,7 +66,7 @@ def _initialization(jac_u, jac_basis, m, init_method='active_subspace', n_try=1,
         Has shape (N, n, d).
     jac_basis : numpy.ndarray, optional
         Has shape (N, d, d) or (d, d).
-        The defatul is None
+        The default is None
     m : int, optional
         Number of singular vectors to take as features.
         The default is 1.
@@ -563,7 +563,7 @@ def _minimize_surrogate(jac_u, jac_basis, G0=None, R=None, m=1):
         R = np.eye(K)
 
     # Orthonormalize G0 if necessary
-    if not (G0 is None):
+    if G0 is not None:
         M = G0.T @ R @ G0
         if np.linalg.norm(M - np.eye(M.shape[0])) > 1e-6:
             G0 = G0 @ np.linalg.inv(np.linalg.cholesky(M).T)
@@ -573,7 +573,7 @@ def _minimize_surrogate(jac_u, jac_basis, G0=None, R=None, m=1):
     G = eigvec[:, :m]
     surrogate = eigvals.min()
 
-    if not (G0 is None):
+    if G0 is not None:
         G = np.hstack([G0, G])
 
     loss = poincare_loss_vector_space(G, jac_u, jac_basis)
@@ -647,7 +647,7 @@ def _minimize_surrogate_greedy(jac_u, jac_basis, m_max, R=None, optimize_poincar
     # Run minimization of Poincare loss if necessary
     if optimize_poincare:
         G, losses_optimized[0], _ = _minimize_pymanopt(jac_u, jac_basis, G, **pmo_kwargs)
-        if not (R is None):
+        if R is not None:
             G = G @ np.linalg.inv(np.linalg.cholesky(G.T @ R @ G).T)
     else:
         losses_optimized[0] = losses[0]
@@ -668,7 +668,7 @@ def _minimize_surrogate_greedy(jac_u, jac_basis, m_max, R=None, optimize_poincar
         # Run minimization of Poincare loss on all features if necessary
         if optimize_poincare:
             G, losses_optimized[j], _ = _minimize_pymanopt(jac_u, jac_basis, G, **pmo_kwargs)
-            if not (R is None):
+            if R is not None:
                 G = G @ np.linalg.inv(np.linalg.cholesky(G.T @ R @ G).T)
         else:
             losses_optimized[j] = losses[j]

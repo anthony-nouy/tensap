@@ -586,7 +586,7 @@ def poincare_loss_surrogate_vector_space(G, jac_u, jac_basis, G0=None, jac_g=Non
     """
     if jac_g is None:
         jac_g = _eval_jac_g(G, jac_basis)
-    if jac_g0 is None and not (G0 is None):
+    if jac_g0 is None and G0 is not None:
         jac_g0 = _eval_jac_g(G0, jac_basis)
     out = poincare_loss_surrogate(jac_u, jac_g, jac_g0)
     return out
@@ -640,7 +640,7 @@ def _eval_surrogate_matrices(jac_u, jac_basis, G0=None, R=None):
 
     for jb, ju in zip(jac_basis, jac_u):
 
-        if not (G0 is None):
+        if G0 is not None:
             jg0 = G0.T @ jb
             P_g0 = jg0.T @ scipy.linalg.pinv(jg0.T)
 
@@ -655,7 +655,7 @@ def _eval_surrogate_matrices(jac_u, jac_basis, G0=None, R=None):
         A += w * Ax / jac_u.shape[0]
         B += w * Bx / jac_u.shape[0]
 
-    if not (G0 is None):
+    if G0 is not None:
         R12inv = np.linalg.inv(np.linalg.cholesky(R))
         Minv = np.linalg.inv(G0.T @ R @ G0)
         C = R @ G0 @ Minv @ G0.T @ R

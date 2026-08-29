@@ -632,7 +632,7 @@ class EmpiricalPolynomials(OrthonormalPolynomials):
             self.measure = sample.get_standard_random_variable()
         else:
             # Standardization of the sample
-            x = np.reshape(self.sample, [-1, 1])
+            x = np.reshape(sample, [-1, 1])
             x = (x - np.tile(np.mean(x, 0), (x.shape[0], 1))) / np.tile(
                 np.std(x, 0), (x.shape[0], 1)
             )

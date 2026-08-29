@@ -137,7 +137,7 @@ class LebesgueMeasure(tensap.Measure):
                 is_equal = is_equal and (ind[0] == ind[1])
         return is_equal
 
-    def __neq__(self, L2):
+    def __ne__(self, L2):
         return not (self == L2)
 
     def mass(self):

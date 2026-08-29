@@ -62,7 +62,7 @@ class PolynomialFeatureEstimator(BaseEstimator):
         self.G = np.zeros((self.basis.cardinal(), 1))
         self.g = SubFunctionalBasis(self.basis, self.G)
 
-        # Compute the inner pdocut matrix if necessary
+        # Compute the inner product matrix if necessary
         if self.innerp == "l2":
             R = None
         elif self.innerp == "h1_0":

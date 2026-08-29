@@ -97,7 +97,7 @@ class RandomVector(tensap.ProbabilityMeasure):
                 is_equal = is_equal and (ind[0] == ind[1])
         return is_equal
 
-    def __neq__(self, rv_2):
+    def __ne__(self, rv_2):
         return not (self == rv_2)
 
     def support(self):

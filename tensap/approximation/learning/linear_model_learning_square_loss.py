@@ -266,7 +266,7 @@ class LinearModelLearningSquareLoss(tensap.LinearModelLearning):
         if (self.model_selection and np.linalg.norm(
                 solpath) != 0) and solpath.shape[1] > 1:
             if "non_zero_blocks" in self.options:
-                rep = np.true(solpath.shape[1])
+                rep = np.ones(solpath.shape[1], dtype=bool)
                 rep = np.logical_and(rep, np.any(solpath, 0))
                 for block in self.options["non_zero_blocks"]:
                     rep = np.logical_and(rep, np.any(solpath[block, :], 0))

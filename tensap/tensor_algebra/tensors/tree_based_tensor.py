@@ -2501,7 +2501,7 @@ class TreeBasedTensor:
         else:
             ranks = np.atleast_1d(ranks)
 
-        ranks = np.int_(ranks)
+        ranks = ranks.astype(int)
 
         if ranks.size == 1:
             ranks = np.tile(ranks, tree.nb_nodes)
@@ -2513,7 +2513,7 @@ class TreeBasedTensor:
         else:
             shape = np.atleast_1d(shape)
 
-        shape = np.int_(shape)
+        shape = shape.astype(int)
 
         if is_active_node is None:
             is_active_node = np.full(tree.nb_nodes, True)

@@ -806,7 +806,7 @@ class FunctionalTensor(tensap.Function):
             out = deepcopy(self)
             out.tensor = self.tensor.tensor_matrix_product(H, dims)
             out.bases = out.bases.remove_bases(dims)
-            out.fdims = out.fdims[np.setdiff1d(np.range(np.size(out.fdims)), dims)]
+            out.fdims = out.fdims[np.setdiff1d(range(np.size(out.fdims)), dims)]
             if np.size(out.fdims) == 0:
                 out = out.tensor
         return out
